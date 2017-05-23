@@ -12,6 +12,14 @@
         <kotlin.version>1.1.2-4</kotlin.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>wpilib</id>
+            <name>WPILib</name>
+            <url>http://first.wpi.edu/FRC/roborio/maven/release/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -23,6 +31,16 @@
             <artifactId>kotlin-test</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>athena</artifactId>
+            <version>2017.3.1</version>
         </dependency>
     </dependencies>
 
