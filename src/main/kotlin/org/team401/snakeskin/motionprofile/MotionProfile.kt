@@ -43,7 +43,6 @@ class MotionProfile internal constructor(val name: String, private val positions
         override fun previousIndex(): Int {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
-
     }
 
     var currentIndex = 0
