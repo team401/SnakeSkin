@@ -2,7 +2,6 @@ package org.team401.snakeskin.io.hardware
 
 import org.team401.snakeskin.io.InputDevice
 import org.team401.snakeskin.io.Joystick
-import org.team401.snakeskin.logic.scale
 
 /*
  * SnakeSkin - Created on 5/24/17
@@ -26,7 +25,7 @@ class LogitechAttack3D(dsPort: Int) : InputDevice(dsPort), Joystick {
 
     override fun getRoll() = getAxis(2)
 
-    override fun getThrottle() = getAxis(3).scale(-1.0)
+    override fun getThrottle() = getAxis(3).invert()
 
     override fun getTrigger() = getButtonValue(1)
 

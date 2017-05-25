@@ -17,7 +17,8 @@ package org.team401.snakeskin.logic
 interface DirectionalAxis {
 
     /**
-     * Get the current direction of the axis, usually between 0-359 (as in degrees)
+     * Get the current direction of the axis, usually between 0-359 (as in degrees).
+     * Returns -1 when there is no current direction.
      */
     fun getDirection(): Int
 }

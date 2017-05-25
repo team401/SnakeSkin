@@ -1,7 +1,7 @@
 package org.team401.snakeskin.io
 
+import org.team401.snakeskin.logic.Axis
 import org.team401.snakeskin.logic.DirectionalAxis
-import org.team401.snakeskin.logic.Range
 import org.team401.snakeskin.logic.Switch
 
 /*
@@ -18,23 +18,22 @@ import org.team401.snakeskin.logic.Switch
  */
 interface Gamepad {
 
-    fun getX(): Switch
-    fun getY(): Switch
+    fun getLeftX(): Axis
+    fun getLeftY(): Axis
+    fun getRightX(): Axis
+    fun getRightY(): Axis
+    fun getLeftTrigger(): Axis
+    fun getRightTrigger(): Axis
+
     fun getA(): Switch
     fun getB(): Switch
-
-    fun getLeftTrigger(): Range
-    fun getRightTrigger(): Range
+    fun getX(): Switch
+    fun getY(): Switch
 
     fun getLeftBumper(): Switch
     fun getRightBumper(): Switch
-
-    fun getLeftX(): Range
-    fun getLeftY(): Range
+    
     fun getLeftStick(): Switch
-
-    fun getRightX(): Range
-    fun getRightY(): Range
     fun getRightStick(): Switch
 
     fun getStart(): Switch

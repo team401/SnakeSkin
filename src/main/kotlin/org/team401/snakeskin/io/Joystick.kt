@@ -1,6 +1,6 @@
 package org.team401.snakeskin.io
 
-import org.team401.snakeskin.logic.Range
+import org.team401.snakeskin.logic.Axis
 import org.team401.snakeskin.logic.Switch
 
 /*
@@ -17,11 +17,11 @@ import org.team401.snakeskin.logic.Switch
  */
 interface Joystick {
 
-    fun getYaw(): Range
-    fun getPitch(): Range
-    fun getRoll(): Range
+    fun getYaw(): Axis
+    fun getPitch(): Axis
+    fun getRoll(): Axis
 
-    fun getThrottle(): Range
+    fun getThrottle(): Axis
 
     fun getTrigger(): Switch
     fun getThumb(): Switch
