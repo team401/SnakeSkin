@@ -1,6 +1,7 @@
-package org.team401.snakeskin.sensors
+package org.team401.snakeskin.sensors.hardware
 
 import edu.wpi.first.wpilibj.DigitalInput
+import org.team401.snakeskin.sensors.PresenceSensor
 
 /*
  * SnakeSkin - Created on 5/23/2017

@@ -1,4 +1,4 @@
-package org.team401.snakeskin.sensors;
+package org.team401.snakeskin.sensors.hardware;
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) FIRST 2015-2017. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
+import org.team401.snakeskin.sensors.InterruptableGyro;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

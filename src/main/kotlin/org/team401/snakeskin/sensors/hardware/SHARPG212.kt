@@ -1,4 +1,4 @@
-package org.team401.snakeskin.sensors
+package org.team401.snakeskin.sensors.hardware
 
 /*
  * SnakeSkin - Created on 5/22/17
@@ -10,6 +10,7 @@ package org.team401.snakeskin.sensors
 
 import edu.wpi.first.wpilibj.AnalogInput
 import org.team401.snakeskin.Unit
+import org.team401.snakeskin.sensors.DistanceSensor
 
 /**
  * @author Zachary Kozar
