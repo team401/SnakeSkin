@@ -21,11 +21,11 @@ class LogitechDualAction(dsPort: Int) : InputDevice(dsPort), Gamepad {
 
     override fun getLeftX() = getAxis(0)
 
-    override fun getLeftY() = getAxis(1).invert()
+    override fun getLeftY() = getAxis(1) scale Axis.INVERTED
 
     override fun getRightX() = getAxis(4)
 
-    override fun getRightY() = getAxis(5).invert()
+    override fun getRightY() = getAxis(5) scale Axis.INVERTED
 
     override fun getLeftTrigger() = Axis { if (getButtonValue(6).isTriggered()) 1.0 else 0.0}
 

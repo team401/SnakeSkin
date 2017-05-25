@@ -15,13 +15,14 @@ package org.team401.snakeskin.logic
 class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
 
     var scaling: (Double) -> Double = NO_SCALING
+        private set
 
     companion object {
         val NO_SCALING: (Double) -> Double = { input -> input }
         val INVERTED: (Double) -> Double = { input -> -input }
         val SQUARED: (Double) -> Double = { input -> if (input < 0.0) -input*input else input*input }
         val CUBED: (Double) -> Double = { input -> input*input*input }
-        val LOG: (Double) -> Double = { input -> Math.log(input) }
+        val LOG: (Double) -> Double = { input -> if (input > 0) Math.log(input) else 0.0 }
     }
 
     fun read(): Double {
@@ -32,5 +33,8 @@ class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
         return 0.0
     }
 
-    fun invert(): Axis = Axis(deadband) { -axis() }
+    infix fun scale(scale: (Double) -> Double): Axis {
+        this.scaling = scale
+        return this
+    }
 }
