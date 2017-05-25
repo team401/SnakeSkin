@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Joystick
  * @author Zachary Kozar
  * @version 5/24/2017
  */
-class OutputDevice(dsPort: Int) {
+open class OutputDevice(dsPort: Int) {
 
     internal val output = Joystick(dsPort)
 
