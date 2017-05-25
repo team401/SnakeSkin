@@ -3,7 +3,7 @@ package org.team401.snakeskin.io.hardware
 import org.team401.snakeskin.io.Gamepad
 import org.team401.snakeskin.io.InputDevice
 import org.team401.snakeskin.logic.Range
-import org.team401.snakeskin.logic.map
+import org.team401.snakeskin.logic.scale
 
 /*
  * SnakeSkin - Created on 5/24/17
@@ -41,13 +41,13 @@ class LogitechDualAction(dsPort: Int) : InputDevice(dsPort), Gamepad {
 
     override fun getLeftX() = getAxis(0)
 
-    override fun getLeftY() = getAxis(1).map(-1.0)
+    override fun getLeftY() = getAxis(1).scale(-1.0)
 
     override fun getLeftStick() = getButtonValue(9)
 
     override fun getRightX() = getAxis(4)
 
-    override fun getRightY() = getAxis(5).map(-1.0)
+    override fun getRightY() = getAxis(5).scale(-1.0)
 
     override fun getRightStick() = getButtonValue(10)
 

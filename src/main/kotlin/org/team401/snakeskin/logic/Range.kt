@@ -17,6 +17,6 @@ interface Range {
     fun read(): Double
 }
 
-fun Range.map(modifier: Double) = object : Range {
-    override fun read() = this@map.read()*modifier
+fun Range.scale(modifier: Double) = object : Range {
+    override fun read() = this@scale.read()*modifier
 }
