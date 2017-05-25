@@ -17,7 +17,7 @@ import org.team401.snakeskin.logic.Switch
  * @author Zachary Kozar
  * @version 5/24/17
  */
-abstract class InputDevice(dsPort: Int) {
+class InputDevice(dsPort: Int) {
 
     internal val input = Joystick(dsPort)
 
