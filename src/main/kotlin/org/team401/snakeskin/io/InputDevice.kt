@@ -21,11 +21,9 @@ open class InputDevice(dsPort: Int) {
 
     internal val input = Joystick(dsPort)
 
-    fun getAxis(axis: Int) = Axis({ input.getRawAxis(axis) })
+    fun getAxis(axis: Int) = Axis { input.getRawAxis(axis) }
 
     fun getButtonValue(button: Int) = Switch { input.getRawButton(button) }
 
-    fun getDPadValue(dpad: Int) = object : DirectionalAxis {
-        override fun getDirection() = input.getPOV(dpad)
-    }
+    fun getDPadValue(dpad: Int) = DirectionalAxis { input.getPOV(dpad) }
 }

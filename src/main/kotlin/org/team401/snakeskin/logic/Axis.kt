@@ -12,7 +12,7 @@ package org.team401.snakeskin.logic
  * @author Zachary Kozar
  * @version 5/25/2017
  */
-class Axis(private val axis: () -> Double, var deadband: Double = -1.0) {
+class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
 
     var scaling: (Double) -> Double = NO_SCALING
 
@@ -32,5 +32,5 @@ class Axis(private val axis: () -> Double, var deadband: Double = -1.0) {
         return 0.0
     }
 
-    fun invert(): Axis = Axis({ -axis()}, deadband)
+    fun invert(): Axis = Axis(deadband) { -axis() }
 }

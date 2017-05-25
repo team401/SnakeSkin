@@ -12,9 +12,17 @@ package org.team401.snakeskin.logic
  * @author Zachary Kozar
  * @version 5/22/17
  */
-class Switch(private val boolFunc: () -> Boolean) {
+interface Switch {
 
-    fun isTriggered(): Boolean = boolFunc()
+    fun isTriggered(): Boolean
 
-    fun invert(): Switch = Switch { !boolFunc() }
+    fun invert(): Switch = Switch { !isTriggered() }
+}
+
+fun Switch(boolFunc: () -> Boolean): Switch {
+    return object : Switch {
+        override fun isTriggered(): Boolean {
+            return boolFunc()
+        }
+    }
 }

@@ -22,3 +22,11 @@ interface DirectionalAxis {
      */
     fun getDirection(): Int
 }
+
+fun DirectionalAxis(intFunc: () -> Int): DirectionalAxis {
+    return object : DirectionalAxis {
+        override fun getDirection(): Int {
+            return intFunc()
+        }
+    }
+}
