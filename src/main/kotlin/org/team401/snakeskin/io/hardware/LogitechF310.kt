@@ -55,14 +55,7 @@ class LogitechF310(dsPort: Int) : InputDevice(dsPort), RumbleGamepad {
 
     override fun getDPad() = getDPadValue(0)
 
-    override fun setRumble(intensity: Double) {
-        setLeftRumble(intensity)
-        setRightRumble(intensity)
-    }
-
     override fun setLeftRumble(intensity: Double) = input.setRumble(GenericHID.RumbleType.kLeftRumble, intensity)
 
     override fun setRightRumble(intensity: Double) = input.setRumble(GenericHID.RumbleType.kRightRumble, intensity)
-
-    override fun stopRumble() = setRumble(0.0)
 }

@@ -14,11 +14,14 @@ package org.team401.snakeskin.io
  */
 interface RumbleGamepad : Gamepad {
 
-    fun setRumble(intensity: Double)
+    fun setRumble(intensity: Double) {
+        setLeftRumble(intensity)
+        setRightRumble(intensity)
+    }
 
     fun setLeftRumble(intensity: Double)
 
     fun setRightRumble(intensity: Double)
 
-    fun stopRumble()
+    fun stopRumble() = setRumble(0.0)
 }
