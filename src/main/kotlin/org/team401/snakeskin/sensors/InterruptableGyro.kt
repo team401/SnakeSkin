@@ -25,4 +25,6 @@ interface InterruptableGyro : Gyro {
     fun cancelCalibrate()
 
     fun getCenter(): Double
+
+    fun getCalibrationSampleTime(): Double
 }

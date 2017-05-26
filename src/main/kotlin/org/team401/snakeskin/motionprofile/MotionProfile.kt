@@ -47,7 +47,6 @@ class MotionProfile internal constructor(val name: String, private val positions
 
     var currentIndex = 0
     val totalPoints = positions.size
-
 }
 
 fun parse(name: String, path: String): MotionProfile {
