@@ -18,11 +18,11 @@ class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
         private set
 
     companion object {
-        val NO_SCALING: (Double) -> Double = { input -> input }
-        val INVERTED: (Double) -> Double = { input -> -input }
-        val SQUARED: (Double) -> Double = { input -> if (input < 0.0) -input*input else input*input }
-        val CUBED: (Double) -> Double = { input -> input*input*input }
-        val LOG: (Double) -> Double = { input -> if (input > 0) Math.log(input) else 0.0 }
+        val NO_SCALING: (Double) -> Double = { it }
+        val INVERTED: (Double) -> Double = { -it }
+        val SQUARED: (Double) -> Double = { if (it < 0.0) -it*it else it*it }
+        val CUBED: (Double) -> Double = { it*it*it }
+        val IDK: (Double) -> Double = { if (it < 0.0) -Math.sin(Math.PI/2*it*it) else Math.sin(Math.PI/2*it*it) }
     }
 
     fun read(): Double {
