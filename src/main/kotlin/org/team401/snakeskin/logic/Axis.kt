@@ -19,10 +19,9 @@ class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
 
     companion object {
         val NO_SCALING: (Double) -> Double = { it }
-        val INVERTED: (Double) -> Double = { -it }
         val SQUARED: (Double) -> Double = { if (it < 0.0) -it*it else it*it }
         val CUBED: (Double) -> Double = { it*it*it }
-        val IDK: (Double) -> Double = { if (it < 0.0) -Math.sin(Math.PI/2*it*it) else Math.sin(Math.PI/2*it*it) }
+        val SINE: (Double) -> Double = { if (it < 0.0) -Math.sin(Math.PI/2*it*it) else Math.sin(Math.PI/2*it*it) }
     }
 
     fun read(): Double {
@@ -36,5 +35,11 @@ class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
     infix fun scale(scale: (Double) -> Double): Axis {
         this.scaling = scale
         return this
+    }
+
+    fun invert(): Axis {
+        val inverted = Axis(deadband) { -axis() }
+        inverted.scaling = scaling
+        return inverted
     }
 }

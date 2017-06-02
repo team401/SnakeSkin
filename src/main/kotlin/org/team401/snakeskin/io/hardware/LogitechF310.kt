@@ -21,11 +21,11 @@ class LogitechF310(dsPort: Int) : InputDevice(dsPort), RumbleGamepad {
 
     override fun getLeftX() = getAxis(0)
 
-    override fun getLeftY() = getAxis(1) scale Axis.INVERTED
+    override fun getLeftY() = getAxis(1).invert()
 
     override fun getRightX() = getAxis(4)
 
-    override fun getRightY() = getAxis(5) scale Axis.INVERTED
+    override fun getRightY() = getAxis(5).invert()
 
     override fun getLeftTrigger() = getAxis(2)
 
