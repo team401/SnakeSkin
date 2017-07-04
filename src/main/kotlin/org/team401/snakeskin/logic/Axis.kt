@@ -36,10 +36,4 @@ class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
         this.scaling = scale
         return this
     }
-
-    fun invert(): Axis {
-        val inverted = Axis(deadband) { -axis() }
-        inverted.scaling = scaling
-        return inverted
-    }
 }

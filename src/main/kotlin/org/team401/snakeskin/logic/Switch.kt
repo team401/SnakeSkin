@@ -15,8 +15,6 @@ package org.team401.snakeskin.logic
 interface Switch {
 
     fun isTriggered(): Boolean
-
-    fun invert(): Switch = Switch { !isTriggered() }
 }
 
 fun Switch(boolFunc: () -> Boolean): Switch {
