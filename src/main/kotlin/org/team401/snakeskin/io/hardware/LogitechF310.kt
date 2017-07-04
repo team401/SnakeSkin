@@ -1,9 +1,9 @@
 package org.team401.snakeskin.io.hardware
 
 import edu.wpi.first.wpilibj.GenericHID
+import org.team401.snakeskin.dsl.invert
 import org.team401.snakeskin.io.InputDevice
 import org.team401.snakeskin.io.RumbleGamepad
-import org.team401.snakeskin.logic.Axis
 
 /*
  * SnakeSkin - Created on 5/24/17

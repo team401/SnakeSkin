@@ -1,9 +1,9 @@
 package org.team401.snakeskin.io.hardware
 
+import org.team401.snakeskin.dsl.invert
 import org.team401.snakeskin.io.Gamepad
 import org.team401.snakeskin.io.InputDevice
 import org.team401.snakeskin.logic.Axis
-import org.team401.snakeskin.logic.Switch
 
 /*
  * SnakeSkin - Created on 5/24/17
