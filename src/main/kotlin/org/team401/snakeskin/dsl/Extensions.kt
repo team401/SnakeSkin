@@ -84,6 +84,10 @@ operator fun Rotation2d.div(degrees: Double): Rotation2d {
     return Rotation2d.fromDegrees(this.degrees / degrees)
 }
 
+operator fun Rotation2d.compareTo(other: Rotation2d): Int {
+    return this.compareTo(other)
+}
+
 // Switch
 
 fun Switch.invert(): Switch {
