@@ -85,7 +85,11 @@ operator fun Rotation2d.div(degrees: Double): Rotation2d {
 }
 
 operator fun Rotation2d.compareTo(other: Rotation2d): Int {
-    return this.compareTo(other)
+    if (this.degrees > other.degrees)
+        return 1
+    else if (this.degrees < other.degrees)
+        return -1
+    return 0
 }
 
 // Switch
