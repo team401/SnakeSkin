@@ -38,7 +38,53 @@ fun Gyro.getAngleAsRotation(): Rotation2d {
     return Rotation2d.fromDegrees(this.angle)
 }
 
-// Switches
+// Rotation2d
+
+operator fun Rotation2d.plus(other: Rotation2d): Rotation2d {
+    return this.rotateBy(other)
+}
+
+operator fun Rotation2d.plus(degrees: Double): Rotation2d {
+    return Rotation2d.fromDegrees(this.degrees + degrees)
+}
+
+operator fun Rotation2d.inc(): Rotation2d {
+    return this + 1.0
+}
+
+operator fun Rotation2d.minus(other: Rotation2d): Rotation2d {
+    return this.rotateBy(-other)
+}
+
+operator fun Rotation2d.minus(degrees: Double): Rotation2d {
+    return Rotation2d.fromDegrees(this.degrees - degrees)
+}
+
+operator fun Rotation2d.dec(): Rotation2d {
+    return this - 1.0
+}
+
+operator fun Rotation2d.unaryMinus(): Rotation2d {
+    return this.inverse()
+}
+
+operator fun Rotation2d.times(other: Rotation2d): Rotation2d {
+    return this * other.degrees
+}
+
+operator fun Rotation2d.times(degrees: Double): Rotation2d {
+    return Rotation2d.fromDegrees(this.degrees * degrees)
+}
+
+operator fun Rotation2d.div(other: Rotation2d): Rotation2d {
+    return this / other.degrees
+}
+
+operator fun Rotation2d.div(degrees: Double): Rotation2d {
+    return Rotation2d.fromDegrees(this.degrees / degrees)
+}
+
+// Switch
 
 fun Switch.invert(): Switch {
     return Switch { !this.isTriggered() }
