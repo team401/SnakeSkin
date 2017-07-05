@@ -24,6 +24,20 @@ import org.team401.snakeskin.logic.Switch
  * Extension functions
  */
 
+// Axis
+
+fun Axis.invert(): Axis {
+    val inverted = Axis(this.deadband) { this.read() }
+    inverted scale scaling
+    return inverted
+}
+
+// Gyro
+
+fun Gyro.getAngleAsRotation(): Rotation2d {
+    return Rotation2d.fromDegrees(this.angle)
+}
+
 // Switches
 
 fun Switch.invert(): Switch {
@@ -40,18 +54,4 @@ fun DigitalInput.asSwitch(): Switch {
 
 fun DigitalOutput.asSwitch(): Switch {
     return Switch { this.get() }
-}
-
-// Axis
-
-fun Axis.invert(): Axis {
-    val inverted = Axis(this.deadband) { this.read() }
-    inverted scale scaling
-    return inverted
-}
-
-// Gyro
-
-fun Gyro.getAngleAsRotation(): Rotation2d {
-    return Rotation2d.fromDegrees(this.angle)
 }
