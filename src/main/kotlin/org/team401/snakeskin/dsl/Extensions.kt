@@ -94,6 +94,14 @@ operator fun Rotation2d.compareTo(other: Rotation2d): Int {
 
 // Switch
 
+fun Switch.and(other: Switch): Switch {
+    return Switch { this.isTriggered() && other.isTriggered() }
+}
+
+fun Switch.or(other: Switch): Switch {
+    return Switch { this.isTriggered() || other.isTriggered() }
+}
+
 fun Switch.invert(): Switch {
     return Switch { !this.isTriggered() }
 }
