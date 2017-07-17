@@ -31,4 +31,10 @@ dependencies {
 
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.2'
     compile group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
+
+    compile fileTree(dir: 'lib', include: '**/*.jar')
+}
+
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 }
