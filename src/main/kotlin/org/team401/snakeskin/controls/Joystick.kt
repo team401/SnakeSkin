@@ -1,6 +1,6 @@
-package org.team401.snakeskin.io
+package org.team401.snakeskin.controls
 
-import org.team401.snakeskin.logic.Axis
+import org.team401.snakeskin.controls2.Axis
 import org.team401.snakeskin.logic.Switch
 
 /*

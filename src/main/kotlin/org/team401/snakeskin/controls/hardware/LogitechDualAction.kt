@@ -1,9 +1,8 @@
-package org.team401.snakeskin.io.hardware
+package org.team401.snakeskin.controls.hardware
 
-import org.team401.snakeskin.io.Gamepad
-import org.team401.snakeskin.io.InputDevice
-import org.team401.snakeskin.logic.Axis
-import org.team401.snakeskin.logic.Switch
+import org.team401.snakeskin.controls.Gamepad
+import org.team401.snakeskin.controls.InputDevice
+import org.team401.snakeskin.controls2.Axis
 
 /*
  * SnakeSkin - Created on 5/24/17
@@ -21,11 +20,11 @@ class LogitechDualAction(dsPort: Int) : InputDevice(dsPort), Gamepad {
 
     override fun getLeftX() = getAxis(0)
 
-    override fun getLeftY() = getAxis(1).invert()
+    override fun getLeftY() = getAxis(1)//.invert()
 
     override fun getRightX() = getAxis(4)
 
-    override fun getRightY() = getAxis(5).invert()
+    override fun getRightY() = getAxis(5)//.invert()
 
     override fun getLeftTrigger() = Axis { if (getButtonValue(6).isTriggered()) 1.0 else 0.0}
 

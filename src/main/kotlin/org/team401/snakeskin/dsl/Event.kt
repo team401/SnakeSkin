@@ -1,7 +1,8 @@
 package org.team401.snakeskin.dsl
 
-import org.team401.snakeskin.event.Event
+import org.team401.snakeskin.logic.Parameters
 import org.team401.snakeskin.event.EventRouter
+import org.team401.snakeskin.logic.MutableParameters
 
 /*
  * SnakeSkin - Created on 7/4/17
@@ -16,12 +17,12 @@ import org.team401.snakeskin.event.EventRouter
  * @version 7/4/17
  */
 
-fun send(name: String, setup: Event.() -> Unit = {}) {
-    val event = Event(hashMapOf(), hashMapOf(), hashMapOf(), hashMapOf())
+fun send(name: String, setup: MutableParameters.() -> Unit = {}) {
+    val event = MutableParameters()
     event.setup()
     EventRouter.fireEvent(name, event)
 }
 
-fun on(name: String, action: Event.() -> Unit) {
+fun on(name: String, action: Parameters.() -> Unit) {
     EventRouter.registerHandler(name, action)
 }

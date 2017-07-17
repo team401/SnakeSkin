@@ -1,9 +1,8 @@
-package org.team401.snakeskin.io.hardware
+package org.team401.snakeskin.controls.hardware
 
 import edu.wpi.first.wpilibj.GenericHID
-import org.team401.snakeskin.io.InputDevice
-import org.team401.snakeskin.io.RumbleGamepad
-import org.team401.snakeskin.logic.Axis
+import org.team401.snakeskin.controls.InputDevice
+import org.team401.snakeskin.controls.RumbleGamepad
 
 /*
  * SnakeSkin - Created on 5/24/17
@@ -21,11 +20,11 @@ class LogitechF310(dsPort: Int) : InputDevice(dsPort), RumbleGamepad {
 
     override fun getLeftX() = getAxis(0)
 
-    override fun getLeftY() = getAxis(1).invert()
+    override fun getLeftY() = getAxis(1)//.invert()
 
     override fun getRightX() = getAxis(4)
 
-    override fun getRightY() = getAxis(5).invert()
+    override fun getRightY() = getAxis(5)//.invert()
 
     override fun getLeftTrigger() = getAxis(2)
 

@@ -1,4 +1,4 @@
-package org.team401.snakeskin.io
+package org.team401.snakeskin.controls
 
 import edu.wpi.first.wpilibj.Joystick
 

@@ -1,4 +1,5 @@
-package org.team401.snakeskin.logic
+package org.team401.snakeskin.controls2
+
 
 /*
  * SnakeSkin - Created on 5/25/2017
@@ -12,34 +13,31 @@ package org.team401.snakeskin.logic
  * @author Zachary Kozar
  * @version 5/25/2017
  */
-class Axis(var deadband: Double = -1.0, private val axis: () -> Double) {
-
-    var scaling: (Double) -> Double = NO_SCALING
-        private set
-
-    companion object {
+class Axis(var inverted: Boolean = false, var deadband: Double = -1.0, private val getter: () -> Double) {
+    object ScalingMethod {
         val NO_SCALING: (Double) -> Double = { it }
         val SQUARED: (Double) -> Double = { if (it < 0.0) -it*it else it*it }
         val CUBED: (Double) -> Double = { it*it*it }
         val SINE: (Double) -> Double = { if (it < 0.0) -Math.sin(Math.PI/2*it*it) else Math.sin(Math.PI/2*it*it) }
     }
 
+    var scaling = ScalingMethod.NO_SCALING
+    private set
+
     fun read(): Double {
-        val delta = scaling(axis())
+        val delta = scaling(getter())
 
         if (deadband == -1.0 || Math.abs(delta) > deadband)
-            return delta
+            if (inverted) {
+                return -delta
+            } else {
+                return delta
+            }
         return 0.0
     }
 
     infix fun scale(scale: (Double) -> Double): Axis {
         this.scaling = scale
         return this
-    }
-
-    fun invert(): Axis {
-        val inverted = Axis(deadband) { -axis() }
-        inverted.scaling = scaling
-        return inverted
     }
 }

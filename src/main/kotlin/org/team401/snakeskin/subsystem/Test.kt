@@ -1,7 +1,12 @@
 package org.team401.snakeskin.subsystem
 
+import edu.wpi.first.wpilibj.TalonSRX
+import org.team401.snakeskin.controls2.Controller
+import org.team401.snakeskin.controls2.mappings.Extreme3D
+import org.team401.snakeskin.dsl.HumanControls
 import org.team401.snakeskin.dsl.send
 import org.team401.snakeskin.dsl.subsystem
+import org.team401.snakeskin.event.Events
 
 /*
  * SnakeSkin - Created on 7/4/17
@@ -16,7 +21,44 @@ import org.team401.snakeskin.dsl.subsystem
  * @version 7/4/17
  */
 
-val Shooter = subsystem {
-    on("Test") {
+val MyController = HumanControls.extreme3d(1) {
+    Axes.PITCH
+    Buttons.BASE_BOTTOM_LEFT
+    Hats.STICK_HAT
+}
+
+val MySubsystem = subsystem {
+    val left = TalonSRX(0)
+    val right = TalonSRX(1)
+
+    setup {
+        left.isSafetyEnabled = false
+        right.isSafetyEnabled = false //Because screw safety
+    }
+
+    on (Events.AUTO_ENABLED) {
+        STATE = "somestate"
+        MODE = "somemode"
+    }
+
+    state ("low") {
+        //Shift operation
+    }
+
+    state ("high") {
+        //Shift operation
+    }
+
+    loop { //Main drive loop
+        when (MODE) {
+            "openloop" -> {
+                //get joystick
+                left.set(1.0)
+                right.set(1.0)
+            }
+            "closedloop" -> {
+                //spicy pid memes here
+            }
+        }
     }
 }

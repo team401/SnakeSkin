@@ -1,7 +1,7 @@
-package org.team401.snakeskin.io
+package org.team401.snakeskin.controls
 
 import edu.wpi.first.wpilibj.Joystick
-import org.team401.snakeskin.logic.Axis
+import org.team401.snakeskin.controls2.Axis
 import org.team401.snakeskin.logic.DirectionalAxis
 import org.team401.snakeskin.logic.Switch
 
@@ -18,6 +18,9 @@ import org.team401.snakeskin.logic.Switch
  * @version 5/24/17
  */
 open class InputDevice(dsPort: Int) {
+
+    fun test() {
+    }
 
     internal val input = Joystick(dsPort)
 

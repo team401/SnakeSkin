@@ -1,4 +1,4 @@
-package org.team401.snakeskin.io
+package org.team401.snakeskin.controls
 
 /*
  * SnakeSkin - Created on 5/24/17
