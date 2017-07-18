@@ -1,5 +1,6 @@
 package org.team401.snakeskin
 
+import org.team401.snakeskin.controls.Poller
 import org.team401.snakeskin.registry.Subsystems
 
 /*
@@ -27,4 +28,5 @@ fun preStartup() {
  */
 fun postStartup() {
     Subsystems.initAll()
+    Poller.init()
 }

@@ -1,6 +1,6 @@
-package org.team401.snakeskin.controls2
+package org.team401.snakeskin.controls
 
-import java.util.concurrent.ScheduledThreadPoolExecutor
+import org.team401.snakeskin.logic.IReadable
 
 /*
  * snakeskin - Created on 7/16/17
@@ -15,10 +15,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
  * @version 7/16/17
  */
 
-object Poller {
-    private val executor = ScheduledThreadPoolExecutor(1)
-
-    fun init() {
-        executor.prestartAllCoreThreads()
-    }
+class Hat(private val getter: () -> Int): IReadable<Int> {
+    override fun read() = getter()
 }

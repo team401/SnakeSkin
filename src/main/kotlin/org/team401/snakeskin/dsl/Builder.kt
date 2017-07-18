@@ -1,7 +1,7 @@
-package org.team401.snakeskin.controls2
+package org.team401.snakeskin.dsl
 
 /*
- * snakeskin - Created on 7/16/17
+ * snakeskin - Created on 7/18/17
  * Author: Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
@@ -10,9 +10,8 @@ package org.team401.snakeskin.controls2
 
 /**
  * @author Cameron Earle
- * @version 7/16/17
+ * @version 7/18/17
  */
-
-class Hat(private val getter: () -> Int) {
-    fun read() = getter()
+interface Builder<out T> {
+    fun build(): T
 }

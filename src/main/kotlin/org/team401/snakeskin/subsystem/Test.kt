@@ -1,10 +1,8 @@
 package org.team401.snakeskin.subsystem
 
 import edu.wpi.first.wpilibj.TalonSRX
-import org.team401.snakeskin.controls2.Controller
-import org.team401.snakeskin.controls2.mappings.Extreme3D
-import org.team401.snakeskin.dsl.HumanControls
-import org.team401.snakeskin.dsl.send
+import org.team401.snakeskin.controls.mappings.Extreme3D
+import org.team401.snakeskin.dsl.*
 import org.team401.snakeskin.dsl.subsystem
 import org.team401.snakeskin.event.Events
 
@@ -22,9 +20,9 @@ import org.team401.snakeskin.event.Events
  */
 
 val MyController = HumanControls.extreme3d(1) {
-    Axes.PITCH
-    Buttons.BASE_BOTTOM_LEFT
-    Hats.STICK_HAT
+    whenButtonPressed(Buttons.BASE_BOTTOM_LEFT) {
+
+    }
 }
 
 val MySubsystem = subsystem {

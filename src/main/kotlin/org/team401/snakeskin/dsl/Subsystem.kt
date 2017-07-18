@@ -33,7 +33,7 @@ fun subsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
     return builder.build()
 }
 
-class SubsystemBuilder {
+class SubsystemBuilder: Builder<Subsystem> {
     private val builder = Subsystem().MODIFIER
 
     var MODE: String
@@ -60,5 +60,5 @@ class SubsystemBuilder {
         builder.registerLoop(rate, action)
     }
 
-    fun build() = builder.subsystem
+    override fun build() = builder.subsystem
 }

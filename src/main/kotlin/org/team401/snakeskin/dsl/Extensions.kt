@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.DigitalOutput
 import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj.interfaces.Gyro
-import org.team401.snakeskin.logic.Axis
 import org.team401.snakeskin.logic.Rotation2d
 import org.team401.snakeskin.logic.Switch
 
@@ -23,14 +22,6 @@ import org.team401.snakeskin.logic.Switch
  * Domain Specific Language package
  * Extension functions
  */
-
-// Axis
-
-fun Axis.invert(): Axis {
-    val inverted = Axis(this.deadband) { this.read() }
-    inverted scale scaling
-    return inverted
-}
 
 // Gyro
 

@@ -18,7 +18,7 @@ import java.text.DecimalFormat
  * (cosine and sine).
  * Inspired by Sophus (https://github.com/strasdat/Sophus/tree/master/sophus)
  */
-class Rotation2d : Interpolable<Rotation2d> {
+class Rotation2d : Interpolatable<Rotation2d> {
 
     private var cosAngle: Double = 0.0
     private var sinAngle: Double = 0.0

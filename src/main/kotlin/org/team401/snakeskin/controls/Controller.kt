@@ -1,7 +1,6 @@
-package org.team401.snakeskin.controls2
+package org.team401.snakeskin.controls
 
 import edu.wpi.first.wpilibj.Joystick
-import org.team401.snakeskin.controls2.mappings.Extreme3D
 import org.team401.snakeskin.exception.ControlNotFoundException
 
 /*
@@ -23,9 +22,10 @@ abstract class Controller(private val id: Int) {
     private val buttons = hashMapOf<Int, Button>()
     private val hats = hashMapOf<Int, Hat>()
 
-    class HardwareAxis(val axis: Int, val invert: Boolean = false)
-    class HardwareButton(val button: Int)
-    class HardwareHat(val hat: Int)
+    private val buttonPressedListeners = hashMapOf<Int, () -> Unit>()
+    private val buttonReleasedListeners = hashMapOf<Int, () -> Unit>()
+    private val hatChangeListeners = hashMapOf<Int, (Int) -> Unit>()
+
     interface AxesDefinitions
     interface ButtonsDefinitions
     interface HatsDefinitions
@@ -34,19 +34,19 @@ abstract class Controller(private val id: Int) {
     abstract val Buttons: ButtonsDefinitions
     abstract val Hats: HatsDefinitions
 
-    protected fun addHardwareAxis(newAxis: HardwareAxis): HardwareAxis {
-        axes.put(newAxis.axis, Axis { joystick.getRawAxis(newAxis.axis) })
-        return newAxis
+    protected fun addAxis(axis: Int, invert: Boolean = false): Int {
+        axes.put(axis, Axis { joystick.getRawAxis(axis) })
+        return axis
     }
 
-    protected fun addHardwareButton(newButton: HardwareButton): HardwareButton {
-        buttons.put(newButton.button, Button { joystick.getRawButton(newButton.button) })
-        return newButton
+    protected fun addButton(button: Int): Int {
+        buttons.put(button, Button { joystick.getRawButton(button) })
+        return button
     }
 
-    protected fun addHardwareHat(newHat: HardwareHat): HardwareHat {
-        hats.put(newHat.hat, Hat { joystick.getPOV(newHat.hat) })
-        return newHat
+    protected fun addHat(hat: Int): Int {
+        hats.put(hat, Hat { joystick.getPOV(hat) })
+        return hat
     }
 
     fun getAxis(axis: Int): Axis {
@@ -72,4 +72,12 @@ abstract class Controller(private val id: Int) {
             throw ControlNotFoundException("Could not find hat $hat on controller $id")
         }
     }
+
+    fun getButtonPressHandlers() = buttonPressedListeners.toMap()
+    fun getButtonReleaseHandlers() = buttonReleasedListeners.toMap()
+    fun getHatChangeHandlers() = hatChangeListeners.toMap()
+
+    fun registerButtonPressListener(button: Int, action: () -> Unit) = buttonPressedListeners.put(button, action)
+    fun registerButtonReleaseListener(button: Int, action: () -> Unit) = buttonReleasedListeners.put(button, action)
+    fun registerHatChangeListener(hat: Int, action: (Int) -> Unit) = hatChangeListeners.put(hat, action)
 }
