@@ -7,6 +7,7 @@ package org.team401.robot;/*
  */
 
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SampleRobot;
 import org.team401.snakeskin.InitManagerKt;
 import org.team401.snakeskin.event.EventRouter;
@@ -79,6 +80,7 @@ public class Robot extends SampleRobot {
 
     @Override
     public void operatorControl() {
+        //TODO Stop auto script here
         //Teleop has now started, so we need to notify everyone of that
         EventRouter.INSTANCE.fireEvent(Events.TELEOP_ENABLED, new MutableParameters());
     }

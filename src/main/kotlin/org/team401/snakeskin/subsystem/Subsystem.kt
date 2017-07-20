@@ -27,13 +27,14 @@ class Subsystem {
     private var setupTasks = {} //The tasks to run to set up the subsystem (non-lib init for example, as all lib tasks are auto init by the init registry)
 
     private val states = hashMapOf<String, () -> Unit>() //The states that a subsystem can be in
+    private var activeState: String = ""
     private var activeStateFuture: Future<*>? = null //The future for the active state (for cancellation)
     private val stateLock = ReentrantLock()
 
     private var mode = AtomicReference("") //An atomic mode, which can be used by custom subsystem state machines
 
-    fun setActiveMode(newMode: String) = mode.set(newMode)
-    fun getActiveMode() = mode.get()
+    fun setMode(newMode: String) = mode.set(newMode)
+    fun getMode() = mode.get()
 
     fun setState(state: String) {
         if (states.containsKey(state)) {
@@ -41,6 +42,7 @@ class Subsystem {
                 stateLock.lock()
                 activeStateFuture?.cancel(true) //Cancel the active task
                 activeStateFuture = executor.submit { states[state]!!.invoke() } //Submit the new task
+                activeState = state
                 stateLock.unlock()
             }
             if (stateLock.isLocked) { //If a state change is in process, dump the switch into another thread
@@ -50,6 +52,8 @@ class Subsystem {
             }
         }
     }
+
+    fun getState() = activeState
 
     inner class Modifier {
         val subsystem = this@Subsystem //Same as build, but provides a less "final" looking interface
@@ -94,7 +98,9 @@ class Subsystem {
             if (states.containsKey(state)) {
                 stateLock.lock() //Grab the state lock so outside systems will have to wait to change states
                 activeStateFuture?.cancel(true) //Cancel any outside attempts to switch state
+                activeStateFuture = null
                 states[state]!!.invoke() //We already know this is inside an executor thread, so no need to submit
+                activeState = state
                 stateLock.unlock()
             }
         }

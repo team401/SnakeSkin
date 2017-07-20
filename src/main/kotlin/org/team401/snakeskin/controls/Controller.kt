@@ -34,6 +34,10 @@ abstract class Controller(private val id: Int) {
     abstract val Buttons: ButtonsDefinitions
     abstract val Hats: HatsDefinitions
 
+    fun readAxis(axis: Int) = getAxis(axis).read()
+    fun readButton(button: Int) = getButton(button).read()
+    fun readHat(hat: Int) = getHat(hat).read()
+
     protected fun addAxis(axis: Int, invert: Boolean = false): Int {
         axes.put(axis, Axis { joystick.getRawAxis(axis) })
         return axis
