@@ -15,37 +15,43 @@ import org.team401.snakeskin.controls.Controller
  * @version 7/16/17
  */
 class Extreme3D(id: Int): Controller(id) {
-    inner class AxesDefinitions: Controller.AxesDefinitions {
-        val YAW = addAxis(0)
-        val PITCH = addAxis(1)
-        val ROLL = addAxis(2)
-        val THROTTLE = addAxis(3, true)
-    }
-    override val Axes = AxesDefinitions()
+    inner class MappingDefinitions: IMappingDefinitions {
+        inner class AxesDefinitions : IMappingDefinitions.AxesDefinitions {
+            val YAW = addAxis(0)
+            val PITCH = addAxis(1)
+            val ROLL = addAxis(2)
+            val THROTTLE = addAxis(3, true)
+        }
 
-    inner class ButtonsDefinitions: Controller.ButtonsDefinitions {
-        val TRIGGER = addButton(0)
-        val THUMB = addButton(1)
-        val STICK_BOTTOM_LEFT = addButton(2)
-        val STICK_BOTTOM_RIGHT = addButton(3)
-        val STICK_TOP_LEFT = addButton(4)
-        val STICK_TOP_RIGHT = addButton(5)
-        val BASE_TOP_LEFT = addButton(6)
-        val BASE_TOP_RIGHT = addButton(7)
-        val BASE_MIDDLE_LEFT = addButton(8)
-        val BASE_MIDDLE_RIGHT = addButton(9)
-        val BASE_BOTTOM_LEFT = addButton(10)
-        val BASE_BOTTOM_RIGHT = addButton(11)
-    }
-    override val Buttons = ButtonsDefinitions()
+        override val Axes = AxesDefinitions()
 
-    inner class HatsDefinitions: Controller.HatsDefinitions {
-        val STICK_HAT = addHat(0)
-    }
-    override val Hats = HatsDefinitions()
+        inner class ButtonsDefinitions : IMappingDefinitions.ButtonsDefinitions {
+            val TRIGGER = addButton(0)
+            val THUMB = addButton(1)
+            val STICK_BOTTOM_LEFT = addButton(2)
+            val STICK_BOTTOM_RIGHT = addButton(3)
+            val STICK_TOP_LEFT = addButton(4)
+            val STICK_TOP_RIGHT = addButton(5)
+            val BASE_TOP_LEFT = addButton(6)
+            val BASE_TOP_RIGHT = addButton(7)
+            val BASE_MIDDLE_LEFT = addButton(8)
+            val BASE_MIDDLE_RIGHT = addButton(9)
+            val BASE_BOTTOM_LEFT = addButton(10)
+            val BASE_BOTTOM_RIGHT = addButton(11)
+        }
 
-    fun readAxis(axis: Extreme3D.() -> Int): Double = readAxis(axis())
-    fun readButton(button: Extreme3D.() -> Int): Boolean = readButton(button())
-    fun readHat(hat: Extreme3D.() -> Int): Int = readHat(hat())
+        override val Buttons = ButtonsDefinitions()
+
+        inner class HatsDefinitions : IMappingDefinitions.HatsDefinitions {
+            val STICK_HAT = addHat(0)
+        }
+
+        override val Hats = HatsDefinitions()
+    }
+    override val Mapping = MappingDefinitions()
+
+    fun readAxis(axis: MappingDefinitions.AxesDefinitions.() -> Int): Double = readAxis(axis(Mapping.Axes))
+    fun readButton(button: MappingDefinitions.ButtonsDefinitions.() -> Int): Boolean = readButton(button(Mapping.Buttons))
+    fun readHat(hat: MappingDefinitions.HatsDefinitions.() -> Int): Int = readHat(hat(Mapping.Hats))
 
 }

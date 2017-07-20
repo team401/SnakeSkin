@@ -17,27 +17,27 @@ import org.team401.snakeskin.subsystem.Subsystem
  */
 
 fun Subsystem.toggleState(state1: String, state2: String) {
-    if (getState() == state1) {
-        setState(state2)
+    if (STATE == state1) {
+        STATE = state2
     } else {
-        setState(state1)
+        STATE = state1
     }
 }
 
 fun Subsystem.toggleMode(mode1: String, mode2: String) {
-    if (getMode() == mode1) {
-        setMode(mode2)
+    if (MODE == mode1) {
+        MODE = mode2
     } else {
-        setMode(mode1)
+        MODE = mode1
     }
 }
 
 infix fun Subsystem.isInState(state: String): Boolean {
-    return getState() == state
+    return STATE == state
 }
 
 infix fun Subsystem.isInMode(mode: String): Boolean {
-    return getMode() == mode
+    return STATE == mode
 }
 
 fun subsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
@@ -47,31 +47,35 @@ fun subsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
 }
 
 class SubsystemBuilder: Builder<Subsystem> {
-    private val builder = Subsystem().MODIFIER
+    private val builder = Subsystem()
 
-    var MODE: String
-    get() = builder.subsystem.getMode()
-    set(value) = builder.subsystem.setMode(value)
+    var STATE
+    get() = builder.STATE
+    set(value) {
+        builder.STATE = value
+    }
 
-    var STATE: String
-    get() = ""
-    set(value) = builder.setStateInternally(value)
+    var MODE
+    get() = builder.MODE
+    set(value) {
+        builder.MODE = value
+    }
 
     fun setup(action: () -> Unit) {
-        builder.registerSetupTasks(action)
+        builder.addSetupTask(action)
     }
 
     fun state(state: String, action: () -> Unit) {
-        builder.registerState(state, action)
+        builder.addState(state, action)
     }
 
     fun on(event: String, action: Parameters.() -> Unit) {
-        builder.registerEventHandler(event, action)
+        builder.addEventHandler(event, action)
     }
 
     fun loop(rate: Long = 20L, action: () -> Unit) {
-        builder.registerLoop(rate, action)
+        builder.addLoop(rate, action)
     }
 
-    override fun build() = builder.subsystem
+    override fun build() = builder
 }

@@ -22,7 +22,7 @@ object EventRouter {
     private val executor = ScheduledThreadPoolExecutor(1)
 
     fun registerHandler(event: String, handler: (Parameters) -> Unit) = handlers.put(event, handler)
-    fun registerPriority(event: String, handler: (Parameters) -> Unit) = priorityHandlers.put(event, handler)
+    internal fun registerPriority(event: String, handler: (Parameters) -> Unit) = priorityHandlers.put(event, handler)
 
 
     fun fireEvent(event: String, parameters: MutableParameters) {

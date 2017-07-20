@@ -73,6 +73,7 @@ public class Robot extends SampleRobot {
     @Override
     public void autonomous() {
         //Autonomous has now started, so we need to notify everyone of that
+        EventRouter.INSTANCE.fireEvent(Events.ENABLED, new MutableParameters());
         EventRouter.INSTANCE.fireEvent(Events.AUTO_ENABLED, new MutableParameters());
         //Now, we need to start the auto script
         //TODO Insert auto script start here
@@ -82,6 +83,7 @@ public class Robot extends SampleRobot {
     public void operatorControl() {
         //TODO Stop auto script here
         //Teleop has now started, so we need to notify everyone of that
+        EventRouter.INSTANCE.fireEvent(Events.ENABLED, new MutableParameters());
         EventRouter.INSTANCE.fireEvent(Events.TELEOP_ENABLED, new MutableParameters());
     }
 }
