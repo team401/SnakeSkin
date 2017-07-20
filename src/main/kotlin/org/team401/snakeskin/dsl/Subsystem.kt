@@ -1,10 +1,7 @@
 package org.team401.snakeskin.dsl
 
-import org.team401.snakeskin.exception.ParameterNotFoundException
-import org.team401.snakeskin.logic.MutableParameters
 import org.team401.snakeskin.logic.Parameters
 import org.team401.snakeskin.subsystem.Subsystem
-import java.util.concurrent.ConcurrentHashMap
 
 /*
  * SnakeSkin - Created on 7/4/17
@@ -19,12 +16,28 @@ import java.util.concurrent.ConcurrentHashMap
  * @version 7/4/17
  */
 
-infix fun Subsystem.toState(state: String) {
-    setState(state)
+fun Subsystem.toggleState(state1: String, state2: String) {
+    if (getState() == state1) {
+        setState(state2)
+    } else {
+        setState(state1)
+    }
 }
 
-infix fun Subsystem.toMode(mode: String) {
-    setActiveMode(mode)
+fun Subsystem.toggleMode(mode1: String, mode2: String) {
+    if (getMode() == mode1) {
+        setMode(mode2)
+    } else {
+        setMode(mode1)
+    }
+}
+
+infix fun Subsystem.isInState(state: String): Boolean {
+    return getState() == state
+}
+
+infix fun Subsystem.isInMode(mode: String): Boolean {
+    return getMode() == mode
 }
 
 fun subsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
@@ -37,8 +50,8 @@ class SubsystemBuilder: Builder<Subsystem> {
     private val builder = Subsystem().MODIFIER
 
     var MODE: String
-    get() = builder.subsystem.getActiveMode()
-    set(value) = builder.subsystem.setActiveMode(value)
+    get() = builder.subsystem.getMode()
+    set(value) = builder.subsystem.setMode(value)
 
     var STATE: String
     get() = ""

@@ -43,4 +43,9 @@ class Extreme3D(id: Int): Controller(id) {
         val STICK_HAT = addHat(0)
     }
     override val Hats = HatsDefinitions()
+
+    fun readAxis(axis: Extreme3D.() -> Int): Double = readAxis(axis())
+    fun readButton(button: Extreme3D.() -> Int): Boolean = readButton(button())
+    fun readHat(hat: Extreme3D.() -> Int): Int = readHat(hat())
+
 }

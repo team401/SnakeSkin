@@ -1,7 +1,7 @@
 package org.team401.snakeskin.dsl
 
 import org.team401.snakeskin.controls.Controller
-import org.team401.snakeskin.controls.Poller
+import org.team401.snakeskin.controls.CustomController
 import org.team401.snakeskin.controls.mappings.Extreme3D
 
 /*
@@ -17,15 +17,24 @@ import org.team401.snakeskin.controls.mappings.Extreme3D
  * @version 7/17/17
  */
 
-infix fun Controller.readAxis(axis: Int) = getAxis(axis).read()
+infix fun Controller.readAxis(axis: Controller.() -> Int) = getAxis(axis()).read()
 infix fun Controller.readButton(button: Int) = getButton(button).read()
 infix fun Controller.readHat(hat: Int) = getHat(hat).read()
 
 object HumanControls {
-    abstract class ControlsBuilder(private val controller: Controller) {
+    open class ControlsBuilder(private val controller: Controller) {
         fun whenButtonPressed(button: Int, action: () -> Unit) = controller.registerButtonPressListener(button, action)
         fun whenButtonReleased(button: Int, action: () -> Unit) = controller.registerButtonReleaseListener(button, action)
         fun whenHatChanged(hat: Int, action: (newValue: Int) -> Unit) = controller.registerHatChangeListener(hat, action)
+    }
+
+    class CustomBuilder(private val custom: Controller): Builder<Controller>, ControlsBuilder(custom) {
+        override fun build() = custom
+    }
+    fun custom(id: Int, setup: CustomBuilder.() -> Unit = {}): Controller {
+        val builder = CustomBuilder(CustomController(id))
+        builder.setup()
+        return builder.build()
     }
 
     class Extreme3DBuilder(private val extreme3d: Extreme3D): Builder<Extreme3D>, ControlsBuilder(extreme3d) {
@@ -35,12 +44,10 @@ object HumanControls {
         val Buttons = extreme3d.Buttons
         val Hats = extreme3d.Hats
     }
-    fun extreme3d(id: Int, setup: Extreme3DBuilder.() -> Unit): Extreme3D {
+    fun extreme3d(id: Int, setup: Extreme3DBuilder.() -> Unit = {}): Extreme3D {
         val builder = Extreme3DBuilder(Extreme3D(id))
         builder.setup()
-        val extreme3d = builder.build()
-        Poller.addController(extreme3d)
-        return extreme3d
+        return builder.build()
     }
 }
 

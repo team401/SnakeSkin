@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
  * @version 7/16/17
  */
 
-object Poller {
+object ControlPoller {
     private val pollingExecutor = ScheduledThreadPoolExecutor(1)
     private val handlerExecutor = ScheduledThreadPoolExecutor(1)
 
