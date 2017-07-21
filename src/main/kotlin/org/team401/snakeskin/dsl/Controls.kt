@@ -17,9 +17,6 @@ import org.team401.snakeskin.controls.mappings.Extreme3D
  * @version 7/17/17
  */
 
-infix fun Controller.readAxis(axis: Controller.() -> Int) = getAxis(axis()).read()
-infix fun Controller.readButton(button: Int) = getButton(button).read()
-infix fun Controller.readHat(hat: Int) = getHat(hat).read()
 
 object HumanControls {
     open class ControlsBuilder(private val controller: Controller) {
@@ -40,9 +37,9 @@ object HumanControls {
     class Extreme3DBuilder(private val extreme3d: Extreme3D): Builder<Extreme3D>, ControlsBuilder(extreme3d) {
         override fun build() = extreme3d
 
-        val Axes = extreme3d.Axes
-        val Buttons = extreme3d.Buttons
-        val Hats = extreme3d.Hats
+        val Axes = extreme3d.Mapping.Axes
+        val Buttons = extreme3d.Mapping.Buttons
+        val Hats = extreme3d.Mapping.Hats
     }
     fun extreme3d(id: Int, setup: Extreme3DBuilder.() -> Unit = {}): Extreme3D {
         val builder = Extreme3DBuilder(Extreme3D(id))

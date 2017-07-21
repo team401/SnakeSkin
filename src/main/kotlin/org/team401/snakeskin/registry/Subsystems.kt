@@ -24,7 +24,7 @@ object Subsystems {
 
     fun initAll() {
         subsystems.forEach {
-            it.MODIFIER.init()
+            it.init()
         }
     }
 }

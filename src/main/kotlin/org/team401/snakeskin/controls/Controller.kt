@@ -1,6 +1,7 @@
 package org.team401.snakeskin.controls
 
 import edu.wpi.first.wpilibj.Joystick
+import org.team401.snakeskin.controls.mappings.IMappingDefinitions
 import org.team401.snakeskin.exception.ControlNotFoundException
 
 /*
@@ -26,13 +27,7 @@ abstract class Controller(private val id: Int) {
     private val buttonReleasedListeners = hashMapOf<Int, () -> Unit>()
     private val hatChangeListeners = hashMapOf<Int, (Int) -> Unit>()
 
-    interface AxesDefinitions
-    interface ButtonsDefinitions
-    interface HatsDefinitions
-
-    abstract val Axes: AxesDefinitions
-    abstract val Buttons: ButtonsDefinitions
-    abstract val Hats: HatsDefinitions
+    abstract val Mapping: IMappingDefinitions
 
     fun readAxis(axis: Int) = getAxis(axis).read()
     fun readButton(button: Int) = getButton(button).read()
