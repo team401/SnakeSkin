@@ -16,8 +16,6 @@ import java.util.concurrent.ThreadFactory
  */
 
 internal class NamedThreadFactory(val threadName: String): ThreadFactory {
-    override fun newThread(r: Runnable?) = Thread(r).apply {
-        name = threadName
-    }
+    override fun newThread(r: Runnable?) = Thread(r, threadName)
 
 }
