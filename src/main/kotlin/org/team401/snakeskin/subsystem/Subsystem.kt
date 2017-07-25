@@ -3,6 +3,7 @@ package org.team401.snakeskin.subsystem
 import org.team401.snakeskin.component.Component
 import org.team401.snakeskin.logic.Parameters
 import org.team401.snakeskin.event.EventRouter
+import org.team401.snakeskin.event.Events
 import org.team401.snakeskin.factory.ExecutorFactory
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicReference
@@ -23,12 +24,12 @@ import java.util.concurrent.locks.ReentrantLock
 
 class Subsystem {
     //Executor, for running subsystem actions
-    private val executor = ExecutorFactory.buildSubsystemExecutor()
+    private val executor = ExecutorFactory.getExecutor("Subsystem")
 
     //<editor-fold desc="State Handler">
     var STATE = "" //The active state a subsystem is in
     @Synchronized get set(value) {
-        STATE = value
+        field = value
         setState(value)
     }
     private val states = hashMapOf<String, () -> Unit>() //The states that a subsystem can be in
@@ -65,17 +66,24 @@ class Subsystem {
     fun addSetupTask(task: () -> Unit) = setupTasks.add(task)
     //</editor-fold>
 
-    var MODE = ""
-    @Synchronized get set
+    private val internalMode = AtomicReference<String>("")
+    var MODE
+    get() = internalMode.get()
+    set(value) {
+        internalMode.set(value)
+    }
 
     internal fun init() {
-        executor.prestartAllCoreThreads()
         setupTasks.forEach {
             executor.submit(it)
+        }
+        EventRouter.registerPriority(Events.DISABLED) {
+            MODE = Modes.DISABLED
         }
     }
 
     fun addLoop(rate: Long, action: () -> Unit) = executor.scheduleAtFixedRate(action, 0, rate, TimeUnit.MILLISECONDS)
+
     fun addEventHandler(event: String, action: (Parameters) -> Unit) = EventRouter.registerPriority(event) {
         executor.submit {
             action(it)

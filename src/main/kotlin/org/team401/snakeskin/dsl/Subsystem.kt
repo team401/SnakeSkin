@@ -40,7 +40,7 @@ infix fun Subsystem.isInMode(mode: String): Boolean {
     return STATE == mode
 }
 
-fun subsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
+fun buildSubsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
     val builder = SubsystemBuilder()
     builder.setup()
     return builder.build()

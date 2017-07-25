@@ -1,6 +1,7 @@
 package org.team401.snakeskin
 
 import org.team401.snakeskin.controls.ControlPoller
+import org.team401.snakeskin.factory.ExecutorFactory
 import org.team401.snakeskin.registry.Controllers
 import org.team401.snakeskin.registry.Subsystems
 
@@ -21,7 +22,7 @@ import org.team401.snakeskin.registry.Subsystems
  * This method runs before SETUP is loaded
  */
 fun preStartup() {
-
+    ExecutorFactory.init()
 }
 
 /**

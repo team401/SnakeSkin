@@ -58,6 +58,7 @@ public class Robot extends SampleRobot {
             setupMethod.invoke(null, null); //Now, we'll run the "setup" method that is responsible for configuring the robot
         } catch (Exception e) {
             System.err.println("Unable to invoke 'setup()'");
+            e.printStackTrace();
         }
 
         //Now that the setup has been completed, we can run the "postStartup" init tasks

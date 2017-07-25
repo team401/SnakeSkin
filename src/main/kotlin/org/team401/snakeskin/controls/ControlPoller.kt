@@ -1,5 +1,7 @@
 package org.team401.snakeskin.controls
 
+import edu.wpi.first.wpilibj.DriverStation
+import org.team401.snakeskin.factory.ExecutorFactory
 import org.team401.snakeskin.logic.History
 import java.util.*
 import java.util.concurrent.ScheduledThreadPoolExecutor
@@ -19,8 +21,8 @@ import java.util.concurrent.TimeUnit
  */
 
 object ControlPoller {
-    private val pollingExecutor = ScheduledThreadPoolExecutor(1)
-    private val handlerExecutor = ScheduledThreadPoolExecutor(1)
+    private val pollingExecutor = ExecutorFactory.getExecutor("Controls Polling")
+    private val handlerExecutor = ExecutorFactory.getExecutor("Controls Handling")
 
     private class ControllerTracker(private val controller: Controller) {
         class ChangeReport {
@@ -29,9 +31,9 @@ object ControlPoller {
             val changedHats = hashMapOf<Int, Int>()
         }
 
-        val bpHandlers = controller.getButtonPressHandlers()
-        val brHandlers = controller.getButtonReleaseHandlers()
-        val hatHandlers = controller.getHatChangeHandlers()
+        val bpHandlers = controller.buttonPressedListeners
+        val brHandlers = controller.buttonReleasedListeners
+        val hatHandlers = controller.hatChangeListeners
 
         val trackedPressButtons = hashMapOf<Int, History<Boolean>>()
         val trackedReleaseButtons = hashMapOf<Int, History<Boolean>>()
@@ -51,30 +53,32 @@ object ControlPoller {
 
         fun track(): ChangeReport {
             val changeReport = ChangeReport()
-            trackedPressButtons.forEach {
-                button, history ->
-                history.update(controller.getButton(button).read())
-                if (history.current == true) {
-                    if (history.last == true || history.last == null) {
-                        changeReport.pressedButtons.add(button)
+            if (DriverStation.getInstance().isEnabled && DriverStation.getInstance().isOperatorControl) {
+                trackedPressButtons.forEach {
+                    button, history ->
+                    history.update(controller.getButton(button).read())
+                    if (history.current == true) {
+                        if (history.last == false || history.last == null) {
+                            changeReport.pressedButtons.add(button)
+                        }
                     }
                 }
-            }
-            trackedReleaseButtons.forEach {
-                button, history ->
-                history.update(controller.getButton(button).read())
-                if (history.current == false) {
-                    if (history.last == true) {
-                        changeReport.releasedButtons.add(button)
+                trackedReleaseButtons.forEach {
+                    button, history ->
+                    history.update(controller.getButton(button).read())
+                    if (history.current == false) {
+                        if (history.last == true) {
+                            changeReport.releasedButtons.add(button)
+                        }
                     }
                 }
-            }
-            trackedHats.forEach {
-                hat, history ->
-                history.update(controller.getHat(hat).read())
-                if (history.current != null && history.last != null) {
-                    if (history.current != history.last) {
-                        changeReport.changedHats.put(hat, history.current!!)
+                trackedHats.forEach {
+                    hat, history ->
+                    history.update(controller.getHat(hat).read())
+                    if (history.current != null && history.last != null) {
+                        if (history.current != history.last) {
+                            changeReport.changedHats.put(hat, history.current!!)
+                        }
                     }
                 }
             }
@@ -89,7 +93,9 @@ object ControlPoller {
             val controller = it
             val report = it.track()
             report.pressedButtons.forEach {
-                handlerExecutor.submit { controller.bpHandlers[it]?.invoke() }
+                handlerExecutor.submit {
+                    controller.bpHandlers[it]?.invoke()
+                }
             }
             report.releasedButtons.forEach {
                 handlerExecutor.submit { controller.brHandlers[it]?.invoke() }
@@ -101,8 +107,6 @@ object ControlPoller {
     }
 
     fun init() {
-        pollingExecutor.prestartAllCoreThreads()
-        handlerExecutor.prestartAllCoreThreads()
         pollingExecutor.scheduleAtFixedRate(task, 0, 20, TimeUnit.MILLISECONDS)
     }
 
