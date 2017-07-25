@@ -23,6 +23,8 @@ import org.team401.snakeskin.logic.Switch
  * Extension functions
  */
 
+// Axis
+
 // Gyro
 
 fun Gyro.getAngleAsRotation(): Rotation2d {
