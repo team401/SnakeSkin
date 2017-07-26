@@ -37,7 +37,11 @@ abstract class Controller(internal val id: Int) {
     fun readHat(hat: Int) = getHat(hat).read()
 
     protected fun addAxis(axis: Int, invert: Boolean = false): Int {
-        axes.put(axis, Axis { joystick.getRawAxis(axis) })
+        if (invert) {
+            axes.put(axis, Axis { -joystick.getRawAxis(axis) })
+        } else {
+            axes.put(axis, Axis { joystick.getRawAxis(axis) })
+        }
         return axis
     }
 

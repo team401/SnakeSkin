@@ -1,19 +1,22 @@
 group 'org.team401'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 buildscript {
     ext.kotlin_version = '1.1.2'
 
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'com.jfrog.bintray'
 
 sourceCompatibility = 1.8
 
@@ -37,4 +40,20 @@ dependencies {
 
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+bintray {
+    user = project.hasProperty('user') ? project.property('user') : ""
+    key = project.hasProperty('key') ? project.property('key'): ""
+    configurations = ['archives']
+    pkg {
+        repo = "SnakeSkin"
+        name = "SnakeSkin"
+        userOrg = "team401"
+        licenses = ["GPL-3.0"]
+        vcsUrl = "https://github.com/team401/snakeskin"
+        version {
+            name = this.version
+        }
+    }
 }
