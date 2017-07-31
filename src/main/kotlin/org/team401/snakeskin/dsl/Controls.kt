@@ -1,8 +1,9 @@
 package org.team401.snakeskin.dsl
 
 import org.team401.snakeskin.controls.Controller
-import org.team401.snakeskin.controls.CustomController
+import org.team401.snakeskin.controls.mappings.CustomController
 import org.team401.snakeskin.controls.mappings.Extreme3D
+import org.team401.snakeskin.controls.mappings.GTWheel
 
 /*
  * snakeskin - Created on 7/17/17
@@ -25,15 +26,17 @@ object HumanControls {
         fun whenHatChanged(hat: Int, action: (newValue: Int) -> Unit) = controller.registerHatChangeListener(hat, action)
     }
 
-    class CustomBuilder(private val custom: Controller): Builder<Controller>, ControlsBuilder(custom) {
+    //CUSTOM
+    class CustomBuilder(private val custom: CustomController): Builder<CustomController>, ControlsBuilder(custom) {
         override fun build() = custom
     }
-    fun custom(id: Int, setup: CustomBuilder.() -> Unit = {}): Controller {
-        val builder = CustomBuilder(CustomController(id))
+    fun custom(id: Int, numAxes: Int, numButtons: Int, numHats: Int, setup: CustomBuilder.() -> Unit = {}): CustomController {
+        val builder = CustomBuilder(CustomController(id, numAxes, numButtons, numHats))
         builder.setup()
         return builder.build()
     }
 
+    //EXTREME 3D
     class Extreme3DBuilder(private val extreme3d: Extreme3D): Builder<Extreme3D>, ControlsBuilder(extreme3d) {
         override fun build() = extreme3d
 
@@ -46,5 +49,19 @@ object HumanControls {
         builder.setup()
         return builder.build()
     }
+
+    //DRIVING FORCE GT
+    class GTWheelBuilder(private val gtWheel: GTWheel): Builder<GTWheel>, ControlsBuilder(gtWheel) {
+        override fun build() = gtWheel
+
+        val Axes = gtWheel.Mapping.Axes
+    }
+    fun drivingForceGT(id: Int, setup: GTWheelBuilder.() -> Unit = {}): GTWheel {
+        val builder = GTWheelBuilder(GTWheel(id))
+        builder.setup()
+        return builder.build()
+    }
+
+
 }
 

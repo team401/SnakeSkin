@@ -1,4 +1,4 @@
-package org.team401.snakeskin.logic
+package org.team401.snakeskin.ability
 
 /*
  * snakeskin - Created on 7/18/17
@@ -12,6 +12,6 @@ package org.team401.snakeskin.logic
  * @author Cameron Earle
  * @version 7/18/17
  */
-interface IReadable<out T> {
+interface AReadable<out T> {
     fun read(): T
 }

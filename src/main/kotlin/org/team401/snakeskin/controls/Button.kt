@@ -1,6 +1,7 @@
 package org.team401.snakeskin.controls
 
-import org.team401.snakeskin.logic.IReadable
+import org.team401.snakeskin.ability.AInvertable
+import org.team401.snakeskin.ability.AReadable
 
 /*
  * snakeskin - Created on 7/16/17
@@ -15,7 +16,7 @@ import org.team401.snakeskin.logic.IReadable
  * @version 7/16/17
  */
 
-class Button(var inverted: Boolean = false, private val getter: () -> Boolean): IReadable<Boolean> {
+class Button(override var inverted: Boolean = false, private val getter: () -> Boolean): AReadable<Boolean>, AInvertable {
     override fun read(): Boolean {
         if (inverted)
             return !getter()

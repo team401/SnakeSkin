@@ -1,6 +1,7 @@
 package org.team401.snakeskin.controls
 
-import org.team401.snakeskin.logic.IReadable
+import org.team401.snakeskin.ability.AInvertable
+import org.team401.snakeskin.ability.AReadable
 
 
 /*
@@ -15,7 +16,7 @@ import org.team401.snakeskin.logic.IReadable
  * @author Zachary Kozar
  * @version 5/25/2017
  */
-class Axis(var inverted: Boolean = false, var deadband: Double = -1.0, private val getter: () -> Double): IReadable<Double> {
+class Axis(override var inverted: Boolean = false, var deadband: Double = -1.0, private val getter: () -> Double): AReadable<Double>, AInvertable {
     object ScalingMethod {
         val NO_SCALING: (Double) -> Double = { it }
         val SQUARED: (Double) -> Double = { if (it < 0.0) -it*it else it*it }
