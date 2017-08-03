@@ -1,6 +1,5 @@
 package org.team401.snakeskin.motionprofile
 
-import com.ctre.CANTalon
 import java.io.File
 
 /*
@@ -15,6 +14,10 @@ import java.io.File
  * @author Zachary Kozar
  * @version 5/22/17
  */
+/*
+
+//TODO ZACHARY THIS CODE IS NO BUENO!
+
 class MotionProfile internal constructor(val name: String, private val positions: DoubleArray,
                                          private val speeds: DoubleArray,
                                          private val durations: IntArray) : Iterable<CANTalon.TrajectoryPoint> {
@@ -77,3 +80,4 @@ fun parse(name: String, path: String): MotionProfile {
 
     return MotionProfile(name, positions.toDoubleArray(), speeds.toDoubleArray(), durations.toIntArray())
 }
+*/

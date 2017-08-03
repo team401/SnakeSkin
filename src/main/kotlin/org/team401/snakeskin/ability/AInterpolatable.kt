@@ -1,4 +1,4 @@
-package org.team401.snakeskin.logic
+package org.team401.snakeskin.ability
 
 /*
  * SnakeSkin - Created on 5/22/17
@@ -12,12 +12,12 @@ package org.team401.snakeskin.logic
  * @author Zachary Kozar
  * @version 5/22/17
  *
- * Interpolable is an interface used by an Interpolating Tree as the Value type.
+ * AInterpolatable is an interface used by an Interpolating Tree as the Value type.
  * Given two end points and an interpolation parameter on [0, 1], it calculates
- * a new Interpolable representing the interpolated value.
- * @param <T>The Type of Interpolable</T>
+ * a new AInterpolatable representing the interpolated value.
+ * @param <T>The Type of AInterpolatable</T>
  */
-interface Interpolable<T> {
+interface AInterpolatable<T> {
     /**
      * Interpolates between this value and an other value according to a given
      * parameter. If x is 0, the method should return this value. If x is 1, the
@@ -29,7 +29,7 @@ interface Interpolable<T> {
      * @param x
      * *            The requested value. Should be between 0 and 1.
      * *
-     * @return Interpolable<T> The estimated average between the surrounding
+     * @return AInterpolatable<T> The estimated average between the surrounding
      * *         data
     </T> */
     fun interpolate(other: T, x: Double): T

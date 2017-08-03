@@ -8,6 +8,7 @@ package org.team401.snakeskin.logic
  * You can find more info in the LICENSE file at the project root.
  */
 
+import org.team401.snakeskin.ability.AInterpolatable
 import java.text.DecimalFormat
 
 /**
@@ -18,7 +19,7 @@ import java.text.DecimalFormat
  * (cosine and sine).
  * Inspired by Sophus (https://github.com/strasdat/Sophus/tree/master/sophus)
  */
-class Rotation2d : Interpolable<Rotation2d> {
+class Rotation2d : AInterpolatable<Rotation2d> {
 
     private var cosAngle: Double = 0.0
     private var sinAngle: Double = 0.0
