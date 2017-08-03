@@ -1,10 +1,12 @@
 package org.team401.snakeskin.subsystem
 
+import org.team401.snakeskin.ability.AWaitable
 import org.team401.snakeskin.component.Component
 import org.team401.snakeskin.logic.Parameters
 import org.team401.snakeskin.event.EventRouter
 import org.team401.snakeskin.event.Events
 import org.team401.snakeskin.factory.ExecutorFactory
+import org.team401.snakeskin.logic.TickedWaitable
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.locks.ReentrantLock
@@ -36,7 +38,8 @@ class Subsystem {
     private var activeStateFuture: Future<*>? = null //The future for the active state (for cancellation)
     private val stateLock = ReentrantLock()
 
-    private fun setState(state: String, internal: Boolean = false) {
+    internal fun setState(state: String, internal: Boolean = false): AWaitable {
+        val ticker = TickedWaitable()
         if (states.containsKey(state)) {
             val action = {
                 stateLock.lock()
@@ -44,7 +47,10 @@ class Subsystem {
                 if (internal) {
                     states[state]!!.invoke()
                 } else {
-                    activeStateFuture = executor.submit { states[state]!!.invoke() }
+                    activeStateFuture = executor.submit {
+                        states[state]!!.invoke()
+                        ticker.tick() //Tell the waitable that the task is finished
+                    }
                 }
                 stateLock.unlock()
             }
@@ -54,6 +60,7 @@ class Subsystem {
                 action()
             }
         }
+        return ticker
     }
     internal fun setStateInternally(state: String) = setState(state, internal = true)
 
