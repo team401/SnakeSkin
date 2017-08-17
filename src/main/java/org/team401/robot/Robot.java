@@ -29,13 +29,24 @@ that we aren't going to end up using.  It provides "on-start" methods that let u
 public class Robot extends SampleRobot {
     private Class noparams[] = {};
 
+    Method autoScript = null;
+
+    private boolean invokeAuto() {
+        try {
+            autoScript.invoke(null, null);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Override
     public void robotInit() {
         //The first thing we need to do is run the "preStartup" init tasks
         InitManagerKt.preStartup();
 
         //Now, we need to load the "SETUP" class.  This class is responsible for loading most of the user defined classes
-        Class<?> clazz;
+        Class<?> clazz = null;
         Method setupMethod = null;
         try {
             clazz = Class.forName("SETUPKt");
@@ -52,6 +63,12 @@ public class Robot extends SampleRobot {
             }
         } catch (NoSuchMethodException e) {
             System.err.println("Could not find 'fun setup()' in SETUP.kt, this IS a problem!");
+        }
+
+        try {
+            autoScript = clazz.getDeclaredMethod("auto", noparams);
+        } catch (Exception e) {
+            System.err.println("Unable to load auto method!");
         }
 
         try {

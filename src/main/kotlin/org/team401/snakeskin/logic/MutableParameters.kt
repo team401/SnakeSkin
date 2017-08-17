@@ -1,6 +1,6 @@
 package org.team401.snakeskin.logic
 
-import org.team401.snakeskin.exception.ParameterNotFoundException
+import org.team401.snakeskin.exception.ItemNotFoundException
 
 /*
  * snakeskin - Created on 7/8/17
@@ -25,7 +25,7 @@ class MutableParameters {
         if (strings.containsKey(string)) {
             return strings[string]!!
         } else {
-            throw ParameterNotFoundException("The STRING parameter [$string] was not found!")
+            throw ItemNotFoundException("The STRING parameter [$string] was not found!")
         }
     }
 
@@ -33,7 +33,7 @@ class MutableParameters {
         if (booleans.containsKey(boolean)) {
             return booleans[boolean]!!
         } else {
-            throw ParameterNotFoundException("The BOOLEAN parameter [$boolean] was not found!")
+            throw ItemNotFoundException("The BOOLEAN parameter [$boolean] was not found!")
         }
     }
 
@@ -41,7 +41,7 @@ class MutableParameters {
         if (numbers.containsKey(number)) {
             return numbers[number]!!
         } else {
-            throw ParameterNotFoundException("The NUMERIC parameter [$number] was not found!")
+            throw ItemNotFoundException("The NUMERIC parameter [$number] was not found!")
         }
     }
 
@@ -50,7 +50,7 @@ class MutableParameters {
         if (others.containsKey(other)) {
             return others[other]!! as T
         } else {
-            throw ParameterNotFoundException("The OTHER parameter [$other] was not found!")
+            throw ItemNotFoundException("The OTHER parameter [$other] was not found!")
         }
     }
 

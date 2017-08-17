@@ -30,4 +30,6 @@ object ExecutorFactory {
     }
 
     internal fun getExecutor(reason: String) = EXECUTOR
+
+    fun getSchedulerExecutor(reason: String) = Executors.newSingleThreadExecutor()
 }

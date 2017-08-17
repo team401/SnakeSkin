@@ -1,5 +1,7 @@
 package org.team401.snakeskin.logic
 
+import org.team401.snakeskin.ability.AUpdatable
+
 /*
  * snakeskin - Created on 7/18/17
  * Author: Cameron Earle
@@ -16,11 +18,11 @@ package org.team401.snakeskin.logic
 /**
  * A simple class that tracks history of an object
  */
-class History<T> {
+class History<T>: AUpdatable<T> {
     var last: T? = null; private set
     var current: T? = null; private set
 
-    fun update(newValue: T) {
+    override fun update(newValue: T) {
         last = current
         current = newValue
     }

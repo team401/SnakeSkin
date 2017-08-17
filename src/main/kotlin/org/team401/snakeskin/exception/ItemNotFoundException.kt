@@ -13,4 +13,4 @@ package org.team401.snakeskin.exception
  * @version 7/8/17
  */
 
-class ParameterNotFoundException(message: String): RuntimeException(message)
+class ItemNotFoundException(message: String): RuntimeException(message)

@@ -3,7 +3,7 @@ package org.team401.snakeskin.controls
 import edu.wpi.first.wpilibj.Joystick
 import org.team401.snakeskin.controls.mappings.IMappingDefinitions
 import org.team401.snakeskin.event.EventRouter
-import org.team401.snakeskin.exception.ControlNotFoundException
+import org.team401.snakeskin.exception.ItemNotFoundException
 import org.team401.snakeskin.logic.MutableParameters
 import org.team401.snakeskin.logic.Parameters
 
@@ -59,7 +59,7 @@ abstract class Controller(internal val id: Int) {
         if (axes.containsKey(axis)) {
             return axes[axis]!!
         } else {
-            throw ControlNotFoundException("Could not find axis $axis on controller $id")
+            throw ItemNotFoundException("Could not find axis $axis on controller $id")
         }
     }
 
@@ -67,7 +67,7 @@ abstract class Controller(internal val id: Int) {
         if (buttons.containsKey(button)) {
             return buttons[button]!!
         } else {
-            throw ControlNotFoundException("Could not find button $button on controller $id")
+            throw ItemNotFoundException("Could not find button $button on controller $id")
         }
     }
 
@@ -75,7 +75,7 @@ abstract class Controller(internal val id: Int) {
         if (hats.containsKey(hat)) {
             return hats[hat]!!
         } else {
-            throw ControlNotFoundException("Could not find hat $hat on controller $id")
+            throw ItemNotFoundException("Could not find hat $hat on controller $id")
         }
     }
 
