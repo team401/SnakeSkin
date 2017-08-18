@@ -8,7 +8,7 @@ import org.team401.snakeskin.controls.Controller
 
 class CustomController(id: Int, numAxes: Int, numButtons: Int, numHats: Int): Controller(id) {
     init {
-        for (i in 1..numAxes) {
+        for (i in 0 until numAxes) {
             addAxis(i)
         }
         for (i in 1..numButtons) {
@@ -20,7 +20,7 @@ class CustomController(id: Int, numAxes: Int, numButtons: Int, numHats: Int): Co
     }
 
     override val Mapping = object : IMappingDefinitions {
-        override val Axes= object : IMappingDefinitions.AxesDefinitions {}
+        override val Axes = object : IMappingDefinitions.AxesDefinitions {}
         override val Buttons = object : IMappingDefinitions.ButtonsDefinitions {}
         override val Hats = object : IMappingDefinitions.HatsDefinitions {}
     }

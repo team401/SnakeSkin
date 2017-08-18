@@ -5,7 +5,6 @@ import org.team401.snakeskin.factory.ExecutorFactory
 import org.team401.snakeskin.logic.History
 import org.team401.snakeskin.logic.NullWaitable
 import org.team401.snakeskin.logic.TickedWaitable
-import java.util.concurrent.Future
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
@@ -25,7 +24,7 @@ import java.util.concurrent.locks.ReentrantLock
 
 class StateMachine {
     private val EXECUTOR = ExecutorFactory.getExecutor("State Machine")
-    private val SCHEDULER = ExecutorFactory.getSchedulerExecutor("State Machine Scheduler")
+    private val SCHEDULER = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
 
     private val states = arrayListOf<State>()
     fun addState(state: State) = states.add(state)

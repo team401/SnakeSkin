@@ -1,8 +1,5 @@
 package org.team401.snakeskin
 
-import org.team401.snakeskin.dsl.Components
-import org.team401.snakeskin.dsl.buildSubsystem
-
 /*
  * snakeskin - Created on 8/17/17
  * Author: Cameron Earle
@@ -15,9 +12,7 @@ import org.team401.snakeskin.dsl.buildSubsystem
  * @author Cameron Earle
  * @version 8/17/17
  */
-fun main(args: Array<String>) {
-    buildSubsystem {
-        stateMachine("SomeMachine") {
-        }
-    }
+object Constants {
+    const val POOL_SIZE = 16
+    const val USE_POOL = true
 }

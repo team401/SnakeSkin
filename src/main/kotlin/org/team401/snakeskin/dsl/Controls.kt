@@ -24,6 +24,9 @@ object HumanControls {
         fun whenButtonPressed(button: Int, action: () -> Unit) = controller.registerButtonPressListener(button, action)
         fun whenButtonReleased(button: Int, action: () -> Unit) = controller.registerButtonReleaseListener(button, action)
         fun whenHatChanged(hat: Int, action: (newValue: Int) -> Unit) = controller.registerHatChangeListener(hat, action)
+
+        fun invertAxis(axis: Int) = controller.getAxis(axis).invert()
+        fun invertButton(button: Int) = controller.getButton(button).invert()
     }
 
     //CUSTOM
