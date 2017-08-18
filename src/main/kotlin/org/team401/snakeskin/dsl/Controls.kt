@@ -1,6 +1,7 @@
 package org.team401.snakeskin.dsl
 
 import org.team401.snakeskin.controls.Controller
+import org.team401.snakeskin.controls.mappings.Attack3
 import org.team401.snakeskin.controls.mappings.CustomController
 import org.team401.snakeskin.controls.mappings.Extreme3D
 import org.team401.snakeskin.controls.mappings.GTWheel
@@ -49,6 +50,20 @@ object HumanControls {
         builder.setup()
         return builder.build()
     }
+
+    //ATTACK 3D
+    class Attack3Builder(private val attack3: Attack3): Builder<Attack3>, ControlsBuilder(attack3) {
+        override fun build() = attack3
+
+        val Axes = attack3.Mapping.Axes
+        val Buttons = attack3.Mapping.Buttons
+    }
+    fun attack3(id: Int, setup: Attack3Builder.() -> Unit = {}): Attack3 {
+        val builder = Attack3Builder(Attack3(id))
+        builder.setup()
+        return builder.build()
+    }
+
 
     //DRIVING FORCE GT
     class GTWheelBuilder(private val gtWheel: GTWheel): Builder<GTWheel>, ControlsBuilder(gtWheel) {
