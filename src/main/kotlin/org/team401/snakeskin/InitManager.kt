@@ -18,18 +18,21 @@ import org.team401.snakeskin.registry.Subsystems
  * @version 7/16/17
  */
 
-/**
- * This method runs before SETUP is loaded
- */
-fun preStartup() {
-    ExecutorFactory.init()
-}
+object InitManager {
 
-/**
- * This method runs after SETUP is loaded
- */
-fun postStartup() {
-    Subsystems.initAll()
-    Controllers.initAll()
-    ControlPoller.init()
+    /**
+     * This method runs before SETUP is loaded
+     */
+    @JvmStatic fun preStartup() {
+        ExecutorFactory.init()
+    }
+
+    /**
+     * This method runs after SETUP is loaded
+     */
+    @JvmStatic fun postStartup() {
+        Subsystems.initAll()
+        Controllers.initAll()
+        ControlPoller.init()
+    }
 }

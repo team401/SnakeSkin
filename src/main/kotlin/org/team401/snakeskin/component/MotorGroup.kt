@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.SpeedController
  * @author Cameron Earle
  * @version 7/21/17
  */
-class MotorGroup<T: SpeedController>(private vararg val motors: T): SpeedController {
+class MotorGroup<T: SpeedController>(private vararg val motors: T): Component, SpeedController {
     override fun setInverted(isInverted: Boolean) = motors.forEach {
         it.inverted = isInverted
     }

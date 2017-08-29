@@ -53,7 +53,9 @@ class Subsystem {
         }
         stateMachines.forEach {
             _, machine ->
-            machine.setStateInternally(States.DISABLED)
+            EventRouter.registerPriority(Events.DISABLED) {
+                machine.setState(States.DISABLED)
+            }
         }
     }
 

@@ -19,7 +19,7 @@ import org.team401.snakeskin.logic.TimedWaitable
  * @version 8/17/17
  */
 
-class Piston(val port: Int, val pcm: Int = 0, val extensionTime: Long = 0, val retractionTime: Long = 0): AInvertable, AToggleable {
+class Piston(val port: Int, val pcm: Int = 0, val extensionTime: Long = 0, val retractionTime: Long = 0): Component, AInvertable, AToggleable {
     override var inverted: Boolean = false
 
     private val solenoid = Solenoid(pcm, port)

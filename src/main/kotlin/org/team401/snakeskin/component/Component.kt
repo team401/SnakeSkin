@@ -12,7 +12,4 @@ package org.team401.snakeskin.component
  * @author Zachary Kozar
  * @version 5/26/17
  */
-class Component {
-
-
-}
+interface Component

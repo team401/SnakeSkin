@@ -21,7 +21,7 @@ object ExecutorFactory {
     internal fun init() {
         if (Constants.USE_POOL) {
             EXECUTOR = Executors.unconfigurableScheduledExecutorService(
-                    ScheduledThreadPoolExecutor(Constants.POOL_SIZE).apply {
+                    ScheduledThreadPoolExecutor(Constants.POOL_SIZE, LoggedThreadFactory).apply {
                         setKeepAliveTime(10, TimeUnit.SECONDS)
                         allowCoreThreadTimeOut(true)
                     }
@@ -35,9 +35,9 @@ object ExecutorFactory {
         if (Constants.USE_POOL) {
             return EXECUTOR
         } else {
-            return Executors.newSingleThreadScheduledExecutor()
+            return Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)
         }
     }
 
-    internal fun getSingleExecutor(reason: String) = Executors.newSingleThreadExecutor()!!
+    internal fun getSingleExecutor(reason: String) = Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)!!
 }

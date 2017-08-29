@@ -15,4 +15,5 @@ package org.team401.snakeskin
 object Constants {
     const val POOL_SIZE = 16
     const val USE_POOL = true
+    const val LOG_RATE = 1000L
 }

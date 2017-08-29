@@ -15,15 +15,9 @@ import org.team401.snakeskin.subsystem.Subsystem
  * @version 7/16/17
  */
 
-object Subsystems {
-    private val subsystems = arrayListOf<Subsystem>()
-
-    fun add(vararg subsystems: Subsystem) {
-        this.subsystems.addAll(subsystems)
-    }
-
-    fun initAll() {
-        subsystems.forEach {
+object Subsystems: Registry<Subsystem>() {
+    override fun initAll() {
+        registry.forEach {
             it.init()
         }
     }
