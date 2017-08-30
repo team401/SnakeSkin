@@ -83,29 +83,6 @@ abstract class Controller(internal val id: Int) {
     private val BUTTON_RELEASED = "snakeskin.controls.buttonReleased."
     private val HAT_CHANGED = "snakeskin.controls.hatChanged."
 
-    internal fun buttonPressed(button: Int): String {
-        buttonPressedListeners.put(button) {
-            EventRouter.fireEvent(BUTTON_PRESSED + "$id.$button", MutableParameters())
-        }
-        return BUTTON_PRESSED + "$id.$button"
-    }
-
-    internal fun buttonReleased(button: Int): String {
-        buttonReleasedListeners.put(button) {
-            EventRouter.fireEvent(BUTTON_RELEASED + "$id.$button", MutableParameters())
-        }
-        return BUTTON_RELEASED + "$id.$button"
-    }
-
-    internal fun hatChanged(hat: Int): String {
-        hatChangeListeners.put(hat) {
-            EventRouter.fireEvent(HAT_CHANGED + "$id.$hat", MutableParameters().apply {
-                setNumber("value", it.toDouble())
-            })
-        }
-        return HAT_CHANGED + "$id.$hat"
-    }
-
 
     fun registerButtonPressListener(button: Int, action: () -> Unit) = buttonPressedListeners.put(button, action)
     fun registerButtonReleaseListener(button: Int, action: () -> Unit) = buttonReleasedListeners.put(button, action)
