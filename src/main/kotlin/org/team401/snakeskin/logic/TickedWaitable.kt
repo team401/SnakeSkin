@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch
  * @author Cameron Earle
  * @version 8/1/17
  */
-class TickedWaitable: AWaitable {
+open class TickedWaitable: AWaitable {
     private val ticker = CountDownLatch(1)
 
     override fun waitFor() = ticker.await()

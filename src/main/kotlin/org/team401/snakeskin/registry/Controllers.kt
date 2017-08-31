@@ -15,15 +15,9 @@ import org.team401.snakeskin.controls.ControlPoller
  * @author Cameron Earle
  * @version 7/16/17
  */
-object Controllers {
-    private val controllers = arrayListOf<Controller>()
-
-    fun add(vararg controllers: Controller) {
-        this.controllers.addAll(controllers)
-    }
-
-    fun initAll() {
-        controllers.forEach {
+object Controllers: Registry<Controller>() {
+    override fun initAll() {
+        registry.forEach {
             ControlPoller.addController(it)
         }
     }

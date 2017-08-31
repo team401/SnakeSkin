@@ -10,14 +10,14 @@ import java.util.concurrent.atomic.AtomicReference
 
 /*
  * SnakeSkin - Created on 6/2/17
- * Author: Zachary Kozar
+ * Author: Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
  * You can find more info in the LICENSE file at the project root.
  */
 
 /**
- * @author Zachary Kozar
+ * @author Cameron Earle
  * @version 6/2/17
  */
 class Lidar(port: I2C.Port, hardware: Hardware, unit: Unit, period: Int = 20) : DistanceSensor {

@@ -1,6 +1,6 @@
 package org.team401.snakeskin.logic
 
-import org.team401.snakeskin.exception.ParameterNotFoundException
+import org.team401.snakeskin.exception.ItemNotFoundException
 
 /*
  * SnakeSkin - Created on 7/4/17
@@ -16,10 +16,10 @@ import org.team401.snakeskin.exception.ParameterNotFoundException
  */
 
 class Parameters {
-    protected val strings: HashMap<String, String>
-    protected val booleans: HashMap<String, Boolean>
-    protected val numbers: HashMap<String, Double>
-    protected val others: HashMap<String, Any>
+    private val strings: HashMap<String, String>
+    private val booleans: HashMap<String, Boolean>
+    private val numbers: HashMap<String, Double>
+    private val others: HashMap<String, Any>
 
     constructor(strings: HashMap<String, String>, booleans: HashMap<String, Boolean>, numbers: HashMap<String, Double>, others: HashMap<String, Any>) {
         this.strings = strings
@@ -39,7 +39,7 @@ class Parameters {
         if (strings.containsKey(string)) {
             return strings[string]!!
         } else {
-            throw ParameterNotFoundException("The STRING parameter [$string] was not found!")
+            throw ItemNotFoundException("The STRING parameter [$string] was not found!")
         }
     }
 
@@ -47,7 +47,7 @@ class Parameters {
         if (booleans.containsKey(boolean)) {
             return booleans[boolean]!!
         } else {
-            throw ParameterNotFoundException("The BOOLEAN parameter [$boolean] was not found!")
+            throw ItemNotFoundException("The BOOLEAN parameter [$boolean] was not found!")
         }
     }
 
@@ -55,7 +55,7 @@ class Parameters {
         if (numbers.containsKey(number)) {
             return numbers[number]!!
         } else {
-            throw ParameterNotFoundException("The NUMERIC parameter [$number] was not found!")
+            throw ItemNotFoundException("The NUMERIC parameter [$number] was not found!")
         }
     }
 
@@ -64,7 +64,7 @@ class Parameters {
         if (others.containsKey(other)) {
             return others[other]!! as T
         } else {
-            throw ParameterNotFoundException("The OTHER parameter [$other] was not found!")
+            throw ItemNotFoundException("The OTHER parameter [$other] was not found!")
         }
     }
 }

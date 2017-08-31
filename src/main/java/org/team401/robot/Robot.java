@@ -9,13 +9,18 @@ package org.team401.robot;/*
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SampleRobot;
-import org.team401.snakeskin.InitManagerKt;
+import org.team401.snakeskin.InitManager;
 import org.team401.snakeskin.event.EventRouter;
 import org.team401.snakeskin.event.Events;
+import org.team401.snakeskin.logging.LogLevel;
+import org.team401.snakeskin.logging.LoggerManager;
 import org.team401.snakeskin.logic.MutableParameters;
 import org.team401.snakeskin.registry.Subsystems;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author Cameron Earle
@@ -29,13 +34,35 @@ that we aren't going to end up using.  It provides "on-start" methods that let u
 public class Robot extends SampleRobot {
     private Class noparams[] = {};
 
+    private ExecutorService autoExecutor = Executors.newSingleThreadExecutor();
+    private Future autoFuture;
+
+    private Method autoScript = null;
+
+    private void invokeAuto() {
+        autoFuture = autoExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    autoScript.invoke(null, null);
+                } catch (Exception e) {
+                    LoggerManager.INSTANCE.logException(new Exception("Exception encountered while running auto script", e));
+                }
+            }
+        });
+    }
+
+    private void killAuto() {
+        autoFuture.cancel(true);
+    }
+
     @Override
     public void robotInit() {
         //The first thing we need to do is run the "preStartup" init tasks
-        InitManagerKt.preStartup();
+        InitManager.preStartup();
 
         //Now, we need to load the "SETUP" class.  This class is responsible for loading most of the user defined classes
-        Class<?> clazz;
+        Class<?> clazz = null;
         Method setupMethod = null;
         try {
             clazz = Class.forName("SETUPKt");
@@ -55,18 +82,28 @@ public class Robot extends SampleRobot {
         }
 
         try {
+            autoScript = clazz.getDeclaredMethod("auto", noparams);
+        } catch (Exception e) {
+            System.err.println("Unable to load auto method!");
+        }
+
+        try {
             setupMethod.invoke(null, null); //Now, we'll run the "setup" method that is responsible for configuring the robot
         } catch (Exception e) {
             System.err.println("Unable to invoke 'setup()'");
             e.printStackTrace();
         }
 
+
+
         //Now that the setup has been completed, we can run the "postStartup" init tasks
-        InitManagerKt.postStartup();
+        InitManager.postStartup();
     }
 
     @Override
     public void disabled() {
+        //If the auto script is running for some reason, we should stop it
+        killAuto();
         //At this point the robot is disabled, so we should fire the "DISABLED" event to let everyone know that
         EventRouter.INSTANCE.fireEvent(Events.DISABLED, new MutableParameters());
     }
@@ -77,14 +114,20 @@ public class Robot extends SampleRobot {
         EventRouter.INSTANCE.fireEvent(Events.ENABLED, new MutableParameters());
         EventRouter.INSTANCE.fireEvent(Events.AUTO_ENABLED, new MutableParameters());
         //Now, we need to start the auto script
-        //TODO Insert auto script start here
+        invokeAuto();
     }
 
     @Override
     public void operatorControl() {
-        //TODO Stop auto script here
+        //First, we stop the auto script
+        killAuto();
         //Teleop has now started, so we need to notify everyone of that
         EventRouter.INSTANCE.fireEvent(Events.ENABLED, new MutableParameters());
         EventRouter.INSTANCE.fireEvent(Events.TELEOP_ENABLED, new MutableParameters());
+    }
+
+    @Override
+    public void test() {
+        LoggerManager.INSTANCE.logMessage("SnakeSkin does not support the Test mode!", LogLevel.WARNING);
     }
 }

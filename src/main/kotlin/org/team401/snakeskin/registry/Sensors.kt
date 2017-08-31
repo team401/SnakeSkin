@@ -1,7 +1,7 @@
-package org.team401.snakeskin.exception
+package org.team401.snakeskin.registry
 
 /*
- * snakeskin - Created on 7/17/17
+ * snakeskin - Created on 8/18/17
  * Author: Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
@@ -10,7 +10,6 @@ package org.team401.snakeskin.exception
 
 /**
  * @author Cameron Earle
- * @version 7/17/17
+ * @version 8/18/17
  */
 
-class ControlNotFoundException(message: String): RuntimeException(message)

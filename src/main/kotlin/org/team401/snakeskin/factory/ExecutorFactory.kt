@@ -1,9 +1,7 @@
 package org.team401.snakeskin.factory
 
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.ScheduledThreadPoolExecutor
-import java.util.concurrent.TimeUnit
+import org.team401.snakeskin.Constants
+import java.util.concurrent.*
 
 /*
  * snakeskin - Created on 7/20/17
@@ -21,13 +19,25 @@ object ExecutorFactory {
     private lateinit var EXECUTOR: ScheduledExecutorService
 
     internal fun init() {
-        EXECUTOR = Executors.unconfigurableScheduledExecutorService(
-                ScheduledThreadPoolExecutor(16).apply {
-                    setKeepAliveTime(10, TimeUnit.SECONDS)
-                    allowCoreThreadTimeOut(true)
-                }
-        )
+        if (Constants.USE_POOL) {
+            EXECUTOR = Executors.unconfigurableScheduledExecutorService(
+                    ScheduledThreadPoolExecutor(Constants.POOL_SIZE, LoggedThreadFactory).apply {
+                        setKeepAliveTime(10, TimeUnit.SECONDS)
+                        allowCoreThreadTimeOut(true)
+                    }
+            )
+        }
+        //Note that EXECUTOR will never be initialized if USE_POOL is false,
+        //so we have to be careful not to use it.
     }
 
-    internal fun getExecutor(reason: String) = EXECUTOR
+    internal fun getExecutor(reason: String): ScheduledExecutorService {
+        if (Constants.USE_POOL) {
+            return EXECUTOR
+        } else {
+            return Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)
+        }
+    }
+
+    internal fun getSingleExecutor(reason: String) = Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)!!
 }

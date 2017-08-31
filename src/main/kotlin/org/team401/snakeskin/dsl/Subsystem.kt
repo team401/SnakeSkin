@@ -1,6 +1,7 @@
 package org.team401.snakeskin.dsl
 
 import org.team401.snakeskin.logic.Parameters
+import org.team401.snakeskin.state.StateMachine
 import org.team401.snakeskin.subsystem.Subsystem
 
 /*
@@ -16,30 +17,6 @@ import org.team401.snakeskin.subsystem.Subsystem
  * @version 7/4/17
  */
 
-fun Subsystem.toggleState(state1: String, state2: String) {
-    if (STATE == state1) {
-        STATE = state2
-    } else {
-        STATE = state1
-    }
-}
-
-fun Subsystem.toggleMode(mode1: String, mode2: String) {
-    if (MODE == mode1) {
-        MODE = mode2
-    } else {
-        MODE = mode1
-    }
-}
-
-infix fun Subsystem.isInState(state: String): Boolean {
-    return STATE == state
-}
-
-infix fun Subsystem.isInMode(mode: String): Boolean {
-    return STATE == mode
-}
-
 fun buildSubsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
     val builder = SubsystemBuilder()
     builder.setup()
@@ -49,32 +26,18 @@ fun buildSubsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
 class SubsystemBuilder: Builder<Subsystem> {
     private val builder = Subsystem()
 
-    var STATE
-    get() = builder.STATE
-    set(value) {
-        builder.STATE = value
-    }
-
-    var MODE
-    get() = builder.MODE
-    set(value) {
-        builder.MODE = value
-    }
-
     fun setup(action: () -> Unit) {
         builder.addSetupTask(action)
-    }
-
-    fun state(state: String, action: () -> Unit) {
-        builder.addState(state, action)
     }
 
     fun on(event: String, action: Parameters.() -> Unit) {
         builder.addEventHandler(event, action)
     }
 
-    fun loop(rate: Long = 20L, action: () -> Unit) {
-        builder.addLoop(rate, action)
+    fun stateMachine(machine: String, setup: StateMachineBuilder.() -> Unit): StateMachine {
+        val builder = StateMachineBuilder()
+        builder.setup()
+        return builder.build()
     }
 
     override fun build() = builder
