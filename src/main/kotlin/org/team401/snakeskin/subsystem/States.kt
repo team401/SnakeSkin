@@ -5,5 +5,6 @@ package org.team401.snakeskin.subsystem
  */
 
 object States {
-    const val DISABLED = "snakeskin.mode.disabled"
+    const val DISABLED = "snakeskin.state.disabled"
+    internal const val ELSE = "snakeskin.state.else"
 }

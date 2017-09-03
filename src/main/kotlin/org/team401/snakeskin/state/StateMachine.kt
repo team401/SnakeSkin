@@ -5,6 +5,7 @@ import org.team401.snakeskin.factory.ExecutorFactory
 import org.team401.snakeskin.logic.History
 import org.team401.snakeskin.logic.NullWaitable
 import org.team401.snakeskin.logic.TickedWaitable
+import org.team401.snakeskin.subsystem.States
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
@@ -29,6 +30,8 @@ class StateMachine {
     private val states = arrayListOf<State>()
     fun addState(state: State) = states.add(state)
 
+    var elseCondition = State(States.ELSE, {}, {}, {})
+
     private var activeState: State? = null
     private var activeFuture: ScheduledFuture<*>? = null
 
@@ -36,49 +39,62 @@ class StateMachine {
 
     private val switchLock = ReentrantLock()
 
-
-    private fun setState(state: String, internal: Boolean): AWaitable {
+    private fun setStateImpl(state: String): AWaitable {
         val toReturn = TickedWaitable() //The waitable element.  It will tick once "entry" has completed
-        if (states.any { it.name == state }) { //If the state machine contains the desired state
-            val desiredState = states.first { it.name == state } //Grab the desired state from the list
-            val task = { //A lambda that holds the general task.  It will either be called inside or outside of the scheduler
-                if (!desiredState.rejectionConditions()) { //If the desired state change is not rejected
-                    stateHistory.update(state) //Update the state now so external listeners can be aware of the change
-                    if (activeState != null) { //If there is an active state
-                        activeFuture?.cancel(true) //Cancel the action loop of the active state
-                        EXECUTOR.submit {
-                            activeState?.exit?.invoke() //Run the exit method of the active state
-                        }.get() //And wait
-                    }
-                    activeState = desiredState
+        if (state != activeState?.name) { //If the state requested is different from the current state
+            val desiredState = if (states.any { it.name == state }) { //If the list contains the desired state
+                states.last { it.name == state } //Make it the desired state
+            }
+            else {
+                elseCondition //Otherwise we use the "else" condition
+            }
+
+            if (!desiredState.rejectionConditions()) { //If the switch is not rejected
+                //EXIT THE OLD STATE
+                if (activeState != null) {
+                    activeFuture?.cancel(true) //Cancel the action loop
                     EXECUTOR.submit {
-                        desiredState.entry() //Run the entry method of the desired state
-                        toReturn.tick() //Tick the waitable
+                        activeState?.exit?.invoke() //Run the exit method
                     }.get() //And wait
-                    if (desiredState.action != {}) { //If the action loop exists
-                        activeFuture = EXECUTOR.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS) //Run the action loop
-                    }
                 }
-            }
-            //Now, we'll actually run the task
-            if (internal) { //If it's internal, we don't want to use the scheduler, as if they did a state switch within
-                            //the current switch, it would result in deadlock on the scheduler.
-                switchLock.lock()
-                task()
-                switchLock.unlock()
-            } else { //If it's not internal, we want to run it in the scheduler, so it doesn't hold up the caller
-                SCHEDULER.submit {
-                    switchLock.lock()
-                    task()
-                    switchLock.unlock()
+
+                //UPDATE THE STORED STATE
+                activeState = desiredState //Update the active state to the new state
+                stateHistory.update(state) //Update the state history to the new state
+
+                //ENTER THE NEW STATE
+                EXECUTOR.submit {
+                    desiredState.entry() //Run the entry method of the desired state
+                    toReturn.tick() //Tick the waitable
+                }.get() //And wait
+
+                //RUN THE LOOP OF THE NEW STATE
+                if (desiredState.action != {}) { //If the target state has an action
+                    activeFuture = EXECUTOR.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS)
                 }
+
+                return toReturn //Return the waitable
+            } else { //The switch was rejected
+                return NullWaitable() //Return a null waitable
             }
-            return toReturn //Return the waitable
+        } else { //There is no need to switch
+            return NullWaitable() //Return a null waitable
         }
-        return NullWaitable() //If the state doesn't exist, return a null waitable to prevent caller from waiting
     }
 
-    fun setState(state: String) = setState(state, false)
+    fun setState(state: String) {
+        SCHEDULER.submit {
+            switchLock.lock()
+            setStateImpl(state)
+            switchLock.unlock()
+        }
+    }
+
+    internal fun setStateInternally(state: String) {
+        switchLock.lock()
+        setStateImpl(state)
+        switchLock.unlock()
+    }
 
     fun getState() = stateHistory.current ?: ""
     fun getLastState() = stateHistory.current ?: ""

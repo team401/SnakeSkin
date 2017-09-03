@@ -19,12 +19,19 @@ import org.team401.snakeskin.controls.mappings.*
 
 object HumanControls {
     open class ControlsBuilder(private val controller: Controller) {
-        fun whenButtonPressed(button: Int, action: () -> Unit) = controller.registerButtonPressListener(button, action)
-        fun whenButtonReleased(button: Int, action: () -> Unit) = controller.registerButtonReleaseListener(button, action)
+        fun whenButton(button: Int, setup: ButtonHandlerBuilder.() -> Unit) {
+            val builder = ButtonHandlerBuilder(controller, button)
+            builder.setup()
+        }
         fun whenHatChanged(hat: Int, action: (newValue: Int) -> Unit) = controller.registerHatChangeListener(hat, action)
 
         fun invertAxis(axis: Int) = controller.getAxis(axis).invert()
         fun invertButton(button: Int) = controller.getButton(button).invert()
+    }
+
+    class ButtonHandlerBuilder(private val controller: Controller, private val button: Int) {
+        fun pressed(action: () -> Unit) = controller.registerButtonPressListener(button, action)
+        fun released(action: () -> Unit) = controller.registerButtonReleaseListener(button, action)
     }
 
     //CUSTOM

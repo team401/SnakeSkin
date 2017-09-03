@@ -1,10 +1,10 @@
 package org.team401.snakeskin
 
-import org.team401.snakeskin.dsl.Components
+import org.team401.snakeskin.dsl.HumanControls
 import org.team401.snakeskin.dsl.buildSubsystem
 
 /*
- * snakeskin - Created on 8/17/17
+ * snakeskin - Created on 9/3/17
  * Author: Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
@@ -13,11 +13,53 @@ import org.team401.snakeskin.dsl.buildSubsystem
 
 /**
  * @author Cameron Earle
- * @version 8/17/17
+ * @version 9/3/17
  */
-fun main(args: Array<String>) {
+
+private fun test() {
     buildSubsystem {
-        stateMachine("SomeMachine") {
+        stateMachine("myMachine") {
+            state("someState") {
+                rejectIf {
+                    true
+                }
+
+                entry {
+
+                }
+
+                action {
+
+                }
+
+                exit {
+
+                }
+            }
+
+            disabled {
+                //rejectIf not allowed
+
+                action (50) {
+
+                }
+            }
+
+            default {
+                //rejectIf not allowed
+            }
+        }
+    }
+
+    HumanControls.f310(1) {
+        whenButton(3) {
+            pressed {
+                //Now with
+            }
+
+            released {
+                //SUB LAMBDAS!
+            }
         }
     }
 }
