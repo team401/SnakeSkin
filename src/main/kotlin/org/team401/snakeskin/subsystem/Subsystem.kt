@@ -29,7 +29,7 @@ class Subsystem {
     //<editor-fold desc="State Handler">
     private val stateMachines = hashMapOf<String, StateMachine>() //The states that a subsystem can be in
 
-    fun addStateMachine(machine: String) = stateMachines.put(machine, StateMachine())
+    fun addStateMachine(machine: String, instance: StateMachine = StateMachine()) = stateMachines.put(machine, instance)
 
     fun getStateMachine(machine: String): StateMachine {
         if (stateMachines.contains(machine)) {

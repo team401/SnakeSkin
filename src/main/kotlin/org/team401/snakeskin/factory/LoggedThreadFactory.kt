@@ -19,9 +19,7 @@ import java.util.concurrent.ThreadFactory
 object LoggedThreadFactory : ThreadFactory {
     override fun newThread(r: Runnable?): Thread {
         return Thread(r).apply {
-            setUncaughtExceptionHandler { _, e ->
-                LoggerManager.logException(e)
-            }
+            uncaughtExceptionHandler = LoggerManager.getExceptionHandler()
         }
     }
 

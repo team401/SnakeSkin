@@ -32,7 +32,7 @@ object EventRouter {
     }
 
 
-    @Synchronized fun fireEvent(event: String, parameters: MutableParameters) {
+    @Synchronized @JvmStatic @JvmOverloads fun fireEvent(event: String, parameters: MutableParameters = MutableParameters()) {
         priorityHandlers[event]?.forEach {
             it(parameters.toParameters())
         }

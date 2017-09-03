@@ -15,10 +15,11 @@ import org.team401.snakeskin.ability.ALoggable
  * @author Cameron Earle
  * @version 8/26/17
  */
-class LoggableException(e: Throwable): ALoggable {
+class LoggableThrowable(e: Throwable, t: Thread?): ALoggable {
     override val type = "exception"
 
     val name = e::class.java.simpleName
+    val thread = t?.name ?: "Unknown"
     val message = e.message
     val stackTrace = e.stackTrace
 }

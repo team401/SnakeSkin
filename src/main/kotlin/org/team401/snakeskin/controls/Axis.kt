@@ -2,45 +2,30 @@ package org.team401.snakeskin.controls
 
 import org.team401.snakeskin.ability.AInvertable
 import org.team401.snakeskin.ability.AReadable
+import org.team401.snakeskin.logic.scalers.NoScaling
 
 
 /*
  * SnakeSkin - Created on 5/25/2017
- * Author: Zachary Kozar
+ * Author: Zachary Kozar and Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
  * You can find more info in the LICENSE file at the project root.
  */
 
 /**
- * @author Zachary Kozar
+ * @author Zachary Kozar and Cameron Earle
  * @version 5/25/2017
  */
 class Axis(override var inverted: Boolean = false, var deadband: Double = -1.0, private val getter: () -> Double): AReadable<Double>, AInvertable {
-    object ScalingMethod {
-        val NO_SCALING: (Double) -> Double = { it }
-        val SQUARED: (Double) -> Double = { if (it < 0.0) -it*it else it*it }
-        val CUBED: (Double) -> Double = { it*it*it }
-        val SINE: (Double) -> Double = { if (it < 0.0) -Math.sin(Math.PI/2*it*it) else Math.sin(Math.PI/2*it*it) }
-    }
-
-    var scaling = ScalingMethod.NO_SCALING
+    var scaler = NoScaling
     private set
 
     override fun read(): Double {
-        val delta = scaling(getter())
+        val delta = scaler.scale(getter())
 
         if (deadband == -1.0 || Math.abs(delta) > deadband)
-            if (inverted) {
-                return -delta
-            } else {
-                return delta
-            }
+            return if (inverted) -delta else delta
         return 0.0
-    }
-
-    infix fun scale(scale: (Double) -> Double): Axis {
-        this.scaling = scale
-        return this
     }
 }

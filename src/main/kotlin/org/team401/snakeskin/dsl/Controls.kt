@@ -1,10 +1,7 @@
 package org.team401.snakeskin.dsl
 
 import org.team401.snakeskin.controls.Controller
-import org.team401.snakeskin.controls.mappings.Attack3
-import org.team401.snakeskin.controls.mappings.CustomController
-import org.team401.snakeskin.controls.mappings.Extreme3D
-import org.team401.snakeskin.controls.mappings.GTWheel
+import org.team401.snakeskin.controls.mappings.*
 
 /*
  * snakeskin - Created on 7/17/17
@@ -76,6 +73,34 @@ object HumanControls {
     }
     fun drivingForceGT(id: Int, setup: GTWheelBuilder.() -> Unit = {}): GTWheel {
         val builder = GTWheelBuilder(GTWheel(id))
+        builder.setup()
+        return builder.build()
+    }
+
+    //F310
+    class F310Builder(private val f310: F310): Builder<F310>, ControlsBuilder(f310) {
+        override fun build() = f310
+
+        val Axes = f310.Mapping.Axes
+        val Buttons = f310.Mapping.Buttons
+        val Hats = f310.Mapping.Hats
+    }
+    fun f310(id: Int, setup: F310Builder.() -> Unit = {}): F310 {
+        val builder = F310Builder(F310(id))
+        builder.setup()
+        return builder.build()
+    }
+
+    //DUAL ACTION
+    class DualActionBuilder(private val dualAction: DualAction): Builder<DualAction>, ControlsBuilder(dualAction) {
+        override fun build() = dualAction
+
+        val Axes = dualAction.Mapping.Axes
+        val Buttons = dualAction.Mapping.Buttons
+        val Hats = dualAction.Mapping.Hats
+    }
+    fun dualAction(id: Int, setup: DualActionBuilder.() -> Unit = {}): DualAction {
+        val builder = DualActionBuilder(DualAction(id))
         builder.setup()
         return builder.build()
     }

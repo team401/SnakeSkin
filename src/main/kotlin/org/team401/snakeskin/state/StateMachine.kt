@@ -50,6 +50,7 @@ class StateMachine {
                             activeState?.exit?.invoke() //Run the exit method of the active state
                         }.get() //And wait
                     }
+                    activeState = desiredState
                     EXECUTOR.submit {
                         desiredState.entry() //Run the entry method of the desired state
                         toReturn.tick() //Tick the waitable

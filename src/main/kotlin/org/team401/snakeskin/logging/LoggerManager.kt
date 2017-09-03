@@ -36,7 +36,7 @@ object LoggerManager {
         }
     }
 
-    init {
+    internal fun init() {
         EXECUTOR.submit {
             socket = context.socket(ZMQ.PUB)
             socket.bind("tcp://*:5800")
@@ -53,15 +53,23 @@ object LoggerManager {
         }, 0L, Constants.LOG_RATE, TimeUnit.MILLISECONDS)
     }
 
-    fun logException(e: Throwable) {
-        send(LoggableException(e))
+    @JvmStatic @JvmOverloads fun logThrowable(e: Throwable, t: Thread? = null) {
+        send(LoggableThrowable(e, t))
     }
 
-    fun logMessage(message: String, level: LogLevel = LogLevel.INFO) {
+    @JvmStatic @JvmOverloads fun logMessage(message: String, level: LogLevel = LogLevel.INFO) {
         send(LoggableMessage(message, level))
     }
 
     fun addValue(name: String, getter: () -> Any) {
         valueQueue.add(LoggableValue(name, getter))
+    }
+
+    fun getExceptionHandler() = Thread.UncaughtExceptionHandler { t, e ->
+        logThrowable(e, t)
+    }
+
+    @JvmStatic fun logCurrentThread() {
+        Thread.currentThread().uncaughtExceptionHandler = getExceptionHandler()
     }
 }

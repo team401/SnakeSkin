@@ -35,9 +35,11 @@ class SubsystemBuilder: Builder<Subsystem> {
     }
 
     fun stateMachine(machine: String, setup: StateMachineBuilder.() -> Unit): StateMachine {
-        val builder = StateMachineBuilder()
-        builder.setup()
-        return builder.build()
+        val sBuilder = StateMachineBuilder()
+        sBuilder.setup()
+        val instance = sBuilder.build()
+        builder.addStateMachine(machine, instance)
+        return instance
     }
 
     override fun build() = builder
