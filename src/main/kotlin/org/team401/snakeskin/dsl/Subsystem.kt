@@ -17,6 +17,8 @@ import org.team401.snakeskin.subsystem.Subsystem
  * @version 7/4/17
  */
 
+fun Subsystem.machine(machine: String) = getStateMachine(machine)
+
 fun buildSubsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
     val builder = SubsystemBuilder()
     builder.setup()

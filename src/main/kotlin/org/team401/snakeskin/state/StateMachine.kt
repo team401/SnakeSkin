@@ -96,8 +96,10 @@ class StateMachine {
         switchLock.unlock()
     }
 
-    fun getState() = stateHistory.current ?: ""
-    fun getLastState() = stateHistory.current ?: ""
+    fun back() = setState(getLastState())
+
+    fun getState() = stateHistory.current ?: States.ELSE
+    fun getLastState() = stateHistory.last ?: States.ELSE
 
     fun toggle(state1: String, state2: String) {
         if (getState() == state1) {

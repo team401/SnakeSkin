@@ -2,23 +2,13 @@ package org.team401.snakeskin.controls.mappings
 
 import org.team401.snakeskin.controls.Controller
 
-
-/*
- * snakeskin - Created on 8/31/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
- * @version 8/31/17
+ * @version 7/16/17
  */
-
 class F310(id: Int): Controller(id) {
     inner class MappingDefinitions: IMappingDefinitions {
-        inner class AxesDefinitions: IMappingDefinitions.AxesDefinitions {
+        inner class AxesDefinitions : IMappingDefinitions.AxesDefinitions {
             val LEFT_X = addAxis(0)
             val LEFT_Y = addAxis(1)
             val LEFT_TRIGGER = addAxis(2)
@@ -29,7 +19,7 @@ class F310(id: Int): Controller(id) {
 
         override val Axes = AxesDefinitions()
 
-        inner class ButtonsDefinitions: IMappingDefinitions.ButtonsDefinitions {
+        inner class ButtonsDefinitions : IMappingDefinitions.ButtonsDefinitions {
             val A = addButton(1)
             val B = addButton(2)
             val X = addButton(3)
@@ -44,16 +34,15 @@ class F310(id: Int): Controller(id) {
 
         override val Buttons = ButtonsDefinitions()
 
-        inner class HatsDefinitions: IMappingDefinitions.HatsDefinitions {
-            val D_PAD = addHat(0)
-        }
+        inner class HatsDefinitions : IMappingDefinitions.HatsDefinitions {
+            val D_PAD = addHat(0)        }
 
         override val Hats = HatsDefinitions()
     }
-
     override val Mapping = MappingDefinitions()
 
     fun readAxis(axis: MappingDefinitions.AxesDefinitions.() -> Int): Double = readAxis(axis(Mapping.Axes))
     fun readButton(button: MappingDefinitions.ButtonsDefinitions.() -> Int): Boolean = readButton(button(Mapping.Buttons))
     fun readHat(hat: MappingDefinitions.HatsDefinitions.() -> Int): Int = readHat(hat(Mapping.Hats))
+
 }
