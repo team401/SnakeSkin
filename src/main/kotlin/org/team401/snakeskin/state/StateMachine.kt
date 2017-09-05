@@ -34,6 +34,7 @@ class StateMachine {
 
     private var activeState: State? = null
     private var activeFuture: ScheduledFuture<*>? = null
+    private var activeTimeoutFuture: ScheduledFuture<*>? = null
 
     private val stateHistory = History<String>()
 
@@ -50,6 +51,9 @@ class StateMachine {
             }
 
             if (!desiredState.rejectionConditions()) { //If the switch is not rejected
+                //STOP THE OLD STATE TIMEOUT
+                activeTimeoutFuture?.cancel(true)
+
                 //EXIT THE OLD STATE
                 if (activeState != null) {
                     activeFuture?.cancel(true) //Cancel the action loop
@@ -71,6 +75,13 @@ class StateMachine {
                 //RUN THE LOOP OF THE NEW STATE
                 if (desiredState.action != {}) { //If the target state has an action
                     activeFuture = EXECUTOR.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                }
+
+                //SET UP THE TIMEOUT OF THE NEW STATE
+                if (desiredState.timeout != -1L) {
+                    activeTimeoutFuture = EXECUTOR.schedule({
+                        setState(desiredState.timeoutTo)
+                    }, desiredState.timeout, TimeUnit.MILLISECONDS)
                 }
 
                 return toReturn //Return the waitable

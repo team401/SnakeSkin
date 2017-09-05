@@ -21,8 +21,8 @@ class StateMachineBuilder: Builder<StateMachine> {
     private val builder = StateMachine()
     override fun build() = builder
 
-    fun state(state: String, setup: RejectableStateBuilder.() -> Unit) {
-        val stateBuilder = RejectableStateBuilder(state)
+    fun state(state: String, setup: MutableStateBuilder.() -> Unit) {
+        val stateBuilder = MutableStateBuilder(state)
         stateBuilder.setup()
         builder.addState(stateBuilder.build())
     }
@@ -61,8 +61,13 @@ open class StateBuilder(name: String): Builder<State> {
     }
 }
 
-class RejectableStateBuilder(name: String): StateBuilder(name) {
+class MutableStateBuilder(name: String): StateBuilder(name) {
     fun rejectIf(condition: () -> Boolean) {
         builder.rejectionConditions = condition
+    }
+
+    fun timeout(timeout: Long, timeoutTo: String) {
+        builder.timeout = timeout
+        builder.timeoutTo = timeoutTo
     }
 }
