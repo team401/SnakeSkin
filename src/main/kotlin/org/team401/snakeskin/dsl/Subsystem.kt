@@ -44,5 +44,9 @@ class SubsystemBuilder: Builder<Subsystem> {
         return instance
     }
 
+    fun test(name: String, body: () -> Boolean) {
+
+    }
+
     override fun build() = builder
 }

@@ -1,6 +1,7 @@
 package org.team401.snakeskin.controls
 
 import edu.wpi.first.wpilibj.DriverStation
+import org.team401.snakeskin.Constants
 import org.team401.snakeskin.factory.ExecutorFactory
 import org.team401.snakeskin.logic.History
 import java.util.*
@@ -107,7 +108,7 @@ object ControlPoller {
     }
 
     fun init() {
-        pollingExecutor.scheduleAtFixedRate(task, 0, 20, TimeUnit.MILLISECONDS)
+        pollingExecutor.scheduleAtFixedRate(task, 0, Constants.CONTROLLER_POLL_RATE, TimeUnit.MILLISECONDS)
     }
 
     fun addController(controller: Controller) {
