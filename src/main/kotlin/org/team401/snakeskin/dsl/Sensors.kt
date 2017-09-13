@@ -58,7 +58,6 @@ object Sensors {
             sensor.deadband = deadband
         }
 
-        fun when
     }
 
     fun customBooleanSensor(getter: () -> Boolean, setup: BooleanSensorBuilder.() -> Unit = {}): BooleanSensor {
@@ -73,5 +72,5 @@ object Sensors {
         return builder.build()
     }
 
-    fun analogSensor(port: Int, setp)
+    //fun analogSensor(port: Int, setp)
 }
