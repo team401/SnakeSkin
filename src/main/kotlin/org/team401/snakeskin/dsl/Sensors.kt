@@ -1,9 +1,8 @@
 package org.team401.snakeskin.dsl
 
+import edu.wpi.first.wpilibj.DigitalInput
 import org.team401.snakeskin.Constants
-import org.team401.snakeskin.sensors.BooleanSensor
-import org.team401.snakeskin.sensors.Sensor
-import org.team401.snakeskin.sensors.SensorPoller
+import org.team401.snakeskin.sensors.*
 
 /*
  * snakeskin - Created on 9/10/17
@@ -32,6 +31,10 @@ object Sensors {
         fun noPoll() {
             sensor.pollRate = -1
         }
+
+        fun whenChanged(action: () -> Unit) {
+            sensor.changedListener = action
+        }
     }
 
     class BooleanSensorBuilder(private val sensor: BooleanSensor): SensorBuilder<BooleanSensor>(sensor) {
@@ -50,9 +53,25 @@ object Sensors {
         override fun build() = sensor
     }
 
+    class AnalogSensorBuilder(private val sensor: AnalogSensor): SensorBuilder<AnalogSensor>(sensor) {
+        fun deadband(deadband: Double) {
+            sensor.deadband = deadband
+        }
+
+        fun when
+    }
+
     fun customBooleanSensor(getter: () -> Boolean, setup: BooleanSensorBuilder.() -> Unit = {}): BooleanSensor {
         val builder = BooleanSensorBuilder(BooleanSensor(getter = getter))
         builder.setup()
         return builder.build()
     }
+
+    fun digitalSensor(port: Int, setup: BooleanSensorBuilder.() -> Unit = {}): BooleanSensor {
+        val builder = BooleanSensorBuilder(DigitalSensor(dio = DigitalInput(port)))
+        builder.setup()
+        return builder.build()
+    }
+
+    fun analogSensor(port: Int, setp)
 }

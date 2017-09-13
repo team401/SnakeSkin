@@ -2,7 +2,7 @@ package org.team401.snakeskin.sensors.hardware
 
 import edu.wpi.first.wpilibj.I2C
 import org.team401.snakeskin.Unit
-import org.team401.snakeskin.sensors.DistanceSensor
+import org.team401.snakeskin.sensors.DistanceSensorMeme
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference
  * @author Cameron Earle
  * @version 6/2/17
  */
-class Lidar(port: I2C.Port, hardware: Hardware, unit: Unit, period: Int = 20) : DistanceSensor {
+class Lidar(port: I2C.Port, hardware: Hardware, unit: Unit, period: Int = 20) : DistanceSensorMeme {
 
     enum class Hardware(val address: Int, val mainRegister: Int, val vRead: Int,
                         val vWrite: Int, val r2ByteRead: Int, val reset: Int) {

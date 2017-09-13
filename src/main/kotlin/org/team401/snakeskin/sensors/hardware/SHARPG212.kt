@@ -9,7 +9,7 @@ package org.team401.snakeskin.sensors.hardware
  */
 
 import edu.wpi.first.wpilibj.AnalogInput
-import org.team401.snakeskin.Unit
+import org.team401.snakeskin.sensors.AnalogSensor
 import org.team401.snakeskin.sensors.DistanceSensor
 
 /**
@@ -20,11 +20,13 @@ import org.team401.snakeskin.sensors.DistanceSensor
  * Reads distance accurately from 10cm - 80cm
  * Default unit is Centimeters
  */
-class SHARPG212(port: Int, val unit: Unit = Unit.CENTIMETERS) : DistanceSensor {
+class SHARPG212(port: Int): AnalogSensor(AnalogInput(port)), DistanceSensor {
 
-    val input = AnalogInput(port)
-
-    override fun getDistance(): Double {
-        return 29.3181 * Math.pow(input.averageVoltage, -1.1468) * 2.54 * unit.multiplier
+    override fun getInches(): Double {
+        return 29.3181 * Math.pow(getAveragedVoltage(), -1.1468)
     }
+
+    override fun getFeet() = getInches() / 12.0
+
+    override fun getYards() = getFeet() / 3.0
 }

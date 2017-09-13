@@ -18,12 +18,16 @@ import org.team401.snakeskin.ability.AUpdatable
 /**
  * A simple class that tracks history of an object
  */
-class History<T>: AUpdatable<T> {
+open class History<T>: AUpdatable<T> {
     var last: T? = null; private set
     var current: T? = null; private set
 
     override fun update(newValue: T) {
         last = current
         current = newValue
+    }
+
+    fun changed(): Boolean {
+        return (current != last && current != null)
     }
 }

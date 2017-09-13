@@ -17,6 +17,7 @@ import org.team401.snakeskin.ability.AReadable
  */
 abstract class Sensor<out T>: AReadable<T> {
     abstract internal fun pollImpl()
+    abstract var changedListener: () -> Unit
 
     var pollRate = 20L
 }

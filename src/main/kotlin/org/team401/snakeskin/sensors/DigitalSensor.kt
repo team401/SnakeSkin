@@ -1,5 +1,8 @@
 package org.team401.snakeskin.sensors
 
+import edu.wpi.first.wpilibj.DigitalInput
+import org.team401.snakeskin.sensors.BooleanSensor
+
 /*
  * snakeskin - Created on 9/11/17
  * Author: Cameron Earle
@@ -13,8 +16,4 @@ package org.team401.snakeskin.sensors
  * @version 9/11/17
  */
 
-interface DistanceSensor {
-    fun getInches(): Double
-    fun getFeet(): Double
-    fun getYards(): Double
-}
+open class DigitalSensor(override var inverted: Boolean = false, dio: DigitalInput): BooleanSensor(inverted, {dio.get()})
