@@ -1,6 +1,7 @@
 package org.team401.snakeskin.sensors
 
-import org.team401.snakeskin.logic.History
+import org.team401.snakeskin.logic.ComparableDoubleHistory
+import java.util.concurrent.ConcurrentHashMap
 
 /*
  * snakeskin - Created on 9/11/17
@@ -15,18 +16,41 @@ import org.team401.snakeskin.logic.History
  * @version 9/11/17
  */
 
-open class NumericSensor(private val getter: () -> Double): Sensor<Double>()  {
+open class NumericSensor(private val getter: () -> Double, open var deadband: Double = 0.0, open var zero: Double = 0.0): Sensor<Double>()  {
     override fun read() = getter()
-    private val history = History<Double>()
+    private val history = ComparableDoubleHistory()
     override var changedListener = {}
+    var receivingChangeListener: (Double) -> Unit = {}
+    private val whenAboveListeners = ConcurrentHashMap<Double, () -> Unit>()
+    private val whenBelowListeners = ConcurrentHashMap<Double, () -> Unit>()
 
-    open fun getValue() = read()
+    fun registerWhenAboveListener(whenAbove: Double, listener: () -> Unit) = whenAboveListeners.put(whenAbove, listener)
+    fun registerWhenBelowListener(whenBelow: Double, listener: () -> Unit) = whenBelowListeners.put(whenBelow, listener)
+
+    open fun getValue() = read() - zero
+
+    open fun zero() {
+        zero = read()
+    }
 
     override fun pollImpl() {
-        history.update(read())
+        history.update(getValue())
 
-        if (history.changed()) {
+        if (history.changedWithin(deadband)) {
             changedListener()
+            receivingChangeListener(history.current!!)
+        }
+
+        whenAboveListeners.forEach { value, listener ->
+            if (history.current!! > value) {
+                listener()
+            }
+        }
+
+        whenBelowListeners.forEach { value, listener ->
+            if (history.current!! < value) {
+                listener()
+            }
         }
     }
 }

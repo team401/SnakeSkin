@@ -17,42 +17,27 @@ import java.util.concurrent.ConcurrentHashMap
  * @version 9/11/17
  */
 
-open class AnalogSensor(val analogInput: AnalogInput, var deadband: Double = 0.0): Sensor<Double>() {
-    override fun read() = analogInput.voltage
-
-    fun getVoltage() = read()
-    fun getRawValue() = analogInput.value
-    fun getAveragedVoltage() = analogInput.averageVoltage
-    fun getAveragedValue() = analogInput.averageValue
+open class AnalogSensor(val analogInput: AnalogInput, override var deadband: Double = 0.0, override var zero: Double = 0.0, var rawZero: Int = 0): NumericSensor({analogInput.voltage}) {
+    fun getVoltage() = getValue()
+    fun getRawValue() = analogInput.value - rawZero
+    fun getAveragedVoltage() = analogInput.averageVoltage - zero
+    fun getAveragedValue() = analogInput.averageValue - rawZero
 
     override var changedListener = {}
-    var receivingChangeListener: (voltage: Double, value: Int, averagedVoltage: Double, averagedValue: Int) -> Unit = { _, _, _, _ -> }
-    private val whenAboveListeners = ConcurrentHashMap<Double, () -> Unit>()
-    private val whenBelowListeners = ConcurrentHashMap<Double, () -> Unit>()
-
-    fun registerWhenAboveListener(whenAbove: Double, listener: () -> Unit) = whenAboveListeners.put(whenAbove, listener)
-    fun registerWhenBelowListener(whenBelow: Double, listener: () -> Unit) = whenBelowListeners.put(whenBelow, listener)
+    var analogReceivingChangeListener: (Double, Int, Double, Int) -> Unit = { _, _, _, _ -> }
 
     private val valueHistory = ComparableDoubleHistory()
 
+    override fun zero() {
+        super.zero()
+        rawZero = getRawValue()
+    }
+
     override fun pollImpl() {
-        valueHistory.update(read())
+        super.pollImpl()
 
         if (valueHistory.changedWithin(deadband)) {
-            changedListener()
-            receivingChangeListener(valueHistory.current!!, getRawValue(), getAveragedVoltage(), getAveragedValue())
-        }
-
-        whenAboveListeners.forEach { value, listener ->
-            if (valueHistory.current!! > value) {
-                listener()
-            }
-        }
-
-        whenBelowListeners.forEach { value, listener ->
-            if (valueHistory.current!! < value) {
-                listener()
-            }
+            analogReceivingChangeListener(valueHistory.current!!, getRawValue(), getAveragedVoltage(), getAveragedValue())
         }
     }
 }
