@@ -18,12 +18,8 @@ import org.team401.snakeskin.subsystem.Subsystem
 
 object Subsystems: Registry<Subsystem>() {
     override fun initAll() {
-        val waitables = arrayListOf<AWaitable>()
         registry.forEach {
-            waitables.add(it.init())
-        }
-        waitables.forEach {
-            it.waitFor()
+            it.init()
         }
     }
 }

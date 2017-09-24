@@ -49,11 +49,14 @@ class Subsystem {
     fun addSetupTask(task: () -> Unit) = setupTasks.add(task)
     //</editor-fold>
 
-    internal fun init(): AWaitable {
-        val toReturn = TickedWaitable()
+    //<editor-fold desk="Tests">
+    private val tests = hashMapOf<String, () -> Boolean>()
+    fun addTest(name: String, test: () -> Boolean) = tests.put(name, test)
+    //</editor-fold>
+
+    internal fun init() {
         setupTasks.forEach {
-            executor.submit(it)
-            toReturn.tick()
+            it()
         }
         stateMachines.forEach {
             _, machine ->
@@ -61,7 +64,6 @@ class Subsystem {
                 machine.setState(States.DISABLED)
             }
         }
-        return toReturn
     }
 
     fun addEventHandler(event: String, action: (Parameters) -> Unit) = EventRouter.registerPriority(event) {
