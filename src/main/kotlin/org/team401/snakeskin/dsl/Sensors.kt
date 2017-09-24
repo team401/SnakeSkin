@@ -20,10 +20,7 @@ import org.team401.snakeskin.sensors.*
 
 object Sensors {
     open class SensorBuilder<out T: Sensor<*>>(private val sensor: T): Builder<T> {
-        override fun build(): T {
-            SensorPoller.addSensor(sensor)
-            return sensor
-        }
+        override fun build() = sensor
 
         fun pollAt(rate: Long) {
             sensor.pollRate = rate

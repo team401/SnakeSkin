@@ -26,8 +26,6 @@ open class AnalogSensor(val analogInput: AnalogInput, override var deadband: Dou
     override var changedListener = {}
     var analogReceivingChangeListener: (Double, Int, Double, Int) -> Unit = { _, _, _, _ -> }
 
-    private val valueHistory = ComparableDoubleHistory()
-
     override fun zero() {
         super.zero()
         rawZero = getRawValue()
@@ -36,8 +34,8 @@ open class AnalogSensor(val analogInput: AnalogInput, override var deadband: Dou
     override fun pollImpl() {
         super.pollImpl()
 
-        if (valueHistory.changedWithin(deadband)) {
-            analogReceivingChangeListener(valueHistory.current!!, getRawValue(), getAveragedVoltage(), getAveragedValue())
+        if (history.changedWithin(deadband)) {
+            analogReceivingChangeListener(history.current!!, getRawValue(), getAveragedVoltage(), getAveragedValue())
         }
     }
 }

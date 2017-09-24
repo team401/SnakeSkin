@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 open class NumericSensor(private val getter: () -> Double, open var deadband: Double = 0.0, open var zero: Double = 0.0): Sensor<Double>()  {
     override fun read() = getter()
-    private val history = ComparableDoubleHistory()
+    protected val history = ComparableDoubleHistory()
     override var changedListener = {}
     var receivingChangeListener: (Double) -> Unit = {}
     private val whenAboveListeners = ConcurrentHashMap<Double, () -> Unit>()
@@ -42,13 +42,13 @@ open class NumericSensor(private val getter: () -> Double, open var deadband: Do
         }
 
         whenAboveListeners.forEach { value, listener ->
-            if (history.current!! > value) {
+            if (history.wentAbove(value)) {
                 listener()
             }
         }
 
         whenBelowListeners.forEach { value, listener ->
-            if (history.current!! < value) {
+            if (history.wentBelow(value)) {
                 listener()
             }
         }

@@ -25,4 +25,22 @@ class ComparableDoubleHistory: History<Double>() {
         }
         return false
     }
+
+    fun wentAbove(value: Double): Boolean {
+        if (last != null && current != null) {
+            if (current!! >= value && last!! < value) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun wentBelow(value: Double): Boolean {
+        if (last != null && current != null) {
+            if (current!! <= value && last!! > value) {
+                return true
+            }
+        }
+        return false
+    }
 }

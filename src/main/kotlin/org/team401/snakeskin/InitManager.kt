@@ -4,7 +4,9 @@ import org.team401.snakeskin.controls.ControlPoller
 import org.team401.snakeskin.factory.ExecutorFactory
 import org.team401.snakeskin.logging.LoggerManager
 import org.team401.snakeskin.registry.Controllers
+import org.team401.snakeskin.registry.Sensors
 import org.team401.snakeskin.registry.Subsystems
+import org.team401.snakeskin.sensors.SensorPoller
 
 /*
  * snakeskin - Created on 7/16/17
@@ -33,8 +35,9 @@ object InitManager {
      * This method runs after SETUP is loaded
      */
     @JvmStatic fun postStartup() {
-        Subsystems.initAll()
         Controllers.initAll()
         ControlPoller.init()
+        Subsystems.initAll()
+        Sensors.initAll()
     }
 }

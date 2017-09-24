@@ -1,5 +1,8 @@
 package org.team401.snakeskin.registry
 
+import org.team401.snakeskin.sensors.Sensor
+import org.team401.snakeskin.sensors.SensorPoller
+
 /*
  * snakeskin - Created on 8/18/17
  * Author: Cameron Earle
@@ -13,3 +16,10 @@ package org.team401.snakeskin.registry
  * @version 8/18/17
  */
 
+object Sensors: Registry<Sensor<*>>() {
+    override fun initAll() {
+        registry.forEach {
+            SensorPoller.addSensor(it)
+        }
+    }
+}

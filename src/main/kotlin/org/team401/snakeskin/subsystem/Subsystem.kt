@@ -1,10 +1,12 @@
 package org.team401.snakeskin.subsystem
 
+import org.team401.snakeskin.ability.AWaitable
 import org.team401.snakeskin.logic.Parameters
 import org.team401.snakeskin.event.EventRouter
 import org.team401.snakeskin.event.Events
 import org.team401.snakeskin.exception.ItemNotFoundException
 import org.team401.snakeskin.factory.ExecutorFactory
+import org.team401.snakeskin.logic.TickedWaitable
 import org.team401.snakeskin.state.StateMachine
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicReference
@@ -47,9 +49,11 @@ class Subsystem {
     fun addSetupTask(task: () -> Unit) = setupTasks.add(task)
     //</editor-fold>
 
-    internal fun init() {
+    internal fun init(): AWaitable {
+        val toReturn = TickedWaitable()
         setupTasks.forEach {
             executor.submit(it)
+            toReturn.tick()
         }
         stateMachines.forEach {
             _, machine ->
@@ -57,6 +61,7 @@ class Subsystem {
                 machine.setState(States.DISABLED)
             }
         }
+        return toReturn
     }
 
     fun addEventHandler(event: String, action: (Parameters) -> Unit) = EventRouter.registerPriority(event) {
