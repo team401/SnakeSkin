@@ -22,4 +22,10 @@ object Subsystems: Registry<Subsystem>() {
             it.init()
         }
     }
+
+    @JvmStatic fun testAll() {
+        registry.forEach {
+            it.runTests()
+        }
+    }
 }

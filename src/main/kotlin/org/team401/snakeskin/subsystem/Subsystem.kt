@@ -52,6 +52,17 @@ class Subsystem {
     //<editor-fold desk="Tests">
     private val tests = hashMapOf<String, () -> Boolean>()
     fun addTest(name: String, test: () -> Boolean) = tests.put(name, test)
+    fun runTests() {
+        tests.forEach {
+            name, test ->
+            println("--------RUNNING TEST $name--------")
+            val result = test()
+            if (result)
+                println("--------TEST $name PASSED--------")
+            else
+                println("--------TEST $name FAILED--------")
+        }
+    }
     //</editor-fold>
 
     internal fun init() {

@@ -19,6 +19,7 @@ import org.team401.snakeskin.event.Events;
 import org.team401.snakeskin.logging.LogLevel;
 import org.team401.snakeskin.logging.LoggerManager;
 import org.team401.snakeskin.logic.MutableParameters;
+import org.team401.snakeskin.registry.Subsystems;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
@@ -139,6 +140,6 @@ public class Robot extends SampleRobot {
 
     @Override
     public void test() {
-        LoggerManager.logMessage("SnakeSkin does not support the Test mode!", LogLevel.WARNING);
+        Subsystems.testAll(); //Run all subsystem tests
     }
 }
