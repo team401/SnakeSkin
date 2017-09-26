@@ -31,22 +31,65 @@ class LightLink(val address: Int = 0x42, val port: I2C.Port = I2C.Port.kMXP): Co
 
     object Action {
         const val SOLID = 0x01
-        const val BLINK = 0x02 //BLINK_SLOW
-        const val STROBE = 0x03 //BLINK_FAST
+        const val BLINK = 0x02
+        const val SIGNAL = 0x03
+        const val RACE = 0x04
+        const val BOUNCE = 0x05
+        const val SPLIT = 0x06
+        const val BREATHE = 0x07
+        const val RAINBOW = 0x08
     }
 
-    private fun buildCommand(strip: Int, color: Int, action: Int): ByteArray {
-        //SPEC v1
-        val array = ByteArray(5)
+    object Speed {
+        const val SLOW = 0x01
+        const val FAST = 0x02
+    }
+
+    private fun buildCommand(strip: Int, color: Int, action: Int, speed: Int): ByteArray {
+        //SPEC v2
+        val array = ByteArray(6)
         array[0] = (0x00).toByte()      //START
         array[1] = (strip + 1).toByte() //STRIP
         array[2] = (color).toByte()     //COLOR
         array[3] = (action).toByte()    //ACTION
-        array[4] = (0xFF).toByte()      //FINISH
+        array[4] = (speed).toByte()
+        array[5] = (0xFF).toByte()      //FINISH
         return array
     }
 
-    fun set(color: Int, action: Int, strip: Int = 0) {
-        i2c.writeBulk(buildCommand(strip, color, action))
+    fun set(color: Int, action: Int, speed: Int, strip: Int = 0) {
+        i2c.writeBulk(buildCommand(strip, color, action, speed))
+    }
+
+    fun off() {
+        set(Color.BLACK, Action.SOLID, Speed.SLOW)
+    }
+
+    fun blink(color: Int, speed: Int = Speed.SLOW) {
+        set(color, Action.BLINK, speed)
+    }
+
+    fun signal(color: Int) {
+        set(color, Action.SIGNAL, Speed.FAST)
+    }
+
+    fun race(color: Int, speed: Int = Speed.SLOW) {
+        set(color, Action.RACE, speed)
+    }
+
+    fun bounce(color: Int, speed: Int = Speed.SLOW) {
+        set(color, Action.BOUNCE, speed)
+    }
+
+    fun split(color: Int, speed: Int = Speed.SLOW) {
+        set(color, Action.SPLIT, speed)
+    }
+
+    fun breathe(color: Int, speed: Int = Speed.SLOW) {
+        set(color, Action.BREATHE, speed)
+    }
+
+    fun rainbow(speed: Int = Speed.SLOW) {
+        set(Color.BLACK, Action.RAINBOW, speed)
     }
 }
