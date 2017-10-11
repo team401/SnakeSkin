@@ -3,6 +3,7 @@ package org.team401.snakeskin.controls
 import org.team401.snakeskin.ability.AInvertable
 import org.team401.snakeskin.ability.AReadable
 import org.team401.snakeskin.logic.scalers.NoScaling
+import org.team401.snakeskin.logic.scalers.Scaler
 
 
 /*
@@ -18,10 +19,10 @@ import org.team401.snakeskin.logic.scalers.NoScaling
  * @version 5/25/2017
  */
 class Axis(override var inverted: Boolean = false, var deadband: Double = -1.0, private val getter: () -> Double): AReadable<Double>, AInvertable {
-    var scaler = NoScaling
-    private set
+    var scaler: Scaler = NoScaling
+    @Synchronized set
 
-    override fun read(): Double {
+    @Synchronized override fun read(): Double {
         val delta = scaler.scale(getter())
 
         if (deadband == -1.0 || Math.abs(delta) > deadband)

@@ -2,6 +2,7 @@ package org.team401.snakeskin.dsl
 
 import org.team401.snakeskin.controls.Controller
 import org.team401.snakeskin.controls.mappings.*
+import org.team401.snakeskin.logic.scalers.Scaler
 
 /*
  * snakeskin - Created on 7/17/17
@@ -27,6 +28,9 @@ object HumanControls {
 
         fun invertAxis(axis: Int) = controller.getAxis(axis).invert()
         fun invertButton(button: Int) = controller.getButton(button).invert()
+
+        fun deadbandAxis(axis: Int, deadband: Double) { controller.getAxis(axis).deadband = deadband }
+        fun scaleAxis(axis: Int, scaling: Scaler) { controller.getAxis(axis).scaler = scaling}
     }
 
     class ButtonHandlerBuilder(private val controller: Controller, private val button: Int) {
