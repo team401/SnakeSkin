@@ -1,5 +1,7 @@
 package org.team401.snakeskin.dsl
 
+import edu.wpi.first.wpilibj.Sendable
+import org.team401.snakeskin.publish.NumberPublisher
 import org.team401.snakeskin.state.State
 import org.team401.snakeskin.state.StateMachine
 import org.team401.snakeskin.subsystem.States
@@ -37,6 +39,34 @@ class StateMachineBuilder: Builder<StateMachine> {
         val stateBuilder = StateBuilder(States.ELSE)
         stateBuilder.setup()
         builder.elseCondition = stateBuilder.build()
+    }
+
+    @JvmName("publishNumber")
+    fun publish(vararg pairs: Pair<String, () -> Number>) {
+        pairs.forEach {
+            builder.publisher.publishNumber(it.first, it.second)
+        }
+    }
+
+    @JvmName("publishBoolean")
+    fun publish(vararg pairs: Pair<String, () -> Boolean>) {
+        pairs.forEach {
+            builder.publisher.publishBoolean(it.first, it.second)
+        }
+    }
+
+    @JvmName("publishString")
+    fun publish(vararg pairs: Pair<String, () -> String>) {
+        pairs.forEach {
+            builder.publisher.publishString(it.first, it.second)
+        }
+    }
+
+    @JvmName("publishSendable")
+    fun publish(vararg pairs: Pair<String, () -> Sendable>) {
+        pairs.forEach {
+            builder.publisher.publishSendable(it.first, it.second)
+        }
     }
 
     fun isInState(state: String) = builder.getState() == state

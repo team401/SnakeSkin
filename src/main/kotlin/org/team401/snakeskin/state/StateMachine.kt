@@ -5,6 +5,7 @@ import org.team401.snakeskin.factory.ExecutorFactory
 import org.team401.snakeskin.logic.History
 import org.team401.snakeskin.logic.NullWaitable
 import org.team401.snakeskin.logic.TickedWaitable
+import org.team401.snakeskin.publish.Publisher
 import org.team401.snakeskin.subsystem.States
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -40,6 +41,8 @@ class StateMachine {
 
     private val switchLock = ReentrantLock()
 
+    val publisher = Publisher()
+
     private fun setStateImpl(state: String): AWaitable {
         val toReturn = TickedWaitable() //The waitable element.  It will tick once "entry" has completed
         if (state != activeState?.name) { //If the state requested is different from the current state
@@ -74,7 +77,15 @@ class StateMachine {
 
                 //RUN THE LOOP OF THE NEW STATE
                 if (desiredState.action != {}) { //If the target state has an action
-                    activeFuture = EXECUTOR.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                    if (publisher.populated()) { //If the publisher has tasks
+                        activeFuture = EXECUTOR.scheduleAtFixedRate({desiredState.action; publisher.publish()}, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                    } else { //The publisher has no tasks
+                        activeFuture = EXECUTOR.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                    }
+                } else { //Otherwise, just schedule the publisher
+                    if (publisher.populated()) { //If it has tasks
+                        activeFuture = EXECUTOR.scheduleAtFixedRate({ publisher.publish() }, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                    }
                 }
 
                 //SET UP THE TIMEOUT OF THE NEW STATE

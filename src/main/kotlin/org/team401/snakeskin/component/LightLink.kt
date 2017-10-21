@@ -15,7 +15,11 @@ import edu.wpi.first.wpilibj.I2C
  * @version 9/23/17
  */
 
-class LightLink(val address: Int = 0x42, val port: I2C.Port = I2C.Port.kMXP): Component {
+class LightLink(address: Int = 0x42, port: I2C.Port = I2C.Port.kMXP): Component {
+    companion object {
+        private val LL_LOCK = Any()
+    }
+
     private val i2c = I2C(port, address)
 
     object Color {
@@ -58,7 +62,9 @@ class LightLink(val address: Int = 0x42, val port: I2C.Port = I2C.Port.kMXP): Co
     }
 
     fun set(color: Int, action: Int, speed: Int, strip: Int = 0) {
-        i2c.writeBulk(buildCommand(strip, color, action, speed))
+        synchronized(LL_LOCK) {
+            i2c.writeBulk(buildCommand(strip, color, action, speed))
+        }
     }
 
     fun off() {
