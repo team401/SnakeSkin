@@ -54,10 +54,12 @@ object LoggerManager {
     }
 
     @JvmStatic @JvmOverloads fun logThrowable(e: Throwable, t: Thread? = null) {
+        e.printStackTrace()
         send(LoggableThrowable(e, t))
     }
 
     @JvmStatic @JvmOverloads fun logMessage(message: String, level: LogLevel = LogLevel.INFO) {
+        println(message)
         send(LoggableMessage(message, level))
     }
 

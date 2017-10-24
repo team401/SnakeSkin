@@ -71,6 +71,7 @@ class StateMachineBuilder: Builder<StateMachine> {
 
     fun isInState(state: String) = builder.getState() == state
     fun wasInState(state: String) = builder.getLastState() == state
+    fun setState(state: String) = builder.setState(state)
 }
 
 open class StateBuilder(name: String): Builder<State> {

@@ -112,6 +112,7 @@ class StateMachine {
         }
     }
 
+    @Deprecated("All state switches should now be run on the scheduler", ReplaceWith("setState(state: String)"))
     internal fun setStateInternally(state: String) {
         switchLock.lock()
         setStateImpl(state)
