@@ -13,13 +13,11 @@ package org.snakeskin;/*
 
 
 import edu.wpi.first.wpilibj.SampleRobot;
-import org.team401.snakeskin.InitManager;
-import org.team401.snakeskin.event.EventRouter;
-import org.team401.snakeskin.event.Events;
-import org.team401.snakeskin.logging.LogLevel;
-import org.team401.snakeskin.logging.LoggerManager;
-import org.team401.snakeskin.logic.MutableParameters;
-import org.team401.snakeskin.registry.Subsystems;
+import org.snakeskin.event.EventRouter;
+import org.snakeskin.event.Events;
+import org.snakeskin.logging.LogLevel;
+import org.snakeskin.logging.LoggerManager;
+import org.snakeskin.registry.Subsystems;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
