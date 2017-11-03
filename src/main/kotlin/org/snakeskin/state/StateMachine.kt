@@ -5,6 +5,7 @@ import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.logic.History
 import org.snakeskin.logic.NullWaitable
 import org.snakeskin.logic.TickedWaitable
+import org.snakeskin.logic.WaitableFuture
 import org.snakeskin.publish.Publisher
 import org.snakeskin.subsystem.States
 import java.util.concurrent.ScheduledFuture
@@ -104,12 +105,14 @@ class StateMachine {
         }
     }
 
-    fun setState(state: String) {
+    fun setState(state: String): AWaitable {
+        val waitable = WaitableFuture()
         SCHEDULER.submit {
             switchLock.lock()
-            setStateImpl(state)
+            waitable.initWaitable(setStateImpl(state))
             switchLock.unlock()
         }
+        return waitable
     }
 
     @Deprecated("All state switches should now be run on the scheduler", ReplaceWith("setState(state: String)"))
