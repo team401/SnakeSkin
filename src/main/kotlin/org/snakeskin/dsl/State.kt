@@ -1,7 +1,6 @@
 package org.snakeskin.dsl
 
 import edu.wpi.first.wpilibj.Sendable
-import org.snakeskin.publish.NumberPublisher
 import org.snakeskin.state.State
 import org.snakeskin.state.StateMachine
 import org.snakeskin.subsystem.States
@@ -42,30 +41,30 @@ class StateMachineBuilder: Builder<StateMachine> {
     }
 
     @JvmName("publishNumber")
-    fun publish(vararg pairs: Pair<String, () -> Number>) {
+    fun publish(vararg pairs: Pair<() -> Double, String>) {
         pairs.forEach {
-            builder.publisher.publishNumber(it.first, it.second)
+            builder.publisher.publishNumber(it.second, it.first)
         }
     }
 
     @JvmName("publishBoolean")
-    fun publish(vararg pairs: Pair<String, () -> Boolean>) {
+    fun publish(vararg pairs: Pair<() -> Boolean, String>) {
         pairs.forEach {
-            builder.publisher.publishBoolean(it.first, it.second)
+            builder.publisher.publishBoolean(it.second, it.first)
         }
     }
 
     @JvmName("publishString")
-    fun publish(vararg pairs: Pair<String, () -> String>) {
+    fun publish(vararg pairs: Pair<() -> String, String>) {
         pairs.forEach {
-            builder.publisher.publishString(it.first, it.second)
+            builder.publisher.publishString(it.second, it.first)
         }
     }
 
     @JvmName("publishSendable")
-    fun publish(vararg pairs: Pair<String, () -> Sendable>) {
+    fun publish(vararg pairs: Pair<() -> Sendable, String>) {
         pairs.forEach {
-            builder.publisher.publishSendable(it.first, it.second)
+            builder.publisher.publishSendable(it.second, it.first)
         }
     }
 
