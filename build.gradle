@@ -54,8 +54,8 @@ jar {
 }
 
 bintray {
-    user = project.hasProperty('user') ? project.property('user') : ""
-    key = project.hasProperty('key') ? project.property('key'): ""
+    user = project.hasProperty('user') ? project.property('user') : System.getenv("BINTRAY_USER") != null ? System.getenv("BINTRAY_USER") : ""
+    key = project.hasProperty('key') ? project.property('key'): System.getenv("BINTRAY_KEY") != null ? System.getenv("BINTRAY_KEY") : ""
     configurations = ['archives']
     pkg {
         repo = "SnakeSkin"

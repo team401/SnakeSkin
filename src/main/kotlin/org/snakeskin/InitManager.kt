@@ -1,5 +1,6 @@
 package org.snakeskin
 
+import org.snakeskin.auto.AutoManager
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.logging.LoggerManager
@@ -34,6 +35,7 @@ object InitManager {
      * This method runs after SETUP is loaded
      */
     @JvmStatic fun postStartup() {
+        AutoManager.publish()
         Controllers.initAll()
         ControlPoller.init()
         Subsystems.initAll()

@@ -13,6 +13,7 @@ package org.snakeskin;/*
 
 
 import edu.wpi.first.wpilibj.SampleRobot;
+import org.snakeskin.auto.AutoManager;
 import org.snakeskin.event.EventRouter;
 import org.snakeskin.event.Events;
 import org.snakeskin.logging.LogLevel;
@@ -39,16 +40,14 @@ public class Robot extends SampleRobot {
     private ExecutorService autoExecutor = Executors.newSingleThreadExecutor();
     private Future autoFuture;
 
-    private Method autoScript = null;
+    //private Method autoScript = null;
 
     private void invokeAuto() {
         autoFuture = autoExecutor.submit(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (autoScript != null) {
-                        autoScript.invoke(null, null);
-                    }
+
                 } catch (Exception e) {
                     LoggerManager.logThrowable(new Exception("Exception encountered while running auto script", e));
                 }
@@ -88,12 +87,6 @@ public class Robot extends SampleRobot {
             }
         } catch (NoSuchMethodException e) {
             LoggerManager.logMessage("Could not find 'fun setup()' in SETUP.kt, this IS a problem!", LogLevel.ERROR);
-        }
-
-        try {
-            autoScript = clazz.getDeclaredMethod("auto", noparams);
-        } catch (Exception e) {
-            LoggerManager.logMessage("Unable to load auto method!", LogLevel.WARNING);
         }
 
         try {
