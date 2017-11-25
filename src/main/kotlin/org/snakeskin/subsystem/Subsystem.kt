@@ -20,7 +20,7 @@ import org.snakeskin.state.StateMachine
  * @version 7/4/17
  */
 
-class Subsystem {
+open class Subsystem {
     //Executor, for running subsystem actions
     private val executor = ExecutorFactory.getExecutor("Subsystem")
 
@@ -34,6 +34,15 @@ class Subsystem {
             return stateMachines[machine]!!
         } else {
             throw ItemNotFoundException("Could not find state machine $machine")
+        }
+    }
+
+    fun getDefaultStateMachine(): StateMachine {
+        val firstKey = stateMachines.keys.firstOrNull()
+        if (firstKey != null) {
+            return stateMachines[firstKey]!!
+        } else {
+            throw ItemNotFoundException("Subsystem doesn't have any state machines")
         }
     }
 
@@ -51,12 +60,12 @@ class Subsystem {
     fun runTests() {
         tests.forEach {
             name, test ->
-            println("--------RUNNING TEST $name--------")
+            println("TEST $name\tSTARTING")
             val result = test()
             if (result)
-                println("--------TEST $name PASSED--------")
+                println("TEST $name\tPASSED")
             else
-                println("--------TEST $name FAILED--------")
+                println("TEST $name\tFAILED")
         }
     }
     //</editor-fold>
