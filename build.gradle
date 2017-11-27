@@ -26,6 +26,10 @@ repositories {
     maven {
         url "http://first.wpi.edu/FRC/roborio/maven/release/"
     }
+
+    maven {
+        url "http://dev.imjac.in/maven/"
+    }
 }
 
 configurations {
@@ -36,6 +40,7 @@ configurations {
 dependencies {
     required "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     required group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
+    required group: 'thirdparty.frc.ctre', name: 'Toolsuite-Java', version: '5.0.2.1'
 
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.2'
     compile group: 'org.zeromq', name: 'jeromq', version: '0.4.2'

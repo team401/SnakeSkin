@@ -18,7 +18,7 @@ import org.snakeskin.auto.AutoManager
  * @version 11/7/17
  */
 
-object Auto: Registry<Auto>() {
+object Autos : Registry<Auto>() {
     override fun initAll() {
         AutoManager.registerAutos(registry)
     }

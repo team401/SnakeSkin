@@ -12,7 +12,7 @@ package org.snakeskin.auto
  * @author Cameron Earle
  * @version 11/7/17
  */
-data class AutoStep(var entry: () -> Unit,
-                    var action: () -> Unit,
-                    var exit: () -> Unit,
+open class AutoStep(var entry: () -> Unit = {},
+                    var action: () -> Unit = {},
+                    var exit: () -> Unit = {},
                     var done: Boolean = false)

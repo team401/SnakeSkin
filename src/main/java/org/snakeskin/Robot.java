@@ -37,30 +37,6 @@ that we aren't going to end up using.  It provides "on-start" methods that let u
 public class Robot extends SampleRobot {
     private Class noparams[] = {};
 
-    private ExecutorService autoExecutor = Executors.newSingleThreadExecutor();
-    private Future autoFuture;
-
-    //private Method autoScript = null;
-
-    private void invokeAuto() {
-        autoFuture = autoExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-
-                } catch (Exception e) {
-                    LoggerManager.logThrowable(new Exception("Exception encountered while running auto script", e));
-                }
-            }
-        });
-    }
-
-    private void killAuto() {
-        if (autoFuture != null) {
-            autoFuture.cancel(true);
-        }
-    }
-
     @Override
     public void robotInit() {
         //The first thing we need to do is run the "preStartup" init tasks
@@ -106,7 +82,7 @@ public class Robot extends SampleRobot {
     @Override
     public void disabled() {
         //If the auto script is running for some reason, we should stop it
-        killAuto();
+        AutoManager.stop();
         //At this point the robot is disabled, so we should fire the "DISABLED" event to let everyone know that
         EventRouter.fireEvent(Events.DISABLED);
     }
@@ -117,13 +93,13 @@ public class Robot extends SampleRobot {
         EventRouter.fireEvent(Events.ENABLED);
         EventRouter.fireEvent(Events.AUTO_ENABLED);
         //Now, we need to start the auto script
-        invokeAuto();
+        AutoManager.start();
     }
 
     @Override
     public void operatorControl() {
         //First, we stop the auto script
-        killAuto();
+        AutoManager.stop();
         //Teleop has now started, so we need to notify everyone of that
         EventRouter.fireEvent(Events.ENABLED);
         EventRouter.fireEvent(Events.TELEOP_ENABLED);

@@ -1,7 +1,6 @@
 package org.snakeskin.dsl
 
 import edu.wpi.first.wpilibj.Sendable
-import org.snakeskin.publish.NumberPublisher
 import org.snakeskin.state.State
 import org.snakeskin.state.StateMachine
 import org.snakeskin.subsystem.States
@@ -41,31 +40,25 @@ class StateMachineBuilder: Builder<StateMachine> {
         builder.elseCondition = stateBuilder.build()
     }
 
-    @JvmName("publishNumber")
-    fun publish(vararg pairs: Pair<String, () -> Number>) {
-        pairs.forEach {
-            builder.publisher.publishNumber(it.first, it.second)
-        }
-    }
-
-    @JvmName("publishBoolean")
-    fun publish(vararg pairs: Pair<String, () -> Boolean>) {
-        pairs.forEach {
-            builder.publisher.publishBoolean(it.first, it.second)
-        }
-    }
-
-    @JvmName("publishString")
-    fun publish(vararg pairs: Pair<String, () -> String>) {
-        pairs.forEach {
-            builder.publisher.publishString(it.first, it.second)
-        }
-    }
-
-    @JvmName("publishSendable")
-    fun publish(vararg pairs: Pair<String, () -> Sendable>) {
-        pairs.forEach {
-            builder.publisher.publishSendable(it.first, it.second)
+    fun publish(vararg pairs: Pair<Function0<*>, String>) {
+        for (pair in pairs) {
+            try {
+                builder.publisher.publishNumber(pair.second, pair.first as () -> Number)
+                continue
+            } catch (e: ClassCastException) {}
+            try {
+                builder.publisher.publishString(pair.second, pair.first as () -> String)
+                continue
+            } catch (e: ClassCastException) {}
+            try {
+                builder.publisher.publishBoolean(pair.second, pair.first as () -> Boolean)
+                continue
+            } catch (e: ClassCastException) {}
+            try {
+                builder.publisher.publishSendable(pair.second, pair.first as () -> Sendable)
+                continue
+            } catch (e: ClassCastException) {}
+            throw IllegalArgumentException("Cannot publish '${pair.second}', invalid type")
         }
     }
 

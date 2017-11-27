@@ -1,8 +1,10 @@
 package org.snakeskin.auto
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
+import org.snakeskin.Constants
 import org.snakeskin.factory.ExecutorFactory
 import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
 
 /*
  * snakeskin - Created on 11/7/17
@@ -34,12 +36,17 @@ object AutoManager {
         }
     }
 
-    fun runSelected() {
+    @JvmStatic fun start() {
         val selectedAuto = chooser.selected
 
         if (selectedAuto != null) {
-
+            selectedAuto.reset()
+            activeFuture = executor.scheduleAtFixedRate(selectedAuto::tick, 0L, Constants.AUTO_RATE, TimeUnit.MILLISECONDS)
         }
+    }
+
+    @JvmStatic fun stop() {
+        activeFuture?.cancel(true)
     }
 
 }
