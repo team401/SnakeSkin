@@ -16,12 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
  * @version 10/20/17
  */
 class Publisher {
-    private val numbers = hashMapOf<String, () -> Number>()
+    private val numbers = hashMapOf<String, () -> Double>()
     private val booleans = hashMapOf<String, () -> Boolean>()
     private val strings = hashMapOf<String, () -> String>()
     private val sendables = hashMapOf<String, () -> Sendable>()
 
-    @Synchronized fun publishNumber(name: String, getter: () -> Number) = numbers.put(name, getter)
+    @Synchronized fun publishNumber(name: String, getter: () -> Double) = numbers.put(name, getter)
     @Synchronized fun publishBoolean(name: String, getter: () -> Boolean) = booleans.put(name, getter)
     @Synchronized fun publishString(name: String, getter: () -> String) = strings.put(name, getter)
     @Synchronized fun publishSendable(name: String, getter: () -> Sendable) = sendables.put(name, getter)
@@ -29,7 +29,7 @@ class Publisher {
     @Synchronized internal fun publish() {
         numbers.forEach {
             name, getter ->
-            SmartDashboard.putNumber(name, getter().toDouble())
+            SmartDashboard.putNumber(name, getter())
         }
         booleans.forEach {
             name, getter ->

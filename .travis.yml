@@ -1,0 +1,15 @@
+language: java
+deploy:
+  - provider: releases
+    api_key:
+      secure: PTJwXc9yCc+8JdmpuL1z22a2WhNGyrZnsK06LZa4aJ1+vBzaNiKdijArymQsccn+E2GCfGW3H8O4OxqYWveh4DN8jZuzSdoZxiK3sEa91I+Iop6bc0zAHIZCB62v8kZlJGEf66CipC0BEGw3G73AUtS0s6sHUjU2hL8pW2iCzGY1S3NUsheQg2oR+VHRP9VXj5BkwiimFYuvvl/L7bwAgVQu8JKvtNwZpjGQwIxQWXI072dBbfk1hbDl3a+X3Yu+3EQoEe1oTHTkflFTxqpc1qrzzM3eSbqPf2grGTIyoxNvEvZl5xts5/5ajOB2N89m+cPNcnBmnDB4vwpjcItZkX/8ZPJmzTZ8kP77CUPKoYyxMUHNPbaX0YgOlEv2OcBcM5CkgG8GLFLLI5V/XscqkgyB73ImYow/jSnxwQJ+vHwTIZyE9Kkl4IocYYOkZpQqoqn4ytETHsAaWaQEemUUOREIFErrX74+Tjz/1dy0g4UNKTI13l3tNzxG37JkWzF+BCIT/73sxTtL0PwjPZbcMVK4ycEwselvRrfe7qHEXdEcH5pGEZhxJWJXDueUPo+zn70gxG9sjVgKUcQ7+cGF2TepwG+oMQEjYMYKXiFhj/kJbNmq2ZSmGipxVvBkwhJDEs6uSxWESW+SsXLE1hQj7tI1DCYy8ht6RJmzrKHSS+c=
+    file_glob: true
+    file: build/libs/*
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: script
+    script: ./gradlew bintrayUpload
+    skip_cleanup: true
+    on:
+      tags: true

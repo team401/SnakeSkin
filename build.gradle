@@ -1,5 +1,5 @@
 group 'org.team401'
-version '1.1.5'
+version '1.1.7'
 
 buildscript {
     ext.kotlin_version = '1.1.0'
@@ -59,8 +59,8 @@ jar {
 }
 
 bintray {
-    user = project.hasProperty('user') ? project.property('user') : System.getenv("BINTRAY_USER") != null ? System.getenv("BINTRAY_USER") : ""
-    key = project.hasProperty('key') ? project.property('key'): System.getenv("BINTRAY_KEY") != null ? System.getenv("BINTRAY_KEY") : ""
+    user = project.hasProperty('user') ? project.property('user') : System.getenv("BINTRAY_USER")
+    key = project.hasProperty('key') ? project.property('key'): System.getenv("BINTRAY_KEY")
     configurations = ['archives']
     pkg {
         repo = "SnakeSkin"
