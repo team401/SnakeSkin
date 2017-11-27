@@ -18,4 +18,5 @@ object Constants {
     const val LOG_RATE = 1000L
     const val CONTROLLER_POLL_RATE = 20L
     const val SENSOR_POLL_RATE = 20L
+    const val AUTO_RATE = 10L
 }

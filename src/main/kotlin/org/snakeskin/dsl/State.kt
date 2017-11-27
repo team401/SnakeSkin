@@ -40,31 +40,25 @@ class StateMachineBuilder: Builder<StateMachine> {
         builder.elseCondition = stateBuilder.build()
     }
 
-    @JvmName("publishNumber")
-    fun publish(vararg pairs: Pair<() -> Double, String>) {
-        pairs.forEach {
-            builder.publisher.publishNumber(it.second, it.first)
-        }
-    }
-
-    @JvmName("publishBoolean")
-    fun publish(vararg pairs: Pair<() -> Boolean, String>) {
-        pairs.forEach {
-            builder.publisher.publishBoolean(it.second, it.first)
-        }
-    }
-
-    @JvmName("publishString")
-    fun publish(vararg pairs: Pair<() -> String, String>) {
-        pairs.forEach {
-            builder.publisher.publishString(it.second, it.first)
-        }
-    }
-
-    @JvmName("publishSendable")
-    fun publish(vararg pairs: Pair<() -> Sendable, String>) {
-        pairs.forEach {
-            builder.publisher.publishSendable(it.second, it.first)
+    fun publish(vararg pairs: Pair<Function0<*>, String>) {
+        for (pair in pairs) {
+            try {
+                builder.publisher.publishNumber(pair.second, pair.first as () -> Number)
+                continue
+            } catch (e: ClassCastException) {}
+            try {
+                builder.publisher.publishString(pair.second, pair.first as () -> String)
+                continue
+            } catch (e: ClassCastException) {}
+            try {
+                builder.publisher.publishBoolean(pair.second, pair.first as () -> Boolean)
+                continue
+            } catch (e: ClassCastException) {}
+            try {
+                builder.publisher.publishSendable(pair.second, pair.first as () -> Sendable)
+                continue
+            } catch (e: ClassCastException) {}
+            throw IllegalArgumentException("Cannot publish '${pair.second}', invalid type")
         }
     }
 
