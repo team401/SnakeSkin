@@ -22,7 +22,7 @@ fun autoStep(setup: AutoStepBuilder.() -> Unit): AutoStep {
 }
 
 class AutoStepBuilder: Builder<AutoStep> {
-    private val builder = AutoStep({}, {}, {})
+    private val builder = AutoStep()
     override fun build() = builder
 
     fun entry(action: () -> Unit) {

@@ -68,7 +68,7 @@ class StateMachineBuilder: Builder<StateMachine> {
 }
 
 open class StateBuilder(name: String): Builder<State> {
-    protected val builder = State(name, {}, {}, {})
+    protected val builder = State(name, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA)
     override fun build() = builder
 
     fun entry(action: () -> Unit) {

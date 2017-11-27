@@ -16,6 +16,9 @@ import org.omg.PortableServer.POAHelper
  */
 
 class Auto(val name: String, vararg inSteps: Any) {
+    companion object {
+        val EMPTY_LAMBDA = {}
+    }
     val steps = arrayListOf<AutoStep>()
     var activeStep = 0
     private set
@@ -49,7 +52,12 @@ class Auto(val name: String, vararg inSteps: Any) {
                 when (stage) {
                     0 -> { //Stage 0, meaning we should run the entry method for this step
                         steps[activeStep].entry()
-                        stage = 1 //Stage 0 is over as soon as entry finishes, so transition to stage 1
+                        if (steps[activeStep].action === EMPTY_LAMBDA) {
+                            stage = 2 //There is no action, so we are done.  Jump straight to exit
+                            steps[activeStep].done = true
+                        } else {
+                            stage = 1 //Stage 0 is over as soon as entry finishes, so transition to stage 1
+                        }
                     }
                     1 -> { //Stage 1, meaning we should run the action method for this step
                         steps[activeStep].action()

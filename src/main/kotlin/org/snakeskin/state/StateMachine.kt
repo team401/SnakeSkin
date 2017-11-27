@@ -26,13 +26,16 @@ import java.util.concurrent.locks.ReentrantLock
  */
 
 class StateMachine {
+    companion object {
+        val EMPTY_LAMBDA = {}
+    }
     private val EXECUTOR = ExecutorFactory.getExecutor("State Machine")
     private val SCHEDULER = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
 
     private val states = arrayListOf<State>()
     fun addState(state: State) = states.add(state)
 
-    var elseCondition = State(States.ELSE, {}, {}, {})
+    var elseCondition = State(States.ELSE, EMPTY_LAMBDA, EMPTY_LAMBDA, EMPTY_LAMBDA)
 
     private var activeState: State? = null
     private var activeFuture: ScheduledFuture<*>? = null
@@ -77,7 +80,7 @@ class StateMachine {
                 }.get() //And wait
 
                 //RUN THE LOOP OF THE NEW STATE
-                if (desiredState.action != {}) { //If the target state has an action
+                if (desiredState.action !== EMPTY_LAMBDA) { //If the target state has an action
                     if (publisher.populated()) { //If the publisher has tasks
                         activeFuture = EXECUTOR.scheduleAtFixedRate({desiredState.action; publisher.publish()}, 0, desiredState.rate, TimeUnit.MILLISECONDS)
                     } else { //The publisher has no tasks
