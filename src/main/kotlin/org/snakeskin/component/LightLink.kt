@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.I2C
  * @version 9/23/17
  */
 
+@Deprecated("Use the 'LightLink-Java' project instead", ReplaceWith("https://github.com/team401/LightLink-java"))
 class LightLink(address: Int = 0x42, port: I2C.Port = I2C.Port.kMXP): Component {
     companion object {
         private val LL_LOCK = Any()
