@@ -1,6 +1,6 @@
 package org.snakeskin.auto
 
-import com.ctre.ILoopable
+import com.ctre.phoenix.ILoopable
 
 /*
  * snakeskin - Created on 11/26/17
@@ -18,10 +18,10 @@ import com.ctre.ILoopable
 class PhoenixAdapter(loopable: ILoopable?): AutoStep() {
     init {
         if (loopable != null) {
-            entry = loopable::OnStart
-            action = loopable::OnLoop
-            exit = loopable::OnStop
-            done = loopable.IsDone()
+            entry = loopable::onStart
+            action = loopable::onLoop
+            exit = loopable::onStop
+            done = loopable.isDone
         }
     }
 }

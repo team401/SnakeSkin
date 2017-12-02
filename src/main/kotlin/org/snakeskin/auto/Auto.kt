@@ -30,7 +30,8 @@ class Auto(val name: String, vararg inSteps: Any) {
         when (step) {
             is AutoStep -> steps.add(step)
             is Function0<*> -> steps.add(LambdaAdapter(step))
-            is com.ctre.ILoopable -> steps.add(PhoenixAdapter(step))
+            is com.ctre.phoenix.ILoopable -> steps.add(PhoenixAdapter(step))
+            else -> throw IllegalArgumentException("'$step' is not a valid auto step!")
         }
     }
 

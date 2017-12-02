@@ -88,7 +88,7 @@ class StateMachine {
                     }
                 } else { //Otherwise, just schedule the publisher
                     if (publisher.populated()) { //If it has tasks
-                        activeFuture = EXECUTOR.scheduleAtFixedRate({ publisher.publish() }, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                        activeFuture = EXECUTOR.scheduleAtFixedRate(publisher::publish, 0, desiredState.rate, TimeUnit.MILLISECONDS)
                     }
                 }
 
