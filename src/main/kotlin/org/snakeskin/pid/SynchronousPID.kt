@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.util.BoundaryException
  * Does all computation synchronously (i.e. the calculate() function must be
  * called by the user from his own thread)
  */
+@Deprecated("Use 'PIDController' instead", ReplaceWith("PIDController", "org.snakeskin.logic.PIDController"))
 class SynchronousPID(var p: Double, var i: Double, var d: Double) {
 
     private var maximumOutput = 1.0

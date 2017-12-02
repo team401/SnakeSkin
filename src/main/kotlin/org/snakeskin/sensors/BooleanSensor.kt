@@ -17,7 +17,6 @@ import org.snakeskin.logic.History
  */
 
 open class BooleanSensor(override var inverted: Boolean = false, private val getter: () -> Boolean): Sensor<Boolean>(), AInvertable {
-    override var changedListener = {}
     var triggeredListener = {}
     var untriggeredListener = {}
     private val history = History<Boolean>()
@@ -33,7 +32,7 @@ open class BooleanSensor(override var inverted: Boolean = false, private val get
     override fun pollImpl() {
         history.update(read())
         if (history.changed()) {
-            changedListener()
+            callListeners(history.current!!)
         }
 
         if (history.current == true) {

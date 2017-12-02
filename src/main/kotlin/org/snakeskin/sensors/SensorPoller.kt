@@ -19,24 +19,10 @@ import java.util.concurrent.TimeUnit
  */
 object SensorPoller {
     private val EXECUTOR = ExecutorFactory.getExecutor("SensorPoller")
-    private val pollGroups = ConcurrentHashMap<Long, Vector<Sensor<*>>>()
-
-    private fun scheduleNewPollGroup(group: Long) {
-        EXECUTOR.scheduleAtFixedRate({
-            pollGroups[group]?.forEach {
-                it.pollImpl()
-            }
-        }, 0L, group, TimeUnit.MILLISECONDS)
-    }
 
     fun addSensor(sensor: Sensor<*>) {
         if (sensor.pollRate != -1L) {
-            if (!pollGroups.contains(sensor.pollRate)) {
-                pollGroups.put(sensor.pollRate, Vector())
-                scheduleNewPollGroup(sensor.pollRate)
-            }
-
-            pollGroups[sensor.pollRate]?.addElement(sensor)
+            EXECUTOR.scheduleAtFixedRate(sensor::pollImpl, 0L, sensor.pollRate, TimeUnit.MILLISECONDS)
         }
     }
 }

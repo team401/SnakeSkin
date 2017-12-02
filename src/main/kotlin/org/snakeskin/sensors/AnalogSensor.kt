@@ -21,7 +21,6 @@ open class AnalogSensor(val analogInput: AnalogInput, override var deadband: Dou
     fun getAveragedVoltage() = analogInput.averageVoltage - zero
     fun getAveragedValue() = analogInput.averageValue - rawZero
 
-    override var changedListener = {}
     var analogReceivingChangeListener: (Double, Int, Double, Int) -> Unit = { _, _, _, _ -> }
 
     override fun zero() {
