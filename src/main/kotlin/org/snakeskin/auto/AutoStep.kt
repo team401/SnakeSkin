@@ -35,6 +35,7 @@ open class AutoStep: ATickable {
                 exit()
                 state = State.CONTINUE
             }
+            else -> {}
         }
     }
 

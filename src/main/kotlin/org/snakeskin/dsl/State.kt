@@ -40,6 +40,7 @@ class StateMachineBuilder: Builder<StateMachine> {
         builder.elseCondition = stateBuilder.build()
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun publish(vararg pairs: Pair<Function0<*>, String>) {
         for (pair in pairs) {
             try {

@@ -16,6 +16,7 @@ package org.snakeskin.auto
 class LambdaAdapter(lambdaIn: Function0<*>): LambdaAutoStep() {
     init {
         try {
+            @Suppress("UNCHECKED_CAST")
             entry = lambdaIn as () -> Unit
         } catch (e: ClassCastException) {
             throw IllegalArgumentException("Invalid lambda type!", e)
