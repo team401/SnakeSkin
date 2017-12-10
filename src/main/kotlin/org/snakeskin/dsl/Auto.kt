@@ -1,6 +1,7 @@
 package org.snakeskin.dsl
 
 import org.snakeskin.auto.AutoStep
+import org.snakeskin.auto.LambdaAutoStep
 
 /*
  * snakeskin - Created on 11/7/17
@@ -22,7 +23,7 @@ fun autoStep(setup: AutoStepBuilder.() -> Unit): AutoStep {
 }
 
 class AutoStepBuilder: Builder<AutoStep> {
-    private val builder = AutoStep()
+    private val builder = LambdaAutoStep()
     override fun build() = builder
 
     fun entry(action: () -> Unit) {

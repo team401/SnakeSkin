@@ -13,10 +13,10 @@ package org.snakeskin.auto
  * @version 11/26/17
  */
 
-class LambdaAdapter(lambda: Function0<*>): AutoStep() {
+class LambdaAdapter(lambdaIn: Function0<*>): LambdaAutoStep() {
     init {
         try {
-            entry = lambda as () -> Unit
+            entry = lambdaIn as () -> Unit
         } catch (e: ClassCastException) {
             throw IllegalArgumentException("Invalid lambda type!", e)
         }

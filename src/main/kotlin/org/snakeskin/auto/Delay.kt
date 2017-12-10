@@ -13,4 +13,6 @@ package org.snakeskin.auto
  * @version 11/26/17
  */
 
-class Delay(time: Long): AutoStep({Thread.sleep(time)})
+class Delay(val time: Long): AutoStep() {
+    override fun entry() = Thread.sleep(time)
+}

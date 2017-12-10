@@ -83,6 +83,7 @@ public class Robot extends SampleRobot {
     public void disabled() {
         //If the auto script is running for some reason, we should stop it
         AutoManager.stop();
+        AutoManager.publish();
         //At this point the robot is disabled, so we should fire the "DISABLED" event to let everyone know that
         EventRouter.fireEvent(Events.DISABLED);
     }

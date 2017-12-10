@@ -15,13 +15,17 @@ import com.ctre.phoenix.ILoopable
  * @version 11/26/17
  */
 
-class PhoenixAdapter(loopable: ILoopable?): AutoStep() {
+class PhoenixAdapter(val loopable: ILoopable?): AutoStep() {
     init {
-        if (loopable != null) {
-            entry = loopable::onStart
-            action = loopable::onLoop
-            exit = loopable::onStop
-            done = loopable.isDone
+        if (loopable == null) {
+            throw IllegalArgumentException("Parameter 'loopable' cannot be null!")
         }
     }
+
+    override fun entry() = loopable?.OnStart() ?: Unit
+    override fun action() {
+        loopable?.OnLoop()
+        done = loopable?.IsDone() ?: true
+    }
+    override fun exit() = loopable?.OnStop() ?: Unit
 }

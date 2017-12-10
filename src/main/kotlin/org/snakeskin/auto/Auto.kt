@@ -1,6 +1,6 @@
 package org.snakeskin.auto
 
-import org.omg.PortableServer.POAHelper
+import org.snakeskin.ability.ATickable
 
 /*
  * snakeskin - Created on 11/7/17
@@ -15,14 +15,13 @@ import org.omg.PortableServer.POAHelper
  * @version 11/7/17
  */
 
-class Auto(val name: String, vararg inSteps: Any) {
+class Auto(val name: String, vararg inSteps: Any): ATickable {
     companion object {
         val EMPTY_LAMBDA = {}
     }
     val steps = arrayListOf<AutoStep>()
     var activeStep = 0
     private set
-    private var stage = 0;
     var done = false
     private set
 
@@ -44,34 +43,16 @@ class Auto(val name: String, vararg inSteps: Any) {
     fun reset() {
         activeStep = 0
         done = false
-        stage = 0
+        steps.forEach {
+            it.reset()
+        }
     }
 
-    fun tick() {
+    override fun tick() {
         if (!done) { //If the auto isn't done
             if (activeStep < steps.size) { //If the desired step is within the number of steps
-                when (stage) {
-                    0 -> { //Stage 0, meaning we should run the entry method for this step
-                        steps[activeStep].entry()
-                        if (steps[activeStep].action === EMPTY_LAMBDA) {
-                            stage = 2 //There is no action, so we are done.  Jump straight to exit
-                            steps[activeStep].done = true
-                        } else {
-                            stage = 1 //Stage 0 is over as soon as entry finishes, so transition to stage 1
-                        }
-                    }
-                    1 -> { //Stage 1, meaning we should run the action method for this step
-                        steps[activeStep].action()
-                        if (steps[activeStep].done) { //If the step is done
-                            stage = 2 //Advance to stage 2.  This only happens once the loop is done
-                        }
-                    }
-                    2 -> { //Stage 2, meaning we should run the exit method and reset for the next step
-                        steps[activeStep].exit()
-                        stage = 0 //Reset the stage to 0 for the next step
-                        activeStep++ //Increment the step counter
-                    }
-                }
+                steps[activeStep].tick()
+                if (steps[activeStep].doContinue()) activeStep++
             } else { //We are out of steps
                 done = true //Auto is done
             }

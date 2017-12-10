@@ -4,6 +4,7 @@ import org.snakeskin.auto.AutoManager
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.logging.LoggerManager
+import org.snakeskin.registry.Autos
 import org.snakeskin.registry.Controllers
 import org.snakeskin.registry.Sensors
 import org.snakeskin.registry.Subsystems
@@ -35,10 +36,10 @@ object InitManager {
      * This method runs after SETUP is loaded
      */
     @JvmStatic fun postStartup() {
-        AutoManager.publish()
         Controllers.initAll()
         ControlPoller.init()
         Subsystems.initAll()
         Sensors.initAll()
+        Autos.initAll()
     }
 }

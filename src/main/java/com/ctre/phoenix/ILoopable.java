@@ -18,8 +18,8 @@ package com.ctre.phoenix;
  * available on Maven
  */
 public interface ILoopable {
-    public void onStart();
-    public void onLoop();
-    public boolean isDone();
-    public void onStop();
+    public void OnStart();
+    public void OnLoop();
+    public boolean IsDone();
+    public void OnStop();
 }

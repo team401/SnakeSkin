@@ -1,6 +1,7 @@
 package org.snakeskin.auto
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.snakeskin.Constants
 import org.snakeskin.factory.ExecutorFactory
 import java.util.concurrent.ScheduledFuture
@@ -30,18 +31,27 @@ object AutoManager {
     }
 
 
-    fun publish() {
+    @JvmStatic fun publish() {
+        var first = true
         availableAutos.forEach {
-            chooser.addObject(it.name, it)
+            if (first) {
+                chooser.addDefault(it.name, it)
+                first = false
+
+            } else {
+                chooser.addObject(it.name, it)
+
+            }
         }
+        SmartDashboard.putData("Auto Mode", chooser)
     }
 
     @JvmStatic fun start() {
         val selectedAuto = chooser.selected
-
         if (selectedAuto != null) {
             selectedAuto.reset()
             activeFuture = executor.scheduleAtFixedRate(selectedAuto::tick, 0L, Constants.AUTO_RATE, TimeUnit.MILLISECONDS)
+
         }
     }
 
