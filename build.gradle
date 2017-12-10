@@ -1,18 +1,7 @@
-buildscript {
-    ext.kotlin_version = '1.1.0'
-
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-    }
-}
-
 plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.2.0"
     id "com.palantir.git-version" version "0.10.0"
+    id "com.jfrog.bintray" version "1.8.0"
 }
 
 group 'org.team401'
@@ -27,22 +16,19 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
 
+    //WPI Maven
     maven {
         url "http://first.wpi.edu/FRC/roborio/maven/release/"
-    }
-
-    maven {
-        url "http://dev.imjac.in/maven/"
     }
 }
 
 configurations {
-    required
+    required //Represents a dependency that must be provided by the applications using the library
     compile.extendsFrom required
 }
 
 dependencies {
-    required "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    required "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     required group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
 
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.2'

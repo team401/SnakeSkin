@@ -67,7 +67,7 @@ public class Robot extends SampleRobot {
 
         try {
             if (setupMethod != null) {
-                setupMethod.invoke(null, null); //Now, we'll run the "setup" method that is responsible for configuring the robot
+                setupMethod.invoke(null, (Object[]) null); //Now, we'll run the "setup" method that is responsible for configuring the robot
             }
         } catch (Exception e) {
             LoggerManager.logThrowable(new Exception("Exception encountered while running setup script", e));
@@ -83,6 +83,7 @@ public class Robot extends SampleRobot {
     public void disabled() {
         //If the auto script is running for some reason, we should stop it
         AutoManager.stop();
+        //Publish the available autonomous modes to SmartDashboard
         AutoManager.publish();
         //At this point the robot is disabled, so we should fire the "DISABLED" event to let everyone know that
         EventRouter.fireEvent(Events.DISABLED);
