@@ -33,7 +33,7 @@ object ExecutorFactory {
     }
 
     @Suppress("UNUSED_PARAMETER") //We plan to use 'reason' in the future
-    internal fun getExecutor(reason: String): ScheduledExecutorService {
+    fun getExecutor(reason: String): ScheduledExecutorService {
         if (Constants.USE_POOL) {
             return EXECUTOR
         } else {
@@ -42,5 +42,5 @@ object ExecutorFactory {
     }
 
     @Suppress("UNUSED_PARAMETER") //We plan to use 'reason' in the future
-    internal fun getSingleExecutor(reason: String) = Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)!!
+    fun getSingleExecutor(reason: String) = Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)!!
 }
