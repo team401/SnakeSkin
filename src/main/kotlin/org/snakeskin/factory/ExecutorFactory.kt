@@ -1,6 +1,7 @@
 package org.snakeskin.factory
 
 import org.snakeskin.Constants
+import org.snakeskin.annotation.PreStartup
 import java.util.concurrent.*
 
 /*
@@ -18,7 +19,7 @@ import java.util.concurrent.*
 object ExecutorFactory {
     private lateinit var EXECUTOR: ScheduledExecutorService
 
-    internal fun init() {
+    @PreStartup @JvmStatic internal fun init() {
         if (Constants.USE_POOL) {
             EXECUTOR = Executors.unconfigurableScheduledExecutorService(
                     ScheduledThreadPoolExecutor(Constants.POOL_SIZE, LoggedThreadFactory).apply {

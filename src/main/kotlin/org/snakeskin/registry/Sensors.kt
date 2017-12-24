@@ -1,5 +1,6 @@
 package org.snakeskin.registry
 
+import org.snakeskin.annotation.PostStartup
 import org.snakeskin.sensors.Sensor
 import org.snakeskin.sensors.SensorPoller
 
@@ -17,7 +18,7 @@ import org.snakeskin.sensors.SensorPoller
  */
 
 object Sensors: Registry<Sensor<*>>() {
-    override fun initAll() {
+    @PostStartup @JvmStatic fun initAll() {
         registry.forEach {
             SensorPoller.addSensor(it)
         }

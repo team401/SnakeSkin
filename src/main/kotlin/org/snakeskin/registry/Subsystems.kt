@@ -1,5 +1,6 @@
 package org.snakeskin.registry
 
+import org.snakeskin.annotation.PostStartup
 import org.snakeskin.subsystem.Subsystem
 
 /*
@@ -16,7 +17,7 @@ import org.snakeskin.subsystem.Subsystem
  */
 
 object Subsystems: Registry<Subsystem>() {
-    override fun initAll() {
+    @PostStartup @JvmStatic fun initAll() {
         registry.forEach {
             it.init()
         }

@@ -1,5 +1,7 @@
 package org.snakeskin.registry
 
+import org.snakeskin.annotation.PostStartup
+
 /*
  * snakeskin - Created on 8/18/17
  * Author: Cameron Earle
@@ -19,6 +21,4 @@ abstract class Registry<T> {
     fun add(vararg items: T) {
         registry.addAll(items)
     }
-
-    abstract internal fun initAll()
 }

@@ -1,5 +1,6 @@
 package org.snakeskin.registry
 
+import org.snakeskin.annotation.PostStartup
 import org.snakeskin.auto.Auto
 import org.snakeskin.auto.AutoManager
 
@@ -18,7 +19,7 @@ import org.snakeskin.auto.AutoManager
  */
 
 object Autos : Registry<Auto>() {
-    override fun initAll() {
+    @PostStartup @JvmStatic fun initAll() {
         AutoManager.registerAutos(registry)
     }
 }

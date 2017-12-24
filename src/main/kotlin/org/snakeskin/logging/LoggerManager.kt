@@ -3,6 +3,7 @@ package org.snakeskin.logging
 import com.google.gson.Gson
 import org.snakeskin.Constants
 import org.snakeskin.ability.ASerializable
+import org.snakeskin.annotation.PreStartup
 import org.snakeskin.factory.ExecutorFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -25,7 +26,7 @@ object LoggerManager {
 
     private val gson = Gson()
 
-    internal fun init() {
+    @PreStartup @JvmStatic internal fun init() {
 
     }
 

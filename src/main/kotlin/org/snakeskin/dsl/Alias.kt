@@ -19,3 +19,4 @@ package org.snakeskin.dsl
  */
 
 typealias Subsystem = org.snakeskin.subsystem.Subsystem
+typealias Setup = org.snakeskin.annotation.Setup

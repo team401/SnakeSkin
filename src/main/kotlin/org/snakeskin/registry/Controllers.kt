@@ -1,5 +1,6 @@
 package org.snakeskin.registry
 
+import org.snakeskin.annotation.PostStartup
 import org.snakeskin.controls.Controller
 import org.snakeskin.controls.ControlPoller
 
@@ -16,9 +17,10 @@ import org.snakeskin.controls.ControlPoller
  * @version 7/16/17
  */
 object Controllers: Registry<Controller>() {
-    override fun initAll() {
+    @PostStartup @JvmStatic fun initAll() {
         registry.forEach {
             ControlPoller.addController(it)
         }
+        ControlPoller.init()
     }
 }
