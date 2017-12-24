@@ -34,7 +34,7 @@ import java.util.concurrent.Future;
 SampleRobot is a great class to use for prebuilt Robot.java files like this, as it doesn't waste a thread with iterators
 that we aren't going to end up using.  It provides "on-start" methods that let us start up our own custom actions
  */
-public class Robot extends SampleRobot {
+public class RobotOld extends SampleRobot {
     private Class noparams[] = {};
 
     @Override

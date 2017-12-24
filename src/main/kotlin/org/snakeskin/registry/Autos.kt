@@ -1,6 +1,5 @@
 package org.snakeskin.registry
 
-import org.snakeskin.Robot
 import org.snakeskin.auto.Auto
 import org.snakeskin.auto.AutoManager
 
