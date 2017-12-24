@@ -1,0 +1,4 @@
+dependencies {
+    required group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
+    compile project(':SnakeSkin-Core')
+}
