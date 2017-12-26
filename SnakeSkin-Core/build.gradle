@@ -12,7 +12,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "SnakeSkin"
-        name = "SnakeSkin"
+        name = "SnakeSkin-Core"
         userOrg = "team401"
         licenses = ["GPL-3.0"]
         vcsUrl = "https://github.com/team401/snakeskin"

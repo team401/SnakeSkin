@@ -1,4 +1,22 @@
 dependencies {
     required group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
-    compile project(':SnakeSkin-Core')
+    required project(':SnakeSkin-Core')
+}
+
+apply plugin: 'com.jfrog.bintray'
+
+bintray {
+    user = project.hasProperty('user') ? project.property('user') : System.getenv("BINTRAY_USER") != null ? System.getenv("BINTRAY_USER") : ""
+    key = project.hasProperty('key') ? project.property('key'): System.getenv("BINTRAY_KEY") != null ? System.getenv("BINTRAY_KEY") : ""
+    configurations = ['archives']
+    pkg {
+        repo = "SnakeSkin"
+        name = "SnakeSkin-FRC"
+        userOrg = "team401"
+        licenses = ["GPL-3.0"]
+        vcsUrl = "https://github.com/team401/snakeskin"
+        version {
+            name = this.version
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package org.snakeskin
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner
+import org.slf4j.LoggerFactory
 import org.snakeskin.annotation.PostStartup
 import org.snakeskin.annotation.PreStartup
 import java.lang.reflect.Method
@@ -21,6 +22,7 @@ import java.lang.reflect.Method
 object InitManager {
     private val preStartupTasks = arrayListOf<Method>()
     private val postStartupTasks = arrayListOf<Method>()
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @JvmStatic fun register(scanner: FastClasspathScanner) {
         scanner.matchClassesWithMethodAnnotation(PreStartup::class.java) {

@@ -1,6 +1,8 @@
 package org.snakeskin.auto
 
 import org.snakeskin.ability.ATickable
+import org.snakeskin.factory.TypeAdapterFactory
+import java.lang.reflect.Type
 
 /*
  * snakeskin - Created on 11/7/17
@@ -18,6 +20,7 @@ import org.snakeskin.ability.ATickable
 class Auto(val name: String, vararg inSteps: Any): ATickable {
     companion object {
         val EMPTY_LAMBDA = {}
+        val adapters = TypeAdapterFactory<AutoStep>()
     }
     val steps = arrayListOf<AutoStep>()
     var activeStep = 0
@@ -29,8 +32,9 @@ class Auto(val name: String, vararg inSteps: Any): ATickable {
         when (step) {
             is AutoStep -> steps.add(step)
             is Function0<*> -> steps.add(LambdaAdapter(step))
-            is com.ctre.phoenix.ILoopable -> steps.add(PhoenixAdapter(step))
-            else -> throw IllegalArgumentException("'$step' is not a valid auto step!")
+            else -> {
+                steps.add(adapters.adapt(step) ?: throw IllegalArgumentException("'$step' is not a valid auto step!"))
+            }
         }
     }
 

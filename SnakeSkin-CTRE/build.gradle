@@ -1,0 +1,6 @@
+dependencies {
+    required group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
+    compile group: 'com.ctre', name: 'phoenix', version: '5.0.7.1'
+    required project(':SnakeSkin-Core')
+    required project(':SnakeSkin-FRC')
+}
