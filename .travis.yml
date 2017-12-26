@@ -13,3 +13,5 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
+notifications:
+    slack: team-401:onrGUBYH0HkkphR3GEkPjdaT
