@@ -1,8 +1,6 @@
 package org.snakeskin.component
 
 import com.ctre.phoenix.MotorControl.*
-import com.ctre.phoenix.MotorControl.CAN.BaseMotorController
-import com.ctre.phoenix.MotorControl.CAN.TalonSRX
 import org.snakeskin.CTREConstants
 
 /*
@@ -92,6 +90,10 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
     fun setInverted(inverted: Boolean, index: Int = -1) {
         runOnMaster(index) { this.inverted = inverted }
         runOnSlaves(index) { this.inverted = inverted }
+    }
+
+    fun enableVoltageCompensation(enable: Boolean) {
+        master.enableVoltageCompensation(enable)
     }
 
     fun stop(index: Int = 0) {

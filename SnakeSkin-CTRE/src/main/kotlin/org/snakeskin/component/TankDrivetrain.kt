@@ -3,7 +3,10 @@ package org.snakeskin.component
 import com.ctre.phoenix.MotorControl.ControlMode
 import com.ctre.phoenix.MotorControl.NeutralMode
 import com.ctre.phoenix.Sensors.PigeonIMU
+import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.CTREConstants
+import org.snakeskin.ShifterState
+import org.snakeskin.logic.PIDParameters
 
 /*
  * snakeskin - Created on 12/25/17
@@ -18,67 +21,92 @@ import org.snakeskin.CTREConstants
  * @version 12/25/17
  */
 
-class TankDrivetrain(val wheelRadius: Double, val wheelbase: Double) {
+class TankDrivetrain(override val wheelRadius: Double, override val wheelbase: Double): Drivetrain {
     lateinit var left: Gearbox; private set
     lateinit var right: Gearbox; private set
     lateinit var imu: PigeonIMU; private set
+    lateinit var shifter: Solenoid; private set
+    override var invertLeft: Boolean = false; private set
+    override var invertRight: Boolean = false; private set
+    var invertShifter: Boolean = false; private set
+    var shifterState: ShifterState = ShifterState.LOW; private set
 
-    fun init(left: Gearbox, right: Gearbox, imu: PigeonIMU, invertLeft: Boolean = false, invertRight: Boolean = false) {
+    fun init(left: Gearbox, right: Gearbox, imu: PigeonIMU, shifter: Solenoid, invertLeft: Boolean = false, invertRight: Boolean = false, invertShifter: Boolean = false) {
         this.left = left
         this.right = right
         this.imu = imu
+        this.shifter = shifter
+        this.invertLeft = invertLeft
+        this.invertRight = invertRight
+        this.invertShifter = invertShifter
 
         this.left.setInverted(invertLeft)
         this.right.setInverted(invertRight)
     }
 
-    fun arcade(mode: ControlMode, translation: Double, rotation: Double) {
+    override fun arcade(mode: ControlMode, translation: Double, rotation: Double) {
         left.set(mode, translation + rotation)
         right.set(mode, translation - rotation)
     }
 
-    fun tank(mode: ControlMode, left: Double, right: Double) {
+    override fun tank(mode: ControlMode, left: Double, right: Double) {
         this.left.set(mode, left)
         this.right.set(mode, right)
     }
 
-    fun setCurrentLimit(continuousCurrent: Int, peakCurrent: Int = 0, peakDuration: Int = 0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
+    override fun setCurrentLimit(continuousCurrent: Int, peakCurrent: Int, peakDuration: Int, timeout: Int) {
         left.setCurrentLimit(continuousCurrent, peakCurrent, peakDuration, timeout)
         right.setCurrentLimit(continuousCurrent, peakCurrent, peakDuration, timeout)
     }
 
-    fun setRampRate(closedLoop: Double, openLoop: Double, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
+    override fun setRampRate(closedLoop: Double, openLoop: Double, timeout: Int) {
         left.setRampRate(closedLoop, openLoop, timeout)
         right.setRampRate(closedLoop, openLoop, timeout)
     }
 
-    fun setNeutralMode(mode: NeutralMode) {
+    override fun setNeutralMode(mode: NeutralMode) {
         left.setNeutralMode(mode)
         right.setNeutralMode(mode)
     }
 
-    fun stop() {
+    override fun stop() {
         left.stop()
         right.stop()
     }
 
-    fun getDistance() = (left.getPosition() + right.getPosition()) * wheelRadius * Math.PI
-    fun getVelocity() = (left.getVelocity() + right.getVelocity()) * wheelRadius * Math.PI
-    fun getYaw() = imu.yawPitchRoll[0]
+    override fun getDistance() = (left.getPosition() + right.getPosition()) * wheelRadius * Math.PI
+    override fun getVelocity() = (left.getVelocity() + right.getVelocity()) * wheelRadius * Math.PI
+    override fun getYaw() = imu.yawPitchRoll[0]
 
-    fun setPosition(position: Int) {
+    override fun setPosition(position: Int) {
         left.setPosition(position)
         right.setPosition(position)
     }
 
-    fun setYaw(yaw: Double) {
+    override fun setYaw(yaw: Double) {
         imu.setYaw(yaw)
     }
 
-    fun reset() {
+    override fun zero() {
         setPosition(0)
         setYaw(0.0)
     }
 
+    override fun enableVoltageCompensation(enable: Boolean) {
+        left.enableVoltageCompensation(enable)
+        right.enableVoltageCompensation(enable)
+    }
 
+    fun low() {
+        shifterState = ShifterState.LOW
+        if (invertShifter) shifter.set(true) else shifter.set(false)
+    }
+
+    fun high() {
+        shifterState = ShifterState.HIGH
+        if (invertShifter) shifter.set(false) else shifter.set(true)
+    }
+
+    fun isHigh() = shifterState == ShifterState.HIGH
+    fun isLow() = shifterState == ShifterState.LOW
 }

@@ -41,7 +41,7 @@ class PIDController(p: Double = 0.0,
 
     var outMagnitude: Double by LockingDelegate(outMagnitude) //Maximum allowed output magnitude from the controller
 
-    var setpoint: Double by LockingDelegate(0.0)
+    var setpoint: Double by LockingDelegate(setpoint)
     var output: Double by LockingDelegate(0.0)
         private set
 
@@ -73,6 +73,16 @@ class PIDController(p: Double = 0.0,
 
     @Synchronized fun resetIAccum() {
         iAccum = 0.0
+    }
+
+    @Synchronized fun atSetpoint() = Math.abs(error) < allowedError
+
+    @Synchronized fun reset() {
+        resetIAccum()
+        output = 0.0
+        prevError = 0.0
+        error = 0.0
+        out = 0.0
     }
 
     override fun update(newValue: Double){
