@@ -1,7 +1,7 @@
 package org.snakeskin.auto
 
-import com.ctre.phoenix.MotorControl.ControlMode
-import com.ctre.phoenix.MotorControl.NeutralMode
+import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.NeutralMode
 import org.snakeskin.auto.AutoStep
 import org.snakeskin.component.Drivetrain
 import org.snakeskin.logic.PIDController

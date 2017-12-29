@@ -14,4 +14,5 @@ package org.snakeskin
  */
 internal object CTREConstants {
     const val CONFIG_TIMEOUT = 20
+    const val PID_IDX = 0
 }

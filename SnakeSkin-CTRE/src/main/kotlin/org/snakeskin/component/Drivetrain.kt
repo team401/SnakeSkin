@@ -1,7 +1,7 @@
 package org.snakeskin.component
 
-import com.ctre.phoenix.MotorControl.ControlMode
-import com.ctre.phoenix.MotorControl.NeutralMode
+import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.NeutralMode
 import org.snakeskin.CTREConstants
 
 /*
@@ -29,11 +29,11 @@ interface Drivetrain {
     fun setRampRate(closedLoop: Double, openLoop: Double, timeout: Int = CTREConstants.CONFIG_TIMEOUT)
     fun setNeutralMode(mode: NeutralMode)
     fun stop()
-    fun getDistance(): Double
-    fun getVelocity(): Double
+    fun getDistance(pidIdx: Int = CTREConstants.PID_IDX): Double
+    fun getVelocity(pidIdx: Int = CTREConstants.PID_IDX): Double
     fun getYaw(): Double
     fun setPosition(position: Int)
-    fun setYaw(yaw: Double)
+    fun setYaw(yaw: Double, timeout: Int = CTREConstants.CONFIG_TIMEOUT)
     fun enableVoltageCompensation(enable: Boolean)
     fun zero()
 }

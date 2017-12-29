@@ -1,8 +1,8 @@
 package org.snakeskin.component
 
-import com.ctre.phoenix.MotorControl.ControlMode
-import com.ctre.phoenix.MotorControl.NeutralMode
-import com.ctre.phoenix.Sensors.PigeonIMU
+import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.sensors.PigeonIMU
 import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.CTREConstants
 import org.snakeskin.ShifterState
@@ -74,17 +74,21 @@ class TankDrivetrain(override val wheelRadius: Double, override val wheelbase: D
         right.stop()
     }
 
-    override fun getDistance() = (left.getPosition() + right.getPosition()) * wheelRadius * Math.PI
-    override fun getVelocity() = (left.getVelocity() + right.getVelocity()) * wheelRadius * Math.PI
-    override fun getYaw() = imu.yawPitchRoll[0]
+    override fun getDistance(pidIdx: Int) = (left.getPosition(pidIdx) + right.getPosition(pidIdx)) * wheelRadius * Math.PI
+    override fun getVelocity(pidIdx: Int) = (left.getVelocity(pidIdx) + right.getVelocity(pidIdx)) * wheelRadius * Math.PI
+    override fun getYaw(): Double {
+        val array = DoubleArray(3)
+        imu.getYawPitchRoll(array)
+        return array[0]
+    }
 
     override fun setPosition(position: Int) {
         left.setPosition(position)
         right.setPosition(position)
     }
 
-    override fun setYaw(yaw: Double) {
-        imu.setYaw(yaw)
+    override fun setYaw(yaw: Double, timeout: Int) {
+        imu.setYaw(yaw, timeout)
     }
 
     override fun zero() {

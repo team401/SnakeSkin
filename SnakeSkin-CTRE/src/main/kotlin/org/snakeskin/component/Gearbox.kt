@@ -1,6 +1,6 @@
 package org.snakeskin.component
 
-import com.ctre.phoenix.MotorControl.*
+import com.ctre.phoenix.motorcontrol.*
 import org.snakeskin.CTREConstants
 
 /*
@@ -58,13 +58,13 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
 
     fun set(mode: ControlMode, value: Double) = master.set(mode, value)
 
-    fun getPosition() = master.selectedSensorPosition
-    fun getVelocity() = master.selectedSensorVelocity
+    fun getPosition(pidIdx: Int = CTREConstants.PID_IDX) = master.getSelectedSensorPosition(pidIdx)
+    fun getVelocity(pidIdx: Int = CTREConstants.PID_IDX) = master.getSelectedSensorVelocity(pidIdx)
 
-    fun setPosition(position: Int, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.setSelectedSensorPosition(position, timeout)
+    fun setPosition(position: Int, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.setSelectedSensorPosition(position, pidIdx, timeout)
 
-    fun setSensor(sensor: FeedbackDevice, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, timeout)
-    fun setSensor(sensor: RemoteFeedbackDevice, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, timeout)
+    fun setSensor(sensor: FeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
+    fun setSensor(sensor: RemoteFeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
 
     fun setCurrentLimit(continuousCurrent: Int, peakCurrent: Int = 0, peakDuration: Int = 0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
         if (continuousCurrent == 0) {
