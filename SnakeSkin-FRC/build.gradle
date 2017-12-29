@@ -1,5 +1,5 @@
 dependencies {
-    required group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
+    required group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1-beta-5'
     required project(':SnakeSkin-Core')
 }
 
