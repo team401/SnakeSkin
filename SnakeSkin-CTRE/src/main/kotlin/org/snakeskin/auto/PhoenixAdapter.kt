@@ -18,15 +18,6 @@ import org.snakeskin.dsl.autoStep
  */
 
 class PhoenixAdapter(val loopable: ILoopable?): AutoStep() {
-    companion object {
-        @PreStartup @JvmStatic fun registerPhoenixAdapter() {
-            Auto.adapters.registerAdapter(ILoopable::class.java) {
-                val loopable = it as ILoopable
-                PhoenixAdapter(loopable)
-            }
-        }
-    }
-
     override fun entry() = loopable?.onStart() ?: Unit
     override fun action() {
         loopable?.onLoop()
