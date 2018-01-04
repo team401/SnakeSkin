@@ -30,7 +30,7 @@ object HumanControls {
         fun invertButton(button: Int) = controller.getButton(button).invert()
 
         fun deadbandAxis(axis: Int, deadband: Double) { controller.getAxis(axis).deadband = deadband }
-        fun scaleAxis(axis: Int, scaling: Scalar) { controller.getAxis(axis).scaler = scaling}
+        fun scaleAxis(axis: Int, scaling: Scalar) { controller.getAxis(axis).scalar = scaling}
     }
 
     class ButtonHandlerBuilder(private val controller: Controller, private val button: Int) {

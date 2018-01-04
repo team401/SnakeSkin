@@ -17,7 +17,7 @@ import org.snakeskin.subsystem.Subsystem
  */
 
 object Subsystems: Registry<Subsystem>() {
-    @PostStartup @JvmStatic fun initAll() {
+    @PostStartup @JvmStatic internal fun initAll() {
         registry.forEach {
             it.init()
         }

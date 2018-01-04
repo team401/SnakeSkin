@@ -19,11 +19,11 @@ import org.snakeskin.logic.scalars.Scalar
  * @version 5/25/2017
  */
 class Axis(override var inverted: Boolean = false, var deadband: Double = -1.0, private val getter: () -> Double): AReadable<Double>, AInvertable {
-    var scaler: Scalar = NoScaling
+    var scalar: Scalar = NoScaling
     @Synchronized set
 
     @Synchronized override fun read(): Double {
-        val delta = scaler.scale(getter())
+        val delta = scalar.scale(getter())
 
         if (deadband == -1.0 || Math.abs(delta) > deadband)
             return if (inverted) -delta else delta

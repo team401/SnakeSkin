@@ -19,7 +19,7 @@ import org.snakeskin.auto.AutoManager
  */
 
 object Autos : Registry<Auto>() {
-    @PostStartup @JvmStatic fun initAll() {
+    @PostStartup @JvmStatic internal fun initAll() {
         AutoManager.registerAutos(registry)
     }
 }
