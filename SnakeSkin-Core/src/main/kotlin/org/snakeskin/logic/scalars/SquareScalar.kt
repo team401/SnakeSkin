@@ -1,4 +1,4 @@
-package org.snakeskin.logic.scalers
+package org.snakeskin.logic.scalars
 
 /*
  * snakeskin - Created on 9/1/17
@@ -13,6 +13,6 @@ package org.snakeskin.logic.scalers
  * @version 9/1/17
  */
 
-object NoScaling: Scaler {
-    override fun scale(input: Double) = input
+object SquareScalar : Scalar {
+    override fun scale(input: Double) = if (input < 0.0) -input*input else input*input
 }

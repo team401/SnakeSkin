@@ -1,6 +1,4 @@
-package org.snakeskin.logic.scalers
-
-import org.snakeskin.logic.LowPass
+package org.snakeskin.logic.scalars
 
 /*
  * snakeskin - Created on 9/1/17
@@ -14,6 +12,7 @@ import org.snakeskin.logic.LowPass
  * @author Cameron Earle
  * @version 9/1/17
  */
-class LowPassScaler(smoothing: Double): LowPass(smoothing), Scaler {
-    override fun scale(input: Double) = lowPass(input)
+
+object CubicScalar : Scalar {
+    override fun scale(input: Double) = input*input*input
 }

@@ -29,48 +29,13 @@ import java.lang.reflect.Method
 class Robot: IterativeRobot() {
     override fun testPeriodic() {}
     override fun autonomousPeriodic() {}
-    override fun robotPeriodic() {}
     override fun teleopPeriodic() {}
     override fun disabledPeriodic() {}
+    override fun robotPeriodic() {}
 
     override fun robotInit() {
-        //First, we'll create a classpath scanner
-        val scanner = FastClasspathScanner()
-
-        //Next, we'll register all init tasks
-        InitManager.register(scanner)
-
-        //Now, by find the 'setup' method, but don't run it yet
-        val setupMethods = arrayListOf<Method>()
-
-        scanner.matchClassesWithMethodAnnotation(Setup::class.java) {
-            _, executable ->
-            if (executable is Method) {
-                setupMethods.add(executable)
-            }
-        }
-
-        //Now, we'll scan the classpath, populating all method arrays
-        scanner.scan()
-
-        //Next, we'll run the "pre-startup" init tasks
-        InitManager.preStartup()
-
-        //Now, tell the logger to log this thread, so any errors on startup are logged
-        LoggerManager.logMainThread()
-
-        //If there are not setup methods, crash the code here (this event will be logged as a crash)
-        if (setupMethods.isEmpty()) {
-            throw StartupException("No 'setup' methods found!  Make sure they are annotated with the '@Setup' annotation!")
-        }
-
-        //Run each setup method
-        setupMethods.forEach {
-            it.invoke(null)
-        }
-
-        //Now that the setup has been completed, we can run the "postStartup" init tasks
-        InitManager.postStartup()
+        //Run the Init Manager to initialize the user code
+        InitManager.init()
     }
 
     override fun disabledInit() {

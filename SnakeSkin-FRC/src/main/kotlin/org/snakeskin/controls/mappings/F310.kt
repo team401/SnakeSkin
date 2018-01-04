@@ -35,7 +35,8 @@ class F310(id: Int): Controller(id) {
         override val Buttons = ButtonsDefinitions()
 
         inner class HatsDefinitions : IMappingDefinitions.HatsDefinitions {
-            val D_PAD = addHat(0)        }
+            val D_PAD = addHat(0)
+        }
 
         override val Hats = HatsDefinitions()
     }

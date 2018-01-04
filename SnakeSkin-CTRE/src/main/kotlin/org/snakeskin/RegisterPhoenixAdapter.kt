@@ -18,7 +18,7 @@ import org.snakeskin.auto.PhoenixAdapter
  * @version 1/1/18
  */
 
-@PreStartup fun registerPhoenixAdapter() {
+@PreStartup internal fun registerPhoenixAdapter() {
     Auto.adapters.registerAdapter(ILoopable::class.java) {
         PhoenixAdapter(it as ILoopable)
     }

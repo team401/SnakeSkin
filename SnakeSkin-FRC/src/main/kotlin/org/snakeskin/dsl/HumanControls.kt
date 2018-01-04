@@ -2,8 +2,7 @@ package org.snakeskin.dsl
 
 import org.snakeskin.controls.Controller
 import org.snakeskin.controls.mappings.*
-import org.snakeskin.controls.mappings.*
-import org.snakeskin.logic.scalers.Scaler
+import org.snakeskin.logic.scalars.Scalar
 
 /*
  * snakeskin - Created on 7/17/17
@@ -31,7 +30,7 @@ object HumanControls {
         fun invertButton(button: Int) = controller.getButton(button).invert()
 
         fun deadbandAxis(axis: Int, deadband: Double) { controller.getAxis(axis).deadband = deadband }
-        fun scaleAxis(axis: Int, scaling: Scaler) { controller.getAxis(axis).scaler = scaling}
+        fun scaleAxis(axis: Int, scaling: Scalar) { controller.getAxis(axis).scaler = scaling}
     }
 
     class ButtonHandlerBuilder(private val controller: Controller, private val button: Int) {
@@ -113,6 +112,33 @@ object HumanControls {
     }
     fun dualAction(id: Int, setup: DualActionBuilder.() -> Unit = {}): DualAction {
         val builder = DualActionBuilder(DualAction(id))
+        builder.setup()
+        return builder.build()
+    }
+
+    //T16000M
+    class T16000MBuilder(private val t16000m: T16000M): Builder<T16000M>, ControlsBuilder(t16000m) {
+        override fun build() = t16000m
+
+        val Axes = t16000m.Mapping.Axes
+        val Buttons = t16000m.Mapping.Buttons
+        val Hats = t16000m.Mapping.Hats
+    }
+    fun t16000m(id: Int, setup: T16000MBuilder.() -> Unit = {}): T16000M {
+        val builder = T16000MBuilder(T16000M(id))
+        builder.setup()
+        return builder.build()
+    }
+
+    //SAITEK HEAVY EQUIPMENT SIDE PANEL
+    class SaitekButtonBoxBuilder(private val saitekButtonBox: SaitekButtonBox): Builder<SaitekButtonBox>, ControlsBuilder(saitekButtonBox) {
+        override fun build() = saitekButtonBox
+
+        val Axes = saitekButtonBox.Mapping.Axes
+        val Buttons = saitekButtonBox.Mapping.Buttons
+    }
+    fun saitekButtonBox(id: Int, setup: SaitekButtonBoxBuilder.() -> Unit = {}): SaitekButtonBox {
+        val builder=  SaitekButtonBoxBuilder(SaitekButtonBox(id))
         builder.setup()
         return builder.build()
     }

@@ -2,8 +2,8 @@ package org.snakeskin.controls
 
 import org.snakeskin.ability.AInvertable
 import org.snakeskin.ability.AReadable
-import org.snakeskin.logic.scalers.NoScaling
-import org.snakeskin.logic.scalers.Scaler
+import org.snakeskin.logic.scalars.NoScaling
+import org.snakeskin.logic.scalars.Scalar
 
 
 /*
@@ -19,7 +19,7 @@ import org.snakeskin.logic.scalers.Scaler
  * @version 5/25/2017
  */
 class Axis(override var inverted: Boolean = false, var deadband: Double = -1.0, private val getter: () -> Double): AReadable<Double>, AInvertable {
-    var scaler: Scaler = NoScaling
+    var scaler: Scalar = NoScaling
     @Synchronized set
 
     @Synchronized override fun read(): Double {
