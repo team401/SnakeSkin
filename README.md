@@ -1,5 +1,5 @@
 
-# SnakeSkin
+# SnakeSkin: Team 401 Robot Framework
 [![Travis](https://img.shields.io/travis/team401/SnakeSkin.svg)](https://travis-ci.org/team401/SnakeSkin)
 [![Gitbook](https://cdn.rawgit.com/aleen42/badges/master/src/gitbook_2.svg)](https://team401.gitbooks.io/snakeskin/content/)
 [![Language](https://img.shields.io/github/languages/top/team401/SnakeSkin.svg)](https://github.com/team401/SnakeSkin) 
@@ -11,8 +11,6 @@
 | Core  | [![Core](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-Core/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-Core/_latestVersion) |
 | FRC | [![FRC](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-FRC/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-FRC/_latestVersion)  |
 | CTRE  | [![CTRE](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-CTRE/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-CTRE/_latestVersion) |
-
-Robot framework used by Team 401
 
 SnakeSkin was our primary focus over the 2017 offseason.  SnakeSkin is a Kotlin framework that provides a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) to organize robot subsystems and components.  It consists of three modules (Core, FRC, and CTRE), allowing the user to pick only the components that they need.
 
