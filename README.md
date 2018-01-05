@@ -7,8 +7,8 @@
 | Module  | Download  |
 |---|---|
 | Core  | [![Core](https://img.shields.io/bintray/v/team401/SnakeSkin/SnakeSkin-Core.svg?style=for-the-badge)](https://bintray.com/team401/SnakeSkin/SnakeSkin-Core/_latestVersion) |
-| FRC | [![FRC](https://img.shields.io/bintray/v/team401/SnakeSkin/SnakeSkin-FRC.svg?style=for-the-badge)) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-FRC/_latestVersion)  |
-| CTRE  | [![CTRE](https://img.shields.io/bintray/v/team401/SnakeSkin/SnakeSkin-CTRE.svg?style=for-the-badge)) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-CTRE/_latestVersion) |
+| FRC | [![FRC](https://img.shields.io/bintray/v/team401/SnakeSkin/SnakeSkin-FRC.svg?style=for-the-badge)](https://bintray.com/team401/SnakeSkin/SnakeSkin-FRC/_latestVersion)  |
+| CTRE  | [![CTRE](https://img.shields.io/bintray/v/team401/SnakeSkin/SnakeSkin-CTRE.svg?style=for-the-badge)](https://bintray.com/team401/SnakeSkin/SnakeSkin-CTRE/_latestVersion) |
 
 Robot framework used by Team 401
 
