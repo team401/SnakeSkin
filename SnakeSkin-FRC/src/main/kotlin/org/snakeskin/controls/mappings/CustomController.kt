@@ -14,7 +14,7 @@ class CustomController(id: Int, numAxes: Int, numButtons: Int, numHats: Int): Co
         for (i in 1..numButtons) {
             addButton(i)
         }
-        for (i in 1..numHats) {
+        for (i in 0 until numHats) {
             addHat(i)
         }
     }

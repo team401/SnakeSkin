@@ -26,9 +26,9 @@ subprojects {
         maven {
             url "http://first.wpi.edu/FRC/roborio/maven/release/"
         }
-        //401 ThirdParty
+        //Jaci Third Party
         maven {
-            url "https://dl.bintray.com/team401/ThirdParty"
+            url "https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2"
         }
     }
 

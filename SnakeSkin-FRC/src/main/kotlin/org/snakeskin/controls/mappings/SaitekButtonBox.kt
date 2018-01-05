@@ -18,11 +18,11 @@ import org.snakeskin.controls.Controller
 class SaitekButtonBox(id: Int): Controller(id) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions: IMappingDefinitions.AxesDefinitions {
-            val PITCH_BLUE = addAxis(0)
-            val ROLL_BLUE = addAxis(1)
+            val ROLL_BLUE = addAxis(0)
+            val PITCH_BLUE = addAxis(1)
             val YAW_BLUE = addAxis(2)
-            val PITCH_RED = addAxis(3)
-            val ROLL_RED = addAxis(4)
+            val ROLL_RED = addAxis(3)
+            val PITCH_RED = addAxis(4)
             val YAW_RED = addAxis(5)
             //TODO check axis numbers
         }
@@ -30,6 +30,15 @@ class SaitekButtonBox(id: Int): Controller(id) {
 
         inner class ButtonsDefinitions: IMappingDefinitions.ButtonsDefinitions {
             //TODO populate scroll and stick buttons
+            init {
+                for (i in 1..24) {
+                    addButton(i)
+                }
+            }
+            val SCROLL_CLICK = addButton(25)
+            val SCROLL_UP = addButton(26)
+            val SCROLL_DOWN = addButton(27)
+            val STICK_BUTTON = addButton(28)
         }
         override val Buttons = ButtonsDefinitions()
 
