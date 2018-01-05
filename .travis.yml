@@ -14,4 +14,5 @@ deploy:
     on:
       tags: true
 notifications:
-    slack: team-401:onrGUBYH0HkkphR3GEkPjdaT
+    slack:
+      secure: nWvMVuWFfHfcCTJK0MJSXtsIzQvjGadXyeJHKdSxFbdELFtn/1rdXFEWQGXowxA/AmuHeu2J+2IfZfoH/rQC/7QNNO9knMpsd4vjxreEWEPP8SmTF/nYr8erVsny6l1hgICKISV2y0PIklXmQGINsZtVnZ5+9BXiV8XvJvK2lZnAr94k2+Jhbf9lMAb1rUrqNod1k08Vd9tney/TwDSL84EmlvrlsOSVq++m85QIHDA41pCwqPeWaqCFw8r3j2zmp5Ef/5H9ZuZjaZxEaIE/6TVNCXyGfFPZAlbBC3mIJS136QxD6P/WtnyvOJUyQqNFm0S/PHMVhsoDyJmsDZtcLYbpy5U13V8PL/zcSakaxhXuxr7lIPcTxmEpqHnAGHTDzsocNKXCrTLgFbmlJKcNcetmOo3RrxtmIEoN00bz4IfaIJGf9uPwz7IskFDfh4qtLWCQcSJSSSIKD2bfhaR9Dsmj0zegsVvXPCO/brXni7wGCOgxYGkYi89bt1e2DwX16Jo+/LKG07k/x1ApPcRxUUWySqz4Ibi/AlcZQdLjvYRoitTKg/yqvooxU8o6V6kUI2a1gfR6tTBQ62+k3k4I14BTWY5fcXlzeDZcnx5R3KSbqaeHDViSWahMtT2Og8WXdOD8BzI1vFN8S12ju/7OqUmw8H5lha6+d57kHA7XdjU=
