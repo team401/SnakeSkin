@@ -35,5 +35,6 @@ interface Drivetrain {
     fun setPosition(position: Int)
     fun setYaw(yaw: Double, timeout: Int = CTREConstants.CONFIG_TIMEOUT)
     fun enableVoltageCompensation(enable: Boolean)
+    fun setOutputLimits(peakForward: Double = 1.0, peakReverse: Double = 1.0, nominalForward: Double = 1.0, nominalReverse: Double = 1.0, timeout: Int = CTREConstants.CONFIG_TIMEOUT)
     fun zero()
 }

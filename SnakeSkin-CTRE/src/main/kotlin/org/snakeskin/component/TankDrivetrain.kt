@@ -101,6 +101,11 @@ class TankDrivetrain(override val wheelRadius: Double, override val wheelbase: D
         right.enableVoltageCompensation(enable)
     }
 
+    override fun setOutputLimits(peakForward: Double, peakReverse: Double, nominalForward: Double, nominalReverse: Double, timeout: Int) {
+        left.setOutputLimits(peakForward, peakReverse, nominalForward, nominalReverse, timeout)
+        right.setOutputLimits(peakForward, peakReverse, nominalForward, nominalReverse, timeout)
+    }
+
     fun low() {
         shifterState = ShifterState.LOW
         if (invertShifter) shifter.set(true) else shifter.set(false)

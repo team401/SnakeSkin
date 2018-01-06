@@ -65,6 +65,7 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
 
     fun setSensor(sensor: FeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
     fun setSensor(sensor: RemoteFeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
+    fun setSensorPhase(phase: Boolean) = master.setSensorPhase(phase)
 
     fun setCurrentLimit(continuousCurrent: Int, peakCurrent: Int = 0, peakDuration: Int = 0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
         if (continuousCurrent == 0) {
@@ -80,6 +81,13 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
     fun setRampRate(closedLoop: Double = 0.0, openLoop: Double = 0.0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
         master.configClosedloopRamp(closedLoop, timeout)
         master.configOpenloopRamp(openLoop, timeout)
+    }
+
+    fun setOutputLimits(peakForward: Double = 1.0, peakReverse: Double = 1.0, nominalForward: Double = 1.0, nominalReverse: Double = 1.0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
+        master.configPeakOutputForward(peakForward, timeout)
+        master.configPeakOutputReverse(peakReverse, timeout)
+        master.configNominalOutputForward(nominalForward, timeout)
+        master.configNominalOutputReverse(nominalReverse, timeout)
     }
 
     fun setNeutralMode(mode: NeutralMode, index: Int = -1) {

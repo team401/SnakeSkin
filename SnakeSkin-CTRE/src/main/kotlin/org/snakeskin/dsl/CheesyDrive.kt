@@ -1,4 +1,4 @@
-package org.snakeskin
+package org.snakeskin.dsl
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import org.snakeskin.component.TankDrivetrain
