@@ -1,12 +1,8 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.0"
+    id "org.jetbrains.kotlin.jvm" version "1.2.0" apply false
     id "com.palantir.git-version" version "0.10.0"
     id "com.jfrog.bintray" version "1.8.0"
 }
-
-group 'org.snakeskin'
-
-jar.enabled = false
 
 allprojects {
     apply plugin: 'idea'
@@ -60,8 +56,4 @@ subprojects {
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
-}
-
-task deployAll() {
-
 }
