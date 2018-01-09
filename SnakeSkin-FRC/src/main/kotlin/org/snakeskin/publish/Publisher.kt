@@ -20,6 +20,7 @@ import kotlin.reflect.KProperty
 
 class Publisher<T>(initialValue: T) {
     private var value = initialValue
+    private val lock = Any()
 
     private fun publish(name: String) {
         when (value) {
@@ -31,11 +32,16 @@ class Publisher<T>(initialValue: T) {
         }
     }
 
-    operator fun getValue(thisRef: Any?, property: KProperty<*>) = value
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        synchronized(lock) {
+            return value
+        }
+    }
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        this.value = value
-        var data =
-        publish(property.name)
+        synchronized(lock) {
+            this.value = value
+            publish(property.name)
+        }
     }
 }

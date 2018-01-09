@@ -20,6 +20,7 @@ import kotlin.reflect.KProperty
 @Suppress("UNCHECKED_CAST")
 class Receiver<T>(defaultValue: T) {
     private var value = defaultValue
+    private val lock = Any()
 
     private fun receive(name: String): T {
         when (value) {
@@ -39,9 +40,15 @@ class Receiver<T>(defaultValue: T) {
         }
     }
 
-    operator fun getValue(thisRef: Any?, property: KProperty<*>) = receive(property.name)
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        synchronized(lock) {
+            return receive(property.name)
+        }
+    }
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        this.value = value
+        synchronized(lock) {
+            this.value = value
+        }
     }
 }
