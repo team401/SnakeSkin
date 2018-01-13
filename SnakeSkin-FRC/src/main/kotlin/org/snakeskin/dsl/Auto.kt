@@ -1,5 +1,6 @@
 package org.snakeskin.dsl
 
+import org.snakeskin.auto.AutoLoop
 import org.snakeskin.auto.AutoStep
 import org.snakeskin.auto.LambdaAutoStep
 
@@ -40,5 +41,29 @@ class AutoStepBuilder: Builder<AutoStep> {
 
     fun done() {
         builder.done = true
+    }
+}
+
+fun autoLoop(setup: AutoLoopBuilder.() -> Unit): AutoLoop {
+    val builder = AutoLoopBuilder()
+    builder.setup()
+    return builder.build()
+}
+
+class AutoLoopBuilder: Builder<AutoLoop> {
+    private val builder = AutoLoop()
+    override fun build() = builder
+
+    fun entry(action: () -> Unit) {
+        builder.entry = action
+    }
+
+    fun action(rate: Long = 10, action: () -> Unit) {
+        builder.rate = rate
+        builder.action = action
+    }
+
+    fun exit(action: () -> Unit) {
+        builder.exit = action
     }
 }
