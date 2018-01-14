@@ -1,6 +1,6 @@
 dependencies {
-    required group: 'edu.wpi.first.wpilibj', name: 'athena', version: '2017.3.1'
-    compile group: 'openrio.mirror.third.ctre', name: 'CTRE-phoenix-java', version: '5.1.2.1'
+    required group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1'
+    required group: 'openrio.mirror.third.ctre', name: 'CTRE-phoenix-java', version: '5.1.2.1'
     required project(':SnakeSkin-Core')
     required project(':SnakeSkin-FRC')
 }
