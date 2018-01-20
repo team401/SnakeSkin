@@ -20,7 +20,7 @@ object TempAutoManager {
     private val executor = ExecutorFactory.getExecutor("Auto")
     private var activeFuture: ScheduledFuture<*>? = null
 
-    lateinit var auto: AutoLoop
+    var auto = AutoLoop()
 
     fun start() {
         auto.entry()

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.snakeskin.annotation.PostStartup
 import org.snakeskin.annotation.PreStartup
 import org.snakeskin.annotation.Setup
+import org.snakeskin.exception.InitException
 import org.snakeskin.exception.StartupException
 import org.snakeskin.logging.LoggerManager
 import java.lang.reflect.Method
@@ -48,7 +49,11 @@ object InitManager {
     @JvmStatic fun preStartup() {
         preStartupTasks.forEach {
             it.isAccessible = true
-            it.invoke(null)
+            try {
+                it.invoke(null)
+            } catch (e: Exception) {
+                throw InitException("Exception while running pre-startup task '${it.javaClass.name}", e)
+            }
         }
     }
 
@@ -58,7 +63,11 @@ object InitManager {
     @JvmStatic fun postStartup() {
         postStartupTasks.forEach {
             it.isAccessible = true
-            it.invoke(null)
+            try {
+                it.invoke(null)
+            } catch (e: Exception) {
+                throw InitException("Exception while running post-startup task '${it.javaClass.name}", e)
+            }
         }
     }
 
@@ -99,7 +108,11 @@ object InitManager {
 
         //Run each setup method
         setupMethods.forEach {
-            it.invoke(null)
+            try {
+                it.invoke(null)
+            } catch (e: Exception) {
+                throw InitException("Exception while running setup method '${it.javaClass.name}", e)
+            }
         }
 
         //Now that the setup has been completed, we can run the "postStartup" init tasks

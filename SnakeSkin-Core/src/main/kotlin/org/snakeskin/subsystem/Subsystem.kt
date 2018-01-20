@@ -3,6 +3,7 @@ package org.snakeskin.subsystem
 import org.snakeskin.logic.Parameters
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
+import org.snakeskin.exception.InitException
 import org.snakeskin.exception.ItemNotFoundException
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.state.StateMachine
@@ -20,7 +21,7 @@ import org.snakeskin.state.StateMachine
  * @version 7/4/17
  */
 
-open class Subsystem {
+open class Subsystem(val name: String = "UNNAMED") {
     //Executor, for running subsystem actions
     private val executor = ExecutorFactory.getExecutor("Subsystem")
 
@@ -72,7 +73,11 @@ open class Subsystem {
 
     internal fun init() {
         setupTasks.forEach {
-            it()
+            try {
+                it()
+            } catch (e: Exception) {
+                throw InitException("Error occurred while running setup tasks for subsystem '$name'", e)
+            }
         }
         stateMachines.forEach {
             _, machine ->

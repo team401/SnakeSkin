@@ -20,14 +20,14 @@ import org.snakeskin.subsystem.Subsystem
 fun Subsystem.machine(machine: String) = getStateMachine(machine)
 fun Subsystem.machine() = getDefaultStateMachine()
 
-fun buildSubsystem(setup: SubsystemBuilder.() -> Unit): Subsystem {
-    val builder = SubsystemBuilder()
+fun buildSubsystem(name: String = "UNNAMED", setup: SubsystemBuilder.() -> Unit): Subsystem {
+    val builder = SubsystemBuilder(name)
     builder.setup()
     return builder.build()
 }
 
-class SubsystemBuilder: Builder<Subsystem> {
-    private val builder = Subsystem()
+class SubsystemBuilder(private val name: String): Builder<Subsystem> {
+    private val builder = Subsystem(name)
 
     fun setup(action: () -> Unit) {
         builder.addSetupTask(action)
