@@ -1,12 +1,12 @@
 package org.snakeskin.logging
 
 import com.google.gson.Gson
-import org.snakeskin.Constants
-import org.snakeskin.ability.ASerializable
-import org.snakeskin.annotation.PreStartup
+import org.snakeskin.SnakeskinConstants
 import org.snakeskin.factory.ExecutorFactory
+import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /*
  * snakeskin - Created on 8/26/17
@@ -22,11 +22,55 @@ import java.util.concurrent.TimeUnit
  */
 
 object LoggerManager {
+    private val HOME_DIR = System.getProperty("user.home")
+
     private val EXECUTOR = ExecutorFactory.getSingleExecutor("Logger")
 
     private val gson = Gson()
 
-    @PreStartup @JvmStatic internal fun init() {
+    private fun crashMessage(date: Date, t: Throwable): String {
+        val sw = StringWriter()
+        val pw = PrintWriter(sw)
+        sw.append(
+"""
+███████╗███╗   ██╗ █████╗ ██╗  ██╗███████╗███████╗██╗  ██╗██╗███╗   ██╗        ██╗
+██╔════╝████╗  ██║██╔══██╗██║ ██╔╝██╔════╝██╔════╝██║ ██╔╝██║████╗  ██║    ██╗██╔╝
+███████╗██╔██╗ ██║███████║█████╔╝ █████╗  ███████╗█████╔╝ ██║██╔██╗ ██║    ╚═╝██║
+╚════██║██║╚██╗██║██╔══██║██╔═██╗ ██╔══╝  ╚════██║██╔═██╗ ██║██║╚██╗██║    ██╗██║
+███████║██║ ╚████║██║  ██║██║  ██╗███████╗███████║██║  ██╗██║██║ ╚████║    ╚═╝╚██╗
+╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝        ╚═╝
+
+SnakeSkin encountered a crash it couldn't recover from.
+
+Timestamp: $date
+
+Full stack trace below:
+""")
+        pw.println()
+        t.printStackTrace(pw)
+
+        return sw.toString()
+    }
+
+    private fun deleteFiles(folder: File) {
+        if (folder.isDirectory) {
+            var files = folder.listFiles()
+            files.sortBy {
+                it.lastModified()
+            }
+
+            while (files.size >= SnakeskinConstants.MAX_LOG_FILES) {
+                files[0]?.delete()
+
+                files = folder.listFiles()
+                files.sortBy {
+                    it.lastModified()
+                }
+            }
+        }
+    }
+
+    @JvmStatic internal fun init() {
 
     }
 
@@ -35,8 +79,24 @@ object LoggerManager {
     }
 
     @JvmStatic @JvmOverloads fun logCrash(e: Throwable, t: Thread? = null) {
+        val date = Date(System.currentTimeMillis())
+
         e.printStackTrace()
-        //TODO add crash file
+
+        val folder = File("$HOME_DIR/snakeskin_crashes")
+
+        if (!folder.exists()) {
+            folder.mkdir()
+        }
+
+        deleteFiles(folder) //Delete old log files
+
+        val filename = date.toString().replace(' ', '_').replace(':', '-')
+
+        val file = File("$HOME_DIR/snakeskin_crashes/$filename")
+        file.writeText(crashMessage(date, e))
+
+        println("Crash report written to '${file.absolutePath}'")
     }
 
     @JvmStatic @JvmOverloads fun logMessage(message: String, level: LogLevel = LogLevel.INFO) {

@@ -2,7 +2,7 @@ package org.snakeskin.auto
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.snakeskin.Constants
+import org.snakeskin.SnakeskinConstants
 import org.snakeskin.factory.ExecutorFactory
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -50,7 +50,7 @@ object AutoManager {
         val selectedAuto = chooser.selected
         if (selectedAuto != null) {
             selectedAuto.reset()
-            activeFuture = executor.scheduleAtFixedRate(selectedAuto::tick, 0L, Constants.AUTO_RATE, TimeUnit.MILLISECONDS)
+            activeFuture = executor.scheduleAtFixedRate(selectedAuto::tick, 0L, SnakeskinConstants.AUTO_RATE, TimeUnit.MILLISECONDS)
 
         }
     }

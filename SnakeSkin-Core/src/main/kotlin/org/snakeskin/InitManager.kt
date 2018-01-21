@@ -8,6 +8,7 @@ import org.snakeskin.annotation.Setup
 import org.snakeskin.exception.InitException
 import org.snakeskin.exception.StartupException
 import org.snakeskin.logging.LoggerManager
+import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
 /*
@@ -51,8 +52,12 @@ object InitManager {
             it.isAccessible = true
             try {
                 it.invoke(null)
-            } catch (e: Exception) {
-                throw InitException("Exception while running pre-startup task '${it.javaClass.name}", e)
+            } catch (e: InvocationTargetException) {
+                if (e.cause is InitException) {
+                    throw e.cause!!
+                } else {
+                    throw InitException("Exception while running pre-startup task '${it.name}", e.cause)
+                }
             }
         }
     }
@@ -65,8 +70,12 @@ object InitManager {
             it.isAccessible = true
             try {
                 it.invoke(null)
-            } catch (e: Exception) {
-                throw InitException("Exception while running post-startup task '${it.javaClass.name}", e)
+            } catch (e: InvocationTargetException) {
+                if (e.cause is InitException) {
+                    throw e.cause!!
+                } else {
+                    throw InitException("Exception while running post-startup task '${it.name}'", e.cause)
+                }
             }
         }
     }
@@ -75,7 +84,11 @@ object InitManager {
      * This method does the initialization
      */
     @JvmStatic fun init() {
-        //First, we'll create a classpath scanner
+        //First, we'll initialize and start the logger
+        LoggerManager.init()
+        LoggerManager.logMainThread()
+
+        //Next, we'll create a classpath scanner
         val scanner = FastClasspathScanner()
         scanner.ignoreMethodVisibility()
 
@@ -85,8 +98,7 @@ object InitManager {
         //Now, by find the 'setup' method, but don't run it yet
         val setupMethods = arrayListOf<Method>()
 
-        scanner.matchClassesWithMethodAnnotation(Setup::class.java) {
-            _, executable ->
+        scanner.matchClassesWithMethodAnnotation(Setup::class.java) { _, executable ->
             if (executable is Method) {
                 setupMethods.add(executable)
             }
@@ -98,9 +110,6 @@ object InitManager {
         //Next, we'll run the "pre-startup" init tasks
         preStartup()
 
-        //Now, tell the logger to log this thread, so any errors on startup are logged
-        LoggerManager.logMainThread()
-
         //If there are not setup methods, crash the code here (this event will be logged as a crash)
         if (setupMethods.isEmpty()) {
             throw StartupException("No 'setup' methods found!  Make sure they are annotated with the '@Setup' annotation!")
@@ -110,8 +119,12 @@ object InitManager {
         setupMethods.forEach {
             try {
                 it.invoke(null)
-            } catch (e: Exception) {
-                throw InitException("Exception while running setup method '${it.javaClass.name}", e)
+            } catch (e: InvocationTargetException) {
+                if (e.cause is InitException) {
+                    throw e.cause!!
+                } else {
+                    throw InitException("Exception while running setup method '${it.name}'", e.cause)
+                }
             }
         }
 
