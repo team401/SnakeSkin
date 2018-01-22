@@ -106,15 +106,19 @@ class TankDrivetrain(override val wheelRadius: Double, override val wheelbase: D
         right.setOutputLimits(peakForward, peakReverse, nominalForward, nominalReverse, timeout)
     }
 
-    fun low() {
-        shifterState = ShifterState.LOW
-        if (invertShifter) shifter.set(true) else shifter.set(false)
+    fun shift(state: ShifterState) {
+        shifterState = state
+        val high = !invertShifter
+        val low = invertShifter
+        when (shifterState) {
+            ShifterState.HIGH -> shifter.set(high)
+            ShifterState.LOW -> shifter.set(low)
+        }
+
     }
 
-    fun high() {
-        shifterState = ShifterState.HIGH
-        if (invertShifter) shifter.set(false) else shifter.set(true)
-    }
+    fun low() = shift(ShifterState.LOW)
+    fun high() = shift(ShifterState.HIGH)
 
     fun isHigh() = shifterState == ShifterState.HIGH
     fun isLow() = shifterState == ShifterState.LOW
