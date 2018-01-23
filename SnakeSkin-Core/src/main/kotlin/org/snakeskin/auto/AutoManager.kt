@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 /*
- * snakeskin - Created on 1/13/18
+ * snakeskin - Created on 1/23/18
  * Author: Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
@@ -14,17 +14,22 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author Cameron Earle
- * @version 1/13/18
+ * @version 1/23/18
  */
-object TempAutoManager {
+object AutoManager {
     private val executor = ExecutorFactory.getExecutor("Auto")
     private var activeFuture: ScheduledFuture<*>? = null
 
-    var auto = AutoLoop()
+    var auto = object : AutoLoop {
+        override val rate = 20L
+        override fun entry() {}
+        override fun action() {}
+        override fun exit() {}
+    }
 
     fun start() {
         auto.entry()
-        activeFuture = executor.scheduleAtFixedRate(auto.action, 0L, auto.rate, TimeUnit.MILLISECONDS)
+        activeFuture = executor.scheduleAtFixedRate(auto::action, 0L, auto.rate, TimeUnit.MILLISECONDS)
     }
 
     fun stop() {

@@ -1,7 +1,7 @@
 package org.snakeskin.auto
 
 /*
- * snakeskin - Created on 11/26/17
+ * snakeskin - Created on 1/23/18
  * Author: Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
@@ -10,9 +10,12 @@ package org.snakeskin.auto
 
 /**
  * @author Cameron Earle
- * @version 11/26/17
+ * @version 1/23/18
  */
+interface AutoLoop {
+    val rate: Long
 
-class Delay(val time: Long): AutoStep() {
-    override fun entry() = Thread.sleep(time)
+    fun entry()
+    fun action()
+    fun exit()
 }
