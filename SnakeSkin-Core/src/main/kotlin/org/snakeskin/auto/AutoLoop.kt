@@ -12,10 +12,18 @@ package org.snakeskin.auto
  * @author Cameron Earle
  * @version 1/23/18
  */
-interface AutoLoop {
-    val rate: Long
+abstract class AutoLoop {
+    open val rate = 10L
+    open var done = false
 
-    fun entry()
-    fun action()
-    fun exit()
+    abstract fun entry()
+    abstract fun action()
+    abstract fun exit()
+
+    fun tick(): Boolean {
+        if (!done) {
+            action()
+        }
+        return done
+    }
 }

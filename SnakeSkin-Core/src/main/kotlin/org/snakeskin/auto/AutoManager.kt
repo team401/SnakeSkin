@@ -20,7 +20,7 @@ object AutoManager {
     private val executor = ExecutorFactory.getExecutor("Auto")
     private var activeFuture: ScheduledFuture<*>? = null
 
-    var auto = object : AutoLoop {
+    var auto = object : AutoLoop() {
         override val rate = 20L
         override fun entry() {}
         override fun action() {}
@@ -29,7 +29,12 @@ object AutoManager {
 
     fun start() {
         auto.entry()
-        activeFuture = executor.scheduleAtFixedRate(auto::action, 0L, auto.rate, TimeUnit.MILLISECONDS)
+        activeFuture = executor.scheduleAtFixedRate({
+            val done = auto.tick()
+            if (done) {
+                stop()
+            }
+        }, 0L, auto.rate, TimeUnit.MILLISECONDS)
     }
 
     fun stop() {
