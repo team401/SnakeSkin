@@ -24,12 +24,10 @@ class SaitekButtonBox(id: Int): Controller(id) {
             val ROLL_RED = addAxis(3)
             val PITCH_RED = addAxis(4)
             val YAW_RED = addAxis(5)
-            //TODO check axis numbers
         }
         override val Axes = AxesDefinitions()
 
         inner class ButtonsDefinitions: IMappingDefinitions.ButtonsDefinitions {
-            //TODO populate scroll and stick buttons
             init {
                 for (i in 1..24) {
                     addButton(i)
@@ -42,9 +40,7 @@ class SaitekButtonBox(id: Int): Controller(id) {
         }
         override val Buttons = ButtonsDefinitions()
 
-        inner class HatsDefinitions: IMappingDefinitions.HatsDefinitions {
-
-        }
+        inner class HatsDefinitions: IMappingDefinitions.HatsDefinitions
         override val Hats = HatsDefinitions()
     }
     override val Mapping = MappingDefinitions()
