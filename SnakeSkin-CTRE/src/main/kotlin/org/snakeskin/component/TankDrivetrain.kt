@@ -74,8 +74,8 @@ class TankDrivetrain(override val wheelRadius: Double, override val wheelbase: D
         right.stop()
     }
 
-    override fun getDistance(pidIdx: Int) = (left.getPosition(pidIdx) + right.getPosition(pidIdx)) * wheelRadius * Math.PI
-    override fun getVelocity(pidIdx: Int) = (left.getVelocity(pidIdx) + right.getVelocity(pidIdx)) * wheelRadius * Math.PI
+    override fun getDistance(pidIdx: Int) = (left.getPosition(pidIdx) + right.getPosition(pidIdx)) / 2.0
+    override fun getVelocity(pidIdx: Int) = (left.getVelocity(pidIdx) + right.getVelocity(pidIdx)) / 2.0
     override fun getYaw(): Double {
         val array = DoubleArray(3)
         imu.getYawPitchRoll(array)
