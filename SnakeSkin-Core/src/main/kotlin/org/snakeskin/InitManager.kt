@@ -52,7 +52,7 @@ object InitManager {
             it.isAccessible = true
             try {
                 it.invoke(null)
-            } catch (e: InvocationTargetException) {
+            } catch (e: Exception) {
                 if (e.cause is InitException) {
                     throw e.cause!!
                 } else {
@@ -70,7 +70,7 @@ object InitManager {
             it.isAccessible = true
             try {
                 it.invoke(null)
-            } catch (e: InvocationTargetException) {
+            } catch (e: Exception) {
                 if (e.cause is InitException) {
                     throw e.cause!!
                 } else {
@@ -105,7 +105,9 @@ object InitManager {
         }
 
         //Now, we'll scan the classpath, populating all method arrays
+        println("SnakeSkin: Loading classes")
         scanner.scan()
+        println("SnakeSkin: Classes loaded")
 
         //Next, we'll run the "pre-startup" init tasks
         preStartup()
@@ -119,7 +121,7 @@ object InitManager {
         setupMethods.forEach {
             try {
                 it.invoke(null)
-            } catch (e: InvocationTargetException) {
+            } catch (e: Exception) {
                 if (e.cause is InitException) {
                     throw e.cause!!
                 } else {

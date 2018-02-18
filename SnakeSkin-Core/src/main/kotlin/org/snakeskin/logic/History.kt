@@ -19,10 +19,10 @@ import org.snakeskin.ability.AUpdatable
  * A simple class that tracks history of an object
  */
 open class History<T>: AUpdatable<T> {
-    var last: T? = null; private set
-    var current: T? = null; private set
+    var last: T? by LockingDelegate(null); private set
+    var current: T? by LockingDelegate(null); private set
 
-    override fun update(newValue: T) {
+    @Synchronized override fun update(newValue: T) {
         last = current
         current = newValue
     }
