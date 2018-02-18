@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit
 object AutoManager {
     private val executor = ExecutorFactory.getExecutor("Auto")
     private var activeFuture: ScheduledFuture<*>? = null
+    private var wasRunning = false
 
     var auto = object : AutoLoop() {
         override val rate = 20L
@@ -27,8 +28,9 @@ object AutoManager {
         override fun exit() {}
     }
 
-    fun start() {
+    @Synchronized fun start() {
         auto.entry()
+        wasRunning = true
         activeFuture = executor.scheduleAtFixedRate({
             val done = auto.tick()
             if (done) {
@@ -37,8 +39,11 @@ object AutoManager {
         }, 0L, auto.rate, TimeUnit.MILLISECONDS)
     }
 
-    fun stop() {
+    @Synchronized fun stop() {
         activeFuture?.cancel(true)
-        auto.exit()
+        if (wasRunning) {
+            auto.exit()
+        }
+        wasRunning = false
     }
 }

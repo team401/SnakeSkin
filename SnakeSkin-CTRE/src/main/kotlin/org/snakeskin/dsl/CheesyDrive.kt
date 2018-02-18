@@ -2,6 +2,8 @@ package org.snakeskin.dsl
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import org.snakeskin.component.TankDrivetrain
+import org.snakeskin.logic.scalars.NoScaling
+import org.snakeskin.logic.scalars.Scalar
 
 /*
  * snakeskin - Created on 12/26/17
@@ -34,7 +36,8 @@ data class CheesyDriveParameters(val highWheelNonLinearity: Double,
                                  val quickStopScalar: Double,
                                  val lowSinCount: Int,
                                  val highSinCount: Int,
-                                 val outputScalar: Double = 1.0) {
+                                 val outputScalar: Double = 1.0,
+                                 val quickTurnScalar: Scalar = NoScaling) {
 
     var oldWheel = 0.0
     var quickStopAccumulator = 0.0
@@ -53,6 +56,10 @@ data class CheesyDriveParameters(val highWheelNonLinearity: Double,
 fun TankDrivetrain.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleIn: Double, wheelIn: Double, quickTurn: Boolean = false) {
     var wheel = wheelIn
     var throttle = throttleIn
+
+    if (quickTurn) {
+        wheel = p.quickTurnScalar.scale(wheel)
+    }
 
     val negInertia = wheel - p.oldWheel
     p.oldWheel = wheel
