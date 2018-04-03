@@ -1,28 +1,28 @@
 package org.snakeskin.auto
 
 /*
- * snakeskin - Created on 1/23/18
+ * snakeskin - Created on 4/3/18
  * Author: Cameron Earle
- * 
+ *
  * This code is licensed under the GNU GPL v3
  * You can find more info in the LICENSE file at project root
  */
 
 /**
  * @author Cameron Earle
- * @version 1/23/18
+ * @version 4/3/18
  */
 abstract class AutoLoop {
     open val rate = 10L
     open var done = false
 
     abstract fun entry()
-    abstract fun action()
+    abstract fun action(currentTime: Double, lastTime: Double)
     abstract fun exit()
 
-    fun tick(): Boolean {
+    fun tick(currentTime: Double, lastTime: Double): Boolean {
         if (!done) {
-            action()
+            action(currentTime, lastTime)
         }
         return done
     }

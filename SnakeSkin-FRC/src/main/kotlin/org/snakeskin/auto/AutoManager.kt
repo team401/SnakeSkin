@@ -1,11 +1,10 @@
 package org.snakeskin.auto
 
-import org.snakeskin.factory.ExecutorFactory
-import java.util.concurrent.ScheduledFuture
-import java.util.concurrent.TimeUnit
+import edu.wpi.first.wpilibj.Notifier
+import edu.wpi.first.wpilibj.Timer
 
 /*
- * snakeskin - Created on 1/23/18
+ * snakeskin - Created on 4/3/18
  * Author: Cameron Earle
  * 
  * This code is licensed under the GNU GPL v3
@@ -14,33 +13,39 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author Cameron Earle
- * @version 1/23/18
+ * @version 4/3/18
  */
 object AutoManager {
-    private val executor = ExecutorFactory.getExecutor("Auto")
-    private var activeFuture: ScheduledFuture<*>? = null
+    private val notifier = Notifier(::tick)
     private var wasRunning = false
+    private var time = 0.0
+    private var lastTime = 0.0
 
     var auto = object : AutoLoop() {
         override val rate = 20L
         override fun entry() {}
-        override fun action() {}
+        override fun action(currentTime: Double, lastTime: Double) {}
         override fun exit() {}
+    }
+
+    private fun tick() {
+        time = Timer.getFPGATimestamp()
+        if (auto.tick(time, lastTime)) {
+            stop()
+        }
+        lastTime = time
     }
 
     @Synchronized fun start() {
         auto.entry()
         wasRunning = true
-        activeFuture = executor.scheduleAtFixedRate({
-            val done = auto.tick()
-            if (done) {
-                stop()
-            }
-        }, 0L, auto.rate, TimeUnit.MILLISECONDS)
+        time = 0.0
+        lastTime = 0.0
+        notifier.startPeriodic(auto.rate / 1000.0)
     }
 
     @Synchronized fun stop() {
-        activeFuture?.cancel(true)
+        notifier.stop()
         if (wasRunning) {
             auto.exit()
         }
