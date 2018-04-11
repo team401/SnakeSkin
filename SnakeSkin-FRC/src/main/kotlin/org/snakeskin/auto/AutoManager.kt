@@ -2,6 +2,9 @@ package org.snakeskin.auto
 
 import edu.wpi.first.wpilibj.Notifier
 import edu.wpi.first.wpilibj.Timer
+import org.snakeskin.factory.ExecutorFactory
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
 
 /*
  * snakeskin - Created on 4/3/18
@@ -16,7 +19,8 @@ import edu.wpi.first.wpilibj.Timer
  * @version 4/3/18
  */
 object AutoManager {
-    private val notifier = Notifier(::tick)
+    private val executor = ExecutorFactory.getExecutor("Auto")
+    private var future: ScheduledFuture<*>? = null
     private var wasRunning = false
     private var time = 0.0
     private var lastTime = 0.0
@@ -41,11 +45,11 @@ object AutoManager {
         wasRunning = true
         time = 0.0
         lastTime = 0.0
-        notifier.startPeriodic(auto.rate / 1000.0)
+        future = executor.scheduleAtFixedRate(::tick, 0L, auto.rate, TimeUnit.MILLISECONDS)
     }
 
     @Synchronized fun stop() {
-        notifier.stop()
+        future?.cancel(true)
         if (wasRunning) {
             auto.exit()
         }
