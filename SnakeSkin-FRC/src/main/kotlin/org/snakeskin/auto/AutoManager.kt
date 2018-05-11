@@ -25,11 +25,19 @@ object AutoManager {
     private var time = 0.0
     private var lastTime = 0.0
 
-    var auto = object : AutoLoop() {
+    private var auto: AutoLoop = object : AutoLoop() {
         override val rate = 20L
-        override fun entry() {}
+        override fun startTasks() {}
+        override fun stopTasks() {}
+        override fun entry(currentTime: Double) {}
         override fun action(currentTime: Double, lastTime: Double) {}
-        override fun exit() {}
+        override fun exit(currentTime: Double) {}
+    }
+
+    fun setAutoLoop(loop: AutoLoop) {
+        auto.stopTasks()
+        auto = loop
+        auto.startTasks()
     }
 
     private fun tick() {
@@ -41,17 +49,18 @@ object AutoManager {
     }
 
     @Synchronized fun start() {
-        auto.entry()
+        time = Timer.getFPGATimestamp()
+        auto.entry(time)
         wasRunning = true
-        time = 0.0
         lastTime = 0.0
         future = executor.scheduleAtFixedRate(::tick, 0L, auto.rate, TimeUnit.MILLISECONDS)
     }
 
     @Synchronized fun stop() {
+        time = Timer.getFPGATimestamp()
         future?.cancel(true)
         if (wasRunning) {
-            auto.exit()
+            auto.exit(time)
         }
         wasRunning = false
     }

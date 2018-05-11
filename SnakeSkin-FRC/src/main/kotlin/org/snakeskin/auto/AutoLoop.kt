@@ -14,11 +14,15 @@ package org.snakeskin.auto
  */
 abstract class AutoLoop {
     open val rate = 10L
+    open val preRate = 10L
     open var done = false
 
-    abstract fun entry()
+    abstract fun startTasks()
+    abstract fun stopTasks()
+
+    abstract fun entry(currentTime: Double)
     abstract fun action(currentTime: Double, lastTime: Double)
-    abstract fun exit()
+    abstract fun exit(currentTime: Double)
 
     fun tick(currentTime: Double, lastTime: Double): Boolean {
         if (!done) {
