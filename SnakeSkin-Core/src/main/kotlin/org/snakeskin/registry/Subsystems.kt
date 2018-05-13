@@ -25,7 +25,9 @@ object Subsystems: Registry<Subsystem>() {
 
     @JvmStatic fun testAll() {
         registry.forEach {
-            it.runTests()
+            //Disabled for now
+            //TODO
+            //it.runTests()
         }
     }
 }

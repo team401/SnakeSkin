@@ -17,7 +17,6 @@ import org.snakeskin.logic.Parameters
  * @version 7/4/17
  */
 object EventRouter {
-    private val priorityHandlers = hashMapOf<String, ArrayList<(Parameters) -> Unit>>()
     private val handlers = hashMapOf<String, ArrayList<(Parameters) -> Unit>>()
     private val executor = ExecutorFactory.getExecutor("Event Router")
 
@@ -25,16 +24,9 @@ object EventRouter {
         handlers.putIfAbsent(event, arrayListOf())
         handlers[event]!!.add(handler)
     }
-    internal fun registerPriority(event: String, handler: (Parameters) -> Unit) {
-        priorityHandlers.putIfAbsent(event, arrayListOf())
-        priorityHandlers[event]!!.add(handler)
-    }
 
 
     @Synchronized @JvmStatic @JvmOverloads fun fireEvent(event: String, parameters: MutableParameters = MutableParameters()) {
-        priorityHandlers[event]?.forEach {
-            it(parameters.toParameters())
-        }
         handlers[event]?.forEach {
             executor.submit { it(parameters.toParameters()) }
         }

@@ -8,6 +8,7 @@ import org.snakeskin.exception.ItemNotFoundException
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.state.StateMachine
 import java.lang.reflect.InvocationTargetException
+import java.util.concurrent.TimeUnit
 
 /*
  * SnakeSkin - Created on 7/4/17
@@ -22,75 +23,35 @@ import java.lang.reflect.InvocationTargetException
  * @version 7/4/17
  */
 
-open class Subsystem(val name: String = "UNNAMED") {
+open class Subsystem(val name: String, private val loopRate: Long = 20L) {
     //Executor, for running subsystem actions
     private val executor = ExecutorFactory.getExecutor("Subsystem")
 
-    //<editor-fold desc="State Handler">
-    private val stateMachines = hashMapOf<String, StateMachine>() //The states that a subsystem can be in
+    private val stateMachines = arrayListOf<StateMachine>()
+    fun addStateMachine(machine: StateMachine = StateMachine()) = stateMachines.add(machine)
 
-    fun addStateMachine(machine: String, instance: StateMachine = StateMachine()) = stateMachines.put(machine, instance)
+    /**
+     * Setup tasks for this subsystem
+     */
+    open fun setup() {}
 
-    fun getStateMachine(machine: String): StateMachine {
-        if (stateMachines.contains(machine)) {
-            return stateMachines[machine]!!
-        } else {
-            throw ItemNotFoundException("Could not find state machine $machine")
-        }
-    }
-
-    fun getDefaultStateMachine(): StateMachine {
-        val firstKey = stateMachines.keys.firstOrNull()
-        if (firstKey != null) {
-            return stateMachines[firstKey]!!
-        } else {
-            throw ItemNotFoundException("Subsystem doesn't have any state machines")
-        }
-    }
-
-
-    //</editor-fold>
-
-    //<editor-fold desc="Setup Tasks">
-    private val setupTasks = arrayListOf<() -> Unit>()
-    fun addSetupTask(task: () -> Unit) = setupTasks.add(task)
-    //</editor-fold>
-
-    //<editor-fold desk="Tests">
-    private val tests = hashMapOf<String, () -> Boolean>()
-    fun addTest(name: String, test: () -> Boolean) = tests.put(name, test)
-    fun runTests() {
-        tests.forEach {
-            name, test ->
-            println("TEST $name\tSTARTING")
-            val result = test()
-            if (result)
-                println("TEST $name\tPASSED")
-            else
-                println("TEST $name\tFAILED")
-        }
-    }
-    //</editor-fold>
+    /**
+     * Looping actions for this subsystem
+     */
+    open fun action() {}
 
     internal fun init() {
-        setupTasks.forEach {
-            try {
-                it()
-            } catch (e: Exception) {
-                throw InitException("Error occurred while running setup tasks for subsystem '$name'", e)
-            }
+        try {
+            setup()
+        } catch (e: Exception) {
+            throw InitException("Error occured while running setup tasks for subsystem '$name", e)
         }
         stateMachines.forEach {
-            _, machine ->
-            EventRouter.registerPriority(Events.DISABLED) {
+            machine ->
+            EventRouter.registerHandler(Events.DISABLED) {
                 machine.setState(States.DISABLED)
             }
         }
-    }
-
-    fun addEventHandler(event: String, action: (Parameters) -> Unit) = EventRouter.registerPriority(event) {
-        executor.submit {
-            action(it)
-        }
+        executor.scheduleAtFixedRate(this::action, 0L, loopRate, TimeUnit.MILLISECONDS)
     }
 }
