@@ -40,11 +40,11 @@ class StateMachine {
     private var activeFuture: ScheduledFuture<*>? = null
     private var activeTimeoutFuture: ScheduledFuture<*>? = null
 
-    private val stateHistory = History<String>()
+    private val stateHistory = History<Any>()
 
     private val switchLock = ReentrantLock()
 
-    private fun setStateImpl(state: String): AWaitable {
+    private fun setStateImpl(state: Any): AWaitable {
         val toReturn = TickedWaitable() //The waitable element.  It will tick once "entry" has completed
         if (state != activeState?.name) { //If the state requested is different from the current state
             val desiredState = if (states.any { it.name == state }) { //If the list contains the desired state
@@ -97,7 +97,7 @@ class StateMachine {
         }
     }
 
-    fun setState(state: String): AWaitable {
+    fun setState(state: Any): AWaitable {
         val waitable = WaitableFuture()
         SCHEDULER.submit {
             switchLock.lock()
@@ -107,19 +107,15 @@ class StateMachine {
         return waitable
     }
 
-    @Deprecated("All state switches should now be run on the scheduler", ReplaceWith("setState(state: String)"))
-    internal fun setStateInternally(state: String) {
-        switchLock.lock()
-        setStateImpl(state)
-        switchLock.unlock()
-    }
-
     fun back() = setState(getLastState())
 
     fun getState() = stateHistory.current ?: States.ELSE
     fun getLastState() = stateHistory.last ?: States.ELSE
 
-    fun toggle(state1: String, state2: String) {
+    fun isInState(state: Any) = stateHistory.current == state
+    fun wasInState(state: Any) = stateHistory.last == state
+
+    fun toggle(state1: Any, state2: Any) {
         if (getState() == state1) {
             setState(state2)
         } else {

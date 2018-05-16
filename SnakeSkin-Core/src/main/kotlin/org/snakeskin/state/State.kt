@@ -12,11 +12,11 @@ package org.snakeskin.state
  * @author Cameron Earle
  * @version 8/3/17
  */
-data class State(val name: String,
+data class State(val name: Any,
                  var entry: () -> Unit,
                  var action: () -> Unit,
                  var exit: () -> Unit,
                  var rate: Long = 20,
                  var rejectionConditions: () -> Boolean = {false},
                  var timeout: Long = -1L,
-                 var timeoutTo: String = "")
+                 var timeoutTo: Any = "")

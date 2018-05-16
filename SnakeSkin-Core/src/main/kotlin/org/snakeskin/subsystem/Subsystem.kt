@@ -8,6 +8,7 @@ import org.snakeskin.exception.ItemNotFoundException
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.state.StateMachine
 import java.lang.reflect.InvocationTargetException
+import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 /*
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit
 open class Subsystem(val name: String, private val loopRate: Long = 20L) {
     //Executor, for running subsystem actions
     private val executor = ExecutorFactory.getExecutor("Subsystem")
+    private var loopFuture: ScheduledFuture<*>? = null
 
     private val stateMachines = arrayListOf<StateMachine>()
     fun addStateMachine(machine: StateMachine = StateMachine()) = stateMachines.add(machine)
@@ -38,7 +40,9 @@ open class Subsystem(val name: String, private val loopRate: Long = 20L) {
     /**
      * Looping actions for this subsystem
      */
-    open fun action() {}
+    open fun action() {
+        loopFuture?.cancel(true) //Cancel the loopable task since there isn't one (default)
+    }
 
     internal fun init() {
         try {
@@ -52,6 +56,6 @@ open class Subsystem(val name: String, private val loopRate: Long = 20L) {
                 machine.setState(States.DISABLED)
             }
         }
-        executor.scheduleAtFixedRate(this::action, 0L, loopRate, TimeUnit.MILLISECONDS)
+        loopFuture = executor.scheduleAtFixedRate(this::action, 0L, loopRate, TimeUnit.MILLISECONDS)
     }
 }

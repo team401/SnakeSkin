@@ -21,7 +21,7 @@ class StateMachineBuilder: Builder<StateMachine> {
     private val builder = StateMachine()
     override fun build() = builder
 
-    fun state(state: String, setup: MutableStateBuilder.() -> Unit) {
+    fun state(state: Any, setup: MutableStateBuilder.() -> Unit) {
         val stateBuilder = MutableStateBuilder(state)
         stateBuilder.setup()
         builder.addState(stateBuilder.build())
@@ -39,12 +39,12 @@ class StateMachineBuilder: Builder<StateMachine> {
         builder.elseCondition = stateBuilder.build()
     }
 
-    fun isInState(state: String) = builder.getState() == state
-    fun wasInState(state: String) = builder.getLastState() == state
-    fun setState(state: String) = builder.setState(state)
+    fun isInState(state: Any) = builder.isInState(state)
+    fun wasInState(state: Any) = builder.wasInState(state)
+    fun setState(state: Any) = builder.setState(state)
 }
 
-open class StateBuilder(name: String): Builder<State> {
+open class StateBuilder(name: Any): Builder<State> {
     val builder = State(name, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA)
     override fun build() = builder
 
@@ -62,12 +62,12 @@ open class StateBuilder(name: String): Builder<State> {
     }
 }
 
-class MutableStateBuilder(name: String): StateBuilder(name) {
+class MutableStateBuilder(name: Any): StateBuilder(name) {
     fun rejectIf(condition: () -> Boolean) {
         builder.rejectionConditions = condition
     }
 
-    fun timeout(timeout: Long, timeoutTo: String) {
+    fun timeout(timeout: Long, timeoutTo: Any) {
         builder.timeout = timeout
         builder.timeoutTo = timeoutTo
     }
