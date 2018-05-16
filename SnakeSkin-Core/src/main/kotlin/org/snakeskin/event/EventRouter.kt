@@ -17,16 +17,16 @@ import org.snakeskin.logic.Parameters
  * @version 7/4/17
  */
 object EventRouter {
-    private val handlers = hashMapOf<String, ArrayList<(Parameters) -> Unit>>()
+    private val handlers = hashMapOf<Any, ArrayList<(Parameters) -> Unit>>()
     private val executor = ExecutorFactory.getExecutor("Event Router")
 
-    fun registerHandler(event: String, handler: (Parameters) -> Unit) {
+    fun registerHandler(event: Any, handler: (Parameters) -> Unit) {
         handlers.putIfAbsent(event, arrayListOf())
         handlers[event]!!.add(handler)
     }
 
 
-    @Synchronized @JvmStatic @JvmOverloads fun fireEvent(event: String, parameters: MutableParameters = MutableParameters()) {
+    @Synchronized @JvmStatic @JvmOverloads fun fireEvent(event: Any, parameters: MutableParameters = MutableParameters()) {
         handlers[event]?.forEach {
             executor.submit { it(parameters.toParameters()) }
         }

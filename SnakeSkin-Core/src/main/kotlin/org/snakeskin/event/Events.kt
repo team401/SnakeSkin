@@ -13,11 +13,10 @@ package org.snakeskin.event
  * @version 7/16/17
  */
 
-object Events {
+enum class Events {
     //This is a collection of built in events that are fired internally by the lib
-    const val DISABLED = "snakeskin.event.robotState.disabled"
-    const val ENABLED = "snakeskin.event.robotState.generalEnabled"
-    const val AUTO_ENABLED = "snakeskin.event.robotState.autoEnabled"
-    const val TELEOP_ENABLED = "snakeskin.event.robotState.teleopEnabled"
-
+    DISABLED,
+    ENABLED,
+    AUTO_ENABLED,
+    TELEOP_ENABLED
 }

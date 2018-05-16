@@ -17,12 +17,12 @@ import org.snakeskin.logic.MutableParameters
  * @version 7/4/17
  */
 
-fun send(name: String, setup: MutableParameters.() -> Unit = {}) {
+fun send(name: Any, setup: MutableParameters.() -> Unit = {}) {
     val event = MutableParameters()
     event.setup()
     EventRouter.fireEvent(name, event)
 }
 
-fun on(name: String, action: Parameters.() -> Unit) {
+fun on(name: Any, action: Parameters.() -> Unit) {
     EventRouter.registerHandler(name, action)
 }

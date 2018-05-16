@@ -22,8 +22,8 @@ object TestSubsystem : Subsystem("Test") {
     }
 
     override fun setup() {
-        on("SomeEvent") {
-            testMachine.setState(TestStates.SOME_STATE)
+        on(CustomEvents.MY_CUSTOM_EVENT) {
+            testMachine.setState(TestStates.SOME_OTHER_STATE)
         }
     }
 
