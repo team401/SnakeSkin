@@ -2,6 +2,7 @@ package org.snakeskin.factory
 
 import org.snakeskin.SnakeskinConstants
 import org.snakeskin.annotation.PreStartup
+import org.snakeskin.executor.ExceptionHandlingScheduledExecutor
 import java.util.concurrent.*
 
 /*
@@ -17,30 +18,24 @@ import java.util.concurrent.*
  * @version 7/20/17
  */
 object ExecutorFactory {
-    private lateinit var EXECUTOR: ScheduledExecutorService
+    private lateinit var executor: ScheduledExecutorService
 
     @PreStartup @JvmStatic internal fun init() {
-        if (SnakeskinConstants.USE_POOL) {
-            EXECUTOR = Executors.unconfigurableScheduledExecutorService(
-                    ScheduledThreadPoolExecutor(SnakeskinConstants.POOL_SIZE, LoggedThreadFactory).apply {
-                        setKeepAliveTime(10, TimeUnit.SECONDS)
-                        allowCoreThreadTimeOut(true)
-                    }
-            )
-        }
-        //Note that EXECUTOR will never be initialized if USE_POOL is false,
-        //so we have to be careful not to use it.
+        executor = Executors.unconfigurableScheduledExecutorService(
+                ExceptionHandlingScheduledExecutor(SnakeskinConstants.POOL_SIZE, DaemonThreadFactory).apply {
+                    setKeepAliveTime(10, TimeUnit.SECONDS)
+                    allowCoreThreadTimeOut(true)
+                }
+        )
     }
 
-    @Suppress("UNUSED_PARAMETER") //We plan to use 'reason' in the future
-    fun getExecutor(reason: String): ScheduledExecutorService {
-        if (SnakeskinConstants.USE_POOL) {
-            return EXECUTOR
-        } else {
-            return Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)
-        }
-    }
+    private fun newSingleThreadScheduledExecutor() = Executors.unconfigurableScheduledExecutorService(
+            ExceptionHandlingScheduledExecutor(1, DaemonThreadFactory)
+    )
 
     @Suppress("UNUSED_PARAMETER") //We plan to use 'reason' in the future
-    fun getSingleExecutor(reason: String) = Executors.newSingleThreadScheduledExecutor(LoggedThreadFactory)!!
+    fun getExecutor(reason: String) = executor
+
+    @Suppress("UNUSED_PARAMETER") //We plan to use 'reason' in the future
+    fun getSingleExecutor(reason: String) = newSingleThreadScheduledExecutor()!!
 }

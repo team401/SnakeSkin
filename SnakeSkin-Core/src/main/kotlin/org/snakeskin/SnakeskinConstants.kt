@@ -14,7 +14,6 @@ package org.snakeskin
  */
 object SnakeskinConstants {
     const val POOL_SIZE = 16
-    const val USE_POOL = true
     const val LOG_RATE = 1000L
     const val CONTROLLER_POLL_RATE = 20L
     const val SENSOR_POLL_RATE = 20L
