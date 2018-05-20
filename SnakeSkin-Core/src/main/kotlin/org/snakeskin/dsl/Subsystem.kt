@@ -17,6 +17,12 @@ import org.snakeskin.subsystem.Subsystem
  * @version 7/4/17
  */
 
+/**
+ * Adds a state machine to the subsystem
+ * Should be used within the subsystem itself
+ * @param setup The function to set up the state machine.  Receives a StateMachineBuilder.  @see StateMachineBuilder
+ * @return The StateMachine object
+ */
 fun Subsystem.stateMachine(setup: StateMachineBuilder.() -> Unit): StateMachine {
     val builder = StateMachineBuilder()
     builder.setup()

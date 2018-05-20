@@ -1,0 +1,6 @@
+[doc](../../index.md) / [org.snakeskin.executor](../index.md) / [ExceptionHandlingScheduledExecutor](index.md) / [invokeAll](./invoke-all.md)
+
+# invokeAll
+
+`fun <T> invokeAll(tasks: `[`MutableCollection`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-collection/index.html)`<out `[`Callable`](http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/Callable.html)`<`[`T`](invoke-all.md#T)`>>?): `[`MutableList`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)`<`[`Future`](http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/Future.html)`<`[`T`](invoke-all.md#T)`>>`
+`fun <T> invokeAll(tasks: `[`MutableCollection`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-collection/index.html)`<out `[`Callable`](http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/Callable.html)`<`[`T`](invoke-all.md#T)`>>?, timeout: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)`, unit: `[`TimeUnit`](http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeUnit.html)`?): `[`MutableList`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)`<`[`Future`](http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/Future.html)`<`[`T`](invoke-all.md#T)`>>`

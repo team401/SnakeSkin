@@ -16,6 +16,9 @@ import org.snakeskin.subsystem.Subsystem
  * @version 7/16/17
  */
 
+/**
+ * The subsystem registry, which all subsystems that need to be loaded should be added to
+ */
 object Subsystems: Registry<Subsystem>() {
     @PostStartup @JvmStatic internal fun initAll() {
         registry.forEach {

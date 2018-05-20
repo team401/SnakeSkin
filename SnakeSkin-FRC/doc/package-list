@@ -1,0 +1,31 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+$dokka.location:org.snakeskin.dsl$and(org.snakeskin.logic.Switch, org.snakeskin.logic.Switch)org.snakeskin.dsl/org.snakeskin.logic.-switch/and.md
+$dokka.location:org.snakeskin.dsl$asSwitch(edu.wpi.first.wpilibj.DigitalInput)org.snakeskin.dsl/edu.wpi.first.wpilibj.-digital-input/as-switch.md
+$dokka.location:org.snakeskin.dsl$asSwitch(edu.wpi.first.wpilibj.DigitalOutput)org.snakeskin.dsl/edu.wpi.first.wpilibj.-digital-output/as-switch.md
+$dokka.location:org.snakeskin.dsl$asSwitch(edu.wpi.first.wpilibj.Solenoid)org.snakeskin.dsl/edu.wpi.first.wpilibj.-solenoid/as-switch.md
+$dokka.location:org.snakeskin.dsl$compareTo(org.snakeskin.logic.Rotation2d, org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/compare-to.md
+$dokka.location:org.snakeskin.dsl$dec(org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/dec.md
+$dokka.location:org.snakeskin.dsl$div(org.snakeskin.logic.Rotation2d, kotlin.Double)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/div.md
+$dokka.location:org.snakeskin.dsl$div(org.snakeskin.logic.Rotation2d, org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/div.md
+$dokka.location:org.snakeskin.dsl$getAngleAsRotation(edu.wpi.first.wpilibj.interfaces.Gyro)org.snakeskin.dsl/edu.wpi.first.wpilibj.interfaces.-gyro/get-angle-as-rotation.md
+$dokka.location:org.snakeskin.dsl$inc(org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/inc.md
+$dokka.location:org.snakeskin.dsl$invert(org.snakeskin.logic.Switch)org.snakeskin.dsl/org.snakeskin.logic.-switch/invert.md
+$dokka.location:org.snakeskin.dsl$minus(org.snakeskin.logic.Rotation2d, kotlin.Double)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/minus.md
+$dokka.location:org.snakeskin.dsl$minus(org.snakeskin.logic.Rotation2d, org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/minus.md
+$dokka.location:org.snakeskin.dsl$or(org.snakeskin.logic.Switch, org.snakeskin.logic.Switch)org.snakeskin.dsl/org.snakeskin.logic.-switch/or.md
+$dokka.location:org.snakeskin.dsl$plus(org.snakeskin.logic.Rotation2d, kotlin.Double)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/plus.md
+$dokka.location:org.snakeskin.dsl$plus(org.snakeskin.logic.Rotation2d, org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/plus.md
+$dokka.location:org.snakeskin.dsl$times(org.snakeskin.logic.Rotation2d, kotlin.Double)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/times.md
+$dokka.location:org.snakeskin.dsl$times(org.snakeskin.logic.Rotation2d, org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/times.md
+$dokka.location:org.snakeskin.dsl$unaryMinus(org.snakeskin.logic.Rotation2d)org.snakeskin.dsl/org.snakeskin.logic.-rotation2d/unary-minus.md
+org.snakeskin
+org.snakeskin.auto
+org.snakeskin.auto.steps
+org.snakeskin.component
+org.snakeskin.controls
+org.snakeskin.controls.mappings
+org.snakeskin.dsl
+org.snakeskin.publish
+org.snakeskin.registry
+org.snakeskin.sensors

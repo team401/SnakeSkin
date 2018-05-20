@@ -26,14 +26,26 @@ import java.util.concurrent.locks.ReentrantLock
 
 class StateMachine {
     companion object {
+        /**
+         * An shared reference to an empty lambda, which can be used as a default value to avoid running empty
+         * tasks on the executor.  Checks should be made using the "===" in Kotlin to check reference equality
+         */
         val EMPTY_LAMBDA = {}
     }
     private val EXECUTOR = ExecutorFactory.getExecutor("State Machine")
     private val SCHEDULER = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
 
     private val states = arrayListOf<State>()
+
+    /**
+     * Adds a state to this state machine
+     * @param state The state to add
+     */
     fun addState(state: State) = states.add(state)
 
+    /**
+     * The state to go to when a state change is requested for a state that doesn't exist
+     */
     var elseCondition = State(States.ELSE, EMPTY_LAMBDA, EMPTY_LAMBDA, EMPTY_LAMBDA)
 
     private var activeState: State? = null
@@ -97,6 +109,12 @@ class StateMachine {
         }
     }
 
+    /**
+     * Sets the state of this machine to the given state.
+     * If the machine is already in the given state, no action is taken.
+     * @param state The state to switch to
+     * @return A waitable object that unblocks when the state's "entry" finishes
+     */
     fun setState(state: Any): AWaitable {
         val waitable = WaitableFuture()
         SCHEDULER.submit {
@@ -107,16 +125,50 @@ class StateMachine {
         return waitable
     }
 
+    /**
+     * Returns the state machine to the state it was in previously
+     */
     fun back() = setState(getLastState())
 
+    /**
+     * Gets the state that the machine is currently in
+     * Note that this value is not updated during a state change until the "exit" method of the previous state finishes
+     * @return The state that the machine is currently in
+     */
     fun getState() = stateHistory.current ?: States.ELSE
+
+    /**
+     * Gets the state that the machine was in last
+     * Note that this value is not updated during a state change until the "exit" method of the previous state finishes
+     * @return The state that the machine was last in
+     */
     fun getLastState() = stateHistory.last ?: States.ELSE
 
+    /**
+     * Checks if a machine is in the given state
+     * @param state The state to check
+     * @return true if the machine is in this state, false otherwise
+     */
     fun isInState(state: Any) = stateHistory.current == state
+
+    /**
+     * Checks if a machine was in the given state
+     * @param state The state to check
+     * @return true if the machine is in this state, false otherwise
+     */
     fun wasInState(state: Any) = stateHistory.last == state
 
-    fun toggle(state1: Any, state2: Any) {
-        if (getState() == state1) {
+    /**
+     * Toggles between two states.
+     * The logic is as follows:
+     * If the machine is in state1, switch to state2.  Otherwise, switch to state1
+     * This means that if the machine is in any other state than state1, it will switch to state1.
+     * @param state1 State 1 to toggle
+     * @param state2 State 2 to toggle
+     * @return The waitable of whatever state was switched to
+     */
+    fun toggle(state1: Any, state2: Any): AWaitable {
+        return if (getState() == state1) {
             setState(state2)
         } else {
             setState(state1)

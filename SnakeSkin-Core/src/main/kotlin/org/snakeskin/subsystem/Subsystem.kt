@@ -31,11 +31,37 @@ open class Subsystem(val name: String, private val loopRate: Long = 20L) {
     private var loopFuture: ScheduledFuture<*>? = null
 
     private val stateMachines = arrayListOf<StateMachine>()
+
+    /**
+     * Adds a state machine to this subsystem
+     * @param machine The state machine to add
+     */
     fun addStateMachine(machine: StateMachine = StateMachine()) = stateMachines.add(machine)
 
     private val faults = Vector<Any>()
+    /**
+     * Registers the specified fault to this subsystem
+     * @param fault The fault to add
+     */
     fun fault(fault: Any) = faults.add(fault)
+
+    /**
+     * Removes a fault from this subsystem
+     * @param fault The fault to remove
+     */
     fun clearFault(fault: Any) = faults.remove(fault)
+
+    /**
+     * Returns true if this subsystem has any faults
+     * @return true if this subsystem has any faults, false otherwise
+     */
+    fun isFaulted() = faults.isNotEmpty()
+
+    /**
+     * Returns true if this subsystem has any of the provided faults
+     * @param faults The faults to check
+     * @return true if this subsystem has any of the provided faults, false otherwise
+     */
     fun isFaulted(vararg faults: Any) = faults.any { this.faults.contains(it) }
 
     /**

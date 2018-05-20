@@ -1,0 +1,6 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+
+org.snakeskin
+org.snakeskin.component
+org.snakeskin.dsl
