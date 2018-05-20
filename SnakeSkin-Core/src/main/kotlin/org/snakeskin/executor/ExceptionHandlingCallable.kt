@@ -1,5 +1,6 @@
 package org.snakeskin.executor
 
+import org.snakeskin.logging.LoggerManager
 import java.util.concurrent.Callable
 
 /*
@@ -19,8 +20,7 @@ class ExceptionHandlingCallable<T>(private val c: Callable<T>?): Callable<T> {
         try {
             return c?.call()
         } catch (e: Exception) {
-            //TODO actually handle exception
-            println("ExceptionHandlingCallable caught exception $e")
+            LoggerManager.logThrowable(e)
         }
         return null
     }

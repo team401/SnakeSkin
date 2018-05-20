@@ -17,24 +17,29 @@ import org.snakeskin.dsl.*
 
 object TestSubsystem : Subsystem("Test") {
     enum class TestStates {
-        SOME_STATE,
-        SOME_OTHER_STATE
+        SOME_STATE
     }
 
     override fun setup() {
+        println("Subsystem setup")
         on(CustomEvents.MY_CUSTOM_EVENT) {
-            testMachine.setState(TestStates.SOME_OTHER_STATE)
+            testMachine.setState(TestStates.SOME_STATE)
         }
     }
 
     val testMachine = stateMachine {
         state(TestStates.SOME_STATE) {
+            var counter = 0
             entry {
-
+                counter = 0
             }
 
             action {
-
+                counter++
+                if (counter == 10) {
+                    throw RuntimeException("Counter was 10!")
+                }
+                println("Counter: $counter")
             }
 
             exit {

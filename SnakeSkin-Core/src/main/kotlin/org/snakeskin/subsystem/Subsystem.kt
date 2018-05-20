@@ -48,7 +48,7 @@ open class Subsystem(val name: String, private val loopRate: Long = 20L) {
         try {
             setup()
         } catch (e: Exception) {
-            throw InitException("Error occured while running setup tasks for subsystem '$name", e)
+            throw InitException("Exception while running setup tasks for subsystem '$name'", e)
         }
         stateMachines.forEach {
             machine ->

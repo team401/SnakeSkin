@@ -1,5 +1,7 @@
 package org.snakeskin.executor
 
+import org.snakeskin.logging.LoggerManager
+
 /*
  * snakeskin - Created on 5/16/18
  * Author: Cameron Earle
@@ -17,8 +19,7 @@ class ExceptionHandlingRunnable(private val r: Runnable?): Runnable {
         try {
             r?.run()
         } catch (e: Exception) {
-            //TODO actually do exception handling
-            println("ExceptionHandlingRunnable caught exception $e")
+            LoggerManager.logThrowable(e)
         }
     }
 }
