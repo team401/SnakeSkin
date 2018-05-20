@@ -7,9 +7,9 @@
 
 | Module  | Download  | Documentation  |
 |---|---|---|
-| Core  | [![Core](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-Core/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-Core/_latestVersion) | [![Docs](https://img.shields.io/badge/docs-Core-blue.svg)](SnakeSkin-Core/doc/index.md)
-| FRC | [![FRC](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-FRC/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-FRC/_latestVersion)  | [![Docs](https://img.shields.io/badge/docs-FRC-blue.svg)](SnakeSkin-FRC/doc/index.md)
-| CTRE  | [![CTRE](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-CTRE/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-CTRE/_latestVersion) | [![Docs](https://img.shields.io/badge/docs-CTRE-blue.svg)](SnakeSkin-CTRE/doc/index.md)
+| Core  | [![Core](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-Core/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-Core/_latestVersion) | [![Docs](https://img.shields.io/badge/Documentation-Core-blue.svg)](SnakeSkin-Core/doc/index.md)
+| FRC | [![FRC](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-FRC/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-FRC/_latestVersion)  | [![Docs](https://img.shields.io/badge/Documentation-FRC-blue.svg)](SnakeSkin-FRC/doc/index.md)
+| CTRE  | [![CTRE](https://api.bintray.com/packages/team401/SnakeSkin/SnakeSkin-CTRE/images/download.svg) ](https://bintray.com/team401/SnakeSkin/SnakeSkin-CTRE/_latestVersion) | [![Docs](https://img.shields.io/badge/Documentation-CTRE-blue.svg)](SnakeSkin-CTRE/doc/index.md)
 
 SnakeSkin was our primary focus over the 2017 offseason.  SnakeSkin is a Kotlin framework that provides a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) to organize robot subsystems and components.  It consists of three modules (Core, FRC, and CTRE), allowing the user to pick only the components that they need.
 
