@@ -8,6 +8,7 @@ import org.snakeskin.exception.ItemNotFoundException
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.state.StateMachine
 import java.lang.reflect.InvocationTargetException
+import java.util.*
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
@@ -31,6 +32,11 @@ open class Subsystem(val name: String, private val loopRate: Long = 20L) {
 
     private val stateMachines = arrayListOf<StateMachine>()
     fun addStateMachine(machine: StateMachine = StateMachine()) = stateMachines.add(machine)
+
+    private val faults = Vector<Any>()
+    fun fault(fault: Any) = faults.add(fault)
+    fun clearFault(fault: Any) = faults.remove(fault)
+    fun isFaulted(vararg faults: Any) = faults.any { this.faults.contains(it) }
 
     /**
      * Setup tasks for this subsystem
