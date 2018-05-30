@@ -1,6 +1,7 @@
 dependencies {
     required group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1'
     required project(':SnakeSkin-Core')
+    kapt project(':SnakeSkin-Core')
 }
 
 apply plugin: 'com.jfrog.bintray'

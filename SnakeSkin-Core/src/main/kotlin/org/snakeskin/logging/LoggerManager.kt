@@ -91,7 +91,7 @@ Full stack trace below:
 
         deleteFiles(folder) //Delete old log files
 
-        val filename = date.toString().replace(' ', '_').replace(':', '-')
+        val filename = date.toString().replace(' ', '_').replace(':', '-') + ".txt"
 
         val file = File("$HOME_DIR/snakeskin_crashes/$filename")
         file.writeText(crashMessage(date, e))

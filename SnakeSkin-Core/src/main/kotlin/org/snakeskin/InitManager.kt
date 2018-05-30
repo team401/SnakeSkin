@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory
 import org.snakeskin.annotation.PostStartup
 import org.snakeskin.annotation.PreStartup
 import org.snakeskin.annotation.Setup
+import org.snakeskin.compiler.AnnotatedRunnable
+import org.snakeskin.compiler.RuntimeLoader
 import org.snakeskin.exception.InitException
 import org.snakeskin.exception.StartupException
 import org.snakeskin.logging.LoggerManager
@@ -25,39 +27,18 @@ import java.lang.reflect.Method
  */
 
 object InitManager {
-    private val preStartupTasks = arrayListOf<Method>()
-    private val postStartupTasks = arrayListOf<Method>()
     private val logger = LoggerFactory.getLogger(javaClass)
-
-    @JvmStatic fun register(scanner: FastClasspathScanner) {
-        scanner.matchClassesWithMethodAnnotation(PreStartup::class.java) {
-            _, executable ->
-            if (executable is Method) {
-                preStartupTasks.add(executable)
-            }
-        }
-        scanner.matchClassesWithMethodAnnotation(PostStartup::class.java) {
-            _, executable ->
-            if (executable is Method) {
-                postStartupTasks.add(executable)
-            }
-        }
-    }
 
     /**
      * This method runs before SETUP is loaded
      */
     @JvmStatic fun preStartup() {
+        val preStartupTasks = RuntimeLoader.getAnnotated(PreStartup::class.java)
         preStartupTasks.forEach {
-            it.isAccessible = true
             try {
-                it.invoke(null)
+                it.run()
             } catch (e: Exception) {
-                if (e.cause is InitException) {
-                    throw e.cause!!
-                } else {
-                    throw InitException("Exception while running pre-startup task '${it.name}", e.cause)
-                }
+                throw InitException("Exception while running pre-startup task '${it.javaClass.name}", e)
             }
         }
     }
@@ -66,16 +47,12 @@ object InitManager {
      * This method runs after SETUP is loaded
      */
     @JvmStatic fun postStartup() {
+        val postStartupTasks = RuntimeLoader.getAnnotated(PostStartup::class.java)
         postStartupTasks.forEach {
-            it.isAccessible = true
             try {
-                it.invoke(null)
+                it.run()
             } catch (e: Exception) {
-                if (e.cause is InitException) {
-                    throw e.cause!!
-                } else {
-                    throw InitException("Exception while running post-startup task '${it.name}'", e.cause)
-                }
+                throw InitException("Exception while running post-startup task '${it.javaClass.name}'", e)
             }
         }
     }
@@ -88,29 +65,16 @@ object InitManager {
         LoggerManager.init()
         LoggerManager.logMainThread()
 
-        //Next, we'll create a classpath scanner
-        val scanner = FastClasspathScanner()
-        scanner.ignoreMethodVisibility()
-
-        //Next, we'll register all init tasks
-        register(scanner)
-
-        //Now, by find the 'setup' method, but don't run it yet
-        val setupMethods = arrayListOf<Method>()
-
-        scanner.matchClassesWithMethodAnnotation(Setup::class.java) { _, executable ->
-            if (executable is Method) {
-                setupMethods.add(executable)
-            }
-        }
-
-        //Now, we'll scan the classpath, populating all method arrays
+        //Next, we'll load all of the annotated tasks
         println("SnakeSkin: Loading classes")
-        scanner.scan()
+        RuntimeLoader.load()
         println("SnakeSkin: Classes loaded")
 
         //Next, we'll run the "pre-startup" init tasks
         preStartup()
+
+        //Next, we'll load the setup methods
+        val setupMethods = RuntimeLoader.getAnnotated(Setup::class.java)
 
         //If there are not setup methods, crash the code here (this event will be logged as a crash)
         if (setupMethods.isEmpty()) {
@@ -120,13 +84,9 @@ object InitManager {
         //Run each setup method
         setupMethods.forEach {
             try {
-                it.invoke(null)
+                it.run()
             } catch (e: Exception) {
-                if (e.cause is InitException) {
-                    throw e.cause!!
-                } else {
-                    throw InitException("Exception while running setup method '${it.name}'", e.cause)
-                }
+                throw InitException("Exception while running setup method '${it.javaClass.name}'", e)
             }
         }
 
