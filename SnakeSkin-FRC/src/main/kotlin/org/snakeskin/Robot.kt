@@ -1,17 +1,10 @@
 package org.snakeskin
 
 import edu.wpi.first.wpilibj.IterativeRobot
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner
-import io.github.lukehutch.fastclasspathscanner.matchprocessor.MethodAnnotationMatchProcessor
-import org.snakeskin.annotation.Setup
 import org.snakeskin.auto.AutoManager
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
-import org.snakeskin.exception.StartupException
-import org.snakeskin.logging.LoggerManager
 import org.snakeskin.registry.Subsystems
-import java.lang.reflect.Executable
-import java.lang.reflect.Method
 
 /*
  * snakeskin - Created on 12/14/17

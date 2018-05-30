@@ -1,6 +1,5 @@
 package org.snakeskin
 
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner
 import org.slf4j.LoggerFactory
 import org.snakeskin.annotation.PostStartup
 import org.snakeskin.annotation.PreStartup
