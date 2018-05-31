@@ -78,7 +78,7 @@ class StateMachineBuilder: Builder<StateMachine> {
  * Builds a State object
  */
 open class StateBuilder(name: Any): Builder<State> {
-    val builder = State(name, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA)
+    protected val builder = State(name, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA)
     override fun build() = builder
 
     /**
