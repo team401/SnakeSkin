@@ -130,3 +130,11 @@ class MutableStateBuilder(name: Any): StateBuilder(name) {
         builder.timeoutTo = timeoutTo
     }
 }
+
+/**
+ * Creates a map that forces the output type T, which mapOf doesn't
+ * Essentially makes type inference work in command machines
+ */
+fun <T> stateMap(vararg pairs: Pair<Any, T>): Map<Any, T> {
+    return mapOf(*pairs)
+}

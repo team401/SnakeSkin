@@ -1,5 +1,7 @@
 package org.snakeskin.subsystem
 
+import org.snakeskin.annotation.PreStartup
+
 /**
  * Created by cameronearle on 7/24/2017.
  */

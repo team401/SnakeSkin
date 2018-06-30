@@ -21,3 +21,16 @@ bintray {
         }
     }
 }
+
+jar {
+    doFirst {
+        def versionFile = file("$buildDir/META-INF/snakeskin-version.properties")
+        versionFile.parentFile.mkdirs()
+        if (versionFile.exists()) versionFile.delete()
+        versionFile.createNewFile()
+
+        versionFile << "core=$version"
+    }
+
+    from fileTree(buildDir).matching { include "META-INF/snakeskin-version.properties"}
+}

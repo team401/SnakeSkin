@@ -22,5 +22,4 @@ typealias Subsystem = org.snakeskin.subsystem.Subsystem
 typealias Setup = org.snakeskin.annotation.Setup
 typealias Events = org.snakeskin.event.Events
 typealias Subsystems = org.snakeskin.registry.Subsystems
-typealias PistonState = org.snakeskin.logic.PistonState
-typealias ShifterState = org.snakeskin.logic.ShifterState
+typealias BooleanState = org.snakeskin.logic.BooleanState

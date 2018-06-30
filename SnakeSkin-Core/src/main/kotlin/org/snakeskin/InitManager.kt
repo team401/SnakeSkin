@@ -6,9 +6,12 @@ import org.snakeskin.annotation.PreStartup
 import org.snakeskin.annotation.Setup
 import org.snakeskin.compiler.AnnotatedRunnable
 import org.snakeskin.compiler.RuntimeLoader
+import org.snakeskin.compiler.VersionManager
 import org.snakeskin.exception.InitException
 import org.snakeskin.exception.StartupException
+import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.logging.LoggerManager
+import org.snakeskin.registry.Subsystems
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
@@ -32,6 +35,9 @@ object InitManager {
      * This method runs before SETUP is loaded
      */
     @JvmStatic fun preStartup() {
+        //We'll run known core pre-init tasks here, since we can't run annotation processing on our own module
+        ExecutorFactory.init()
+
         val preStartupTasks = RuntimeLoader.getAnnotated(PreStartup::class.java)
         preStartupTasks.forEach {
             try {
@@ -46,6 +52,9 @@ object InitManager {
      * This method runs after SETUP is loaded
      */
     @JvmStatic fun postStartup() {
+        //We'll run known core post-init tasks here, since we can't run annotation processing on our own module
+        Subsystems.initAll()
+
         val postStartupTasks = RuntimeLoader.getAnnotated(PostStartup::class.java)
         postStartupTasks.forEach {
             try {
@@ -63,6 +72,9 @@ object InitManager {
         //First, we'll initialize and start the logger
         LoggerManager.init()
         LoggerManager.logMainThread()
+
+        //Print a message to show version
+        println("SnakeSkin: Version '${VersionManager.getVersion()}'")
 
         //Next, we'll load all of the annotated tasks
         println("SnakeSkin: Loading classes")

@@ -16,21 +16,6 @@ import org.snakeskin.state.StateMachine
  * @version 5/30/18
  */
 
-fun Subsystem.solenoidStateMachine(solenoid: Solenoid): StateMachine {
-    val machine = stateMachine {
-        state(false) {
-            entry {
-                solenoid.set(false)
-            }
-        }
-        state(true) {
-            entry {
-                solenoid.set(true)
-            }
-        }
-        default {
-            solenoid.set(false)
-        }
-    }
-    return machine
+fun Subsystem.pistonCommandMachine(solenoid: Solenoid, setup: StateMachineBuilder.() -> Unit = {}): StateMachine {
+    return booleanCommandMachine({ solenoid.set(value) }, setup)
 }

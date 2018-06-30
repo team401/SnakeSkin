@@ -17,7 +17,7 @@ import org.snakeskin.controls.Controller
  * @version 12/24/17
  */
 object Controllers: Registry<Controller>() {
-    @PostStartup @JvmStatic internal fun initAll() {
+    @PostStartup @JvmStatic fun initAll() {
         registry.forEach {
             ControlPoller.addController(it)
         }

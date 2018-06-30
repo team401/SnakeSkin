@@ -20,7 +20,7 @@ import java.util.concurrent.*
 object ExecutorFactory {
     private lateinit var executor: ScheduledExecutorService
 
-    @PreStartup @JvmStatic internal fun init() {
+    internal fun init() {
         executor = Executors.unconfigurableScheduledExecutorService(
                 ExceptionHandlingScheduledExecutor(SnakeskinConstants.POOL_SIZE, DaemonThreadFactory).apply {
                     setKeepAliveTime(10, TimeUnit.SECONDS)

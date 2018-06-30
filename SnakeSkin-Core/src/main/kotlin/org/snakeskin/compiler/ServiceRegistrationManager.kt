@@ -57,7 +57,9 @@ class ServiceRegistrationManager(val env: ProcessingEnvironment, val className: 
     }
 
     fun write(location: JavaFileManager.Location) {
-        val file = env.filer.createResource(location, "", getFileName())
-        write(file.openWriter())
+        try {
+            val file = env.filer.createResource(location, "", getFileName())
+            write(file.openWriter())
+        } catch (e: Exception) {}
     }
 }

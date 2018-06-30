@@ -26,22 +26,24 @@ class SnakeskinAnnotationProcessor: AbstractProcessor() {
         const val ANNOTATED_RUNNABLE = "org.snakeskin.compiler.AnnotatedRunnable"
     }
 
+    private var registrationManager: ServiceRegistrationManager? = null
+
     /**
      * Registers the classes for our found methods in the service registry
      * This allows the ServiceLoader to find them at runtime
      */
     private fun registerClasses(classes: List<String>) {
-        val registrationManager = ServiceRegistrationManager(processingEnv, ANNOTATED_RUNNABLE)
 
-        registrationManager.read(StandardLocation.SOURCE_PATH)
-        registrationManager.read(StandardLocation.CLASS_PATH)
+        //registrationManager.read(StandardLocation.SOURCE_PATH)
+        //registrationManager.read(StandardLocation.CLASS_PATH)
         classes.forEach {
-            registrationManager.addClass(it)
+            registrationManager?.addClass(it)
         }
-        registrationManager.write(StandardLocation.CLASS_OUTPUT)
+        //registrationManager.write(StandardLocation.CLASS_OUTPUT)
     }
 
     override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
+        if (registrationManager == null) registrationManager = ServiceRegistrationManager(processingEnv, ANNOTATED_RUNNABLE)
         if (annotations == null || annotations.isEmpty()) return false
         val elements = processingEnv.elementUtils
 
@@ -70,6 +72,12 @@ class SnakeskinAnnotationProcessor: AbstractProcessor() {
                 }
             }
         }
+
+        //registrationManager?.read(StandardLocation.SOURCE_PATH)
+        //registrationManager?.read(StandardLocation.CLASS_PATH)
+        registrationManager?.write(StandardLocation.CLASS_OUTPUT)
+
+
         return false //None of the annotations were in this round
     }
 

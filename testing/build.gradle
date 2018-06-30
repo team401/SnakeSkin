@@ -1,4 +1,0 @@
-dependencies {
-    required project(":SnakeSkin-Core")
-    kapt project(":SnakeSkin-Core")
-}

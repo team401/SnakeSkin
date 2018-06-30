@@ -18,7 +18,7 @@ import org.snakeskin.sensors.SensorPoller
  */
 
 object Sensors: Registry<Sensor<*>>() {
-    @PostStartup @JvmStatic internal fun initAll() {
+    @PostStartup @JvmStatic fun initAll() {
         registry.forEach {
             SensorPoller.addSensor(it)
         }
