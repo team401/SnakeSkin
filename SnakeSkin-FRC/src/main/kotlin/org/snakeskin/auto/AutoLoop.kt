@@ -9,12 +9,13 @@ package org.snakeskin.auto
  */
 
 /**
+ * Defines a basic auto loop, with the minimum requirements for the auto executor to function.
+ *
  * @author Cameron Earle
  * @version 4/3/18
  */
 abstract class AutoLoop {
     open val rate = 10L
-    open val preRate = 10L
     open var done = false
 
     abstract fun startTasks()

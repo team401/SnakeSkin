@@ -12,7 +12,9 @@ package org.snakeskin.auto.steps
  * @author Cameron Earle
  * @version 5/11/18
  */
-class ParallelSteps(vararg val steps: AutoStep): AutoStep() {
+class ParallelSteps(vararg steps: AutoStep): AutoStep() {
+    val steps = steps.map { it.create() } //Make sure we copy the incoming auto steps so they don't persist state
+
     override fun entry(currentTime: Double) {
         done = false
     }
@@ -28,7 +30,7 @@ class ParallelSteps(vararg val steps: AutoStep): AutoStep() {
 
     override fun exit(currentTime: Double) {
         steps.forEach {
-            if (it.state != AutoStep.State.CONTINUE) {
+            if (it.stepState != AutoStep.StepState.CONTINUE) {
                 it.exit(currentTime)
             }
         }

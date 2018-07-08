@@ -14,39 +14,39 @@ package org.snakeskin.auto.steps
  */
 abstract class AutoStep(var done: Boolean = false) {
     private val isSingleStep = done
-    enum class State {
+    enum class StepState {
         ENTRY,
         ACTION,
         EXIT,
         CONTINUE
     }
 
-    var state = State.ENTRY; private set
+    var stepState = StepState.ENTRY; private set
 
     fun reset() {
-        state = State.ENTRY
+        stepState = StepState.ENTRY
         if (!isSingleStep) {
             done = false
         }
     }
 
-    fun doContinue() = (state == State.CONTINUE)
+    fun doContinue() = (stepState == StepState.CONTINUE)
 
     fun tick(currentTime: Double, lastTime: Double) {
-        when (state) {
-            State.ENTRY -> {
+        when (stepState) {
+            StepState.ENTRY -> {
                 entry(currentTime)
-                state = State.ACTION
+                stepState = StepState.ACTION
             }
-            State.ACTION -> {
+            StepState.ACTION -> {
                 action(currentTime, lastTime)
                 if (done) {
-                    state = State.EXIT
+                    stepState = StepState.EXIT
                 }
             }
-            State.EXIT -> {
+            StepState.EXIT -> {
                 exit(currentTime)
-                state = State.CONTINUE
+                stepState = StepState.CONTINUE
             }
             else -> {}
         }
@@ -55,4 +55,30 @@ abstract class AutoStep(var done: Boolean = false) {
     abstract fun entry(currentTime: Double)
     abstract fun exit(currentTime: Double)
     abstract fun action(currentTime: Double, lastTime: Double)
+
+    /**
+     * Wraps an AutoStep, essentially allowing copies to be created that maintain their own state
+     * while calling the entry, action, and exit methods of the original
+     */
+    private class AutoStepReference(private val stepIn: AutoStep): AutoStep(stepIn.done) {
+        override fun entry(currentTime: Double) {
+            stepIn.entry(currentTime)
+        }
+
+        override fun action(currentTime: Double, lastTime: Double) {
+            stepIn.action(currentTime, lastTime)
+        }
+
+        override fun exit(currentTime: Double) {
+            stepIn.exit(currentTime)
+        }
+    }
+
+    /**
+     * Creates a copy of this auto step.  Since step instances should not be shared,
+     * we use this to ensure that a new copy is created whenever it is needed.
+     */
+    fun create(): AutoStep {
+        return AutoStepReference(this)
+    }
 }

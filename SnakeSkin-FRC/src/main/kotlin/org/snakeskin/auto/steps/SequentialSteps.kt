@@ -12,7 +12,9 @@ package org.snakeskin.auto.steps
  * @author Cameron Earle
  * @version 5/11/18
  */
-class SequentialSteps(vararg val steps: AutoStep): AutoStep() {
+class SequentialSteps(vararg steps: AutoStep): AutoStep() {
+    val steps = steps.map { it.create() } //Make sure we copy the incoming auto steps so they don't persist state
+
     private var idx = 0
 
     override fun entry(currentTime: Double) {
@@ -33,7 +35,7 @@ class SequentialSteps(vararg val steps: AutoStep): AutoStep() {
 
     override fun exit(currentTime: Double) {
         steps.forEach {
-            if (it.state != AutoStep.State.CONTINUE) {
+            if (it.stepState != AutoStep.StepState.CONTINUE) {
                 it.exit(currentTime)
             }
         }

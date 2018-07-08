@@ -58,6 +58,7 @@ object AutoManager {
 
     @Synchronized fun stop() {
         time = Timer.getFPGATimestamp()
+
         future?.cancel(true)
         if (wasRunning) {
             auto.exit(time)
