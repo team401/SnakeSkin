@@ -13,6 +13,7 @@ Zachary Kozar
 
 
 
+
 A rotation in a 2d coordinate frame represented a point on the unit circle
 (cosine and sine).
 Inspired by Sophus (https://github.com/strasdat/Sophus/tree/master/sophus)

@@ -21,3 +21,10 @@
 `timeout` - The timeout length, in ms, to active the timeout
 
 `timeoutTo` - The state to timeout to
+
+**Author**
+Cameron Earle
+
+**Version**
+8/3/17
+

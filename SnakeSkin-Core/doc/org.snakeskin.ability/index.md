@@ -7,7 +7,7 @@
 | Name | Summary |
 |---|---|
 | [AInterpolatable](-a-interpolatable/index.md) | `interface AInterpolatable<T>` |
-| [AInvertable](-a-invertable/index.md) | `interface AInvertable`<br>Created by cameronearle on 7/30/2017. |
+| [AInvertable](-a-invertable/index.md) | `interface AInvertable` |
 | [ALoggable](-a-loggable/index.md) | `interface ALoggable : `[`ASerializable`](-a-serializable/index.md) |
 | [AReadable](-a-readable/index.md) | `interface AReadable<out T>` |
 | [ASerializable](-a-serializable/index.md) | `interface ASerializable` |

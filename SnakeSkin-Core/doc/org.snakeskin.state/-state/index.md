@@ -22,6 +22,12 @@
 
 `timeoutTo` - The state to timeout to
 
+**Author**
+Cameron Earle
+
+**Version**
+8/3/17
+
 ### Constructors
 
 | Name | Summary |

@@ -4,6 +4,16 @@
 
 `class PIDController : `[`AUpdatable`](../../org.snakeskin.ability/-a-updatable/index.md)`<`[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)`>`
 
+**Author**
+Cameron Earle
+
+**Version**
+
+12/23/2017
+
+
+
+
 This is an adapted version of CTRE's PID controller.  The implementation is subject to change,
 however the API will remain the same.  This class is fully thread safe
 
@@ -11,7 +21,7 @@ however the API will remain the same.  This class is fully thread safe
 
 | Name | Summary |
 |---|---|
-| [&lt;init&gt;](-init-.md) | `PIDController(p: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, i: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, d: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, f: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, allowedError: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, iMagnitude: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = Double.MAX_VALUE, iZone: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = Double.MAX_VALUE, outMagnitude: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 1.0)`<br>This is an adapted version of CTRE's PID controller.  The implementation is subject to change, however the API will remain the same.  This class is fully thread safe |
+| [&lt;init&gt;](-init-.md) | `PIDController(p: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, i: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, d: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, f: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, allowedError: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 0.0, iMagnitude: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = Double.MAX_VALUE, iZone: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = Double.MAX_VALUE, outMagnitude: `[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)` = 1.0)` |
 
 ### Properties
 

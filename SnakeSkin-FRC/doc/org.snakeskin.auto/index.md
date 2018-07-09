@@ -9,4 +9,3 @@
 | [AutoLoop](-auto-loop/index.md) | `abstract class AutoLoop` |
 | [AutoManager](-auto-manager/index.md) | `object AutoManager` |
 | [RobotAuto](-robot-auto/index.md) | `abstract class RobotAuto : `[`AutoLoop`](-auto-loop/index.md) |
-| [StepAdder](-step-adder/index.md) | `object StepAdder` |

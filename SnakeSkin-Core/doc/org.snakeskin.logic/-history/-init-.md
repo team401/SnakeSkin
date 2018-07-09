@@ -4,5 +4,15 @@
 
 `History()`
 
+**Author**
+Cameron Earle
+
+**Version**
+
+7/18/17
+
+
+
+
 A simple class that tracks history of an object
 

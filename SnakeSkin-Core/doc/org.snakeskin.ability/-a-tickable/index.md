@@ -4,6 +4,12 @@
 
 `interface ATickable`
 
+**Author**
+Cameron Earle
+
+**Version**
+8/26/17
+
 ### Functions
 
 | Name | Summary |

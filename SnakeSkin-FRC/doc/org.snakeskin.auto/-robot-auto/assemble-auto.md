@@ -2,4 +2,9 @@
 
 # assembleAuto
 
-`abstract fun assembleAuto(add: (`[`AutoStep`](../../org.snakeskin.auto.steps/-auto-step/index.md)`) -> `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)`): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)
+`abstract fun assembleAuto(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)
+
+Assembles the auto sequence.  This method must return before the auto sequence can be executed,
+so it is important to do minimal processing in this method.  Process intensive tasks should be done
+asynchronously or in the preAuto function.
+

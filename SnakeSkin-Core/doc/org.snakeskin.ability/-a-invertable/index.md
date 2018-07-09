@@ -4,7 +4,11 @@
 
 `interface AInvertable`
 
-Created by cameronearle on 7/30/2017.
+**Author**
+Cameron Earle
+
+**Version**
+7/30/17
 
 ### Properties
 

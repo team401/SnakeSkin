@@ -4,7 +4,11 @@
 
 `object States`
 
-Created by cameronearle on 7/24/2017.
+**Author**
+Cameron Earle
+
+**Version**
+7/24/17
 
 ### Properties
 

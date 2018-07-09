@@ -11,8 +11,10 @@
 | [org.snakeskin.controls](org.snakeskin.controls/index.md) |  |
 | [org.snakeskin.controls.mappings](org.snakeskin.controls.mappings/index.md) |  |
 | [org.snakeskin.dsl](org.snakeskin.dsl/index.md) |  |
+| [org.snakeskin.logic](org.snakeskin.logic/index.md) |  |
 | [org.snakeskin.publish](org.snakeskin.publish/index.md) |  |
 | [org.snakeskin.registry](org.snakeskin.registry/index.md) |  |
+| [org.snakeskin.rt](org.snakeskin.rt/index.md) |  |
 | [org.snakeskin.sensors](org.snakeskin.sensors/index.md) |  |
 
 ### Index

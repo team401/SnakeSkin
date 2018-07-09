@@ -6,5 +6,5 @@
 
 | Name | Summary |
 |---|---|
-| [States](-states/index.md) | `object States`<br>Created by cameronearle on 7/24/2017. |
+| [States](-states/index.md) | `object States` |
 | [Subsystem](-subsystem/index.md) | `open class Subsystem` |

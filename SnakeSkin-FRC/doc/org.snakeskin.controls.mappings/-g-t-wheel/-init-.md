@@ -4,5 +4,9 @@
 
 `GTWheel(id: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)`)`
 
-Created by cameronearle on 7/28/2017.
+**Author**
+Cameron Earle
+
+**Version**
+8/31/17
 

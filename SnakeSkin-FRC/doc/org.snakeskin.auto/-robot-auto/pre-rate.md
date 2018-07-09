@@ -2,7 +2,4 @@
 
 # preRate
 
-`open val preRate: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)
-
-Overrides [AutoLoop.preRate](../-auto-loop/pre-rate.md)
-
+`val preRate: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)

@@ -2,4 +2,4 @@
 
 # builder
 
-`val builder: `[`State`](../../org.snakeskin.state/-state/index.md)
+`protected val builder: `[`State`](../../org.snakeskin.state/-state/index.md)

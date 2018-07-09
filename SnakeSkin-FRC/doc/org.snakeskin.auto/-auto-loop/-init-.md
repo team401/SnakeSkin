@@ -8,5 +8,11 @@
 Cameron Earle
 
 **Version**
+
 4/3/18
+
+
+
+
+Defines a basic auto loop, with the minimum requirements for the auto executor to function.
 

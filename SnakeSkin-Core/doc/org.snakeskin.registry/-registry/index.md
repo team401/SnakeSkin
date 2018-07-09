@@ -32,4 +32,4 @@ Cameron Earle
 
 | Name | Summary |
 |---|---|
-| [Subsystems](../-subsystems/index.md) | `object Subsystems : `[`Registry`](./index.md)`<`[`Subsystem`](../../org.snakeskin.subsystem/-subsystem/index.md)`>`<br>The subsystem registry, which all subsystems that need to be loaded should be added to |
+| [Subsystems](../-subsystems/index.md) | `object Subsystems : `[`Registry`](./index.md)`<`[`Subsystem`](../../org.snakeskin.subsystem/-subsystem/index.md)`>` |

@@ -2,4 +2,4 @@
 
 # steps
 
-`vararg val steps: `[`Array`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)`<out `[`AutoStep`](../-auto-step/index.md)`>`
+`val steps: `[`List`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)`<`[`AutoStep`](../-auto-step/index.md)`>`

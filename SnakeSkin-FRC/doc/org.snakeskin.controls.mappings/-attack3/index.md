@@ -4,7 +4,11 @@
 
 `class Attack3 : `[`Controller`](../../org.snakeskin.controls/-controller/index.md)
 
-Created by cameronearle on 8/4/2017.
+**Author**
+Cameron Earle
+
+**Version**
+8/31/17
 
 ### Types
 
@@ -16,7 +20,7 @@ Created by cameronearle on 8/4/2017.
 
 | Name | Summary |
 |---|---|
-| [&lt;init&gt;](-init-.md) | `Attack3(id: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)`)`<br>Created by cameronearle on 8/4/2017. |
+| [&lt;init&gt;](-init-.md) | `Attack3(id: `[`Int`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)`)` |
 
 ### Properties
 

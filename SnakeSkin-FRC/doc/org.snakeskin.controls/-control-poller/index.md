@@ -15,4 +15,4 @@ Cameron Earle
 | Name | Summary |
 |---|---|
 | [addController](add-controller.md) | `fun addController(controller: `[`Controller`](../-controller/index.md)`): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |
-| [init](init.md) | `fun init(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |
+| [update](update.md) | `fun update(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |

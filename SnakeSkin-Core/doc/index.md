@@ -7,6 +7,7 @@
 | [org.snakeskin](org.snakeskin/index.md) |  |
 | [org.snakeskin.ability](org.snakeskin.ability/index.md) |  |
 | [org.snakeskin.annotation](org.snakeskin.annotation/index.md) |  |
+| [org.snakeskin.compiler](org.snakeskin.compiler/index.md) |  |
 | [org.snakeskin.dsl](org.snakeskin.dsl/index.md) |  |
 | [org.snakeskin.event](org.snakeskin.event/index.md) |  |
 | [org.snakeskin.exception](org.snakeskin.exception/index.md) |  |

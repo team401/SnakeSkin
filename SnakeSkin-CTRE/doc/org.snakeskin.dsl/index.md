@@ -6,7 +6,7 @@
 
 | Name | Summary |
 |---|---|
-| [CheesyDriveParameters](-cheesy-drive-parameters/index.md) | `data class CheesyDriveParameters`<br>Implements the Cheesy Poofs "Cheesy Drive" for a SnakeSkin drivetrain |
+| [CheesyDriveParameters](-cheesy-drive-parameters/index.md) | `data class CheesyDriveParameters` |
 
 ### Functions
 

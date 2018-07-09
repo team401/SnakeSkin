@@ -4,6 +4,16 @@
 
 `enum class Events`
 
+**Author**
+Cameron Earle
+
+**Version**
+
+7/16/17
+
+
+
+
 This is a collection of built in events that are fired internally by the lib
 
 ### Enum Values

@@ -8,5 +8,11 @@
 Cameron Earle
 
 **Version**
+
 5/11/18
+
+
+
+
+Defines an auto loop that has several conveniences for using on an FRC robot.
 

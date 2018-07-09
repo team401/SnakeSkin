@@ -13,6 +13,7 @@ Zachary Kozar
 
 
 
+
 A gyro with more precise controls on calibration.
 
 ### Functions

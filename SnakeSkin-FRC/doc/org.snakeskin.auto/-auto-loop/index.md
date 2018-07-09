@@ -8,7 +8,13 @@
 Cameron Earle
 
 **Version**
+
 4/3/18
+
+
+
+
+Defines a basic auto loop, with the minimum requirements for the auto executor to function.
 
 ### Constructors
 
@@ -21,7 +27,6 @@ Cameron Earle
 | Name | Summary |
 |---|---|
 | [done](done.md) | `open var done: `[`Boolean`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) |
-| [preRate](pre-rate.md) | `open val preRate: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html) |
 | [rate](rate.md) | `open val rate: `[`Long`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html) |
 
 ### Functions

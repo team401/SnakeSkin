@@ -6,14 +6,15 @@
 
 | Name | Summary |
 |---|---|
+| [BooleanState](-boolean-state/index.md) | `open class BooleanState` |
 | [ComparableDoubleHistory](-comparable-double-history/index.md) | `class ComparableDoubleHistory : `[`History`](-history/index.md)`<`[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)`>` |
 | [Direction](-direction/index.md) | `object Direction` |
-| [History](-history/index.md) | `open class History<T> : `[`AUpdatable`](../org.snakeskin.ability/-a-updatable/index.md)`<`[`T`](-history/index.md#T)`>`<br>A simple class that tracks history of an object |
+| [History](-history/index.md) | `open class History<T> : `[`AUpdatable`](../org.snakeskin.ability/-a-updatable/index.md)`<`[`T`](-history/index.md#T)`>` |
 | [LockingDelegate](-locking-delegate/index.md) | `class LockingDelegate<T>` |
 | [LowPass](-low-pass/index.md) | `open class LowPass` |
 | [MutableParameters](-mutable-parameters/index.md) | `class MutableParameters` |
 | [NullWaitable](-null-waitable/index.md) | `class NullWaitable : `[`AWaitable`](../org.snakeskin.ability/-a-waitable/index.md) |
-| [PIDController](-p-i-d-controller/index.md) | `class PIDController : `[`AUpdatable`](../org.snakeskin.ability/-a-updatable/index.md)`<`[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)`>`<br>This is an adapted version of CTRE's PID controller.  The implementation is subject to change, however the API will remain the same.  This class is fully thread safe |
+| [PIDController](-p-i-d-controller/index.md) | `class PIDController : `[`AUpdatable`](../org.snakeskin.ability/-a-updatable/index.md)`<`[`Double`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)`>` |
 | [PIDParameters](-p-i-d-parameters/index.md) | `class PIDParameters` |
 | [Parameters](-parameters/index.md) | `class Parameters` |
 | [Rotation2d](-rotation2d/index.md) | `class Rotation2d : `[`AInterpolatable`](../org.snakeskin.ability/-a-interpolatable/index.md)`<`[`Rotation2d`](-rotation2d/index.md)`>` |

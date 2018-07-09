@@ -43,11 +43,11 @@ Cameron Earle
 
 | Name | Summary |
 |---|---|
-| [Attack3](../../org.snakeskin.controls.mappings/-attack3/index.md) | `class Attack3 : `[`Controller`](./index.md)<br>Created by cameronearle on 8/4/2017. |
-| [CustomController](../../org.snakeskin.controls.mappings/-custom-controller/index.md) | `class CustomController : `[`Controller`](./index.md)<br>Created by cameronearle on 7/30/2017. |
+| [Attack3](../../org.snakeskin.controls.mappings/-attack3/index.md) | `class Attack3 : `[`Controller`](./index.md) |
+| [CustomController](../../org.snakeskin.controls.mappings/-custom-controller/index.md) | `class CustomController : `[`Controller`](./index.md) |
 | [DualAction](../../org.snakeskin.controls.mappings/-dual-action/index.md) | `class DualAction : `[`Controller`](./index.md) |
 | [Extreme3D](../../org.snakeskin.controls.mappings/-extreme3-d/index.md) | `class Extreme3D : `[`Controller`](./index.md) |
 | [F310](../../org.snakeskin.controls.mappings/-f310/index.md) | `class F310 : `[`Controller`](./index.md) |
-| [GTWheel](../../org.snakeskin.controls.mappings/-g-t-wheel/index.md) | `class GTWheel : `[`Controller`](./index.md)<br>Created by cameronearle on 7/28/2017. |
+| [GTWheel](../../org.snakeskin.controls.mappings/-g-t-wheel/index.md) | `class GTWheel : `[`Controller`](./index.md) |
 | [SaitekButtonBox](../../org.snakeskin.controls.mappings/-saitek-button-box/index.md) | `class SaitekButtonBox : `[`Controller`](./index.md) |
 | [T16000M](../../org.snakeskin.controls.mappings/-t16000-m/index.md) | `class T16000M : `[`Controller`](./index.md) |

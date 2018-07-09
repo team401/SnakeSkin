@@ -27,6 +27,6 @@ Cameron Earle
 | [robotInit](robot-init.md) | `fun robotInit(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |
 | [robotPeriodic](robot-periodic.md) | `fun robotPeriodic(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |
 | [teleopInit](teleop-init.md) | `fun teleopInit(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |
-| [teleopPeriodic](teleop-periodic.md) | `fun teleopPeriodic(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |
+| [teleopPeriodic](teleop-periodic.md) | `fun teleopPeriodic(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)<br>This method is fired when the robot receives a packet from the Driver Station, containing controller states. Therefore, it makes sense to react to these controller state changes in this method rather than their own thread |
 | [testInit](test-init.md) | `fun testInit(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |
 | [testPeriodic](test-periodic.md) | `fun testPeriodic(): `[`Unit`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) |

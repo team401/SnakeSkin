@@ -4,13 +4,23 @@
 
 `open class History<T> : `[`AUpdatable`](../../org.snakeskin.ability/-a-updatable/index.md)`<`[`T`](index.md#T)`>`
 
+**Author**
+Cameron Earle
+
+**Version**
+
+7/18/17
+
+
+
+
 A simple class that tracks history of an object
 
 ### Constructors
 
 | Name | Summary |
 |---|---|
-| [&lt;init&gt;](-init-.md) | `History()`<br>A simple class that tracks history of an object |
+| [&lt;init&gt;](-init-.md) | `History()` |
 
 ### Properties
 

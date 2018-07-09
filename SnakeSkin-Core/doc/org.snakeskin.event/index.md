@@ -7,4 +7,4 @@
 | Name | Summary |
 |---|---|
 | [EventRouter](-event-router/index.md) | `object EventRouter` |
-| [Events](-events/index.md) | `enum class Events`<br>This is a collection of built in events that are fired internally by the lib |
+| [Events](-events/index.md) | `enum class Events` |
