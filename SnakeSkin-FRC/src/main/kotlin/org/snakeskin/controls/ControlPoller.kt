@@ -52,32 +52,30 @@ object ControlPoller {
 
         fun track(): ChangeReport {
             val changeReport = ChangeReport()
-            if (DriverStation.getInstance().isEnabled && DriverStation.getInstance().isOperatorControl) {
-                trackedPressButtons.forEach {
-                    button, history ->
-                    history.update(controller.getButton(button).read())
-                    if (history.current == true) {
-                        if (history.last == false || history.last == null) {
-                            changeReport.pressedButtons.add(button)
-                        }
+            trackedPressButtons.forEach {
+                button, history ->
+                history.update(controller.getButton(button).read())
+                if (history.current == true) {
+                    if (history.last == false || history.last == null) {
+                        changeReport.pressedButtons.add(button)
                     }
                 }
-                trackedReleaseButtons.forEach {
-                    button, history ->
-                    history.update(controller.getButton(button).read())
-                    if (history.current == false) {
-                        if (history.last == true) {
-                            changeReport.releasedButtons.add(button)
-                        }
+            }
+            trackedReleaseButtons.forEach {
+                button, history ->
+                history.update(controller.getButton(button).read())
+                if (history.current == false) {
+                    if (history.last == true) {
+                        changeReport.releasedButtons.add(button)
                     }
                 }
-                trackedHats.forEach {
-                    hat, history ->
-                    history.update(controller.getHat(hat).read())
-                    if (history.current != null && history.last != null) {
-                        if (history.current != history.last) {
-                            changeReport.changedHats.put(hat, history.current!!)
-                        }
+            }
+            trackedHats.forEach {
+                hat, history ->
+                history.update(controller.getHat(hat).read())
+                if (history.current != null && history.last != null) {
+                    if (history.current != history.last) {
+                        changeReport.changedHats.put(hat, history.current!!)
                     }
                 }
             }
