@@ -2,6 +2,10 @@ package org.snakeskin.compiler
 
 import java.util.*
 
+/**
+ * @author Cameron Earle
+ * @version 6/26/17
+ */
 object RuntimeLoader {
     private lateinit var loader: ServiceLoader<AnnotatedRunnable>
 

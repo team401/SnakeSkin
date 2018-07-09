@@ -3,9 +3,9 @@ package org.snakeskin.controls.mappings
 import org.snakeskin.controls.Controller
 
 /**
- * Created by cameronearle on 8/4/2017.
+ * @author Cameron Earle
+ * @version 8/31/17
  */
-
 class Attack3(id: Int): Controller(id) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions: IMappingDefinitions.AxesDefinitions {

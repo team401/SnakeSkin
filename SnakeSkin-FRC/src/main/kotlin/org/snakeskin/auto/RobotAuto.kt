@@ -6,19 +6,11 @@ import org.snakeskin.factory.ExecutorFactory
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-/*
- * snakeskin - Created on 5/11/18
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
- * Defines an auto loop that has several conveniences for using on an FRC robot.
- *
  * @author Cameron Earle
  * @version 5/11/18
+ *
+ * Defines an auto loop that has several conveniences for using on an FRC robot.
  */
 abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L): AutoLoop() {
     private val executor = ExecutorFactory.getExecutor("Auto") //This will be used to execute pre tasks

@@ -5,23 +5,12 @@ import org.snakeskin.component.TankDrivetrain
 import org.snakeskin.logic.scalars.NoScaling
 import org.snakeskin.logic.scalars.Scalar
 
-/*
- * snakeskin - Created on 12/26/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 12/26/17
- */
-
-/**
+ *
  * Implements the Cheesy Poofs "Cheesy Drive" for a SnakeSkin drivetrain
  */
-
 data class CheesyDriveParameters(val highWheelNonLinearity: Double,
                                  val lowWheelNonLinearity: Double,
                                  val highNegInertiaScalar: Double,

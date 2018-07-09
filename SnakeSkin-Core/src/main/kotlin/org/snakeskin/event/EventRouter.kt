@@ -4,14 +4,6 @@ import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.logic.MutableParameters
 import org.snakeskin.logic.Parameters
 
-/*
- * SnakeSkin - Created on 7/4/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 7/4/17

@@ -3,9 +3,9 @@ package org.snakeskin.controls.mappings
 import org.snakeskin.controls.Controller
 
 /**
- * Created by cameronearle on 7/28/2017.
+ * @author Cameron Earle
+ * @version 8/31/17
  */
-
 class GTWheel(id: Int): Controller(id) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions : IMappingDefinitions.AxesDefinitions {

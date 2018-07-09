@@ -3,19 +3,10 @@ package org.snakeskin.dsl
 import org.snakeskin.ability.AInvertable
 import org.snakeskin.component.Piston
 
-/*
- * snakeskin - Created on 8/18/17
- * Author: Cameron Earle
- *
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 8/18/17
  */
-
 object Components {
     class InvertableBuilder<out T: AInvertable>(val item: T): Builder<T> {
         override fun build() = item

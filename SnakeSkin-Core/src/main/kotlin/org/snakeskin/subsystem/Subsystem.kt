@@ -12,24 +12,14 @@ import java.util.*
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-/*
- * SnakeSkin - Created on 7/4/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 7/4/17
  */
-
 open class Subsystem(val name: String, private val loopRate: Long = 20L) {
     //Executor, for running subsystem actions
     private val executor = ExecutorFactory.getExecutor("Subsystem")
     private var loopFuture: ScheduledFuture<*>? = null
-
     private val stateMachines = arrayListOf<StateMachine>()
 
     /**

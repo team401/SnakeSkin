@@ -2,19 +2,10 @@ package org.snakeskin.controls.mappings
 
 import org.snakeskin.controls.Controller
 
-/*
- * snakeskin - Created on 1/4/18
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 1/4/18
  */
-
 class SaitekButtonBox(id: Int): Controller(id) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions: IMappingDefinitions.AxesDefinitions {
