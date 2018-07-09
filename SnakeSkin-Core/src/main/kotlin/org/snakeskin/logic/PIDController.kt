@@ -2,7 +2,7 @@ package org.snakeskin.logic
 
 import org.snakeskin.ability.AUpdatable
 /**
- * @author Camerone Earle
+ * @author Cameron Earle
  * @version 12/23/2017
  *
  * This is an adapted version of CTRE's PID controller.  The implementation is subject to change,

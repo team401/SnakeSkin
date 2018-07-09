@@ -32,7 +32,7 @@ object LoggerManager {
 ███████║██║ ╚████║██║  ██║██║  ██╗███████╗███████║██║  ██╗██║██║ ╚████║    ╚═╝╚██╗
 ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝        ╚═╝
 
-SnakeSkin encountered such a spicy meme that it couldn't recover.
+SnakeSkin encountered a crash it couldn't recover from.
 
 Timestamp: $date
 
