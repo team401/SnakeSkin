@@ -8,14 +8,6 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.*
 
-/*
- * snakeskin - Created on 8/26/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 8/26/17
@@ -40,7 +32,7 @@ object LoggerManager {
 ███████║██║ ╚████║██║  ██║██║  ██╗███████╗███████║██║  ██╗██║██║ ╚████║    ╚═╝╚██╗
 ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝        ╚═╝
 
-SnakeSkin encountered a crash it couldn't recover from.
+SnakeSkin encountered such a spicy meme that it couldn't recover.
 
 Timestamp: $date
 

@@ -7,14 +7,6 @@ import edu.wpi.first.wpilibj.interfaces.Gyro
 import org.snakeskin.logic.Rotation2d
 import org.snakeskin.logic.Switch
 
-/*
- * SnakeSkin - Created on 7/3/17
- * Author: Zachary Kozar
- *
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at the project root.
- */
-
 /**
  * @author Zachary Kozar
  * @version 6/2/17

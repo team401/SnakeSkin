@@ -5,15 +5,6 @@ import org.snakeskin.ability.AReadable
 import org.snakeskin.logic.scalars.NoScaling
 import org.snakeskin.logic.scalars.Scalar
 
-
-/*
- * SnakeSkin - Created on 5/25/2017
- * Author: Zachary Kozar and Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at the project root.
- */
-
 /**
  * @author Zachary Kozar and Cameron Earle
  * @version 5/25/2017

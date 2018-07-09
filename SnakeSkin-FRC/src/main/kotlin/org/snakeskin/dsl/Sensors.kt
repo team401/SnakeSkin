@@ -4,19 +4,10 @@ import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DigitalInput
 import org.snakeskin.sensors.*
 
-/*
- * snakeskin - Created on 9/10/17
- * Author: Cameron Earle
- *
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 9/10/17
  */
-
 object Sensors {
     open class SensorBuilder<out T: Sensor<*>>(private val sensor: T): Builder<T> {
         override fun build() = sensor

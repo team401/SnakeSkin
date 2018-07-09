@@ -5,6 +5,10 @@ import javax.annotation.processing.ProcessingEnvironment
 import javax.tools.Diagnostic
 import javax.tools.JavaFileManager
 
+/**
+ * @author Cameron Earle
+ * @version 6/26/17
+ */
 class ServiceRegistrationManager(val env: ProcessingEnvironment, val className: String) {
     private val classes = mutableSetOf<String>()
     private val lines = arrayListOf<String>()

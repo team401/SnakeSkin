@@ -4,19 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import org.snakeskin.CTREConstants
 
-/*
- * snakeskin - Created on 12/26/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 12/26/17
  */
-
 interface Drivetrain {
     val wheelRadius: Double
     val wheelbase: Double

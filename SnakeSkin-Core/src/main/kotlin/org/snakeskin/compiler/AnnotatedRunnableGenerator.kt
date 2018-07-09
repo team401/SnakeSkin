@@ -8,6 +8,10 @@ import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.*
 import javax.tools.Diagnostic
 
+/**
+ * @author Cameron Earle
+ * @version 6/26/17
+ */
 class AnnotatedRunnableGenerator(val env: ProcessingEnvironment, val annotationName: String) {
     companion object {
         const val RUN_METHOD = "run"

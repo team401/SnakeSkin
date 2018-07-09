@@ -4,20 +4,10 @@ import edu.wpi.first.wpilibj.Sendable
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlin.reflect.KProperty
 
-/*
- * SnakeSkin - Created on 1/8/18
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 1/8/18
  */
-
-
 class Publisher<T>(initialValue: T) {
     private var value = initialValue
     private val lock = Any()

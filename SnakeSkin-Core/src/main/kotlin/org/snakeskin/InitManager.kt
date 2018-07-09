@@ -15,19 +15,10 @@ import org.snakeskin.registry.Subsystems
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
-/*
- * snakeskin - Created on 7/16/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 7/16/17
  */
-
 object InitManager {
     private val logger = LoggerFactory.getLogger(javaClass)
 

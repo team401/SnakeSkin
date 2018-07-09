@@ -7,19 +7,10 @@ import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
 import org.snakeskin.registry.Subsystems
 
-/*
- * snakeskin - Created on 12/14/17
- * Author: Cameron Earle
- *
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 12/14/17
  */
-
 class Robot: IterativeRobot() {
     override fun testPeriodic() {}
     override fun autonomousPeriodic() {}

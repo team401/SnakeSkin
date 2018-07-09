@@ -1,21 +1,10 @@
 package org.snakeskin.logic
 
 import org.snakeskin.ability.AUpdatable
-
-/*
- * snakeskin - Created on 12/23/2017
- * Author: Preston Childress
- *
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
- * @author Preston Childress
+ * @author Camerone Earle
  * @version 12/23/2017
- */
-
-/**
+ *
  * This is an adapted version of CTRE's PID controller.  The implementation is subject to change,
  * however the API will remain the same.  This class is fully thread safe
  */

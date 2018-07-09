@@ -1,9 +1,9 @@
 package org.snakeskin.ability
 
 /**
- * Created by cameronearle on 7/30/2017.
+ * @author Cameron Earle
+ * @version 7/30/17
  */
-
 interface AInvertable {
     var inverted: Boolean
 

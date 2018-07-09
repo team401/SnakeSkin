@@ -7,6 +7,9 @@ import org.snakeskin.logic.LockingDelegate
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
+ * @author Cameron Earle
+ * @version 7/4/18
+ *
  * Uses a Notifier to run a list of real time tasks at a fixed rate.
  * Using the Notifier gives more precise timing than the system clock.
  */

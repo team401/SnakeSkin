@@ -4,19 +4,10 @@ import edu.wpi.first.wpilibj.Sendable
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlin.reflect.KProperty
 
-/*
- * snakeskin - Created on 1/8/18
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 1/8/18
  */
-
 @Suppress("UNCHECKED_CAST")
 class Receiver<T>(defaultValue: T) {
     private var value = defaultValue

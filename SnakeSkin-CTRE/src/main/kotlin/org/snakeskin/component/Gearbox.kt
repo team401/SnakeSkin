@@ -3,19 +3,10 @@ package org.snakeskin.component
 import com.ctre.phoenix.motorcontrol.*
 import org.snakeskin.CTREConstants
 
-/*
- * snakeskin - Created on 12/25/17
- * Author: Cameron Earle
- * 
- * This code is licensed under the GNU GPL v3
- * You can find more info in the LICENSE file at project root
- */
-
 /**
  * @author Cameron Earle
  * @version 12/25/17
  */
-
 class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorController) {
     private fun runOnMaster(index: Int = 0, action: IMotorController.() -> Unit) {
         if (index == -1 || index == 0) {
