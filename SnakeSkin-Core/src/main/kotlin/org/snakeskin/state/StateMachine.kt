@@ -7,6 +7,7 @@ import org.snakeskin.logic.NullWaitable
 import org.snakeskin.logic.TickedWaitable
 import org.snakeskin.logic.WaitableFuture
 import org.snakeskin.subsystem.States
+import java.util.concurrent.Future
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
@@ -32,8 +33,8 @@ class StateMachine {
          */
         val EMPTY_LAMBDA = {}
     }
-    private val EXECUTOR = ExecutorFactory.getExecutor("State Machine")
-    private val SCHEDULER = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
+    private val executor = ExecutorFactory.getExecutor("State Machine")
+    private val scheduler = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
 
     private val states = arrayListOf<State>()
 
@@ -49,8 +50,8 @@ class StateMachine {
     var elseCondition = State(States.ELSE, EMPTY_LAMBDA, EMPTY_LAMBDA, EMPTY_LAMBDA)
 
     private var activeState: State? = null
-    private var activeFuture: ScheduledFuture<*>? = null
-    private var activeTimeoutFuture: ScheduledFuture<*>? = null
+    private var activeFuture: Future<*>? = null //Represents whatever task the state machine is currently running
+    private var activeTimeoutFuture: ScheduledFuture<*>? = null //Represents the timeout that the state machine is currently running
 
     private val stateHistory = History<Any>()
 
@@ -73,9 +74,10 @@ class StateMachine {
                 //EXIT THE OLD STATE
                 if (activeState != null) {
                     activeFuture?.cancel(true) //Cancel the action loop
-                    EXECUTOR.submit {
+                    activeFuture = executor.submit {
                         activeState?.exit?.invoke() //Run the exit method
-                    }.get() //And wait
+                    }
+                    activeFuture?.get() //And wait
                 }
 
                 //UPDATE THE STORED STATE
@@ -83,19 +85,20 @@ class StateMachine {
                 stateHistory.update(state) //Update the state history to the new state
 
                 //ENTER THE NEW STATE
-                EXECUTOR.submit {
+                activeFuture = executor.submit {
                     desiredState.entry() //Run the entry method of the desired state
                     toReturn.tick() //Tick the waitable
-                }.get() //And wait
+                }
+                activeFuture?.get() //And wait
 
                 //RUN THE LOOP OF THE NEW STATE
                 if (desiredState.action !== EMPTY_LAMBDA) { //If the target state has an action
-                    activeFuture = EXECUTOR.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                    activeFuture = executor.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS)
                 }
 
                 //SET UP THE TIMEOUT OF THE NEW STATE
                 if (desiredState.timeout != -1L) {
-                    activeTimeoutFuture = EXECUTOR.schedule({
+                    activeTimeoutFuture = executor.schedule({
                         setState(desiredState.timeoutTo)
                     }, desiredState.timeout, TimeUnit.MILLISECONDS)
                 }
@@ -117,7 +120,7 @@ class StateMachine {
      */
     fun setState(state: Any): AWaitable {
         val waitable = WaitableFuture()
-        SCHEDULER.submit {
+        scheduler.submit {
             switchLock.lock()
             waitable.initWaitable(setStateImpl(state))
             switchLock.unlock()
