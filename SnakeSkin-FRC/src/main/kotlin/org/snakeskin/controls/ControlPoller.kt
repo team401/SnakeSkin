@@ -21,8 +21,7 @@ import java.util.concurrent.TimeUnit
  */
 
 object ControlPoller {
-    private val pollingExecutor = ExecutorFactory.getExecutor("Controls Polling")
-    private val handlerExecutor = ExecutorFactory.getExecutor("Controls Handling")
+    private val handlerExecutor = ExecutorFactory.getExecutor("ControlPoller Handler")
 
     private class ControllerTracker(private val controller: Controller) {
         class ChangeReport {
@@ -88,7 +87,7 @@ object ControlPoller {
 
     private val controllers = Vector<ControllerTracker>()
 
-    private val task = {
+    fun update() {
         controllers.forEach { //Iterate each controller
             val controller = it
             val report = it.track()
@@ -104,10 +103,6 @@ object ControlPoller {
                 handlerExecutor.submit { controller.hatHandlers[it.key]?.invoke(it.value) }
             }
         }
-    }
-
-    fun init() {
-        pollingExecutor.scheduleAtFixedRate(task, 0, SnakeskinConstants.CONTROLLER_POLL_RATE, TimeUnit.MILLISECONDS)
     }
 
     fun addController(controller: Controller) {

@@ -21,6 +21,5 @@ object Controllers: Registry<Controller>() {
         registry.forEach {
             ControlPoller.addController(it)
         }
-        ControlPoller.init()
     }
 }

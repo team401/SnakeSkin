@@ -2,6 +2,7 @@ package org.snakeskin
 
 import edu.wpi.first.wpilibj.IterativeRobot
 import org.snakeskin.auto.AutoManager
+import org.snakeskin.controls.ControlPoller
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
 import org.snakeskin.registry.Subsystems
@@ -22,7 +23,6 @@ import org.snakeskin.registry.Subsystems
 class Robot: IterativeRobot() {
     override fun testPeriodic() {}
     override fun autonomousPeriodic() {}
-    override fun teleopPeriodic() {}
     override fun disabledPeriodic() {}
     override fun robotPeriodic() {}
 
@@ -59,5 +59,13 @@ class Robot: IterativeRobot() {
     override fun testInit() {
         //Run all subsystem tests
         Subsystems.testAll()
+    }
+
+    /**
+     * This method is fired when the robot receives a packet from the Driver Station, containing controller states.
+     * Therefore, it makes sense to react to these controller state changes in this method rather than their own thread
+     */
+    override fun teleopPeriodic() {
+        ControlPoller.update() //Update the control poller
     }
 }
