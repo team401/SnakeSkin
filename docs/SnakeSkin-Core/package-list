@@ -1,0 +1,15 @@
+org.snakeskin
+org.snakeskin.ability
+org.snakeskin.annotation
+org.snakeskin.compiler
+org.snakeskin.dsl
+org.snakeskin.event
+org.snakeskin.exception
+org.snakeskin.executor
+org.snakeskin.factory
+org.snakeskin.logging
+org.snakeskin.logic
+org.snakeskin.logic.scalars
+org.snakeskin.registry
+org.snakeskin.state
+org.snakeskin.subsystem

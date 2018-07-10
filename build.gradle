@@ -2,14 +2,14 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.40" apply false
     id "com.palantir.git-version" version "0.10.0"
     id "com.jfrog.bintray" version "1.8.0"
-    id "org.jetbrains.dokka" version "0.9.16" apply false
+    id "org.jetbrains.dokka" version "0.9.17" apply false
 }
 
 allprojects {
     apply plugin: 'idea'
 }
 
-subprojects {
+subprojects { subproj ->
     apply plugin: 'java'
     apply plugin: 'kotlin'
     apply plugin: 'kotlin-kapt'
@@ -60,12 +60,29 @@ subprojects {
         kotlinOptions.jvmTarget = "1.8"
     }
 
-
+    // output to docs directory:  Javadoc format
     dokka {
-        outputFormat = "gfm" //Github markdown
-        outputDirectory = "$projectDir"
-        moduleName = "doc"
+        def dirname = subproj.projectDir.absoluteFile.name
+        def moduleName = subproj.name
+        def dokkaOutputBase = "${rootDir}/docs"
+        def dokkaLinkDir = "${projectDir}/src/main/kotlin"
+        def dokkaLinkUrl = "https://github.com/team401/snakeskin/${dirname}/src/main/kotlin"
+        def dokkaLinkSuffix = "#L"
+
+        reportUndocumented = false
+        outputFormat = "javadoc"
+        outputDirectory = "${dokkaOutputBase}/${moduleName}"
+        linkMapping {
+            dir = dokkaLinkDir
+            url = dokkaLinkUrl
+            suffix = dokkaLinkSuffix
+        }
     }
+}
+
+task removeDocs(type: Delete) {
+    group = 'Documentation'
+    delete "${rootDir}/docs"
 }
 
 task wrapper(type: Wrapper) {

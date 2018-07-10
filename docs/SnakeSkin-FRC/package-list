@@ -1,0 +1,12 @@
+org.snakeskin
+org.snakeskin.auto
+org.snakeskin.auto.steps
+org.snakeskin.component
+org.snakeskin.controls
+org.snakeskin.controls.mappings
+org.snakeskin.dsl
+org.snakeskin.logic
+org.snakeskin.publish
+org.snakeskin.registry
+org.snakeskin.rt
+org.snakeskin.sensors
