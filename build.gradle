@@ -80,8 +80,8 @@ subprojects { subproj ->
     }
 }
 
-task removeDocs(type: Delete) {
-    group = 'Documentation'
+task cleanDocs(type: Delete) {
+    group = 'documentation'
     delete "${rootDir}/docs"
 }
 
