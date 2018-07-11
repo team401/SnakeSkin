@@ -73,9 +73,17 @@ object RealTimeExecutor {
     /**
      * Adds a real time task to the list of tasks to run
      */
-    fun addTask(task: RealTimeTask) {
+    fun addTask(task: RealTimeTask): RealTimeFuture {
         tasks.add(task)
         if (!running) start()
+        return RealTimeFuture(task)
+    }
+
+    /**
+     * Removes a real time task to the list of tasks to run
+     */
+    fun removeTask(task: RealTimeTask) {
+        tasks.remove(task)
     }
 
     /**

@@ -1,5 +1,8 @@
 package org.snakeskin.state
 
+import org.snakeskin.executor.SchedulingContext
+import org.snakeskin.executor.ThreadPoolSchedulingContext
+
 /**
  * @author Cameron Earle
  * @version 8/3/17
@@ -20,4 +23,5 @@ data class State(val name: Any,
                  var rate: Long = 20,
                  var rejectionConditions: () -> Boolean = {false},
                  var timeout: Long = -1L,
-                 var timeoutTo: Any = "")
+                 var timeoutTo: Any = "",
+                 var schedulingContext: SchedulingContext = ThreadPoolSchedulingContext(action, rate))

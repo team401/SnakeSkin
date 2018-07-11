@@ -65,10 +65,9 @@ class StateMachine {
                 //EXIT THE OLD STATE
                 if (activeState != null) {
                     activeFuture?.cancel(true) //Cancel the action loop
-                    activeFuture = executor.submit {
+                    executor.submit {
                         activeState?.exit?.invoke() //Run the exit method
-                    }
-                    activeFuture?.get() //And wait
+                    }.get() //And wait
                 }
 
                 //UPDATE THE STORED STATE
@@ -76,15 +75,14 @@ class StateMachine {
                 stateHistory.update(state) //Update the state history to the new state
 
                 //ENTER THE NEW STATE
-                activeFuture = executor.submit {
+                executor.submit {
                     desiredState.entry() //Run the entry method of the desired state
                     toReturn.tick() //Tick the waitable
-                }
-                activeFuture?.get() //And wait
+                }.get() //And wait
 
                 //RUN THE LOOP OF THE NEW STATE
                 if (desiredState.action !== EMPTY_LAMBDA) { //If the target state has an action
-                    activeFuture = executor.scheduleAtFixedRate(desiredState.action, 0, desiredState.rate, TimeUnit.MILLISECONDS)
+                    activeFuture = desiredState.schedulingContext.schedule()
                 }
 
                 //SET UP THE TIMEOUT OF THE NEW STATE
