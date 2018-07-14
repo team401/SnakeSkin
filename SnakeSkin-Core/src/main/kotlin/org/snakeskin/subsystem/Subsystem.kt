@@ -20,13 +20,13 @@ open class Subsystem(val name: String, private val loopRate: Long = 20L) {
     //Executor, for running subsystem actions
     private val executor = ExecutorFactory.getExecutor("Subsystem")
     private var loopFuture: ScheduledFuture<*>? = null
-    private val stateMachines = arrayListOf<StateMachine>()
+    private val stateMachines = arrayListOf<StateMachine<*>>()
 
     /**
      * Adds a state machine to this subsystem
      * @param machine The state machine to add
      */
-    fun addStateMachine(machine: StateMachine = StateMachine()) = stateMachines.add(machine)
+    fun addStateMachine(machine: StateMachine<*>) = stateMachines.add(machine)
 
     private val faults = Vector<Any>()
     /**
@@ -75,7 +75,7 @@ open class Subsystem(val name: String, private val loopRate: Long = 20L) {
         stateMachines.forEach {
             machine ->
             EventRouter.registerHandler(Events.DISABLED) {
-                machine.setState(States.DISABLED)
+                machine.setStateInternal(States.DISABLED)
             }
         }
         loopFuture = executor.scheduleAtFixedRate(this::action, 0L, loopRate, TimeUnit.MILLISECONDS)

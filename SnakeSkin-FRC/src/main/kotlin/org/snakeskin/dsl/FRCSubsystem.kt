@@ -8,6 +8,6 @@ import org.snakeskin.state.StateMachine
  * @version 5/30/18
  */
 
-fun Subsystem.pistonCommandMachine(solenoid: Solenoid, setup: StateMachineBuilder.() -> Unit = {}): StateMachine {
+fun Subsystem.pistonCommandMachine(solenoid: Solenoid, setup: StateMachineBuilder<Any>.() -> Unit = {}): StateMachine<Any> {
     return booleanCommandMachine({ solenoid.set(value) }, setup)
 }

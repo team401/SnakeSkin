@@ -15,8 +15,12 @@ import java.util.concurrent.locks.ReentrantLock
 /**
  * @author Cameron Earle
  * @version 8/3/17
+ *
+ * The type parameter (T) is really just a mask
+ * that allows your IDE to fill in state names for you
+ * and ensure that you don't put the wrong state name in the wrong place
  */
-class StateMachine {
+class StateMachine<T> {
     companion object {
         /**
          * An shared reference to an empty lambda, which can be used as a default value to avoid running empty
@@ -27,24 +31,24 @@ class StateMachine {
     private val executor = ExecutorFactory.getExecutor("State Machine")
     private val scheduler = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
 
-    private val states = arrayListOf<State>()
+    private val states = arrayListOf<State<*>>()
 
     /**
      * Adds a state to this state machine
      * @param state The state to add
      */
-    fun addState(state: State) = states.add(state)
+    fun addState(state: State<*>) = states.add(state)
 
     /**
      * The state to go to when a state change is requested for a state that doesn't exist
      */
     var elseCondition = State(States.ELSE, EMPTY_LAMBDA, EMPTY_LAMBDA, EMPTY_LAMBDA)
 
-    private var activeState: State? = null
+    private var activeState: State<*>? = null
     private var activeFuture: Future<*>? = null //Represents whatever task the state machine is currently running
     private var activeTimeoutFuture: ScheduledFuture<*>? = null //Represents the timeout that the state machine is currently running
 
-    private val stateHistory = History<Any>()
+    private val stateHistory = History<Any>() //State logic ignores T
 
     private val switchLock = ReentrantLock()
 
@@ -88,7 +92,7 @@ class StateMachine {
                 //SET UP THE TIMEOUT OF THE NEW STATE
                 if (desiredState.timeout != -1L) {
                     activeTimeoutFuture = executor.schedule({
-                        setState(desiredState.timeoutTo)
+                        setStateInternal(desiredState.timeoutTo)
                     }, desiredState.timeout, TimeUnit.MILLISECONDS)
                 }
 
@@ -101,13 +105,7 @@ class StateMachine {
         }
     }
 
-    /**
-     * Sets the state of this machine to the given state.
-     * If the machine is already in the given state, no action is taken.
-     * @param state The state to switch to
-     * @return A waitable object that unblocks when the state's "entry" finishes
-     */
-    fun setState(state: Any): AWaitable {
+    internal fun setStateInternal(state: Any): AWaitable {
         val waitable = WaitableFuture()
         scheduler.submit {
             switchLock.lock()
@@ -118,9 +116,19 @@ class StateMachine {
     }
 
     /**
+     * Sets the state of this machine to the given state.
+     * If the machine is already in the given state, no action is taken.
+     * @param state The state to switch to
+     * @return A waitable object that unblocks when the state's "entry" finishes
+     */
+    fun setState(state: T): AWaitable {
+        return setStateInternal(state as Any) //Downcast to Any here, state logic ignores T
+    }
+
+    /**
      * Returns the state machine to the state it was in previously
      */
-    fun back() = setState(getLastState())
+    fun back() = setStateInternal(getLastState())
 
     /**
      * Gets the state that the machine is currently in
@@ -141,14 +149,14 @@ class StateMachine {
      * @param state The state to check
      * @return true if the machine is in this state, false otherwise
      */
-    fun isInState(state: Any) = stateHistory.current == state
+    fun isInState(state: T) = stateHistory.current == state
 
     /**
      * Checks if a machine was in the given state
      * @param state The state to check
      * @return true if the machine is in this state, false otherwise
      */
-    fun wasInState(state: Any) = stateHistory.last == state
+    fun wasInState(state: T) = stateHistory.last == state
 
     /**
      * Toggles between two states.
@@ -159,7 +167,7 @@ class StateMachine {
      * @param state2 State 2 to toggle
      * @return The waitable of whatever state was switched to
      */
-    fun toggle(state1: Any, state2: Any): AWaitable {
+    fun toggle(state1: T, state2: T): AWaitable {
         return if (getState() == state1) {
             setState(state2)
         } else {

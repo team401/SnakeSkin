@@ -16,12 +16,12 @@ import org.snakeskin.executor.ThreadPoolSchedulingContext
  * @param timeout The timeout length, in ms, to active the timeout
  * @param timeoutTo The state to timeout to
  */
-data class State(val name: Any,
-                 var entry: () -> Unit,
-                 var action: () -> Unit,
-                 var exit: () -> Unit,
-                 var rate: Long = 20,
-                 var rejectionConditions: () -> Boolean = {false},
-                 var timeout: Long = -1L,
-                 var timeoutTo: Any = "",
-                 var schedulingContext: SchedulingContext = ThreadPoolSchedulingContext(action, rate))
+data class State<T>(val name: T,
+                    var entry: () -> Unit,
+                    var action: () -> Unit,
+                    var exit: () -> Unit,
+                    var rate: Long = 20,
+                    var rejectionConditions: () -> Boolean = {false},
+                    var timeout: Long = -1L,
+                    var timeoutTo: Any = "",
+                    var schedulingContext: SchedulingContext = ThreadPoolSchedulingContext(action, rate))

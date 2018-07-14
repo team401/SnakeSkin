@@ -1,5 +1,6 @@
 package org.snakeskin.dsl
 
+import org.snakeskin.executor.ThreadPoolSchedulingContext
 import org.snakeskin.state.State
 import org.snakeskin.state.StateMachine
 import org.snakeskin.subsystem.States
@@ -9,8 +10,8 @@ import org.snakeskin.subsystem.States
  * @version 8/16/17
  */
 
-class StateMachineBuilder: Builder<StateMachine> {
-    private val builder = StateMachine()
+class StateMachineBuilder<T>: Builder<StateMachine<T>> {
+    private val builder = StateMachine<T>()
     override fun build() = builder
 
     /**
@@ -18,7 +19,7 @@ class StateMachineBuilder: Builder<StateMachine> {
      * @param state The name of the state to add
      * @param setup The function responsible for building the state.  @see MutableStateBuilder
      */
-    fun state(state: Any, setup: MutableStateBuilder.() -> Unit) {
+    fun state(state: T, setup: MutableStateBuilder<T>.() -> Unit) {
         val stateBuilder = MutableStateBuilder(state)
         stateBuilder.setup()
         builder.addState(stateBuilder.build())
@@ -28,7 +29,7 @@ class StateMachineBuilder: Builder<StateMachine> {
      * Adds the "disabled" state to the machine
      * @see state
      */
-    fun disabled(setup: StateBuilder.() -> Unit) {
+    fun disabled(setup: StateBuilder<String>.() -> Unit) {
         val stateBuilder = StateBuilder(States.DISABLED)
         stateBuilder.setup()
         builder.addState(stateBuilder.build())
@@ -38,7 +39,7 @@ class StateMachineBuilder: Builder<StateMachine> {
      * Adds the "default" state to the machine
      * @see state
      */
-    fun default(setup: StateBuilder.() -> Unit) {
+    fun default(setup: StateBuilder<String>.() -> Unit) {
         val stateBuilder = StateBuilder(States.ELSE)
         stateBuilder.setup()
         builder.elseCondition = stateBuilder.build()
@@ -49,27 +50,27 @@ class StateMachineBuilder: Builder<StateMachine> {
      * @param state The state to check
      * @return true if the machine is in the state, false otherwise
      */
-    fun isInState(state: Any) = builder.isInState(state)
+    fun isInState(state: T) = builder.isInState(state)
 
     /**
      * Checks if the machine was in the state given
      * @param state The state to check
      * @return true if the machine was in the state, false otherwise
      */
-    fun wasInState(state: Any) = builder.wasInState(state)
+    fun wasInState(state: T) = builder.wasInState(state)
 
     /**
      * Sets the state of this machine
      * @param state The state to set
      * @return A waitable object that unblocks when the state's "entry" method finishes
      */
-    fun setState(state: Any) = builder.setState(state)
+    fun setState(state: T) = builder.setState(state)
 }
 
 /**
  * Builds a State object
  */
-open class StateBuilder(name: Any): Builder<State> {
+open class StateBuilder<T>(name: T): Builder<State<T>> {
     val builder = State(name, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA)
     override fun build() = builder
 
@@ -103,7 +104,7 @@ open class StateBuilder(name: Any): Builder<State> {
 /**
  * Adds functionality to the StateBuilder, with certain special functions that can't be used in default or disabled states
  */
-class MutableStateBuilder(name: Any): StateBuilder(name) {
+class MutableStateBuilder<T>(name: T): StateBuilder<T>(name) {
     /**
      * Adds rejection conditions for this state.
      * @param condition The function to run to check the conditions.  Should return true if the state change should be rejected
@@ -124,9 +125,9 @@ class MutableStateBuilder(name: Any): StateBuilder(name) {
 }
 
 /**
- * Creates a map that forces the output type T, which mapOf doesn't
+ * Creates a map that forces the input type S and output type V, which mapOf doesn't
  * Essentially makes type inference work in command machines
  */
-fun <T> stateMap(vararg pairs: Pair<Any, T>): Map<Any, T> {
+fun <S, V> stateMap(vararg pairs: Pair<S, V>): Map<S, V> {
     return mapOf(*pairs)
 }
