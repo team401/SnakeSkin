@@ -10,6 +10,8 @@ import org.snakeskin.sensors.SensorPoller
  */
 object Sensors: Registry<Sensor<*>>() {
     @PostStartup @JvmStatic fun initAll() {
+        println("SnakeSkin-FRC: Sensors Registry Loaded") //TODO remove debug statement
+
         registry.forEach {
             SensorPoller.addSensor(it)
         }

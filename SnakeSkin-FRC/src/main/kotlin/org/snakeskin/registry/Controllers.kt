@@ -10,6 +10,8 @@ import org.snakeskin.controls.Controller
  */
 object Controllers: Registry<Controller>() {
     @PostStartup @JvmStatic fun initAll() {
+        println("SnakeSkin-FRC: Controllers Registry Loaded") //TODO remove debug statement
+
         registry.forEach {
             ControlPoller.addController(it)
         }
