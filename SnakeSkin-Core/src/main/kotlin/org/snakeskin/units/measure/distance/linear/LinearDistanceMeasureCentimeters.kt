@@ -9,27 +9,24 @@ import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
  *
  * TODO Class to be inlined in Kotlin 1.3
  */
-
 /*inline*/ class LinearDistanceMeasureCentimeters(override val value: Double): LinearDistanceMeasure {
     companion object {
         const val CENTIMETERS_TO_METERS = 0.01
         const val CENTIMETERS_TO_INCHES = 0.393701
         const val CENTIMETERS_TO_FEET = 0.0328084
+        const val CENTIMETERS_TO_MILES = 6.21371e-6
     }
 
     override val unit: LinearDistanceUnit
         get() = LinearDistanceUnit.CENTIMETERS
 
-    override fun inUnit(unit: LinearDistanceUnit): LinearDistanceMeasure {
+    override fun toUnit(unit: LinearDistanceUnit): LinearDistanceMeasure {
         return when (unit) {
             LinearDistanceUnit.CENTIMETERS -> this
             LinearDistanceUnit.METERS -> LinearDistanceMeasureMeters(value * CENTIMETERS_TO_METERS)
             LinearDistanceUnit.INCHES -> LinearDistanceMeasureInches(value * CENTIMETERS_TO_INCHES)
             LinearDistanceUnit.FEET -> LinearDistanceMeasureFeet(value * CENTIMETERS_TO_FEET)
+            LinearDistanceUnit.MILES -> LinearDistanceMeasureMiles(value * CENTIMETERS_TO_MILES)
         }
-    }
-
-    override fun toAngularDistance(diameter: Double): AngularDistanceMeasure {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -9,7 +9,6 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  *
  * TODO Class to be inlined in Kotlin 1.3
  */
-
 /*inline*/ class LinearVelocityMeasureInchesPerSecond(override val value: Double): LinearVelocityMeasure {
     companion object {
         const val INCHES_PER_SECOND_TO_FEET_PER_SECOND = 0.083333333
@@ -25,7 +24,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
     override val unit: LinearVelocityUnit
         get() = LinearVelocityUnit.INCHES_PER_SECOND
 
-    override fun inUnit(unit: LinearVelocityUnit): LinearVelocityMeasure {
+    override fun toUnit(unit: LinearVelocityUnit): LinearVelocityMeasure {
         return when (unit) {
             LinearVelocityUnit.INCHES_PER_SECOND -> this
             LinearVelocityUnit.FEET_PER_SECOND -> LinearVelocityMeasureFeetPerSecond(value * INCHES_PER_SECOND_TO_FEET_PER_SECOND)

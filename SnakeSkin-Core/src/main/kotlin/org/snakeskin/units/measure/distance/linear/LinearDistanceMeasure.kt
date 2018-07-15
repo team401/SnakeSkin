@@ -1,10 +1,12 @@
 package org.snakeskin.units.measure.distance.linear
 
 import org.snakeskin.units.LinearDistanceUnit
+import org.snakeskin.units.LinearVelocityUnit
 import org.snakeskin.units.measure.Measure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
+import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.units.measure.time.TimeMeasure
 import org.snakeskin.units.measure.velocity.linear.LinearVelocityMeasure
-import org.snakeskin.units.measure.velocity.linear.LinearVelocityMeasureInchesPerSecond
 
 /**
  * @author Cameron Earle
@@ -12,13 +14,42 @@ import org.snakeskin.units.measure.velocity.linear.LinearVelocityMeasureInchesPe
  *
  */
 interface LinearDistanceMeasure: Measure<LinearDistanceUnit, LinearDistanceMeasure> {
-    fun toAngularDistance(diameter: Double): AngularDistanceMeasure {
-        TODO()
+
+    /**
+     * Produces an angular distance from this linear distance given a radius
+     *
+     * Output unit is radians
+     */
+    fun toAngularDistance(radius: LinearDistanceMeasure): AngularDistanceMeasure {
+        return AngularDistanceMeasureRadians(this.value / radius.toUnit(this.unit).value)
     }
 
-    fun toLinearVelocity(other: LinearDistanceMeasure, dt: Double): LinearVelocityMeasure {
-        val thisNative = this.inUnit(LinearDistanceUnit.INCHES)
-        val otherNative = other.inUnit(LinearDistanceUnit.INCHES)
-        return LinearVelocityMeasureInchesPerSecond((otherNative.value - thisNative.value) / dt)
+    /**
+     * Produces a linear velocity from a second distance measurement
+     * The output unit is (this distance unit / dt time unit)
+     *
+     * Note that not all possible distance/time combinations exist,
+     * so be sure to choose your dt unit carefully (for example,
+     * hours can only be used if this distance measure is in miles)
+     *
+     * @see LinearVelocityUnit for possible combinations
+     */
+    fun toLinearVelocity(other: LinearDistanceMeasure, dt: TimeMeasure): LinearVelocityMeasure {
+        return LinearVelocityMeasure.create(
+                (other.toUnit(this.unit).value - this.value) / dt.value,
+                LinearVelocityUnit.create(this.unit, dt.unit)
+        )
+    }
+
+    companion object {
+        fun create(value: Double, unit: LinearDistanceUnit): LinearDistanceMeasure {
+            return when (unit) {
+                LinearDistanceUnit.INCHES -> LinearDistanceMeasureInches(value)
+                LinearDistanceUnit.FEET -> LinearDistanceMeasureFeet(value)
+                LinearDistanceUnit.CENTIMETERS -> LinearDistanceMeasureCentimeters(value)
+                LinearDistanceUnit.METERS -> LinearDistanceMeasureMeters(value)
+                LinearDistanceUnit.MILES -> LinearDistanceMeasureMiles(value)
+            }
+        }
     }
 }

@@ -1,0 +1,29 @@
+package org.snakeskin.units.measure.velocity.angular
+
+import org.snakeskin.units.AngularVelocityUnit
+
+/**
+ * @author Cameron Earle
+ * @version 7/15/18
+ *
+ * TODO Class to be inlined in Kotlin 1.3
+ */
+/*inline*/ class AngularVelocityMeasureRadiansPerSecond(override val value: Double): AngularVelocityMeasure {
+    companion object {
+        const val RADIANS_PER_SECOND_TO_REVOLUTIONS_PER_SECOND = 1 / (2 * Math.PI)
+        const val RADIANS_PER_SECOND_TO_REVOLUTIONS_PER_MINUTE = 30.0 / Math.PI
+        const val RADIANS_PER_SECOND_TO_DEGREES_PER_SECOND = 180.0 / Math.PI
+    }
+
+    override val unit: AngularVelocityUnit
+        get() = AngularVelocityUnit.RADIANS_PER_SECOND
+
+    override fun toUnit(unit: AngularVelocityUnit): AngularVelocityMeasure {
+        return when (unit) {
+            AngularVelocityUnit.RADIANS_PER_SECOND -> this
+            AngularVelocityUnit.REVOLUTIONS_PER_SECOND -> AngularVelocityMeasureRevolutionsPerSecond(value * RADIANS_PER_SECOND_TO_REVOLUTIONS_PER_SECOND)
+            AngularVelocityUnit.REVOLUTIONS_PER_MINUTE -> AngularVelocityMeasureRevolutionsPerMinute(value * RADIANS_PER_SECOND_TO_REVOLUTIONS_PER_MINUTE)
+            AngularVelocityUnit.DEGREES_PER_SECOND -> AngularVelocityMeasureDegreesPerSecond(value * RADIANS_PER_SECOND_TO_DEGREES_PER_SECOND)
+        }
+    }
+}

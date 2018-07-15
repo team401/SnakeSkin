@@ -12,5 +12,5 @@ interface Measure<U: UnitOfMeasure, M> {
     val value: Double
     val unit: U
 
-    infix fun inUnit(unit: U): M
+    infix fun toUnit(unit: U): M
 }

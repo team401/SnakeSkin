@@ -10,5 +10,6 @@ enum class LinearDistanceUnit: UnitOfMeasure {
     INCHES,
     FEET,
     CENTIMETERS,
-    METERS
+    METERS,
+    MILES
 }

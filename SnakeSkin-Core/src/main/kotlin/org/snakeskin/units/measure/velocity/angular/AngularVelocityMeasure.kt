@@ -10,5 +10,4 @@ import org.snakeskin.units.measure.velocity.linear.LinearVelocityMeasure
  *
  */
 interface AngularVelocityMeasure: Measure<AngularVelocityUnit, AngularVelocityMeasure> {
-    fun toLinearVelocity(diameter: Double): LinearVelocityMeasure
 }
