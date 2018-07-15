@@ -31,11 +31,11 @@ object RealTimeExecutor {
         //This property is accessible outside of a real time task, so we need to secure it from simultaneous read/writes
         var dt by LockingDelegate(0.0); private set
 
-        fun updateTime() {
+        internal fun updateTime() {
             time = Timer.getFPGATimestamp()
         }
 
-        fun updateDt() {
+        internal fun updateDt() {
             dt = time - lastTime
             lastTime = time
         }
