@@ -37,18 +37,19 @@ interface LinearDistanceMeasure: Measure<LinearDistanceUnit, LinearDistanceMeasu
     fun toLinearVelocity(other: LinearDistanceMeasure, dt: TimeMeasure): LinearVelocityMeasure {
         return LinearVelocityMeasure.create(
                 (other.toUnit(this.unit).value - this.value) / dt.value,
-                LinearVelocityUnit.create(this.unit, dt.unit)
+                this.unit.createLinearVelocityUnit(dt.unit)
         )
     }
 
     companion object {
         fun create(value: Double, unit: LinearDistanceUnit): LinearDistanceMeasure {
             return when (unit) {
-                LinearDistanceUnit.INCHES -> LinearDistanceMeasureInches(value)
-                LinearDistanceUnit.FEET -> LinearDistanceMeasureFeet(value)
-                LinearDistanceUnit.CENTIMETERS -> LinearDistanceMeasureCentimeters(value)
-                LinearDistanceUnit.METERS -> LinearDistanceMeasureMeters(value)
-                LinearDistanceUnit.MILES -> LinearDistanceMeasureMiles(value)
+                LinearDistanceUnit.Standard.INCHES -> LinearDistanceMeasureInches(value)
+                LinearDistanceUnit.Standard.FEET -> LinearDistanceMeasureFeet(value)
+                LinearDistanceUnit.Standard.CENTIMETERS -> LinearDistanceMeasureCentimeters(value)
+                LinearDistanceUnit.Standard.METERS -> LinearDistanceMeasureMeters(value)
+                LinearDistanceUnit.Standard.MILES -> LinearDistanceMeasureMiles(value)
+                else -> unit.createMeasure()
             }
         }
     }

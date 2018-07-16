@@ -16,14 +16,15 @@ import org.snakeskin.units.AngularVelocityUnit
     }
 
     override val unit: AngularVelocityUnit
-        get() = AngularVelocityUnit.REVOLUTIONS_PER_MINUTE
+        get() = AngularVelocityUnit.Standard.REVOLUTIONS_PER_MINUTE
 
     override fun toUnit(unit: AngularVelocityUnit): AngularVelocityMeasure {
         return when (unit) {
-            AngularVelocityUnit.REVOLUTIONS_PER_MINUTE -> this
-            AngularVelocityUnit.REVOLUTIONS_PER_SECOND -> AngularVelocityMeasureRevolutionsPerSecond(value * REVOLUTIONS_PER_MINUTE_TO_REVOLUTIONS_PER_SECOND)
-            AngularVelocityUnit.RADIANS_PER_SECOND -> AngularVelocityMeasureRadiansPerSecond(value * REVOLUTIONS_PER_MINUTE_TO_RADIANS_PER_SECOND)
-            AngularVelocityUnit.DEGREES_PER_SECOND -> AngularVelocityMeasureDegreesPerSecond(value * REVOLUTIONS_PER_MINUTE_TO_DEGREES_PER_SECOND)
+            AngularVelocityUnit.Standard.REVOLUTIONS_PER_MINUTE -> this
+            AngularVelocityUnit.Standard.REVOLUTIONS_PER_SECOND -> AngularVelocityMeasureRevolutionsPerSecond(value * REVOLUTIONS_PER_MINUTE_TO_REVOLUTIONS_PER_SECOND)
+            AngularVelocityUnit.Standard.RADIANS_PER_SECOND -> AngularVelocityMeasureRadiansPerSecond(value * REVOLUTIONS_PER_MINUTE_TO_RADIANS_PER_SECOND)
+            AngularVelocityUnit.Standard.DEGREES_PER_SECOND -> AngularVelocityMeasureDegreesPerSecond(value * REVOLUTIONS_PER_MINUTE_TO_DEGREES_PER_SECOND)
+            else -> unit.convert(this, unit)
         }
     }
 }

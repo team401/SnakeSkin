@@ -18,15 +18,16 @@ import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
     }
 
     override val unit: LinearDistanceUnit
-        get() = LinearDistanceUnit.CENTIMETERS
+        get() = LinearDistanceUnit.Standard.CENTIMETERS
 
     override fun toUnit(unit: LinearDistanceUnit): LinearDistanceMeasure {
         return when (unit) {
-            LinearDistanceUnit.CENTIMETERS -> this
-            LinearDistanceUnit.METERS -> LinearDistanceMeasureMeters(value * CENTIMETERS_TO_METERS)
-            LinearDistanceUnit.INCHES -> LinearDistanceMeasureInches(value * CENTIMETERS_TO_INCHES)
-            LinearDistanceUnit.FEET -> LinearDistanceMeasureFeet(value * CENTIMETERS_TO_FEET)
-            LinearDistanceUnit.MILES -> LinearDistanceMeasureMiles(value * CENTIMETERS_TO_MILES)
+            LinearDistanceUnit.Standard.CENTIMETERS -> this
+            LinearDistanceUnit.Standard.METERS -> LinearDistanceMeasureMeters(value * CENTIMETERS_TO_METERS)
+            LinearDistanceUnit.Standard.INCHES -> LinearDistanceMeasureInches(value * CENTIMETERS_TO_INCHES)
+            LinearDistanceUnit.Standard.FEET -> LinearDistanceMeasureFeet(value * CENTIMETERS_TO_FEET)
+            LinearDistanceUnit.Standard.MILES -> LinearDistanceMeasureMiles(value * CENTIMETERS_TO_MILES)
+            else -> unit.convert(this, unit)
         }
     }
 }

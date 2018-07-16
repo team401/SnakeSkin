@@ -17,15 +17,16 @@ import org.snakeskin.units.LinearDistanceUnit
     }
 
     override val unit: LinearDistanceUnit
-        get() = LinearDistanceUnit.INCHES
+        get() = LinearDistanceUnit.Standard.INCHES
 
     override fun toUnit(unit: LinearDistanceUnit): LinearDistanceMeasure {
         return when (unit) {
-            LinearDistanceUnit.INCHES -> this
-            LinearDistanceUnit.FEET -> LinearDistanceMeasureFeet(value * INCHES_TO_FEET)
-            LinearDistanceUnit.CENTIMETERS -> LinearDistanceMeasureCentimeters(value * INCHES_TO_CENTIMETERS)
-            LinearDistanceUnit.METERS -> LinearDistanceMeasureMeters(value * INCHES_TO_METERS)
-            LinearDistanceUnit.MILES -> LinearDistanceMeasureMiles(value * INCHES_TO_MILES)
+            LinearDistanceUnit.Standard.INCHES -> this
+            LinearDistanceUnit.Standard.FEET -> LinearDistanceMeasureFeet(value * INCHES_TO_FEET)
+            LinearDistanceUnit.Standard.CENTIMETERS -> LinearDistanceMeasureCentimeters(value * INCHES_TO_CENTIMETERS)
+            LinearDistanceUnit.Standard.METERS -> LinearDistanceMeasureMeters(value * INCHES_TO_METERS)
+            LinearDistanceUnit.Standard.MILES -> LinearDistanceMeasureMiles(value * INCHES_TO_MILES)
+            else -> unit.convert(this, unit)
         }
     }
 }

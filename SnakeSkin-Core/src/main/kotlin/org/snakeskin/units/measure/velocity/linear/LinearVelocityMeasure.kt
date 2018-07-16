@@ -30,15 +30,16 @@ interface LinearVelocityMeasure: Measure<LinearVelocityUnit, LinearVelocityMeasu
     companion object {
         fun create(value: Double, unit: LinearVelocityUnit): LinearVelocityMeasure {
             return when (unit) {
-                LinearVelocityUnit.INCHES_PER_SECOND -> LinearVelocityMeasureInchesPerSecond(value)
-                LinearVelocityUnit.FEET_PER_SECOND -> LinearVelocityMeasureFeetPerSecond(value)
-                LinearVelocityUnit.METERS_PER_SECOND -> LinearVelocityMeasureMetersPerSecond(value)
-                LinearVelocityUnit.CENTIMETERS_PER_SECOND -> LinearVelocityMeasureCentimetersPerSecond(value)
-                LinearVelocityUnit.INCHES_PER_MINUTE -> LinearVelocityMeasureInchesPerMinute(value)
-                LinearVelocityUnit.FEET_PER_MINUTE -> LinearVelocityMeasureFeetPerMinute(value)
-                LinearVelocityUnit.METERS_PER_MINUTE -> LinearVelocityMeasureMetersPerMinute(value)
-                LinearVelocityUnit.CENTIMETERS_PER_MINUTE -> LinearVelocityMeasureCentimetersPerMinute(value)
-                LinearVelocityUnit.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value)
+                LinearVelocityUnit.Standard.INCHES_PER_SECOND -> LinearVelocityMeasureInchesPerSecond(value)
+                LinearVelocityUnit.Standard.FEET_PER_SECOND -> LinearVelocityMeasureFeetPerSecond(value)
+                LinearVelocityUnit.Standard.METERS_PER_SECOND -> LinearVelocityMeasureMetersPerSecond(value)
+                LinearVelocityUnit.Standard.CENTIMETERS_PER_SECOND -> LinearVelocityMeasureCentimetersPerSecond(value)
+                LinearVelocityUnit.Standard.INCHES_PER_MINUTE -> LinearVelocityMeasureInchesPerMinute(value)
+                LinearVelocityUnit.Standard.FEET_PER_MINUTE -> LinearVelocityMeasureFeetPerMinute(value)
+                LinearVelocityUnit.Standard.METERS_PER_MINUTE -> LinearVelocityMeasureMetersPerMinute(value)
+                LinearVelocityUnit.Standard.CENTIMETERS_PER_MINUTE -> LinearVelocityMeasureCentimetersPerMinute(value)
+                LinearVelocityUnit.Standard.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value)
+                else -> unit.createMeasure()
             }
         }
     }

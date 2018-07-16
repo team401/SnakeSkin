@@ -1,8 +1,6 @@
 package org.snakeskin.units.measure
 
-import org.snakeskin.exception.IllegalConversionException
-import org.snakeskin.units.NonStandardUnitOfMeasure
-import org.snakeskin.units.StandardUnitOfMeasure
+import org.snakeskin.units.UnitOfMeasure
 
 /**
  * @author Cameron Earle
@@ -10,7 +8,7 @@ import org.snakeskin.units.StandardUnitOfMeasure
  *
  */
 
-interface Measure<U: StandardUnitOfMeasure, M> {
+interface Measure<U: UnitOfMeasure, M> {
     val value: Double
     val unit: U
 
@@ -18,15 +16,4 @@ interface Measure<U: StandardUnitOfMeasure, M> {
      * Converts this measure to the desired standard unit
      */
     infix fun toUnit(unit: U): M
-
-    /**
-     * Converts this measure to the desired unit
-     *
-     * Conversions are handled by the unit itself, so keep in mind
-     * that not all conversions may be supported.  Make sure to check
-     * the class of your unit first to see if it supports the desired conversion
-     */
-    infix fun toUnit(unit: NonStandardUnitOfMeasure<M>): M {
-        return unit.handleConversion(value, this.unit, unit)?: throw IllegalConversionException(this.unit, unit)
-    }
 }

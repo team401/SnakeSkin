@@ -15,13 +15,14 @@ import org.snakeskin.units.AngularDistanceUnit
     }
 
     override val unit: AngularDistanceUnit
-        get() = AngularDistanceUnit.RADIANS
+        get() = AngularDistanceUnit.Standard.RADIANS
 
     override fun toUnit(unit: AngularDistanceUnit): AngularDistanceMeasure {
         return when (unit) {
-            AngularDistanceUnit.RADIANS -> this
-            AngularDistanceUnit.REVOLUTIONS -> AngularDistanceMeasureRevolutions(value * RADIANS_TO_REVOLUTIONS)
-            AngularDistanceUnit.DEGREES -> AngularDistanceMeasureDegrees(value * RADIANS_TO_DEGREES)
+            AngularDistanceUnit.Standard.RADIANS -> this
+            AngularDistanceUnit.Standard.REVOLUTIONS -> AngularDistanceMeasureRevolutions(value * RADIANS_TO_REVOLUTIONS)
+            AngularDistanceUnit.Standard.DEGREES -> AngularDistanceMeasureDegrees(value * RADIANS_TO_DEGREES)
+            else -> unit.convert(this, unit)
         }
     }
 

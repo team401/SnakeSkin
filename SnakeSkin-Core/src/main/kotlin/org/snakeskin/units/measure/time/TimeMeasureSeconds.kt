@@ -16,14 +16,15 @@ import org.snakeskin.units.TimeUnit
     }
 
     override val unit: TimeUnit
-        get() = TimeUnit.SECONDS
+        get() = TimeUnit.Standard.SECONDS
 
     override fun toUnit(unit: TimeUnit): TimeMeasure {
         return when (unit) {
-            TimeUnit.SECONDS -> this
-            TimeUnit.MILLISECONDS -> TimeMeasureMilliseconds(value * SECONDS_TO_MILLISECONDS)
-            TimeUnit.MINUTES -> TimeMeasureMinutes(value * SECONDS_TO_MINUTES)
-            TimeUnit.HOURS -> TimeMeasureHours(value * SECONDS_TO_HOURS)
+            TimeUnit.Standard.SECONDS -> this
+            TimeUnit.Standard.MILLISECONDS -> TimeMeasureMilliseconds(value * SECONDS_TO_MILLISECONDS)
+            TimeUnit.Standard.MINUTES -> TimeMeasureMinutes(value * SECONDS_TO_MINUTES)
+            TimeUnit.Standard.HOURS -> TimeMeasureHours(value * SECONDS_TO_HOURS)
+            else -> unit.convert(this, unit)
         }
     }
 }

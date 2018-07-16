@@ -12,10 +12,11 @@ interface TimeMeasure: Measure<TimeUnit, TimeMeasure> {
     companion object {
         fun create(value: Double, unit: TimeUnit): TimeMeasure {
             return when (unit) {
-                TimeUnit.MILLISECONDS -> TimeMeasureMilliseconds(value)
-                TimeUnit.SECONDS -> TimeMeasureSeconds(value)
-                TimeUnit.MINUTES -> TimeMeasureMinutes(value)
-                TimeUnit.HOURS -> TimeMeasureHours(value)
+                TimeUnit.Standard.MILLISECONDS -> TimeMeasureMilliseconds(value)
+                TimeUnit.Standard.SECONDS -> TimeMeasureSeconds(value)
+                TimeUnit.Standard.MINUTES -> TimeMeasureMinutes(value)
+                TimeUnit.Standard.HOURS -> TimeMeasureHours(value)
+                else -> unit.createMeasure()
             }
         }
     }

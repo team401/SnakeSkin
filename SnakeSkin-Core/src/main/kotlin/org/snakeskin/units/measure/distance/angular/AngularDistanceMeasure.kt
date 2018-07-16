@@ -20,7 +20,7 @@ interface AngularDistanceMeasure: Measure<AngularDistanceUnit, AngularDistanceMe
      */
     fun toLinearDistance(radius: LinearDistanceMeasure): LinearDistanceMeasure {
         return LinearDistanceMeasure.create(
-                radius.value * this.toUnit(AngularDistanceUnit.RADIANS).value,
+                radius.value * this.toUnit(AngularDistanceUnit.Standard.RADIANS).value,
                 radius.unit
         )
     }
@@ -42,9 +42,10 @@ interface AngularDistanceMeasure: Measure<AngularDistanceUnit, AngularDistanceMe
     companion object {
         fun create(value: Double, unit: AngularDistanceUnit): AngularDistanceMeasure {
             return when (unit) {
-                AngularDistanceUnit.REVOLUTIONS -> AngularDistanceMeasureRevolutions(value)
-                AngularDistanceUnit.RADIANS -> AngularDistanceMeasureRadians(value)
-                AngularDistanceUnit.DEGREES -> AngularDistanceMeasureDegrees(value)
+                AngularDistanceUnit.Standard.REVOLUTIONS -> AngularDistanceMeasureRevolutions(value)
+                AngularDistanceUnit.Standard.RADIANS -> AngularDistanceMeasureRadians(value)
+                AngularDistanceUnit.Standard.DEGREES -> AngularDistanceMeasureDegrees(value)
+                else -> unit.createMeasure()
             }
         }
     }

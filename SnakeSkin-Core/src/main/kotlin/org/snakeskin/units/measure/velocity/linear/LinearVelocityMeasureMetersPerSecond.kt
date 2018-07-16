@@ -22,19 +22,20 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
     }
 
     override val unit: LinearVelocityUnit
-        get() = LinearVelocityUnit.METERS_PER_SECOND
+        get() = LinearVelocityUnit.Standard.METERS_PER_SECOND
 
     override fun toUnit(unit: LinearVelocityUnit): LinearVelocityMeasure {
         return when (unit) {
-            LinearVelocityUnit.METERS_PER_SECOND -> this
-            LinearVelocityUnit.INCHES_PER_SECOND -> LinearVelocityMeasureInchesPerSecond(value * METERS_PER_SECOND_TO_INCHES_PER_SECOND)
-            LinearVelocityUnit.FEET_PER_SECOND -> LinearVelocityMeasureFeetPerSecond(value * METERS_PER_SECOND_TO_FEET_PER_SECOND)
-            LinearVelocityUnit.CENTIMETERS_PER_SECOND -> LinearVelocityMeasureCentimetersPerSecond(value * METERS_PER_SECOND_TO_CENTIMETERS_PER_SECOND)
-            LinearVelocityUnit.INCHES_PER_MINUTE -> LinearVelocityMeasureInchesPerMinute(value * METERS_PER_SECOND_TO_INCHES_PER_MINUTE)
-            LinearVelocityUnit.FEET_PER_MINUTE -> LinearVelocityMeasureFeetPerMinute(value * METERS_PER_SECOND_TO_FEET_PER_MINUTE)
-            LinearVelocityUnit.METERS_PER_MINUTE -> LinearVelocityMeasureMetersPerMinute(value * METERS_PER_SECOND_TO_METERS_PER_MINUTE)
-            LinearVelocityUnit.CENTIMETERS_PER_MINUTE -> LinearVelocityMeasureCentimetersPerMinute(value * METERS_PER_SECOND_TO_CENTIMETERS_PER_MINUTE)
-            LinearVelocityUnit.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value * METERS_PER_SECOND_TO_MILES_PER_HOUR)
+            LinearVelocityUnit.Standard.METERS_PER_SECOND -> this
+            LinearVelocityUnit.Standard.INCHES_PER_SECOND -> LinearVelocityMeasureInchesPerSecond(value * METERS_PER_SECOND_TO_INCHES_PER_SECOND)
+            LinearVelocityUnit.Standard.FEET_PER_SECOND -> LinearVelocityMeasureFeetPerSecond(value * METERS_PER_SECOND_TO_FEET_PER_SECOND)
+            LinearVelocityUnit.Standard.CENTIMETERS_PER_SECOND -> LinearVelocityMeasureCentimetersPerSecond(value * METERS_PER_SECOND_TO_CENTIMETERS_PER_SECOND)
+            LinearVelocityUnit.Standard.INCHES_PER_MINUTE -> LinearVelocityMeasureInchesPerMinute(value * METERS_PER_SECOND_TO_INCHES_PER_MINUTE)
+            LinearVelocityUnit.Standard.FEET_PER_MINUTE -> LinearVelocityMeasureFeetPerMinute(value * METERS_PER_SECOND_TO_FEET_PER_MINUTE)
+            LinearVelocityUnit.Standard.METERS_PER_MINUTE -> LinearVelocityMeasureMetersPerMinute(value * METERS_PER_SECOND_TO_METERS_PER_MINUTE)
+            LinearVelocityUnit.Standard.CENTIMETERS_PER_MINUTE -> LinearVelocityMeasureCentimetersPerMinute(value * METERS_PER_SECOND_TO_CENTIMETERS_PER_MINUTE)
+            LinearVelocityUnit.Standard.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value * METERS_PER_SECOND_TO_MILES_PER_HOUR)
+            else -> unit.convert(this, unit)
         }
     }
 
