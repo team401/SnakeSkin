@@ -1,13 +1,11 @@
 package org.snakeskin.units
 
-import org.snakeskin.units.measure.time.TimeMeasure
-
 /**
  * @author Cameron Earle
  * @version 7/14/2018
  *
  */
-enum class AngularVelocityUnit(val distanceUnit: AngularDistanceUnit, val timeUnit: TimeUnit): UnitOfMeasure {
+enum class AngularVelocityUnit(val distanceUnit: AngularDistanceUnit, val timeUnit: TimeUnit): StandardUnitOfMeasure {
     REVOLUTIONS_PER_SECOND(AngularDistanceUnit.REVOLUTIONS, TimeUnit.SECONDS),
     REVOLUTIONS_PER_MINUTE(AngularDistanceUnit.REVOLUTIONS, TimeUnit.MINUTES),
     RADIANS_PER_SECOND(AngularDistanceUnit.RADIANS, TimeUnit.SECONDS),

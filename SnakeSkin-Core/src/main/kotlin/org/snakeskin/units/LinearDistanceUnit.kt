@@ -6,7 +6,7 @@ package org.snakeskin.units
  *
  */
 
-enum class LinearDistanceUnit: UnitOfMeasure {
+enum class LinearDistanceUnit: StandardUnitOfMeasure {
     INCHES,
     FEET,
     CENTIMETERS,

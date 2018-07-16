@@ -5,7 +5,7 @@ package org.snakeskin.units
  * @version 7/14/2018
  *
  */
-enum class LinearVelocityUnit(val distanceUnit: LinearDistanceUnit, val timeUnit: TimeUnit): UnitOfMeasure {
+enum class LinearVelocityUnit(val distanceUnit: LinearDistanceUnit, val timeUnit: TimeUnit): StandardUnitOfMeasure {
     INCHES_PER_SECOND(LinearDistanceUnit.INCHES, TimeUnit.SECONDS),
     FEET_PER_SECOND(LinearDistanceUnit.FEET, TimeUnit.SECONDS),
     METERS_PER_SECOND(LinearDistanceUnit.METERS, TimeUnit.SECONDS),

@@ -2,7 +2,6 @@ package org.snakeskin.units
 
 /**
  * @author Cameron Earle
- * @version 7/14/2018
- *
+ * @version 7/15/18
  */
 interface UnitOfMeasure

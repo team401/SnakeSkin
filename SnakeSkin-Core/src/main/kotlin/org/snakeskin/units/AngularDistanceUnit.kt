@@ -5,7 +5,7 @@ package org.snakeskin.units
  * @version 7/14/2018
  *
  */
-enum class AngularDistanceUnit: UnitOfMeasure {
+enum class AngularDistanceUnit: StandardUnitOfMeasure {
     REVOLUTIONS,
     DEGREES,
     RADIANS
