@@ -27,7 +27,7 @@ import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
             LinearDistanceUnit.Standard.INCHES -> LinearDistanceMeasureInches(value * CENTIMETERS_TO_INCHES)
             LinearDistanceUnit.Standard.FEET -> LinearDistanceMeasureFeet(value * CENTIMETERS_TO_FEET)
             LinearDistanceUnit.Standard.MILES -> LinearDistanceMeasureMiles(value * CENTIMETERS_TO_MILES)
-            else -> unit.convert(this, unit)
+            else -> unit.convert(this)
         }
     }
 }

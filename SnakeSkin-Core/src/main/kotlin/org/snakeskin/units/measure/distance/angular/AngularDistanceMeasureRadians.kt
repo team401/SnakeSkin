@@ -22,7 +22,7 @@ import org.snakeskin.units.AngularDistanceUnit
             AngularDistanceUnit.Standard.RADIANS -> this
             AngularDistanceUnit.Standard.REVOLUTIONS -> AngularDistanceMeasureRevolutions(value * RADIANS_TO_REVOLUTIONS)
             AngularDistanceUnit.Standard.DEGREES -> AngularDistanceMeasureDegrees(value * RADIANS_TO_DEGREES)
-            else -> unit.convert(this, unit)
+            else -> unit.convert(this)
         }
     }
 

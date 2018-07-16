@@ -24,7 +24,7 @@ import org.snakeskin.units.TimeUnit
             TimeUnit.Standard.MILLISECONDS -> TimeMeasureMilliseconds(value * HOURS_TO_MILLISECONDS)
             TimeUnit.Standard.SECONDS -> TimeMeasureSeconds(value * HOURS_TO_SECONDS)
             TimeUnit.Standard.MINUTES -> TimeMeasureMinutes(value * HOURS_TO_MINUTES)
-            else -> unit.convert(this, unit)
+            else -> unit.convert(this)
         }
     }
 }

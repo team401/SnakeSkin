@@ -24,7 +24,7 @@ import org.snakeskin.units.AngularVelocityUnit
             AngularVelocityUnit.Standard.REVOLUTIONS_PER_SECOND -> AngularVelocityMeasureRevolutionsPerSecond(value * DEGREES_PER_SECOND_TO_REVOLUTIONS_PER_SECOND)
             AngularVelocityUnit.Standard.REVOLUTIONS_PER_MINUTE -> AngularVelocityMeasureRevolutionsPerMinute(value * DEGREES_PER_SECOND_TO_REVOLUTIONS_PER_MINUTE)
             AngularVelocityUnit.Standard.RADIANS_PER_SECOND -> AngularVelocityMeasureRadiansPerSecond(value * DEGREES_PER_SECOND_TO_RADIANS_PER_SECOND)
-            else -> unit.convert(this, unit)
+            else -> unit.convert(this)
         }
     }
 }

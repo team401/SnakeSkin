@@ -11,7 +11,7 @@ import org.snakeskin.units.measure.Measure
  * If the container class is implemented correctly, the method should never be called
  */
 interface StandardUnitOfMeasure: UnitOfMeasure {
-    override fun <M> convert(measure: Measure<*, M>, desiredUnit: UnitOfMeasure): M {
+    override fun <M> convert(measure: Measure<*, M>): M {
         throw NotImplementedError("Attempted to convert a standard unit outside of its container class!")
     }
 

@@ -8,6 +8,6 @@ import org.snakeskin.units.measure.Measure
  *
  */
 interface UnitOfMeasure {
-    fun <M> convert(measure: Measure<*, M>, desiredUnit: UnitOfMeasure): M
+    fun <M> convert(measure: Measure<*, M>): M
     fun <M> createMeasure(): M
 }

@@ -35,7 +35,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
             LinearVelocityUnit.Standard.METERS_PER_MINUTE -> LinearVelocityMeasureMetersPerMinute(value * INCHES_PER_MINUTE_TO_METERS_PER_MINUTE)
             LinearVelocityUnit.Standard.CENTIMETERS_PER_MINUTE -> LinearVelocityMeasureCentimetersPerMinute(value * INCHES_PER_MINUTE_TO_CENTIMETERS_PER_MINUTE)
             LinearVelocityUnit.Standard.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value * INCHES_PER_MINUTE_TO_MILES_PER_HOUR)
-            else -> unit.convert(this, unit)
+            else -> unit.convert(this)
         }
     }
 

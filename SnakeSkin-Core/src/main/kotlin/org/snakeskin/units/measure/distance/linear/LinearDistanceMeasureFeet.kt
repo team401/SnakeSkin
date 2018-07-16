@@ -26,7 +26,7 @@ import org.snakeskin.units.LinearDistanceUnit
             LinearDistanceUnit.Standard.METERS -> LinearDistanceMeasureMeters(value * FEET_TO_METERS)
             LinearDistanceUnit.Standard.CENTIMETERS -> LinearDistanceMeasureCentimeters(value * FEET_TO_CENTIMETERS)
             LinearDistanceUnit.Standard.MILES -> LinearDistanceMeasureMiles(value * FEET_TO_MILES)
-            else -> unit.convert(this, unit)
+            else -> unit.convert(this)
         }
     }
 }
