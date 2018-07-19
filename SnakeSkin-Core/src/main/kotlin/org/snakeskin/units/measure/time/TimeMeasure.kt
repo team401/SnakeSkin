@@ -16,7 +16,7 @@ interface TimeMeasure: Measure<TimeUnit, TimeMeasure> {
                 TimeUnit.Standard.SECONDS -> TimeMeasureSeconds(value)
                 TimeUnit.Standard.MINUTES -> TimeMeasureMinutes(value)
                 TimeUnit.Standard.HOURS -> TimeMeasureHours(value)
-                else -> unit.createMeasure()
+                else -> unit.createMeasure(value)
             }
         }
     }

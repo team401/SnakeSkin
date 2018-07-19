@@ -1,12 +1,14 @@
 package org.snakeskin.units
 
+import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
+
 /**
  * @author Cameron Earle
  * @version 7/14/2018
  *
  */
-interface AngularDistanceUnit: UnitOfMeasure {
-    enum class Standard: AngularDistanceUnit, StandardUnitOfMeasure {
+interface AngularDistanceUnit: UnitOfMeasure<AngularDistanceMeasure> {
+    enum class Standard: AngularDistanceUnit, StandardUnitOfMeasure<AngularDistanceMeasure> {
         REVOLUTIONS,
         DEGREES,
         RADIANS

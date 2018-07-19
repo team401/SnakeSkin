@@ -5,6 +5,7 @@ import org.snakeskin.units.measure.Measure
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 import org.snakeskin.units.measure.time.TimeMeasure
 import org.snakeskin.units.AngularVelocityUnit
+import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
 
 /**
  * @author Cameron Earle
@@ -35,8 +36,11 @@ interface AngularDistanceMeasure: Measure<AngularDistanceUnit, AngularDistanceMe
      *
      * @see AngularVelocityUnit for possible combinations
      */
-    fun toAngularVelocity(dt: TimeMeasure) {
-
+    fun toAngularVelocity(other: AngularDistanceMeasure, dt: TimeMeasure) {
+        AngularVelocityMeasure.create(
+                (other.toUnit(this.unit).value - this.value) / dt.value,
+                this.unit.createAngularVelocityUnit(dt.unit)
+        )
     }
 
     companion object {
@@ -45,7 +49,7 @@ interface AngularDistanceMeasure: Measure<AngularDistanceUnit, AngularDistanceMe
                 AngularDistanceUnit.Standard.REVOLUTIONS -> AngularDistanceMeasureRevolutions(value)
                 AngularDistanceUnit.Standard.RADIANS -> AngularDistanceMeasureRadians(value)
                 AngularDistanceUnit.Standard.DEGREES -> AngularDistanceMeasureDegrees(value)
-                else -> unit.createMeasure()
+                else -> unit.createMeasure(value)
             }
         }
     }

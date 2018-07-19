@@ -1,5 +1,6 @@
 package org.snakeskin.units.measure
 
+import org.snakeskin.exception.IllegalConversionException
 import org.snakeskin.units.UnitOfMeasure
 
 /**
@@ -8,7 +9,7 @@ import org.snakeskin.units.UnitOfMeasure
  *
  */
 
-interface Measure<U: UnitOfMeasure, M> {
+interface Measure<U: UnitOfMeasure<M>, M: Measure<U, M>> {
     val value: Double
     val unit: U
 

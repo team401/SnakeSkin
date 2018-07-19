@@ -1,10 +1,12 @@
 package org.snakeskin.units.measure.velocity.linear
 
+import org.snakeskin.units.AngularVelocityUnit
 import org.snakeskin.units.LinearVelocityUnit
 import org.snakeskin.units.measure.Measure
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 import org.snakeskin.units.measure.time.TimeMeasure
 import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
+import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * @author Cameron Earle
@@ -12,7 +14,15 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  *
  */
 interface LinearVelocityMeasure: Measure<LinearVelocityUnit, LinearVelocityMeasure> {
-    fun toAngularVelocity(diameter: Double): AngularVelocityMeasure
+
+    /**
+     * Converts this linear velocity to an angular velocity, given a radius
+     *
+     * Output unit is radians per second
+     */
+    fun toAngularVelocity(radius: LinearDistanceMeasure): AngularVelocityMeasure {
+        return AngularVelocityMeasureRadiansPerSecond(this.value / radius.toUnit(this.unit.distanceUnit).value)
+    }
 
     /**
      * Produces a linear distance travelled given a dt.
@@ -39,7 +49,7 @@ interface LinearVelocityMeasure: Measure<LinearVelocityUnit, LinearVelocityMeasu
                 LinearVelocityUnit.Standard.METERS_PER_MINUTE -> LinearVelocityMeasureMetersPerMinute(value)
                 LinearVelocityUnit.Standard.CENTIMETERS_PER_MINUTE -> LinearVelocityMeasureCentimetersPerMinute(value)
                 LinearVelocityUnit.Standard.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value)
-                else -> unit.createMeasure()
+                else -> unit.createMeasure(value)
             }
         }
     }

@@ -49,7 +49,7 @@ interface LinearDistanceMeasure: Measure<LinearDistanceUnit, LinearDistanceMeasu
                 LinearDistanceUnit.Standard.CENTIMETERS -> LinearDistanceMeasureCentimeters(value)
                 LinearDistanceUnit.Standard.METERS -> LinearDistanceMeasureMeters(value)
                 LinearDistanceUnit.Standard.MILES -> LinearDistanceMeasureMiles(value)
-                else -> unit.createMeasure()
+                else -> unit.createMeasure(value)
             }
         }
     }

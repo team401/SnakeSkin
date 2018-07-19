@@ -8,6 +8,6 @@ import org.snakeskin.units.UnitOfMeasure
  *
  * Thrown when a unit conversion is not permitted
  */
-class IllegalConversionException(fromUnit: UnitOfMeasure, toUnit: UnitOfMeasure): RuntimeException(
+class IllegalConversionException(fromUnit: UnitOfMeasure<*>, toUnit: UnitOfMeasure<*>): RuntimeException(
         "Cannot convert from unit ${fromUnit.javaClass.simpleName}.$fromUnit to unit ${toUnit.javaClass.simpleName}.$toUnit"
 )

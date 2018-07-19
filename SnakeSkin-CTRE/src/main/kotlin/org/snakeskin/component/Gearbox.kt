@@ -2,6 +2,10 @@ package org.snakeskin.component
 
 import com.ctre.phoenix.motorcontrol.*
 import org.snakeskin.CTREConstants
+import org.snakeskin.units.AngularDistanceUnitCTREMagEncoder
+import org.snakeskin.units.AngularVelocityUnitCTREMagEncoder
+import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureCTREMagEncoder
+import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMagEncoder
 
 /**
  * @author Cameron Earle
@@ -49,8 +53,8 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
 
     fun set(mode: ControlMode, value: Double) = master.set(mode, value)
 
-    fun getPosition(pidIdx: Int = CTREConstants.PID_IDX) = master.getSelectedSensorPosition(pidIdx)
-    fun getVelocity(pidIdx: Int = CTREConstants.PID_IDX) = master.getSelectedSensorVelocity(pidIdx)
+    fun getPosition(pidIdx: Int = CTREConstants.PID_IDX) = AngularDistanceMeasureCTREMagEncoder(master.getSelectedSensorPosition(pidIdx).toDouble())
+    fun getVelocity(pidIdx: Int = CTREConstants.PID_IDX) = AngularVelocityMeasureCTREMagEncoder(master.getSelectedSensorVelocity(pidIdx).toDouble())
 
     fun setPosition(position: Int, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.setSelectedSensorPosition(position, pidIdx, timeout)
 

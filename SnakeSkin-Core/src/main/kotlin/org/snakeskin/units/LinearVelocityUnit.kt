@@ -1,17 +1,18 @@
 package org.snakeskin.units
 
 import org.snakeskin.units.measure.Measure
+import org.snakeskin.units.measure.velocity.linear.LinearVelocityMeasure
 
 /**
  * @author Cameron Earle
  * @version 7/14/2018
  *
  */
-interface LinearVelocityUnit: UnitOfMeasure {
+interface LinearVelocityUnit: UnitOfMeasure<LinearVelocityMeasure> {
     val distanceUnit: LinearDistanceUnit
     val timeUnit: TimeUnit
 
-    enum class Standard(override val distanceUnit: LinearDistanceUnit, override val timeUnit: TimeUnit): LinearVelocityUnit, StandardUnitOfMeasure {
+    enum class Standard(override val distanceUnit: LinearDistanceUnit, override val timeUnit: TimeUnit): LinearVelocityUnit, StandardUnitOfMeasure<LinearVelocityMeasure> {
         INCHES_PER_SECOND(LinearDistanceUnit.Standard.INCHES, TimeUnit.Standard.SECONDS),
         FEET_PER_SECOND(LinearDistanceUnit.Standard.FEET, TimeUnit.Standard.SECONDS),
         METERS_PER_SECOND(LinearDistanceUnit.Standard.METERS, TimeUnit.Standard.SECONDS),

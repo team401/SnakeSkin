@@ -38,8 +38,4 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
             else -> unit.convert(this)
         }
     }
-
-    override fun toAngularVelocity(diameter: Double): AngularVelocityMeasure {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

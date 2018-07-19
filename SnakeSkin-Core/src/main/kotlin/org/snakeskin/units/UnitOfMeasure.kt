@@ -7,7 +7,7 @@ import org.snakeskin.units.measure.Measure
  * @version 7/14/2018
  *
  */
-interface UnitOfMeasure {
-    fun <M> convert(measure: Measure<*, M>): M
-    fun <M> createMeasure(): M
+interface UnitOfMeasure<M> {
+    fun convert(measure: M): M
+    fun createMeasure(value: Double): M
 }

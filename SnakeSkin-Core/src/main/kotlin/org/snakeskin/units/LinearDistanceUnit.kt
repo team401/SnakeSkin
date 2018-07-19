@@ -1,5 +1,6 @@
 package org.snakeskin.units
 
+import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 import org.snakeskin.units.measure.time.TimeMeasure
 
 /**
@@ -8,8 +9,8 @@ import org.snakeskin.units.measure.time.TimeMeasure
  *
  */
 
-interface LinearDistanceUnit: UnitOfMeasure {
-    enum class Standard: LinearDistanceUnit, StandardUnitOfMeasure {
+interface LinearDistanceUnit: UnitOfMeasure<LinearDistanceMeasure> {
+    enum class Standard: LinearDistanceUnit, StandardUnitOfMeasure<LinearDistanceMeasure> {
         INCHES,
         FEET,
         CENTIMETERS,

@@ -4,9 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.sensors.PigeonIMU
 import edu.wpi.first.wpilibj.Solenoid
-import org.snakeskin.CTREConstants
 import org.snakeskin.ShifterState
-import org.snakeskin.logic.PIDParameters
 
 /**
  * @author Cameron Earle
@@ -65,8 +63,8 @@ class TankDrivetrain(override val wheelRadius: Double, override val wheelbase: D
         right.stop()
     }
 
-    override fun getDistance(pidIdx: Int) = (left.getPosition(pidIdx) + right.getPosition(pidIdx)) / 2.0
-    override fun getVelocity(pidIdx: Int) = (left.getVelocity(pidIdx) + right.getVelocity(pidIdx)) / 2.0
+    override fun getDistance(pidIdx: Int) = (left.getPosition(pidIdx).value + right.getPosition(pidIdx).value) / 2.0
+    override fun getVelocity(pidIdx: Int) = (left.getVelocity(pidIdx).value + right.getVelocity(pidIdx).value) / 2.0
     override fun getYaw(): Double {
         val array = DoubleArray(3)
         imu.getYawPitchRoll(array)
