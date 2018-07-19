@@ -90,6 +90,7 @@ open class StateBuilder<T>(name: T): Builder<State<T>> {
     fun action(rate: Long = 20L, action: () -> Unit) {
         builder.rate = rate
         builder.action = action
+        builder.schedulingContext = ThreadPoolSchedulingContext(action, rate)
     }
 
     /**
