@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.*
 import org.snakeskin.CTREConstants
 import org.snakeskin.units.AngularDistanceUnitCTREMagEncoder
 import org.snakeskin.units.AngularVelocityUnitCTREMagEncoder
+import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureCTREMagEncoder
 import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMagEncoder
 
@@ -11,7 +12,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMa
  * @author Cameron Earle
  * @version 12/25/17
  */
-class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorController) {
+class Gearbox<M: IMotorControllerEnhanced, S: IMotorController>(val master: M, vararg val slaves: S) {
     private fun runOnMaster(index: Int = 0, action: IMotorController.() -> Unit) {
         if (index == -1 || index == 0) {
             master.action()
@@ -56,8 +57,7 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
     fun getPosition(pidIdx: Int = CTREConstants.PID_IDX) = AngularDistanceMeasureCTREMagEncoder(master.getSelectedSensorPosition(pidIdx).toDouble())
     fun getVelocity(pidIdx: Int = CTREConstants.PID_IDX) = AngularVelocityMeasureCTREMagEncoder(master.getSelectedSensorVelocity(pidIdx).toDouble())
 
-    fun setPosition(position: Int, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.setSelectedSensorPosition(position, pidIdx, timeout)
-
+    fun setPosition(position: AngularDistanceMeasure, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.setSelectedSensorPosition(position.toUnit(AngularDistanceUnitCTREMagEncoder).value.toInt(), pidIdx, timeout)
     fun setSensor(sensor: FeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
     fun setSensor(sensor: RemoteFeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
     fun setSensorPhase(phase: Boolean) = master.setSensorPhase(phase)

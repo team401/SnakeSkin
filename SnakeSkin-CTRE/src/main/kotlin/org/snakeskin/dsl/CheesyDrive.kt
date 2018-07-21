@@ -42,7 +42,7 @@ data class CheesyDriveParameters(val highWheelNonLinearity: Double,
     }
 }
 
-fun TankDrivetrain.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleIn: Double, wheelIn: Double, quickTurn: Boolean = false) {
+fun TankDrivetrain<*, *>.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleIn: Double, wheelIn: Double, isHigh: Boolean, quickTurn: Boolean = false) {
     var wheel = wheelIn
     var throttle = throttleIn
 
@@ -53,7 +53,7 @@ fun TankDrivetrain.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleI
     val negInertia = wheel - p.oldWheel
     p.oldWheel = wheel
 
-    if (isHigh()) {
+    if (isHigh) {
         for (i in 0 until p.highSinCount) {
             wheel = Math.sin(Math.PI / 2.0 * p.highWheelNonLinearity * wheel) / p.highDenom
         }
@@ -71,7 +71,7 @@ fun TankDrivetrain.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleI
     var linearPower = 0.0
     var negInertiaScalar = 0.0
 
-    if (isHigh()) {
+    if (isHigh) {
         negInertiaScalar = p.highNegInertiaScalar
         sensitivity = p.highSensitivity
     } else {
