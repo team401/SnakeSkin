@@ -13,3 +13,10 @@ org.snakeskin.logic.scalars
 org.snakeskin.registry
 org.snakeskin.state
 org.snakeskin.subsystem
+org.snakeskin.units
+org.snakeskin.units.measure
+org.snakeskin.units.measure.distance.angular
+org.snakeskin.units.measure.distance.linear
+org.snakeskin.units.measure.time
+org.snakeskin.units.measure.velocity.angular
+org.snakeskin.units.measure.velocity.linear
