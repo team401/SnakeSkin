@@ -6,7 +6,7 @@ import org.snakeskin.controls.Controller
  * @author Cameron Earle
  * @version 1/4/18
  */
-class T16000M(id: Int): Controller(id) {
+class T16000M(id: Int, enabled: Boolean = true): Controller(id, enabled) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions: IMappingDefinitions.AxesDefinitions {
             val ROLL = addAxis(0)

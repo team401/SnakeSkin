@@ -6,7 +6,7 @@ import org.snakeskin.controls.Controller
  * @author Cameron Earle
  * @version 1/4/18
  */
-class SaitekButtonBox(id: Int): Controller(id) {
+class SaitekButtonBox(id: Int, enabled: Boolean = true): Controller(id, enabled) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions: IMappingDefinitions.AxesDefinitions {
             val ROLL_BLUE = addAxis(0)

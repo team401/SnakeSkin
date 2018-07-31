@@ -6,7 +6,7 @@ import org.snakeskin.controls.Controller
  * @author Cameron Earle
  * @version 8/31/17
  */
-class CustomController(id: Int, numAxes: Int, numButtons: Int, numHats: Int): Controller(id) {
+class CustomController(id: Int, numAxes: Int, numButtons: Int, numHats: Int, enabled: Boolean = true): Controller(id, enabled) {
     init {
         for (i in 0 until numAxes) {
             addAxis(i)

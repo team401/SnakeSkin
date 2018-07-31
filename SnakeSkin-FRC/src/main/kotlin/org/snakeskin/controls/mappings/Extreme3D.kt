@@ -6,7 +6,7 @@ import org.snakeskin.controls.Controller
  * @author Cameron Earle
  * @version 7/16/17
  */
-class Extreme3D(id: Int): Controller(id) {
+class Extreme3D(id: Int, enabled: Boolean = true): Controller(id, enabled) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions : IMappingDefinitions.AxesDefinitions {
             val YAW = addAxis(0)

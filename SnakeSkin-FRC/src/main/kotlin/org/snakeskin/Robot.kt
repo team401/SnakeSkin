@@ -5,6 +5,9 @@ import org.snakeskin.auto.AutoManager
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
+import org.snakeskin.hardware.Environment
+import org.snakeskin.hardware.Hardware
+import org.snakeskin.hardware.impl.HardwareTimeSource
 import org.snakeskin.registry.Subsystems
 
 /**
@@ -18,6 +21,10 @@ class Robot: IterativeRobot() {
     override fun robotPeriodic() {}
 
     override fun robotInit() {
+        //Configure the environment to be hardware (RoboRIO), and set the timesource to the FPGA
+        Hardware.environment = Environment.HARDWARE
+        Hardware.setTimeSource(HardwareTimeSource())
+
         //Run the Init Manager to initialize the user code
         InitManager.init()
     }
