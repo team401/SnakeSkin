@@ -1,5 +1,6 @@
 package org.snakeskin.hardware
 
+import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.units.measure.time.TimeMeasure
 
 /**
@@ -7,11 +8,11 @@ import org.snakeskin.units.measure.time.TimeMeasure
  * @version 7/30/2018
  *
  */
-interface Solenoid: IHardware {
+interface Solenoid: IHardware<Solenoid> {
     fun get(): Boolean
     fun set(value: Boolean)
 
-    fun isBlackListed(): Boolean
+    val isBlackListed: Boolean
 
     fun setPulseDuration(duration: TimeMeasure)
     fun startPulse()

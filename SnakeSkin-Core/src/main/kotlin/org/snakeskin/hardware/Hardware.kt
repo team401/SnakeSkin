@@ -31,21 +31,21 @@ object Hardware {
     fun getRelativeTime(): Double = timeSource.getRelativeTime()
     fun getAbsoluteTime(): Long = timeSource.getAbsoluteTime()
 
-    private val hardwareRepo = ConcurrentHashMap<HardwareKey, IHardware>()
+    private val hardwareRepo = ConcurrentHashMap<String, IHardware<*>>()
 
     /**
      * Gets a hardware object from the hardware repository with the given type and id specified in 'key'
      *
      * @throws NoSuchElementException If the hardware with the given key could not be found
      */
-    fun getHardware(key: HardwareKey) = hardwareRepo.getOrElse(key) {
-        throw NoSuchElementException("Could not find hardware of type '${key.type}' with id '${key.id}'")
+    fun getHardware(key: String) = hardwareRepo.getOrElse(key) {
+        throw NoSuchElementException("Could not find hardware '$key'")
     }
 
     /**
      * Adds a hardware object to the hardware repository
      */
-    fun addHardware(key: HardwareKey, hardware: IHardware) {
+    fun addHardware(key: String, hardware: IHardware<*>) {
         hardwareRepo[key] = hardware
     }
 
@@ -54,7 +54,7 @@ object Hardware {
      * This is a view of the hardware repository, meaning it stays up to date
      * with the hardware repository, but cannot be modified.
      */
-    fun getRepository(): Map<HardwareKey, IHardware> {
+    fun getRepository(): Map<String, IHardware<*>> {
         return Collections.unmodifiableMap(hardwareRepo)
     }
 }

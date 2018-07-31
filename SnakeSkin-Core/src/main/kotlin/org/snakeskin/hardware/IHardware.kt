@@ -6,4 +6,6 @@ package org.snakeskin.hardware
  *
  * Interface for any hardware
  */
-interface IHardware
+interface IHardware<T> {
+    val hardwareObj: T?
+}

@@ -9,26 +9,23 @@ import org.snakeskin.units.measure.time.TimeMeasure
  * @version 7/30/2018
  *
  */
-class HardwareSolenoid(id: Int, pcm: Int): Solenoid {
-    val solenoid = edu.wpi.first.wpilibj.Solenoid(pcm, id)
-
+class HardwareSolenoid(override val hardwareObj: edu.wpi.first.wpilibj.Solenoid): Solenoid {
     override fun get(): Boolean {
-        return solenoid.get()
+        return hardwareObj.get()
     }
 
     override fun set(value: Boolean) {
-        solenoid.set(value)
+        hardwareObj.set(value)
     }
 
     override fun setPulseDuration(duration: TimeMeasure) {
-        solenoid.setPulseDuration(duration.toUnit(TimeUnit.Standard.SECONDS).value)
+        hardwareObj.setPulseDuration(duration.toUnit(TimeUnit.Standard.SECONDS).value)
     }
 
     override fun startPulse() {
-        solenoid.startPulse()
+        hardwareObj.startPulse()
     }
 
-    override fun isBlackListed(): Boolean {
-        return solenoid.isBlackListed
-    }
+    override val isBlackListed: Boolean
+        get() = hardwareObj.isBlackListed
 }

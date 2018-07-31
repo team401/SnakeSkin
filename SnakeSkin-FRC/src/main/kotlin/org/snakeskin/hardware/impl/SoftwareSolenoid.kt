@@ -13,6 +13,8 @@ import org.snakeskin.units.measure.time.TimeMeasure
  *
  */
 class SoftwareSolenoid: Solenoid {
+    override val hardwareObj: Nothing? = null
+
     var value by LockingDelegate(false)
     var pulseDuration by LockingDelegate(0.0)
 
@@ -30,9 +32,8 @@ class SoftwareSolenoid: Solenoid {
         this.value = value
     }
 
-    override fun isBlackListed(): Boolean {
-        return blackListed
-    }
+    override val isBlackListed: Boolean
+        get() = blackListed
 
     override fun setPulseDuration(duration: TimeMeasure) {
         pulseDuration = duration.toUnit(TimeUnit.Standard.SECONDS).value
