@@ -1,7 +1,7 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.40" apply false
     id "com.palantir.git-version" version "0.10.0"
-    id "com.jfrog.bintray" version "1.8.0"
+    id "com.jfrog.bintray" version "1.8.4" apply false
     id "org.jetbrains.dokka" version "0.9.17" apply false
 }
 
@@ -33,6 +33,11 @@ subprojects { subproj ->
         maven {
             url "https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2"
         }
+    }
+
+    //Jars built for github releases
+    jar {
+        destinationDir = file("$rootDir/out/libs")
     }
 
     dependencies {
