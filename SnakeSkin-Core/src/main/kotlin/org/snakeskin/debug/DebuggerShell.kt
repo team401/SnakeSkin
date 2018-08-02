@@ -6,6 +6,7 @@ import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import java.io.InputStream
 import java.io.OutputStream
+import java.io.PrintStream
 import java.io.PrintWriter
 
 /**
@@ -18,7 +19,7 @@ class DebuggerShell(input: InputStream, output: OutputStream): Runnable {
     }
 
     private val reader = input.bufferedReader()
-    private val writer = PrintWriter(output)
+    private val writer = PrintStream(output)
 
     private val binding = Binding()
     private lateinit var shell: GroovyShell
