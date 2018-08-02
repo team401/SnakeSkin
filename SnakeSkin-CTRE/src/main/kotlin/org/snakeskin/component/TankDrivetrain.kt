@@ -15,12 +15,12 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  * @version 7/21/2018
  *
  */
-interface TankDrivetrain<M: IMotorControllerEnhanced, S: IMotorController> {
+interface TankDrivetrain {
     val wheelRadius: LinearDistanceMeasure
     val wheelbase: LinearDistanceMeasure
 
-    val left: Gearbox<M, S>
-    val right: Gearbox<M, S>
+    val left: Gearbox
+    val right: Gearbox
     val imu: PigeonIMU
 
     fun tank(mode: ControlMode, left: Double, right: Double)

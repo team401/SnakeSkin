@@ -20,10 +20,10 @@ import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 class SmartTankDrivetrain(
         override val wheelRadius: LinearDistanceMeasure,
         override val wheelbase: LinearDistanceMeasure,
-        override val left: Gearbox<TalonSRX, IMotorController>,
-        override val right: Gearbox<TalonSRX, IMotorController>,
+        override val left: Gearbox,
+        override val right: Gearbox,
         override val imu: PigeonIMU
-): TankDrivetrain<TalonSRX, IMotorController> {
+): TankDrivetrain {
     private val imuData = DoubleArray(3)
 
     override fun tank(mode: ControlMode, left: Double, right: Double) {

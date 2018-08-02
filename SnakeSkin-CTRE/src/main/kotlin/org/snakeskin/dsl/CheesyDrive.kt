@@ -42,7 +42,7 @@ data class CheesyDriveParameters(val highWheelNonLinearity: Double,
     }
 }
 
-fun TankDrivetrain<*, *>.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleIn: Double, wheelIn: Double, isHigh: Boolean, quickTurn: Boolean = false) {
+fun TankDrivetrain.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleIn: Double, wheelIn: Double, isHigh: Boolean, quickTurn: Boolean = false) {
     var wheel = wheelIn
     var throttle = throttleIn
 
