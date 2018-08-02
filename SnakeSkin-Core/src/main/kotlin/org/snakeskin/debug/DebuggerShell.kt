@@ -32,7 +32,9 @@ class DebuggerShell(input: InputStream, output: OutputStream): Runnable {
 
         //SnakeSkin imports
         ic.addStarImports("org.snakeskin.dsl")
+
         ic.addStaticStars("org.snakeskin.dsl.EventKt")
+        ic.addImports("org.snakeskin.event.Events")
 
         val config = CompilerConfiguration()
         config.addCompilationCustomizers(ic)

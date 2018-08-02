@@ -10,6 +10,5 @@ package org.snakeskin.dsl
 
 typealias Subsystem = org.snakeskin.subsystem.Subsystem
 typealias Setup = org.snakeskin.annotation.Setup
-typealias Events = org.snakeskin.event.Events
 typealias Subsystems = org.snakeskin.registry.Subsystems
 typealias BooleanState = org.snakeskin.logic.BooleanState
