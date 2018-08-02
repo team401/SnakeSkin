@@ -13,7 +13,8 @@ object Controllers: Registry<Controller>() {
         println("SnakeSkin-FRC: Controllers Registry Loaded") //TODO remove debug statement
 
         registry.forEach {
-            ControlPoller.addController(it)
+            it.initializeProvider() //Initialize the controller provider
+            ControlPoller.addController(it) //Add the controller to the poller
         }
     }
 }

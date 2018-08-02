@@ -1,8 +1,12 @@
 package org.snakeskin.controls
 
 import edu.wpi.first.wpilibj.Joystick
+import org.snakeskin.controls.impl.HardwareControllerProvider
+import org.snakeskin.controls.impl.SoftwareControllerProvider
 import org.snakeskin.controls.mappings.IMappingDefinitions
 import org.snakeskin.exception.ItemNotFoundException
+import org.snakeskin.hardware.Environment
+import org.snakeskin.hardware.Hardware
 import org.snakeskin.logic.LockingDelegate
 import java.util.concurrent.atomic.AtomicReference
 
@@ -29,6 +33,24 @@ abstract class Controller(internal val id: Int, enabled: Boolean = true) {
     internal val axes = hashMapOf<Int, Axis>()
     internal val buttons = hashMapOf<Int, Button>()
     internal val hats = hashMapOf<Int, Hat>()
+
+    /**
+     * This method must be called to initialize the provider of control data.
+     * This method decides whether or not to use a simulated provider
+     */
+    internal fun initializeProvider() {
+        provider = when (Hardware.environment) {
+            Environment.SOFTWARE -> SoftwareControllerProvider()
+            Environment.HARDWARE -> HardwareControllerProvider(Joystick(id))
+        }
+    }
+
+    /**
+     * Gets the software controller provider for simulation, or null if the system is in hardware mode
+     */
+    fun getSoftwareProvider(): SoftwareControllerProvider? {
+        return provider as? SoftwareControllerProvider
+    }
 
     /**
      * The number of axes in this controller
