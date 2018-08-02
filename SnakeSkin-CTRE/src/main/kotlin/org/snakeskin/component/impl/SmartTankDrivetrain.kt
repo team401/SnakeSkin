@@ -72,7 +72,7 @@ class SmartTankDrivetrain(
     }
 
     override fun setYaw(yaw: AngularDistanceMeasure, timeout: Int) {
-        imu.setYaw(yaw.toUnit(AngularDistanceUnit.Standard.DEGREES).value, timeout)
+        imu.setYaw(yaw.toUnit(AngularDistanceUnit.Standard.DEGREES).value * 64, timeout)
     }
 
     override fun enableVoltageCompensation(enable: Boolean) {
