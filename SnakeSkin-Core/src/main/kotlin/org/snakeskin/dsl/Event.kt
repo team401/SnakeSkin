@@ -14,7 +14,7 @@ import org.snakeskin.logic.MutableParameters
  * @param name The event to send
  * @param setup The function to set up the event.  Can be used to add parameters to the event.  @see MutableParameters
  */
-fun send(name: Any, setup: MutableParameters.() -> Unit = {}) {
+@JvmOverloads fun send(name: Any, setup: MutableParameters.() -> Unit = {}) {
     val event = MutableParameters()
     event.setup()
     EventRouter.fireEvent(name, event)
