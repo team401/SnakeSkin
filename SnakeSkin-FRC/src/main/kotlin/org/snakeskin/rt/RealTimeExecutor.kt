@@ -2,8 +2,12 @@ package org.snakeskin.rt
 
 import edu.wpi.first.wpilibj.Notifier
 import edu.wpi.first.wpilibj.Timer
+import org.snakeskin.hardware.Environment
+import org.snakeskin.hardware.Hardware
 import org.snakeskin.logging.LoggerManager
 import org.snakeskin.logic.LockingDelegate
+import org.snakeskin.rt.impl.HardwareRealTimeSchedulingProvider
+import org.snakeskin.rt.impl.SoftwareRealTimeSchedulingProvider
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -32,7 +36,7 @@ object RealTimeExecutor {
         var dt by LockingDelegate(0.0); private set
 
         internal fun updateTime() {
-            time = Timer.getFPGATimestamp()
+            time = Hardware.getRelativeTime()
         }
 
         internal fun updateDt() {
@@ -63,11 +67,15 @@ object RealTimeExecutor {
         }
     }
 
-    private val notifier = Notifier(RealTimeRunnable) //Backing notifier
+    private val schedulingProvider: RealTimeSchedulingProvider = if (Hardware.environment == Environment.SOFTWARE) {
+        SoftwareRealTimeSchedulingProvider(RealTimeRunnable)
+    } else {
+        HardwareRealTimeSchedulingProvider(RealTimeRunnable)
+    }
 
     private fun start() {
         running = true
-        notifier.startPeriodic(rate)
+        schedulingProvider.startPeriodic(rate)
     }
 
     /**

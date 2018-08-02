@@ -29,21 +29,15 @@ abstract class Controller(internal val id: Int, enabled: Boolean = true) {
         get() = enabledRef.get()
         set(value) = enabledRef.set(value)
 
-    private lateinit var provider: ControllerProvider
+    private val provider: ControllerProvider = if (Hardware.environment == Environment.SOFTWARE) {
+        SoftwareControllerProvider()
+    } else {
+        HardwareControllerProvider(Joystick(id))
+    }
+
     internal val axes = hashMapOf<Int, Axis>()
     internal val buttons = hashMapOf<Int, Button>()
     internal val hats = hashMapOf<Int, Hat>()
-
-    /**
-     * This method must be called to initialize the provider of control data.
-     * This method decides whether or not to use a simulated provider
-     */
-    internal fun initializeProvider() {
-        provider = when (Hardware.environment) {
-            Environment.SOFTWARE -> SoftwareControllerProvider()
-            Environment.HARDWARE -> HardwareControllerProvider(Joystick(id))
-        }
-    }
 
     /**
      * Gets the software controller provider for simulation, or null if the system is in hardware mode

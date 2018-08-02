@@ -1,14 +1,11 @@
 package org.snakeskin.component
 
 import com.ctre.phoenix.motorcontrol.ControlMode
-import com.ctre.phoenix.motorcontrol.IMotorController
-import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced
 import com.ctre.phoenix.motorcontrol.NeutralMode
-import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.CTREConstants
+import org.snakeskin.hardware.PigeonIMU
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
 
 /**
  * @author Cameron Earle
