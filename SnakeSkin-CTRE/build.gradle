@@ -1,17 +1,26 @@
 dependencies {
-    required group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1'
-    required group: 'openrio.mirror.third.ctre', name: 'CTRE-phoenix-java', version: '5.1.2.1'
-    required project(':SnakeSkin-Core')
+    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1'
+    implementation group: 'openrio.mirror.third.ctre', name: 'CTRE-phoenix-java', version: '5.1.2.1'
+    implementation project(':SnakeSkin-Core')
     kapt project(':SnakeSkin-Core')
-    required project(':SnakeSkin-FRC')
+    implementation project(':SnakeSkin-FRC')
 }
 
-apply plugin: 'com.jfrog.bintray'
+publishing {
+    publications {
+        Ctre(MavenPublication) {
+            from components.java
+            groupId 'org.snakeskin'
+            artifactId 'SnakeSkin-CTRE'
+            version this.version
+        }
+    }
+}
 
 bintray {
     user = project.hasProperty('user') ? project.property('user') : System.getenv("BINTRAY_USER") != null ? System.getenv("BINTRAY_USER") : ""
     key = project.hasProperty('key') ? project.property('key'): System.getenv("BINTRAY_KEY") != null ? System.getenv("BINTRAY_KEY") : ""
-    configurations = ['archives']
+    publications = ['Ctre']
     pkg {
         repo = "SnakeSkin"
         name = "SnakeSkin-CTRE"

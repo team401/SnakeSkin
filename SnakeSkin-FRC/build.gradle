@@ -1,15 +1,24 @@
 dependencies {
-    required group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1'
-    required project(':SnakeSkin-Core')
+    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1'
+    implementation project(':SnakeSkin-Core')
     kapt project(':SnakeSkin-Core')
 }
 
-apply plugin: 'com.jfrog.bintray'
+publishing {
+    publications {
+        Frc(MavenPublication) {
+            from components.java
+            groupId 'org.snakeskin'
+            artifactId 'SnakeSkin-FRC'
+            version this.version
+        }
+    }
+}
 
 bintray {
     user = project.hasProperty('user') ? project.property('user') : System.getenv("BINTRAY_USER") != null ? System.getenv("BINTRAY_USER") : ""
     key = project.hasProperty('key') ? project.property('key'): System.getenv("BINTRAY_KEY") != null ? System.getenv("BINTRAY_KEY") : ""
-    configurations = ['archives']
+    publications = ['Frc']
     pkg {
         repo = "SnakeSkin"
         name = "SnakeSkin-FRC"

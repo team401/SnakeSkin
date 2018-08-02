@@ -15,6 +15,10 @@ subprojects { subproj ->
     apply plugin: 'kotlin-kapt'
     apply plugin: 'org.jetbrains.dokka'
 
+    apply plugin: 'com.jfrog.bintray'
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+
     group 'org.snakeskin'
     version gitVersion()
 
@@ -31,24 +35,8 @@ subprojects { subproj ->
         }
     }
 
-    configurations {
-        required //Represents a dependency that must be provided by the applications using the library
-        compile.extendsFrom required
-    }
-
     dependencies {
-        required "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.40"
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-    }
-
-    jar {
-        dependsOn configurations.runtime
-        destinationDir = file("$rootDir/out/libs")
-        from {
-            (configurations.runtime - configurations.required).collect {
-                it.isDirectory() ? it : zipTree(it)
-            }
-        }
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.40"
     }
 
     sourceCompatibility = 1.8
@@ -85,6 +73,6 @@ task cleanDocs(type: Delete) {
     delete "${rootDir}/docs"
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.7'
+wrapper {
+    gradleVersion = '4.9'
 }
