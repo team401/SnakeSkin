@@ -15,6 +15,15 @@ class StateMachineBuilder<T>: Builder<StateMachine<T>> {
     override fun build() = builder
 
     /**
+     * Rejects all of the given states if the condition is met
+     * @param states The states to reject
+     * @param condition The condition to reject on
+     */
+    fun rejectAllIf(vararg states: T, condition: () -> Boolean) {
+        builder.addGlobalRejection(states.toList(), condition)
+    }
+
+    /**
      * Adds a state to the state machine
      * @param state The name of the state to add
      * @param setup The function responsible for building the state.  @see MutableStateBuilder

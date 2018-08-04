@@ -62,9 +62,9 @@ class SnakeskinAnnotationProcessor: AbstractProcessor() {
                         val qualifiedName = AnnotatedRunnableGenerator.getMethodQualifiedName(executable)
                         if (modifiers.contains(Modifier.PUBLIC) && modifiers.contains(Modifier.STATIC)) {
                             classes.add(generator.generate(executable))
-                            processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, "[SnakeSkin] Wrapped method '$qualifiedName' (${annotation.simpleName})")
+                            System.out.println("[SnakeSkin] Wrapped method '$qualifiedName' (${annotation.simpleName})")
                         } else {
-                            processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "[SnakeSkin] Method '$qualifiedName' must be public and static")
+                            System.err.println("[SnakeSkin] Method '$qualifiedName' must be public and static")
                         }
                     }
                 }

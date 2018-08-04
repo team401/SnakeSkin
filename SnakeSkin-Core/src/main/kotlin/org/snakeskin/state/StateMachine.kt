@@ -32,6 +32,30 @@ class StateMachine<T> {
     private val scheduler = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
 
     private val states = arrayListOf<State<*>>()
+    private val globalRejections = HashMap<List<*>, () -> Boolean>()
+
+    /**
+     * Adds a global rejection to the state machine, which will
+     * reject all of the given states if the condition is met
+     *
+     * Makes cleaner syntax for rejecting a bunch of states for one reason
+     */
+    @SuppressWarnings("UNCHECKED_CAST")
+    fun addGlobalRejection(states: List<T>, condition: () -> Boolean) {
+        globalRejections[states] = condition
+    }
+
+    private fun isGloballyRejected(state: Any): Boolean {
+        for (pair in globalRejections) {
+            if (pair.key.contains(state)) { //If this key-value pair contains the given state
+                if (pair.value()) { //If this pair's rejection case evaluates true
+                    return true
+                }
+            }
+        }
+
+        return false //State is not rejected
+    }
 
     /**
      * Adds a state to this state machine
@@ -62,7 +86,7 @@ class StateMachine<T> {
                 elseCondition //Otherwise we use the "else" condition
             }
 
-            if (!desiredState.rejectionConditions()) { //If the switch is not rejected
+            if (!desiredState.rejectionConditions() && !isGloballyRejected(desiredState)) { //If the switch is not rejected
                 //STOP THE OLD STATE TIMEOUT
                 activeTimeoutFuture?.cancel(true)
 
