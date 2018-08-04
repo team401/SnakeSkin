@@ -114,10 +114,10 @@ class StateMachine<T> {
                 }
 
                 //SET UP THE TIMEOUT OF THE NEW STATE
-                if (desiredState.timeout != -1L) {
+                if (desiredState.timeout.value != -1.0) {
                     activeTimeoutFuture = executor.schedule({
                         setStateInternal(desiredState.timeoutTo)
-                    }, desiredState.timeout, TimeUnit.MILLISECONDS)
+                    }, desiredState.timeout.toUnit(org.snakeskin.units.TimeUnit.Standard.MILLISECONDS).value.toLong(), TimeUnit.MILLISECONDS)
                 }
 
                 return toReturn //Return the waitable

@@ -33,6 +33,10 @@ subprojects { subproj ->
         maven {
             url "https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2"
         }
+        //Clojars
+        maven {
+            url "http://clojars.org/repo"
+        }
     }
 
     //Jars built for github releases

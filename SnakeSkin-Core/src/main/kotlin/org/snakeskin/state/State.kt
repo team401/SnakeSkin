@@ -2,6 +2,8 @@ package org.snakeskin.state
 
 import org.snakeskin.executor.SchedulingContext
 import org.snakeskin.executor.ThreadPoolSchedulingContext
+import org.snakeskin.units.measure.time.TimeMeasure
+import org.snakeskin.units.measure.time.TimeMeasureMilliseconds
 
 /**
  * @author Cameron Earle
@@ -22,6 +24,6 @@ data class State<T>(val name: T,
                     var exit: () -> Unit,
                     var rate: Long = 20,
                     var rejectionConditions: () -> Boolean = {false},
-                    var timeout: Long = -1L,
+                    var timeout: TimeMeasure = TimeMeasureMilliseconds(-1.0),
                     var timeoutTo: Any = "",
                     var schedulingContext: SchedulingContext = ThreadPoolSchedulingContext(action, rate))
