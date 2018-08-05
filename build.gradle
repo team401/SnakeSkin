@@ -10,7 +10,7 @@ allprojects {
 }
 
 subprojects { subproj ->
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'kotlin'
     apply plugin: 'kotlin-kapt'
     apply plugin: 'org.jetbrains.dokka'
@@ -70,6 +70,16 @@ subprojects { subproj ->
             url = dokkaLinkUrl
             suffix = dokkaLinkSuffix
         }
+    }
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        classifier = 'sources'
+    }
+
+    task javadocJar(type: Jar) {
+        from javadoc
+        classifier = 'javadoc'
     }
 }
 
