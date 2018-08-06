@@ -47,7 +47,7 @@ class ServiceRegistrationManager(val env: ProcessingEnvironment, val className: 
     fun addClass(className: String) {
         if (classes.add(className)) {
             lines.add(className)
-            System.out.println("[SnakeSkin] Registered wrapper class '$className'")
+            env.messager.printMessage(Diagnostic.Kind.OTHER, "[SnakeSkin] Registered wrapper class '$className'")
         }
     }
 
