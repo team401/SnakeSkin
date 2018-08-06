@@ -16,7 +16,9 @@ import java.util.concurrent.TimeUnit
  * @author Cameron Earle
  * @version 7/4/17
  */
-open class Subsystem(val name: String, private val loopRate: Long = 20L) {
+open class Subsystem(private val loopRate: Long = 20L) {
+    val name: String = this.javaClass.simpleName //Use reflection to get the name of the implementing class
+
     //Executor, for running subsystem actions
     private val executor = ExecutorFactory.getExecutor("Subsystem")
     private var loopFuture: ScheduledFuture<*>? = null
