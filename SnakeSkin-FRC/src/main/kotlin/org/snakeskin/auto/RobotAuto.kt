@@ -2,6 +2,7 @@ package org.snakeskin.auto
 
 import edu.wpi.first.wpilibj.DriverStation
 import org.snakeskin.auto.steps.AutoStep
+import org.snakeskin.auto.steps.SequentialSteps
 import org.snakeskin.factory.ExecutorFactory
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -13,41 +14,17 @@ import java.util.concurrent.TimeUnit
  * Defines an auto loop that has several conveniences for using on an FRC robot.
  */
 abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L): AutoLoop() {
-    private val executor = ExecutorFactory.getExecutor("Auto") //This will be used to execute pre tasks
+    private val executor = ExecutorFactory.getExecutor("Auto Pre Tasks") //This will be used to execute pre tasks
     private var preFuture: ScheduledFuture<*>? = null
 
     private val sequence = arrayListOf<AutoStep>()
     private var sequenceIdx = 0
 
     /**
-     * Adds a single step to the sequence
-     */
-    protected fun add(step: AutoStep) {
-        val clone = step.create()
-        sequence.add(clone)
-    }
-
-    /**
      * Adds an array of steps to the sequence
      */
     @JvmName("addArray")
     protected fun add(steps: Array<AutoStep>) {
-        val clones = steps.map { it.create() }
-        sequence.addAll(clones)
-    }
-
-    /**
-     * Adds the provided varargs to the sequence
-     */
-    protected fun add(vararg steps: AutoStep) {
-        val clones = steps.map { it.create() }
-        sequence.addAll(clones)
-    }
-
-    /**
-     * Adds the provided collection to the sequence
-     */
-    protected fun add(steps: Collection<AutoStep>) {
         val clones = steps.map { it.create() }
         sequence.addAll(clones)
     }
@@ -63,7 +40,7 @@ abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L)
      * so it is important to do minimal processing in this method.  Process intensive tasks should be done
      * asynchronously or in the preAuto function.
      */
-    abstract fun assembleAuto()
+    abstract fun assembleAuto(): SequentialSteps
 
     override fun startTasks() {
         val ds = DriverStation.getInstance()
@@ -86,7 +63,7 @@ abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L)
         preAuto()
         sequence.clear()
         sequenceIdx = 0
-        assembleAuto()
+        sequence.addAll(assembleAuto().steps)
         sequence.forEach {
             it.reset()
         }

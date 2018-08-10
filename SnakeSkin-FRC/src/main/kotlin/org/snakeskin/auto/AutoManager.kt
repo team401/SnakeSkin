@@ -1,8 +1,7 @@
 package org.snakeskin.auto
 
-import edu.wpi.first.wpilibj.Notifier
-import edu.wpi.first.wpilibj.Timer
 import org.snakeskin.factory.ExecutorFactory
+import org.snakeskin.hardware.Hardware
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +32,7 @@ object AutoManager {
     }
 
     private fun tick() {
-        time = Timer.getFPGATimestamp()
+        time = Hardware.getRelativeTime()
         if (auto.tick(time, lastTime)) {
             stop()
         }
@@ -41,7 +40,7 @@ object AutoManager {
     }
 
     @Synchronized fun start() {
-        time = Timer.getFPGATimestamp()
+        time = Hardware.getRelativeTime()
         auto.entry(time)
         wasRunning = true
         lastTime = 0.0
@@ -49,7 +48,7 @@ object AutoManager {
     }
 
     @Synchronized fun stop() {
-        time = Timer.getFPGATimestamp()
+        time = Hardware.getRelativeTime()
 
         future?.cancel(true)
         if (wasRunning) {

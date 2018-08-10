@@ -1,7 +1,5 @@
 package org.snakeskin.rt
 
-import edu.wpi.first.wpilibj.Notifier
-import edu.wpi.first.wpilibj.Timer
 import org.snakeskin.hardware.Environment
 import org.snakeskin.hardware.Hardware
 import org.snakeskin.logging.LoggerManager
