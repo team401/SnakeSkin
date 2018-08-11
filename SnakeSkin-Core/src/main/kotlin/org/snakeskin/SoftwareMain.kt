@@ -1,5 +1,6 @@
 package org.snakeskin
 
+import org.snakeskin.compiler.PatchingClassLoader
 import org.snakeskin.debug.DebuggerShell
 import org.snakeskin.hardware.Environment
 import org.snakeskin.hardware.Hardware

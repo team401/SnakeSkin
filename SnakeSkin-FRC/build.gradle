@@ -4,6 +4,19 @@ dependencies {
     kapt project(':SnakeSkin-Core')
 }
 
+sourceSets {
+    patches {
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+jar {
+    from (sourceSets.patches.output) {
+        rename '(.*).class', '$1.class.patch'
+        into 'patches'
+    }
+}
+
 publishing {
     publications {
         Frc(MavenPublication) {
