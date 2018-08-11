@@ -20,7 +20,7 @@ import java.net.URLClassLoader
  */
 object PatchingClassLoader: URLClassLoader(arrayOf<URL>(), ClassLoader.getSystemClassLoader()) {
     private fun readPatchClass(name: String): InputStream? {
-        val patchPath = "patches/" + name.replace(".", ",") + ".class.patch"
+        val patchPath = "patches/" + name.replace(".", "/") + ".class.patch"
         return this.getResourceAsStream(patchPath)
     }
 
