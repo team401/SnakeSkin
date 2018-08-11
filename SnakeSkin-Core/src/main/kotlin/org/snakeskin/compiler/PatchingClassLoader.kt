@@ -45,6 +45,7 @@ object PatchingClassLoader: URLClassLoader(arrayOf<URL>(), ClassLoader.getSystem
                     )
                     defineClass.isAccessible = true
                     defineClass.invoke(parent, name, buf, 0, len)
+                    println("[SnakeSkin] Loaded patched class '$name'")
                 } catch (e: Exception) {
                     LoggerManager.logMessage("Unable to patch class '$name'", LogLevel.ERROR)
                     LoggerManager.logThrowable(e)
