@@ -13,7 +13,6 @@ publishing {
             groupId 'org.snakeskin'
             artifactId 'SnakeSkin-CTRE'
             artifact sourcesJar
-            artifact javadocJar
             version this.version
         }
     }

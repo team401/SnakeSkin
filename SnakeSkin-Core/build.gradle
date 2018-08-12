@@ -12,7 +12,6 @@ publishing {
             groupId 'org.snakeskin'
             artifactId 'SnakeSkin-Core'
             artifact sourcesJar
-            artifact javadocJar
             version this.version
         }
     }

@@ -73,13 +73,8 @@ subprojects { subproj ->
     }
 
     task sourcesJar(type: Jar) {
-        from sourceSets.main.allJava
+        from sourceSets.main.allSource
         classifier = 'sources'
-    }
-
-    task javadocJar(type: Jar) {
-        from javadoc
-        classifier = 'javadoc'
     }
 }
 

@@ -13,7 +13,12 @@ import java.net.URLClassLoader
  * @version 8/10/2018
  *
  * The PatchingClassLoader can be used to load alternative implementations of classes under the alias of the original class.
- * Classes can be added by using the "addClass" method, and all of the classes can be loaded with the "patchAll" method
+ *
+ * It can be used standalone by calling "registerPatches" to immediately load and patch individual classes,
+ * or it can be configured as your thread's context ClassLoader to patch ANY class loaded by the thread.
+ *
+ * Keep in mind that patch classes must EXACTLY and FULLY match the original class's signature, or else runtime errors
+ * will occur.
  *
  * Patched class files should be placed in the resources root, under a single subdirectory called "patches"
  * Patch class files should have the extension ".class.patch"
@@ -45,7 +50,7 @@ object PatchingClassLoader: URLClassLoader(arrayOf<URL>(), ClassLoader.getSystem
                     )
                     defineClass.isAccessible = true
                     defineClass.invoke(parent, name, buf, 0, len)
-                    println("[SnakeSkin] Loaded patched class '$name'")
+                    println("SnakeSkin: Loaded patched class '$name'")
                 } catch (e: Exception) {
                     LoggerManager.logMessage("Unable to patch class '$name'", LogLevel.ERROR)
                     LoggerManager.logThrowable(e)
@@ -59,7 +64,8 @@ object PatchingClassLoader: URLClassLoader(arrayOf<URL>(), ClassLoader.getSystem
     }
 
     /**
-     * Loads patches (if available) for the given classes
+     * Loads patches (if available) for the given classes.
+     * Note that this immediately loads the classes (preventing them from being reloaded by another ClassLoader)
      */
     fun registerPatches(vararg classes: String) {
         classes.forEach {

@@ -24,7 +24,6 @@ publishing {
             groupId 'org.snakeskin'
             artifactId 'SnakeSkin-FRC'
             artifact sourcesJar
-            artifact javadocJar
             version this.version
         }
     }
