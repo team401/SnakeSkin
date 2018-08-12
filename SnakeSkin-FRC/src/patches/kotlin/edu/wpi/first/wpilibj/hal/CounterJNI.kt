@@ -6,6 +6,7 @@ import java.nio.IntBuffer
  * @author Cameron Earle
  * @version 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object CounterJNI: JNIWrapper() {
     @JvmStatic fun initializeCounter(mode: Int, index: IntBuffer): Int {
         return index.get()

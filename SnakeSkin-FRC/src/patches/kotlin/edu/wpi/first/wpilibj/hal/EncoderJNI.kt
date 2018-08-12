@@ -6,6 +6,7 @@ import java.nio.IntBuffer
  * @author Cameron Earle
  * @version 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object EncoderJNI: JNIWrapper() {
     @JvmStatic fun initializeEncoder(digitalSourceHandleA: Int, analogTriggerTypeA: Int,
                                    digitalSourceHandleB: Int, analogTriggerTypeB: Int,

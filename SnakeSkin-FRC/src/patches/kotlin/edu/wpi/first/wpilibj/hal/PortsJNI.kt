@@ -8,6 +8,7 @@ package edu.wpi.first.wpilibj.hal
  * https://github.com/wpilibsuite/allwpilib/blob/0ef9803363380c58804a0d885a7cc7ea8233a1ac/hal/src/main/native/sim/PortsInternal.h
  * on 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object PortsJNI: JNIWrapper() {
     private const val kNumAccumulators = 2
     private const val kNumAnalogTriggers = 8

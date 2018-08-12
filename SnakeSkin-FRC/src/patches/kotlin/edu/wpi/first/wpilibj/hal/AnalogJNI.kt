@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.AccumulatorResult
  * @author Cameron Earle
  * @version 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object AnalogJNI: JNIWrapper() {
     /**
      * *native declaration : AthenaJava\target\native\include\HAL\Analog.h:58*<br></br> enum values

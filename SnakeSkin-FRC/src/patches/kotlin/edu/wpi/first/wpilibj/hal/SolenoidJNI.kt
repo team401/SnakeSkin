@@ -6,6 +6,7 @@ import java.nio.ByteBuffer
  * @author Cameron Earle
  * @version 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object SolenoidJNI: JNIWrapper() {
     @JvmStatic fun initializeSolenoidPort(halPortHandle: Int): Int {
         return halPortHandle
@@ -22,7 +23,7 @@ object SolenoidJNI: JNIWrapper() {
     @JvmStatic fun freeSolenoidPort(portHandle: Int) {}
 
     @JvmStatic fun setSolenoid(portHandle: Int, on: Boolean) {
-        val pm = ByteBuffer.allocate(2).putShort(portHandle.toShort()).array()
+        //val pm = ByteBuffer.allocate(2).putShort(portHandle.toShort()).array()
         //TODO set data in simulation env
         //pm[0] = port
         //pm[1] = module

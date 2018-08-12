@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PWMConfigDataResult
  * @author Cameron Earle
  * @version 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object PWMJNI: JNIWrapper() {
     @JvmStatic fun initializePWMPort(halPortHandle: Int): Int {
         return halPortHandle

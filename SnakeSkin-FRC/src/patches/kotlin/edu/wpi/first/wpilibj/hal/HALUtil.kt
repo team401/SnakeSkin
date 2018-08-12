@@ -4,6 +4,7 @@ package edu.wpi.first.wpilibj.hal
  * @author Cameron Earle
  * @version 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object HALUtil: JNIWrapper() {
     @JvmStatic val NULL_PARAMETER = -1005
     @JvmStatic val SAMPLE_RATE_TOO_HIGH = 1001

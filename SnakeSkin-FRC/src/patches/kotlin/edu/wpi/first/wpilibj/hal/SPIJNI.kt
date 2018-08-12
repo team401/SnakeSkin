@@ -6,6 +6,7 @@ import java.nio.ByteBuffer
  * @author Cameron Earle
  * @version 8/11/2018
  */
+@Suppress("UNUSED_PARAMETER")
 object SPIJNI: JNIWrapper() {
     @JvmStatic fun spiInitialize(port: Int) {
 
