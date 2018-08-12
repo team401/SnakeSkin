@@ -152,13 +152,4 @@ object HAL: JNIWrapper() {
                            printMsg: Boolean): Int {
         return 0
     }
-
-    @JvmStatic fun getPortWithModule(module: Byte, channel: Byte): Int {
-        val data = byteArrayOf(module, channel)
-        return ByteBuffer.wrap(data).short.toInt()
-    }
-
-    @JvmStatic fun getPort(channel: Byte): Int {
-        return getPortWithModule(0.toByte(), channel)
-    }
 }
