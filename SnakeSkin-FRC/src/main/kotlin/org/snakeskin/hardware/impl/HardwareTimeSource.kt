@@ -5,8 +5,7 @@ import org.snakeskin.hardware.TimeSource
 
 /**
  * @author Cameron Earle
- * @version 7/30/2018
- *
+ * @version 8/12/18
  */
 class HardwareTimeSource: TimeSource {
     override fun getRelativeTime(): Double {

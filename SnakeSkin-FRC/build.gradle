@@ -5,6 +5,8 @@ dependencies {
 }
 
 sourceSets {
+    //The patches SourceSet contains classes that replace existing, hardware specific classes for simulation
+    //During build, these classes get packaged into the "patches" directory in the jar, where they can be loaded at runtime
     patches {
         compileClasspath += sourceSets.main.runtimeClasspath
     }

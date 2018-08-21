@@ -6,6 +6,11 @@ package edu.wpi.first.wpilibj.hal
  */
 @Suppress("UNUSED_PARAMETER")
 object HALUtil: JNIWrapper() {
+    /**
+     * This gets filled in when the class loads, which is close enough to a startup time for us
+     */
+    @JvmStatic private val startupTime = System.nanoTime() / 1000
+
     @JvmStatic val NULL_PARAMETER = -1005
     @JvmStatic val SAMPLE_RATE_TOO_HIGH = 1001
     @JvmStatic val VOLTAGE_OUT_OF_RANGE = 1002
@@ -24,7 +29,7 @@ object HALUtil: JNIWrapper() {
     }
 
     @JvmStatic fun getFPGATime(): Long {
-        return System.nanoTime() / 1000 //TODO account for code startup time
+        return (System.nanoTime() / 1000) - startupTime
     }
 
     @JvmStatic fun getHALRuntimeType(): Int {

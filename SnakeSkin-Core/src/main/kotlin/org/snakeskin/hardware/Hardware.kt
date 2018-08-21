@@ -1,6 +1,8 @@
 package org.snakeskin.hardware
 
 import org.snakeskin.hardware.impl.SoftwareTimeSource
+import java.nio.ByteBuffer
+import java.nio.IntBuffer
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -31,7 +33,7 @@ object Hardware {
     fun getRelativeTime(): Double = timeSource.getRelativeTime()
     fun getAbsoluteTime(): Long = timeSource.getAbsoluteTime()
 
-    private val hardwareRepo = ConcurrentHashMap<String, IHardware<*>>()
+    private val hardwareRepo = ConcurrentHashMap<String, IHardware>()
 
     /**
      * Gets a hardware object from the hardware repository with the given type and id specified in 'key'
@@ -45,7 +47,7 @@ object Hardware {
     /**
      * Adds a hardware object to the hardware repository
      */
-    fun addHardware(key: String, hardware: IHardware<*>) {
+    fun addHardware(key: String, hardware: IHardware) {
         hardwareRepo[key] = hardware
     }
 
@@ -54,7 +56,7 @@ object Hardware {
      * This is a view of the hardware repository, meaning it stays up to date
      * with the hardware repository, but cannot be modified.
      */
-    fun getRepository(): Map<String, IHardware<*>> {
+    fun getRepository(): Map<String, IHardware> {
         return Collections.unmodifiableMap(hardwareRepo)
     }
 }

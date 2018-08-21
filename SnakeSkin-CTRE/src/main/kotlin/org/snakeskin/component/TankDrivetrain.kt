@@ -2,8 +2,8 @@ package org.snakeskin.component
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.CTREConstants
-import org.snakeskin.hardware.PigeonIMU
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 

@@ -1,6 +1,10 @@
 package edu.wpi.first.wpilibj.hal
 
+import org.snakeskin.hardware.DriverStation
+import org.snakeskin.hardware.Hardware
+import org.snakeskin.hardware.RoboRIO
 import java.nio.ByteBuffer
+import java.util.*
 
 /**
  * @author Cameron Earle
@@ -13,6 +17,10 @@ object HAL: JNIWrapper() {
     }
 
     @JvmStatic fun initialize(timeout: Int, mode: Int): Boolean {
+        //Create the RoboRIO and DriverStation objects on HAL init
+        Hardware.addHardware("roborio", RoboRIO())
+        Hardware.addHardware("driverstation", DriverStation())
+
         return true
     }
 
@@ -54,33 +62,28 @@ object HAL: JNIWrapper() {
         return 0
     }
 
-    @JvmStatic fun nativeGetControlWord(): Int {
+    /**
+     * Not used by our implementation
+     */
+    @JvmStatic private fun nativeGetControlWord(): Int {
         return 0
     }
 
     @JvmStatic fun getControlWord(controlWord: ControlWord) {
-        //TODO add robot state to sim env
-        controlWord.update(false, false, false, false, false, true)
+        val ds = DriverStation.getFromHardwareRepository()
+        controlWord.update(ds.mode.enabled, ds.mode.auto, ds.mode.test, ds.mode.estopped, ds.fms, ds.connected)
     }
 
+    /**
+     * Not used by our implementation
+     */
     @JvmStatic private fun nativeGetAllianceStation(): Int {
         return 0
     }
 
     fun getAllianceStation(): AllianceStationID? {
-        //TODO add alliance station to sim env
-        return AllianceStationID.Red1
-        /*
-        when (nativeGetAllianceStation()) {
-            0 -> return AllianceStationID.Red1
-            1 -> return AllianceStationID.Red2
-            2 -> return AllianceStationID.Red3
-            3 -> return AllianceStationID.Blue1
-            4 -> return AllianceStationID.Blue2
-            5 -> return AllianceStationID.Blue3
-            else -> return null
-        }
-        */
+        val ds = DriverStation.getFromHardwareRepository()
+        return ds.allianceStation
     }
 
     @JvmStatic fun isNewControlData(): Boolean {
@@ -99,17 +102,50 @@ object HAL: JNIWrapper() {
     @JvmStatic var kMaxJoystickPOVs = 12
 
     @JvmStatic fun getJoystickAxes(joystickNum: Byte, axesArray: FloatArray): Short {
-        return 0 //TODO implement
+        val ds = DriverStation.getFromHardwareRepository()
+        val joystick = ds.getJoystick(joystickNum.toInt())
+
+        val numAxes = joystick.numAxes()
+
+        for (i in 0 until numAxes) {
+            axesArray[i] = joystick.getAxis(i).toFloat()
+        }
+
+        return numAxes.toShort()
     }
 
     @JvmStatic fun getJoystickPOVs(joystickNum: Byte, povsArray: ShortArray): Short {
-        return 0 //TODO implement
+        val ds = DriverStation.getFromHardwareRepository()
+        val joystick = ds.getJoystick(joystickNum.toInt())
+
+        val numHats = joystick.numHats()
+
+        for (i in 0 until numHats) {
+            povsArray[i] = joystick.getHat(i).toShort()
+        }
+
+        return numHats.toShort()
     }
 
     @JvmStatic fun getJoystickButtons(joystickNum: Byte, count: ByteBuffer): Int {
-        return 0 //TODO implement
+        val ds = DriverStation.getFromHardwareRepository()
+        val joystick = ds.getJoystick(joystickNum.toInt())
+
+        val numButtons = joystick.numButtons()
+        count.put(0, numButtons.toByte())
+
+        val bits = BitSet(32)
+
+        for (i in 1..numButtons) {
+            bits.set(i - 1, joystick.getButton(i))
+        }
+
+        return bits.toLongArray()[0].toInt()
     }
 
+    /**
+     * Simulated joysticks don't support outputs
+     */
     @JvmStatic fun setJoystickOutputs(joystickNum: Byte, outputs: Int, leftRumble: Short,
                                     rightRumble: Short): Int {
         return 0
@@ -132,7 +168,8 @@ object HAL: JNIWrapper() {
     }
 
     @JvmStatic fun getMatchTime(): Double {
-        return 120.0 //TODO add match time simulation
+        val ds = DriverStation.getFromHardwareRepository()
+        return ds.matchTime
     }
 
     @JvmStatic fun getSystemActive(): Boolean {
@@ -143,14 +180,19 @@ object HAL: JNIWrapper() {
         return false //TODO add brownout simulation
     }
 
+    /**
+     * Implementation only applies game specific message, other data is forced to 0
+     */
     @JvmStatic fun getMatchInfo(info: MatchInfoData): Int {
-        //TODO add simulated match info
+        val ds = DriverStation.getFromHardwareRepository()
+        info.setData("Simulation", ds.gameSpecificMessage, 0, 0, 0)
         return 0
     }
 
     @JvmStatic fun sendError(isError: Boolean, errorCode: Int, isLVCode: Boolean,
                            details: String, location: String, callStack: String,
                            printMsg: Boolean): Int {
+        //TODO report this to stdout somehow?
         return 0
     }
 }

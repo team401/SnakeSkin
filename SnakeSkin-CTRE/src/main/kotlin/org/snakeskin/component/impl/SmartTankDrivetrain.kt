@@ -2,9 +2,9 @@ package org.snakeskin.component.impl
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.component.Gearbox
 import org.snakeskin.component.TankDrivetrain
-import org.snakeskin.hardware.PigeonIMU
 import org.snakeskin.units.AngularDistanceUnit
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureDegrees
