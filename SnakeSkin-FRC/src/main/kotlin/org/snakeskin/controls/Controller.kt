@@ -29,22 +29,11 @@ abstract class Controller(internal val id: Int, enabled: Boolean = true) {
         get() = enabledRef.get()
         set(value) = enabledRef.set(value)
 
-    private val provider: ControllerProvider = if (Hardware.environment == Environment.SOFTWARE) {
-        SoftwareControllerProvider()
-    } else {
-        HardwareControllerProvider(Joystick(id))
-    }
+    private val provider: ControllerProvider = HardwareControllerProvider(Joystick(id))
 
     internal val axes = hashMapOf<Int, Axis>()
     internal val buttons = hashMapOf<Int, Button>()
     internal val hats = hashMapOf<Int, Hat>()
-
-    /**
-     * Gets the software controller provider for simulation, or null if the system is in hardware mode
-     */
-    fun getSoftwareProvider(): SoftwareControllerProvider? {
-        return provider as? SoftwareControllerProvider
-    }
 
     /**
      * The number of axes in this controller
