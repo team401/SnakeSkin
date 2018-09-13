@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.component.Gearbox
 import org.snakeskin.component.TankDrivetrain
+import org.snakeskin.template.TankDrivetrainGeometryTemplate
 import org.snakeskin.units.AngularDistanceUnit
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureDegrees
@@ -16,12 +17,14 @@ import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
  *
  */
 class SmartTankDrivetrain(
-        override val wheelRadius: LinearDistanceMeasure,
-        override val wheelbase: LinearDistanceMeasure,
+        geometryTemplate: TankDrivetrainGeometryTemplate,
         override val left: Gearbox,
         override val right: Gearbox,
         override val imu: PigeonIMU
 ): TankDrivetrain {
+    override val wheelbase = geometryTemplate.wheelbase
+    override val wheelRadius = geometryTemplate.wheelRadius
+
     private val imuData = DoubleArray(3)
 
     override fun tank(mode: ControlMode, left: Double, right: Double) {
