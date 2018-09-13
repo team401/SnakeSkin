@@ -14,7 +14,7 @@ abstract class AutoStep {
 
     var stepState = StepState.ENTRY; private set
 
-    fun reset() {
+    open fun reset() {
         stepState = StepState.ENTRY
     }
 

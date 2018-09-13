@@ -7,6 +7,13 @@ package org.snakeskin.auto.steps
 class SequentialSteps(vararg val steps: AutoStep): AutoStep() {
     private var idx = 0
 
+    override fun reset() {
+        super.reset()
+        steps.forEach {
+            it.reset()
+        }
+    }
+
     override fun entry(currentTime: Double) {
         idx = 0
     }

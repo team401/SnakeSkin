@@ -5,6 +5,13 @@ package org.snakeskin.auto.steps
  * @version 5/11/18
  */
 class ParallelSteps(vararg val steps: AutoStep): AutoStep() {
+    override fun reset() {
+        super.reset()
+        steps.forEach {
+            it.reset()
+        }
+    }
+
     override fun entry(currentTime: Double) {
     }
 
