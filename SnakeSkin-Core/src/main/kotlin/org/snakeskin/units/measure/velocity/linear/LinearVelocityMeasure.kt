@@ -53,4 +53,20 @@ interface LinearVelocityMeasure: Measure<LinearVelocityUnit, LinearVelocityMeasu
             }
         }
     }
+
+    operator fun plus(other: LinearVelocityMeasure): LinearVelocityMeasure {
+        return create((this.value + other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun minus(other: LinearVelocityMeasure): LinearVelocityMeasure {
+        return create((this.value - other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun div(other: LinearVelocityMeasure): LinearVelocityMeasure {
+        return create((this.value / other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun times(other: LinearVelocityMeasure): LinearVelocityMeasure {
+        return create((this.value * other.toUnit(this.unit).value), this.unit)
+    }
 }

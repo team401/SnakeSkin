@@ -53,4 +53,21 @@ interface AngularDistanceMeasure: Measure<AngularDistanceUnit, AngularDistanceMe
             }
         }
     }
+
+
+    operator fun plus(other: AngularDistanceMeasure): AngularDistanceMeasure {
+        return create((this.value + other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun minus(other: AngularDistanceMeasure): AngularDistanceMeasure {
+        return create((this.value - other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun div(other: AngularDistanceMeasure): AngularDistanceMeasure {
+        return create((this.value / other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun times(other: AngularDistanceMeasure): AngularDistanceMeasure {
+        return create((this.value * other.toUnit(this.unit).value), this.unit)
+    }
 }

@@ -20,4 +20,21 @@ interface TimeMeasure: Measure<TimeUnit, TimeMeasure> {
             }
         }
     }
+
+
+    operator fun plus(other: TimeMeasure): TimeMeasure {
+        return create((this.value + other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun minus(other: TimeMeasure): TimeMeasure {
+        return create((this.value - other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun div(other: TimeMeasure): TimeMeasure {
+        return create((this.value / other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun times(other: TimeMeasure): TimeMeasure {
+        return create((this.value * other.toUnit(this.unit).value), this.unit)
+    }
 }

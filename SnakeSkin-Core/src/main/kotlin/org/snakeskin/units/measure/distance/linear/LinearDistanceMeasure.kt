@@ -53,4 +53,21 @@ interface LinearDistanceMeasure: Measure<LinearDistanceUnit, LinearDistanceMeasu
             }
         }
     }
+
+
+    operator fun plus(other: LinearDistanceMeasure): LinearDistanceMeasure {
+        return create((this.value + other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun minus(other: LinearDistanceMeasure): LinearDistanceMeasure {
+        return create((this.value - other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun div(other: LinearDistanceMeasure): LinearDistanceMeasure {
+        return create((this.value / other.toUnit(this.unit).value), this.unit)
+    }
+
+    operator fun times(other: LinearDistanceMeasure): LinearDistanceMeasure {
+        return create((this.value * other.toUnit(this.unit).value), this.unit)
+    }
 }
