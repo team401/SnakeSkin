@@ -15,8 +15,8 @@ class DelayStep(val time: TimeMeasure): AutoStep() {
         startTime = currentTime
     }
 
-    override fun action(currentTime: Double, lastTime: Double) {
-        done = (currentTime - startTime >= timeSeconds)
+    override fun action(currentTime: Double, lastTime: Double): Boolean {
+        return (currentTime - startTime >= timeSeconds)
     }
 
     override fun exit(currentTime: Double) {}

@@ -4,8 +4,7 @@ package org.snakeskin.auto.steps
  * @author Cameron Earle
  * @version 5/11/18
  */
-abstract class AutoStep(var done: Boolean = false) {
-    private val isSingleStep = done
+abstract class AutoStep {
     enum class StepState {
         ENTRY,
         ACTION,
@@ -17,9 +16,6 @@ abstract class AutoStep(var done: Boolean = false) {
 
     fun reset() {
         stepState = StepState.ENTRY
-        if (!isSingleStep) {
-            done = false
-        }
     }
 
     fun doContinue() = (stepState == StepState.CONTINUE)
@@ -31,8 +27,7 @@ abstract class AutoStep(var done: Boolean = false) {
                 stepState = StepState.ACTION
             }
             StepState.ACTION -> {
-                action(currentTime, lastTime)
-                if (done) {
+                if (action(currentTime, lastTime)) {
                     stepState = StepState.EXIT
                 }
             }
@@ -46,31 +41,9 @@ abstract class AutoStep(var done: Boolean = false) {
 
     abstract fun entry(currentTime: Double)
     abstract fun exit(currentTime: Double)
-    abstract fun action(currentTime: Double, lastTime: Double)
 
     /**
-     * Wraps an AutoStep, essentially allowing copies to be created that maintain their own state
-     * while calling the entry, action, and exit methods of the original
+     * This function should return true when it is done.  Doing this will allow the sequence to continue
      */
-    private class AutoStepReference(private val stepIn: AutoStep): AutoStep(stepIn.done) {
-        override fun entry(currentTime: Double) {
-            stepIn.entry(currentTime)
-        }
-
-        override fun action(currentTime: Double, lastTime: Double) {
-            stepIn.action(currentTime, lastTime)
-        }
-
-        override fun exit(currentTime: Double) {
-            stepIn.exit(currentTime)
-        }
-    }
-
-    /**
-     * Creates a copy of this auto step.  Since step instances should not be shared,
-     * we use this to ensure that a new copy is created whenever it is needed.
-     */
-    fun create(): AutoStep {
-        return AutoStepReference(this)
-    }
+    abstract fun action(currentTime: Double, lastTime: Double): Boolean
 }

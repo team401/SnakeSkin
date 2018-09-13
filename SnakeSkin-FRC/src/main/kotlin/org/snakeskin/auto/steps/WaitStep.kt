@@ -16,9 +16,9 @@ class WaitStep(timeout: TimeMeasure = TimeMeasureSeconds(-1.0), val condition: (
         startTime = currentTime
     }
 
-    override fun action(currentTime: Double, lastTime: Double) {
-        done = ((timeoutSeconds > 0.0 && currentTime - startTime >= timeoutSeconds) || condition())
-
+    override fun action(currentTime: Double, lastTime: Double): Boolean {
+        return ((timeoutSeconds > 0.0 && currentTime - startTime >= timeoutSeconds) || condition())
     }
+
     override fun exit(currentTime: Double) {}
 }

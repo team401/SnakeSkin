@@ -25,8 +25,7 @@ abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L)
      */
     @JvmName("addArray")
     protected fun add(steps: Array<AutoStep>) {
-        val clones = steps.map { it.create() }
-        sequence.addAll(clones)
+        sequence.addAll(steps)
     }
 
     /**
