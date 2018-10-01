@@ -33,6 +33,4 @@ class RoboRIO: IHardware {
      * Unit is in G forces
      */
     var accelerometerZ by LockingDelegate(0.0)
-
-
 }

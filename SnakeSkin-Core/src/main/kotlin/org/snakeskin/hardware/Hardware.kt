@@ -36,6 +36,21 @@ object Hardware {
     private val hardwareRepo = ConcurrentHashMap<String, IHardware>()
 
     /**
+     * Checks if the hardware repository has the given hardware.
+     */
+    fun hasHardware(key: String): Boolean {
+        return hardwareRepo.containsKey(key)
+    }
+
+    /**
+     * Same as hasHardware(key), but also checks if the hardware is of a specific type
+     */
+    fun hasHardware(key: String, type: Class<*>): Boolean {
+        return hasHardware(key) &&
+                (hardwareRepo[key]?.javaClass?.isAssignableFrom(type) ?: false)
+    }
+
+    /**
      * Gets a hardware object from the hardware repository with the given type and id specified in 'key'
      *
      * @throws NoSuchElementException If the hardware with the given key could not be found
