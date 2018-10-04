@@ -7,7 +7,6 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.PrintStream
-import java.io.PrintWriter
 
 /**
  * @author Cameron Earle

@@ -17,9 +17,19 @@ object Hardware {
     /**
      * The environment to initialize hardware in
      */
-    var environment: Environment = Environment.HARDWARE
+    var environment: Environment? = null
         @Synchronized get
-        @Synchronized set
+        private set
+
+    /**
+     * Configures the environment.  This is a one time operation, so any
+     * calls to this method after the value is initially set not do anything
+     **/
+    fun configureEnvironment(newEnv: Environment) {
+        if (environment == null) {
+            environment = newEnv
+        }
+    }
 
     private lateinit var timeSource: TimeSource
 

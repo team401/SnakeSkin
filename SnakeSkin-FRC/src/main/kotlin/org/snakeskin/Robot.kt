@@ -22,7 +22,7 @@ class Robot: IterativeRobot() {
 
     override fun robotInit() {
         //Configure the environment to be hardware (RoboRIO), and set the timesource to the FPGA
-        Hardware.environment = Environment.HARDWARE
+        Hardware.configureEnvironment(Environment.HARDWARE)
         Hardware.setTimeSource(HardwareTimeSource())
 
         //Run the Init Manager to initialize the user code
