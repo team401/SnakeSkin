@@ -1,22 +1,8 @@
 dependencies {
-    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2018.1.1'
+    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2019.1.1-beta-1'
+    //implementation group: 'edu.wpi.first.hal', name: 'hal-java', version: '2019.1.1-beta-1'
     implementation project(':SnakeSkin-Core')
     kapt project(':SnakeSkin-Core')
-}
-
-sourceSets {
-    //The patches SourceSet contains classes that replace existing, hardware specific classes for simulation
-    //During build, these classes get packaged into the "patches" directory in the jar, where they can be loaded at runtime
-    patches {
-        compileClasspath += sourceSets.main.runtimeClasspath
-    }
-}
-
-jar {
-    from (sourceSets.patches.output) {
-        rename '(.*).class', '$1.class.patch'
-        into 'patches'
-    }
 }
 
 publishing {

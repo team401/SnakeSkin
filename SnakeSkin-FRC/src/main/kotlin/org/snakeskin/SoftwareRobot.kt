@@ -21,6 +21,6 @@ object SoftwareRobot {
             shell.run()
         }.start()
 
-        RobotBase.main(*args)
+        //RobotBase.main(*args) //TODO fix this
     }
 }
