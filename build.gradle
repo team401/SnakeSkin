@@ -29,10 +29,6 @@ subprojects { subproj ->
         maven {
             url "http://first.wpi.edu/FRC/roborio/maven/release/"
         }
-        //Jaci Third Party
-        maven {
-            url "https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2"
-        }
         //CTRE Maven
         maven  {
             url "http://devsite.ctr-electronics.com/maven/release/"
