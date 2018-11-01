@@ -1,6 +1,7 @@
 package org.snakeskin
 
 import edu.wpi.first.wpilibj.IterativeRobot
+import edu.wpi.first.wpilibj.TimedRobot
 import org.snakeskin.auto.AutoManager
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.event.EventRouter
@@ -14,7 +15,7 @@ import org.snakeskin.registry.Subsystems
  * @author Cameron Earle
  * @version 12/14/17
  */
-class Robot: IterativeRobot() {
+class Robot: TimedRobot() {
     override fun testPeriodic() {}
     override fun autonomousPeriodic() {}
     override fun disabledPeriodic() {}
