@@ -8,7 +8,7 @@ import org.snakeskin.units.AngularVelocityUnitCTREMagEncoder
  * @version 7/19/2018
  *
  */
-inline class AngularVelocityMeasureCTREMagEncoder(override val value: Double): AngularVelocityMeasure {
+class AngularVelocityMeasureCTREMagEncoder(override val value: Double): AngularVelocityMeasure {
     companion object {
         const val MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_REVOLUTIONS_PER_SECOND = 10.0 / 4096.0
         const val MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_REVOLUTIONS_PER_MINUTE = 600.0 / 4096.0

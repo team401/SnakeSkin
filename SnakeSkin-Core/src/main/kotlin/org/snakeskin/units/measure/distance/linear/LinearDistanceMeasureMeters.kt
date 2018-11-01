@@ -7,7 +7,7 @@ import org.snakeskin.units.LinearDistanceUnit
  * @version 7/14/2018
  *
  */
-inline class LinearDistanceMeasureMeters(override val value: Double): LinearDistanceMeasure {
+class LinearDistanceMeasureMeters(override val value: Double): LinearDistanceMeasure {
     companion object {
         const val METERS_TO_CENTIMETERS = 100.0
         const val METERS_TO_INCHES = 39.3701

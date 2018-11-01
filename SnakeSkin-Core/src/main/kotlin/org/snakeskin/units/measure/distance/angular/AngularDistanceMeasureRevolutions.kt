@@ -7,7 +7,7 @@ import org.snakeskin.units.AngularDistanceUnit
  * @version 7/15/2018
  *
  */
-inline class AngularDistanceMeasureRevolutions(override val value: Double): AngularDistanceMeasure {
+class AngularDistanceMeasureRevolutions(override val value: Double): AngularDistanceMeasure {
     companion object {
         const val REVOLUTIONS_TO_RADIANS = 2 * Math.PI
         const val REVOLUTIONS_TO_DEGREES = 360.0

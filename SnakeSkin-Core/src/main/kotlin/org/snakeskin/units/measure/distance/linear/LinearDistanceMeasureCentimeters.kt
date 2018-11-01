@@ -8,7 +8,7 @@ import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
  * @version 7/14/2018
  *
  */
-inline class LinearDistanceMeasureCentimeters(override val value: Double): LinearDistanceMeasure {
+class LinearDistanceMeasureCentimeters(override val value: Double): LinearDistanceMeasure {
     companion object {
         const val CENTIMETERS_TO_METERS = 0.01
         const val CENTIMETERS_TO_INCHES = 0.393701

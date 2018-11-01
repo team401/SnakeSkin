@@ -7,7 +7,7 @@ import org.snakeskin.units.TimeUnit
  * @version 7/15/18
  *
  */
-inline class TimeMeasureHours(override val value: Double): TimeMeasure {
+class TimeMeasureHours(override val value: Double): TimeMeasure {
     companion object {
         const val HOURS_TO_MILLISECONDS = 3.6e+6
         const val HOURS_TO_SECONDS = 3600.0

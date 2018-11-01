@@ -7,7 +7,7 @@ import org.snakeskin.units.LinearDistanceUnit
  * @version 7/15/2018
  *
  */
-inline class LinearDistanceMeasureMiles(override val value: Double): LinearDistanceMeasure {
+class LinearDistanceMeasureMiles(override val value: Double): LinearDistanceMeasure {
     companion object {
         const val MILES_TO_CENTIMETERS = 160934.0
         const val MILES_TO_METERS = 1609.34

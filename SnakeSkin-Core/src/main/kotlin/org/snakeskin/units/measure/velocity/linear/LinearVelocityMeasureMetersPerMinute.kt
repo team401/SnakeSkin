@@ -8,7 +8,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  * @version 7/14/2018
  *
  */
-inline class LinearVelocityMeasureMetersPerMinute(override val value: Double): LinearVelocityMeasure {
+class LinearVelocityMeasureMetersPerMinute(override val value: Double): LinearVelocityMeasure {
     companion object {
         const val METERS_PER_MINUTE_TO_INCHES_PER_SECOND = 0.656167979
         const val METERS_PER_MINUTE_TO_FEET_PER_SECOND = 0.054680665

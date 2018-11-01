@@ -8,7 +8,7 @@ import org.snakeskin.units.TimeUnit100Ms
  * @version 7/19/2018
  *
  */
-inline class TimeMeasure100Ms(override val value: Double): TimeMeasure {
+class TimeMeasure100Ms(override val value: Double): TimeMeasure {
     companion object {
         const val HUNDRED_MS_TO_MILLISECONDS = 100.0
         const val HUNDRED_MS_TO_SECONDS = 0.1

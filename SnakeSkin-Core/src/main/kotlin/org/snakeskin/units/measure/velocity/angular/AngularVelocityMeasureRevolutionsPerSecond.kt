@@ -7,7 +7,7 @@ import org.snakeskin.units.AngularVelocityUnit
  * @version 7/15/18
  *
  */
-inline class AngularVelocityMeasureRevolutionsPerSecond(override val value: Double): AngularVelocityMeasure {
+class AngularVelocityMeasureRevolutionsPerSecond(override val value: Double): AngularVelocityMeasure {
     companion object {
         const val REVOLUTIONS_PER_SECOND_TO_REVOLUTIONS_PER_MINUTE = 60.0
         const val REVOLUTIONS_PER_SECOND_TO_RADIANS_PER_SECOND = 2 * Math.PI

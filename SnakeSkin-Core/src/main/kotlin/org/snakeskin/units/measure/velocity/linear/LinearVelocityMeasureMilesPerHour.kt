@@ -8,7 +8,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  * @version 7/14/2018
  *
  */
-inline class LinearVelocityMeasureMilesPerHour(override val value: Double): LinearVelocityMeasure {
+class LinearVelocityMeasureMilesPerHour(override val value: Double): LinearVelocityMeasure {
     companion object {
         const val MILES_PER_HOUR_TO_INCHES_PER_SECOND = 17.6
         const val MILES_PER_HOUR_TO_FEET_PER_SECOND = 1.466666667

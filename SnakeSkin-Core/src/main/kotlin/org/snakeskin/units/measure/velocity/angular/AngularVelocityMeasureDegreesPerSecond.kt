@@ -7,7 +7,7 @@ import org.snakeskin.units.AngularVelocityUnit
  * @version 7/15/18
  *
  */
-inline class AngularVelocityMeasureDegreesPerSecond(override val value: Double): AngularVelocityMeasure {
+class AngularVelocityMeasureDegreesPerSecond(override val value: Double): AngularVelocityMeasure {
     companion object {
         const val DEGREES_PER_SECOND_TO_REVOLUTIONS_PER_SECOND = 1 / 360.0
         const val DEGREES_PER_SECOND_TO_REVOLUTIONS_PER_MINUTE = 1 / 6.0
