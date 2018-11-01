@@ -30,7 +30,7 @@ class Recorder(private val stream: OutputStream, val mode: RecordingMode) {
 
     private val data = LinkedHashMap<Any, ArrayList<Any>>()
     private val columnTitles = hashMapOf<Any, String>(
-            *SpecialMarkers.values().map { it.name to it.title }.toTypedArray()
+            *SpecialMarkers.values().map { it to it.title }.toTypedArray()
     )
     private val createdAt = Hardware.getRelativeTime()
 
