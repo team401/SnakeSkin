@@ -6,9 +6,8 @@ import org.snakeskin.units.AngularDistanceUnit
  * @author Cameron Earle
  * @version 7/15/2018
  *
- * TODO Class to be inlined in Kotlin 1.3
  */
-/*inline*/ class AngularDistanceMeasureRevolutions(override val value: Double): AngularDistanceMeasure {
+inline class AngularDistanceMeasureRevolutions(override val value: Double): AngularDistanceMeasure {
     companion object {
         const val REVOLUTIONS_TO_RADIANS = 2 * Math.PI
         const val REVOLUTIONS_TO_DEGREES = 360.0

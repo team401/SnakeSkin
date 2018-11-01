@@ -6,9 +6,8 @@ import org.snakeskin.units.TimeUnit
  * @author Cameron Earle
  * @version 7/15/18
  *
- * TODO Class to be inlined in Kotlin 1.3
  */
-/*inline*/ class TimeMeasureMilliseconds(override val value: Double): TimeMeasure {
+inline class TimeMeasureMilliseconds(override val value: Double): TimeMeasure {
     companion object {
         const val MILLISECONDS_TO_SECONDS = 0.001
         const val MILLISECONDS_TO_MINUTES = 1.66667e-5

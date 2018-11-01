@@ -6,9 +6,8 @@ import org.snakeskin.units.LinearDistanceUnit
  * @author Cameron Earle
  * @version 7/14/2018
  *
- * TODO Class to be inlined in Kotlin 1.3
  */
-/*inline*/ class LinearDistanceMeasureFeet(override val value: Double): LinearDistanceMeasure {
+inline class LinearDistanceMeasureFeet(override val value: Double): LinearDistanceMeasure {
     companion object {
         const val FEET_TO_INCHES = 12.0
         const val FEET_TO_METERS = 0.3048

@@ -6,9 +6,8 @@ import org.snakeskin.units.AngularVelocityUnit
  * @author Cameron Earle
  * @version 7/15/18
  *
- * TODO Class to be inlined in Kotlin 1.3
  */
-/*inline*/ class AngularVelocityMeasureDegreesPerSecond(override val value: Double): AngularVelocityMeasure {
+inline class AngularVelocityMeasureDegreesPerSecond(override val value: Double): AngularVelocityMeasure {
     companion object {
         const val DEGREES_PER_SECOND_TO_REVOLUTIONS_PER_SECOND = 1 / 360.0
         const val DEGREES_PER_SECOND_TO_REVOLUTIONS_PER_MINUTE = 1 / 6.0
