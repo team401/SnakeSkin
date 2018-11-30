@@ -14,7 +14,7 @@ import javax.tools.StandardLocation
  * @author Cameron Earle
  * @version 6/26/17
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_8) //Java 8
+@SupportedSourceVersion(SourceVersion.RELEASE_11) //Java 11
 @SupportedOptions(SnakeskinAnnotationProcessor.KAPT_KOTLIN_GENERATED) //kapt output directroy support
 class SnakeskinAnnotationProcessor: AbstractProcessor() {
     companion object {
