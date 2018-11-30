@@ -1,8 +1,7 @@
 dependencies {
-    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2019.1.1-beta-1'
-    implementation group: 'com.ctre.frcbeta.phoenix', name: 'api-java', version: '5.9.0'
+    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2019.1.1-beta-2'
+    implementation group: 'com.ctre.frcbeta.phoenix', name: 'api-java', version: '5.9.2'
     implementation project(':SnakeSkin-Core')
-    kapt project(':SnakeSkin-Core')
     implementation project(':SnakeSkin-FRC')
 }
 

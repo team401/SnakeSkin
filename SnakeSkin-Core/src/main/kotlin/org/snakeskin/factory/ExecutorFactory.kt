@@ -1,7 +1,6 @@
 package org.snakeskin.factory
 
 import org.snakeskin.SnakeskinConstants
-import org.snakeskin.annotation.PreStartup
 import org.snakeskin.executor.ExceptionHandlingScheduledExecutor
 import java.util.concurrent.*
 

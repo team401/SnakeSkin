@@ -1,7 +1,5 @@
 package org.snakeskin.registry
 
-import org.snakeskin.annotation.PostStartup
-
 /**
  * @author Cameron Earle
  * @version 8/18/17

@@ -1,6 +1,5 @@
 package org.snakeskin
 
-import edu.wpi.first.wpilibj.IterativeRobot
 import edu.wpi.first.wpilibj.TimedRobot
 import org.snakeskin.auto.AutoManager
 import org.snakeskin.controls.ControlPoller
@@ -9,6 +8,7 @@ import org.snakeskin.event.Events
 import org.snakeskin.hardware.Environment
 import org.snakeskin.hardware.Hardware
 import org.snakeskin.hardware.impl.HardwareTimeSource
+import org.snakeskin.init.InitManager
 import org.snakeskin.registry.Subsystems
 
 /**

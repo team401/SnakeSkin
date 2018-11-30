@@ -1,6 +1,5 @@
 package org.snakeskin.registry
 
-import org.snakeskin.annotation.PostStartup
 import org.snakeskin.subsystem.Subsystem
 
 /**

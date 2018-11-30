@@ -1,6 +1,5 @@
 package org.snakeskin.registry
 
-import org.snakeskin.annotation.PostStartup
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.controls.Controller
 
@@ -9,7 +8,7 @@ import org.snakeskin.controls.Controller
  * @version 12/24/17
  */
 object Controllers: Registry<Controller>() {
-    @PostStartup @JvmStatic fun initAll() {
+    @JvmStatic fun initAll() {
         println("SnakeSkin-FRC: Controllers Registry Loaded") //TODO remove debug statement
 
         registry.forEach {
