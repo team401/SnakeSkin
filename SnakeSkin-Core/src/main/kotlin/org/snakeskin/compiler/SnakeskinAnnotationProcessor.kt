@@ -14,7 +14,6 @@ import javax.tools.StandardLocation
  * @author Cameron Earle
  * @version 6/26/17
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_11) //Java 11
 @SupportedOptions(SnakeskinAnnotationProcessor.KAPT_KOTLIN_GENERATED) //kapt output directroy support
 class SnakeskinAnnotationProcessor: AbstractProcessor() {
     companion object {
@@ -80,6 +79,10 @@ class SnakeskinAnnotationProcessor: AbstractProcessor() {
 
 
         return false //None of the annotations were in this round
+    }
+
+    override fun getSupportedSourceVersion(): SourceVersion {
+        return SourceVersion.latestSupported()
     }
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> {

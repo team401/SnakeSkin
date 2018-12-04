@@ -22,8 +22,8 @@ class SmartTankDrivetrain(
         override val right: Gearbox,
         override val imu: PigeonIMU
 ): TankDrivetrain {
-    override val wheelbase = geometryTemplate.wheelbase
-    override val wheelRadius = geometryTemplate.wheelRadius
+    override var wheelbase = geometryTemplate.wheelbase
+    override var wheelRadius = geometryTemplate.wheelRadius
 
     private val imuData = DoubleArray(3)
 

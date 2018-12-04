@@ -13,8 +13,8 @@ import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
  *
  */
 interface TankDrivetrain {
-    val wheelRadius: LinearDistanceMeasure
-    val wheelbase: LinearDistanceMeasure
+    var wheelRadius: LinearDistanceMeasure
+    var wheelbase: LinearDistanceMeasure
 
     val left: Gearbox
     val right: Gearbox
