@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode
 import org.snakeskin.component.TankDrivetrain
 import org.snakeskin.logic.scalars.NoScaling
 import org.snakeskin.logic.scalars.Scalar
+import org.snakeskin.logic.scalars.ScalarGroup
 import org.snakeskin.template.CheesyDriveParametersTemplate
 
 /**
@@ -14,22 +15,22 @@ import org.snakeskin.template.CheesyDriveParametersTemplate
  */
 class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultParameters()) {
     open class DefaultParameters: CheesyDriveParametersTemplate {
-        override val highWheelNonLinearity = 0.65
-        override val lowWheelNonLinearity = 0.5
-        override val highNegInertiaScalar = 4.0
-        override val lowNegInertiaThreshold = 0.65
-        override val lowNegInertiaTurnScalar = 3.5
-        override val lowNegInertiaCloseScalar = 4.0
-        override val lowNegInertiaFarScalar = 5.0
-        override val highSensitivity = 0.95
-        override val lowSensitivity = 1.3
-        override val quickStopDeadband = 0.2
-        override val quickStopWeight = 0.1
-        override val quickStopScalar = 5.0
-        override val lowSinCount = 3
-        override val highSinCount = 2
-        override val outputScalar = 1.0
-        override val quickTurnScalar = NoScaling
+        override val highWheelNonLinearity: Double = 0.65
+        override val lowWheelNonLinearity: Double = 0.5
+        override val highNegInertiaScalar: Double = 4.0
+        override val lowNegInertiaThreshold: Double = 0.65
+        override val lowNegInertiaTurnScalar: Double = 3.5
+        override val lowNegInertiaCloseScalar: Double = 4.0
+        override val lowNegInertiaFarScalar: Double = 5.0
+        override val highSensitivity: Double = 0.95
+        override val lowSensitivity: Double = 1.3
+        override val quickStopDeadband: Double = 0.2
+        override val quickStopWeight: Double = 0.1
+        override val quickStopScalar: Double = 5.0
+        override val lowSinCount: Int = 3
+        override val highSinCount: Int = 2
+        override val outputScalar: Double = 1.0
+        override val quickTurnScalar: Scalar = NoScaling
     }
 
     data class Output(val left: Double, val right: Double) {
