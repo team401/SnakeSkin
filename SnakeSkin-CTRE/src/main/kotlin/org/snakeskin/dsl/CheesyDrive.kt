@@ -11,6 +11,7 @@ import org.snakeskin.logic.scalars.Scalar
  *
  * Implements the Cheesy Poofs "Cheesy Drive" for a SnakeSkin drivetrain
  */
+@Deprecated("Replaced by the new CheesyDriveController", ReplaceWith("org.snakeskin.template.CheesyDriveParametersTemplate"))
 data class CheesyDriveParameters(val highWheelNonLinearity: Double,
                                  val lowWheelNonLinearity: Double,
                                  val highNegInertiaScalar: Double,
@@ -42,6 +43,7 @@ data class CheesyDriveParameters(val highWheelNonLinearity: Double,
     }
 }
 
+@Deprecated("Replaced by the new CheesyDriveController", ReplaceWith("org.snakeskin.utility.CheesyDriveController"))
 fun TankDrivetrain.cheesy(mode: ControlMode, p: CheesyDriveParameters, throttleIn: Double, wheelIn: Double, isHigh: Boolean, quickTurn: Boolean = false) {
     var wheel = wheelIn
     var throttle = throttleIn
