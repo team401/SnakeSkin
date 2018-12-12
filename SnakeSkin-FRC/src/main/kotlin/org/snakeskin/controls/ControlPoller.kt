@@ -2,7 +2,10 @@ package org.snakeskin.controls
 
 import edu.wpi.first.wpilibj.DriverStation
 import org.snakeskin.SnakeskinConstants
+import org.snakeskin.controls.listener.*
+import org.snakeskin.controls.state.*
 import org.snakeskin.factory.ExecutorFactory
+import org.snakeskin.hardware.Hardware
 import org.snakeskin.logic.History
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -14,87 +17,31 @@ import java.util.concurrent.TimeUnit
 object ControlPoller {
     private val handlerExecutor = ExecutorFactory.getExecutor("ControlPoller Handler")
 
-    private class ControllerTracker(private val controller: Controller) {
-        class ChangeReport {
-            val pressedButtons = arrayListOf<Int>()
-            val releasedButtons = arrayListOf<Int>()
-            val changedHats = hashMapOf<Int, Int>()
-        }
+    private val states = Vector<ControlSurfaceState<*>>()
 
-        val bpHandlers = controller.buttonPressedListeners
-        val brHandlers = controller.buttonReleasedListeners
-        val hatHandlers = controller.hatChangeListeners
-
-        val trackedPressButtons = hashMapOf<Int, History<Boolean>>()
-        val trackedReleaseButtons = hashMapOf<Int, History<Boolean>>()
-        val trackedHats = hashMapOf<Int, History<Int>>()
-
-        init {
-            bpHandlers.keys.forEach {
-                trackedPressButtons.put(it, History())
-            }
-            brHandlers.keys.forEach {
-                trackedReleaseButtons.put(it, History())
-            }
-            hatHandlers.keys.forEach {
-                trackedHats.put(it, History())
-            }
-        }
-
-        fun track(): ChangeReport {
-            val changeReport = ChangeReport()
-            trackedPressButtons.forEach {
-                button, history ->
-                history.update(controller.getButton(button).read())
-                if (history.current == true) {
-                    if (history.last == false || history.last == null) {
-                        changeReport.pressedButtons.add(button)
-                    }
-                }
-            }
-            trackedReleaseButtons.forEach {
-                button, history ->
-                history.update(controller.getButton(button).read())
-                if (history.current == false) {
-                    if (history.last == true) {
-                        changeReport.releasedButtons.add(button)
-                    }
-                }
-            }
-            trackedHats.forEach {
-                hat, history ->
-                history.update(controller.getHat(hat).read())
-                if (history.current != null && history.last != null) {
-                    if (history.current != history.last) {
-                        changeReport.changedHats.put(hat, history.current!!)
-                    }
-                }
-            }
-            return changeReport
+    private fun createStateForListener(listener: ControlListener<*, *>): ControlSurfaceState<*> {
+        return when (listener) {
+            is ButtonEdgeListener -> ButtonEdgeState(listener)
+            is ButtonHoldListener -> ButtonTimedState(listener)
+            is HatChangeListener -> HatState(listener)
+            is AxisThresholdListener -> AxisThresholdState(listener)
+            else -> throw IllegalArgumentException("State for listener type ${listener.javaClass.name} not found!")
         }
     }
 
-    private val controllers = Vector<ControllerTracker>()
-
     fun update() {
-        controllers.forEach { //Iterate each controller
-            val controller = it
-            val report = it.track()
-            report.pressedButtons.forEach {
-                handlerExecutor.submit {
-                    controller.bpHandlers[it]?.invoke()
-                }
-            }
-            report.releasedButtons.forEach {
-                handlerExecutor.submit { controller.brHandlers[it]?.invoke() }
-            }
-            report.changedHats.forEach {
-                handlerExecutor.submit { controller.hatHandlers[it.key]?.invoke(it.value) }
+        val timestamp = Hardware.getRelativeTime()
+        states.forEach {
+            val action = it.update(timestamp)
+            if (action != null) {
+                handlerExecutor.submit(action)
             }
         }
     }
 
     fun addController(controller: Controller) {
-        controllers.add(ControllerTracker(controller))
+        controller.listeners.forEach {
+            states.add(createStateForListener(it))
+        }
     }
 }

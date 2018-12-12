@@ -2,7 +2,7 @@ package org.snakeskin.controls
 
 import edu.wpi.first.wpilibj.Joystick
 import org.snakeskin.controls.impl.HardwareControllerProvider
-import org.snakeskin.controls.impl.SoftwareControllerProvider
+import org.snakeskin.controls.listener.ControlListener
 import org.snakeskin.controls.mappings.IMappingDefinitions
 import org.snakeskin.exception.ItemNotFoundException
 import org.snakeskin.hardware.Environment
@@ -56,9 +56,7 @@ abstract class Controller(internal val id: Int, enabled: Boolean = true) {
     val numHats: Int
         get() = hats.size
 
-    internal val buttonPressedListeners = hashMapOf<Int, () -> Unit>()
-    internal val buttonReleasedListeners = hashMapOf<Int, () -> Unit>()
-    internal val hatChangeListeners = hashMapOf<Int, (Int) -> Unit>()
+    internal val listeners = arrayListOf<ControlListener<*, *>>()
 
     abstract val Mapping: IMappingDefinitions
 
@@ -120,7 +118,7 @@ abstract class Controller(internal val id: Int, enabled: Boolean = true) {
         }
     }
 
-    fun registerButtonPressListener(button: Int, action: () -> Unit) = buttonPressedListeners.put(button, action)
-    fun registerButtonReleaseListener(button: Int, action: () -> Unit) = buttonReleasedListeners.put(button, action)
-    fun registerHatChangeListener(hat: Int, action: (Int) -> Unit) = hatChangeListeners.put(hat, action)
+    fun registerListener(listener: ControlListener<*, *>) {
+        listeners.add(listener)
+    }
 }

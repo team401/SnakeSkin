@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
  *
  * Axes that are never set, but are accessed will return constant default values defined in this class
  */
+@Deprecated("This is replaced by HAL simulation")
 class SoftwareControllerProvider: ControllerProvider {
     companion object {
         const val AXIS_DEFAULT = 0.0

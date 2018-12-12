@@ -1,8 +1,13 @@
 package org.snakeskin.dsl
 
 import org.snakeskin.controls.Controller
+import org.snakeskin.controls.listener.AxisThresholdListener
+import org.snakeskin.controls.listener.ButtonEdgeListener
+import org.snakeskin.controls.listener.ButtonHoldListener
+import org.snakeskin.controls.listener.HatChangeListener
 import org.snakeskin.controls.mappings.*
 import org.snakeskin.logic.scalars.Scalar
+import org.snakeskin.units.measure.time.TimeMeasure
 
 /**
  * @author Cameron Earle
@@ -14,7 +19,13 @@ object HumanControls {
             val builder = ButtonHandlerBuilder(controller, button)
             builder.setup()
         }
-        fun whenHatChanged(hat: Int, action: (newValue: Int) -> Unit) = controller.registerHatChangeListener(hat, action)
+
+        fun whenAxis(axis: Int, setup: AxisHandlerBuilder.() -> Unit) {
+            val builder = AxisHandlerBuilder(controller, axis)
+            builder.setup()
+        }
+
+        fun whenHatChanged(hat: Int, action: (newValue: Int) -> Unit) = controller.registerListener(HatChangeListener(controller.getHat(hat), action))
 
         fun invertAxis(axis: Int) = controller.getAxis(axis).invert()
         fun invertButton(button: Int) = controller.getButton(button).invert()
@@ -24,8 +35,13 @@ object HumanControls {
     }
 
     class ButtonHandlerBuilder(private val controller: Controller, private val button: Int) {
-        fun pressed(action: () -> Unit) = controller.registerButtonPressListener(button, action)
-        fun released(action: () -> Unit) = controller.registerButtonReleaseListener(button, action)
+        fun heldFor(duration: TimeMeasure, action: (Boolean) -> Unit) = controller.registerListener(ButtonHoldListener(controller.getButton(button), duration, action))
+        fun pressed(action: (Boolean) -> Unit) = controller.registerListener(ButtonEdgeListener(controller.getButton(button), ButtonEdgeListener.EdgeType.PRESSED, action))
+        fun released(action: (Boolean) -> Unit) = controller.registerListener(ButtonEdgeListener(controller.getButton(button), ButtonEdgeListener.EdgeType.RELEASED, action))
+    }
+
+    class AxisHandlerBuilder(private val controller: Controller, private val axis: Int) {
+        fun exceeds(threshold: Double, action: (Double) -> Unit) = controller.registerListener(AxisThresholdListener(controller.getAxis(axis), threshold, action))
     }
 
     //CUSTOM
