@@ -2,11 +2,15 @@ org.snakeskin
 org.snakeskin.ability
 org.snakeskin.annotation
 org.snakeskin.compiler
+org.snakeskin.debug
 org.snakeskin.dsl
 org.snakeskin.event
 org.snakeskin.exception
 org.snakeskin.executor
 org.snakeskin.factory
+org.snakeskin.hardware
+org.snakeskin.hardware.impl
+org.snakeskin.init
 org.snakeskin.logging
 org.snakeskin.logic
 org.snakeskin.logic.scalars
@@ -20,3 +24,4 @@ org.snakeskin.units.measure.distance.linear
 org.snakeskin.units.measure.time
 org.snakeskin.units.measure.velocity.angular
 org.snakeskin.units.measure.velocity.linear
+org.snakeskin.utility

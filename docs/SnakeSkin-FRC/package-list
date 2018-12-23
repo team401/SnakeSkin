@@ -3,10 +3,16 @@ org.snakeskin.auto
 org.snakeskin.auto.steps
 org.snakeskin.component
 org.snakeskin.controls
+org.snakeskin.controls.impl
+org.snakeskin.controls.listener
 org.snakeskin.controls.mappings
+org.snakeskin.controls.state
 org.snakeskin.dsl
+org.snakeskin.hardware.impl
+org.snakeskin.init
 org.snakeskin.logic
 org.snakeskin.publish
 org.snakeskin.registry
 org.snakeskin.rt
+org.snakeskin.rt.impl
 org.snakeskin.sensors

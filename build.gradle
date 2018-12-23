@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.0" apply false
+    id "org.jetbrains.kotlin.jvm" version "1.3.11" apply false
     id "com.palantir.git-version" version "0.10.0"
     id "com.jfrog.bintray" version "1.8.4" apply false
     id "org.jetbrains.dokka" version "0.9.17" apply false
@@ -7,6 +7,11 @@ plugins {
 
 allprojects {
     apply plugin: 'idea'
+}
+
+task regenDocs(type: Delete) {
+    group = 'documentation'
+    delete "${rootDir}/docs"
 }
 
 subprojects { subproj ->
@@ -71,15 +76,12 @@ subprojects { subproj ->
         }
     }
 
+    regenDocs.finalizedBy dokka
+
     task sourcesJar(type: Jar) {
         from sourceSets.main.allSource
         classifier = 'sources'
     }
-}
-
-task cleanDocs(type: Delete) {
-    group = 'documentation'
-    delete "${rootDir}/docs"
 }
 
 wrapper {

@@ -21,7 +21,7 @@ class Recorder(private val stream: OutputStream, val mode: RecordingMode) {
     companion object {
         /**
          * Creates a Recorder that records to a CSV file at the specified path
-         * The final file will be: [path]/[name]-[current system time].csv
+         * The final file will be: path/name-current system time.csv
          */
         fun toCSV(path: String, name: String): Recorder {
             return Recorder(File("$path/$name-${Hardware.getAbsoluteTime()}.csv").outputStream(), RecordingMode.CSV)
