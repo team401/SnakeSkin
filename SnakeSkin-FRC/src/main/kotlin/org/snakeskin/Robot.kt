@@ -17,7 +17,6 @@ import org.snakeskin.registry.Subsystems
  */
 class Robot: TimedRobot() {
     override fun testPeriodic() {}
-    override fun autonomousPeriodic() {}
     override fun disabledPeriodic() {}
     override fun robotPeriodic() {}
 
@@ -66,5 +65,11 @@ class Robot: TimedRobot() {
      */
     override fun teleopPeriodic() {
         ControlPoller.update() //Update the control poller
+    }
+
+    override fun autonomousPeriodic() {
+        if (ControlPoller.pollInAutonomous) { //If we've enabled autonomous control polling
+            ControlPoller.update() //Update the control poller
+        }
     }
 }

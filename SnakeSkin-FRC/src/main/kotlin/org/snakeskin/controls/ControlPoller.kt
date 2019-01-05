@@ -7,6 +7,7 @@ import org.snakeskin.controls.state.*
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.hardware.Hardware
 import org.snakeskin.logic.History
+import org.snakeskin.logic.LockingDelegate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -18,6 +19,12 @@ object ControlPoller {
     private val handlerExecutor = ExecutorFactory.getExecutor("ControlPoller Handler")
 
     private val states = Vector<ControlSurfaceState<*>>()
+
+    /**
+     * Whether or not to poll the controls in the autonomous mode.
+     * This should be enabled to support the "Sandstorm" period in the 2019 game
+     */
+    var pollInAutonomous by LockingDelegate(false)
 
     private fun createStateForListener(listener: ControlListener<*, *>): ControlSurfaceState<*> {
         return when (listener) {
