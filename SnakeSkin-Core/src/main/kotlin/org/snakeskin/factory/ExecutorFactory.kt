@@ -1,6 +1,5 @@
 package org.snakeskin.factory
 
-import org.snakeskin.SnakeskinConstants
 import org.snakeskin.executor.ExceptionHandlingScheduledExecutor
 import java.util.concurrent.*
 
@@ -9,11 +8,13 @@ import java.util.concurrent.*
  * @version 7/20/17
  */
 object ExecutorFactory {
+    const val POOL_SIZE = 8
+
     private lateinit var executor: ScheduledExecutorService
 
     internal fun init() {
         executor = Executors.unconfigurableScheduledExecutorService(
-                ExceptionHandlingScheduledExecutor(SnakeskinConstants.POOL_SIZE, DaemonThreadFactory).apply {
+                ExceptionHandlingScheduledExecutor(POOL_SIZE, DaemonThreadFactory).apply {
                     setKeepAliveTime(10, TimeUnit.SECONDS)
                     allowCoreThreadTimeOut(true)
                 }

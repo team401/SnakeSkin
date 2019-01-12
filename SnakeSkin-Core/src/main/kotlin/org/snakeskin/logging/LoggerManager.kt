@@ -1,7 +1,6 @@
 package org.snakeskin.logging
 
 import com.google.gson.Gson
-import org.snakeskin.SnakeskinConstants
 import org.snakeskin.factory.ExecutorFactory
 import java.io.File
 import java.io.PrintWriter
@@ -14,6 +13,8 @@ import java.util.*
  */
 
 object LoggerManager {
+    const val MAX_LOG_FILES = 10
+
     private val HOME_DIR = System.getProperty("user.home")
 
     private val EXECUTOR = ExecutorFactory.getSingleExecutor("Logger")
@@ -51,7 +52,7 @@ Full stack trace below:
                 it.lastModified()
             }
 
-            while (files.size >= SnakeskinConstants.MAX_LOG_FILES) {
+            while (files.size >= MAX_LOG_FILES) {
                 files[0]?.delete()
 
                 files = folder.listFiles()

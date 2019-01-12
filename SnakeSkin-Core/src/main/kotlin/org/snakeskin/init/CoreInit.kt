@@ -11,11 +11,9 @@ import org.snakeskin.registry.Subsystems
 class CoreInit: Initializer {
     override fun preStartup() {
         ExecutorFactory.init()
-        println("CoreInit preStartup")
     }
 
     override fun postStartup() {
         Subsystems.initAll()
-        println("CoreInit postStartup")
     }
 }

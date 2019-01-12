@@ -1,9 +1,7 @@
 package org.snakeskin.component
 
 import com.ctre.phoenix.motorcontrol.*
-import org.snakeskin.CTREConstants
 import org.snakeskin.units.AngularDistanceUnitCTREMagEncoder
-import org.snakeskin.units.AngularVelocityUnitCTREMagEncoder
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureCTREMagEncoder
 import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMagEncoder
@@ -54,15 +52,15 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
 
     fun set(mode: ControlMode, value: Double) = master.set(mode, value)
 
-    fun getPosition(pidIdx: Int = CTREConstants.PID_IDX) = AngularDistanceMeasureCTREMagEncoder(master.getSelectedSensorPosition(pidIdx).toDouble())
-    fun getVelocity(pidIdx: Int = CTREConstants.PID_IDX) = AngularVelocityMeasureCTREMagEncoder(master.getSelectedSensorVelocity(pidIdx).toDouble())
+    fun getPosition(pidIdx: Int = 0) = AngularDistanceMeasureCTREMagEncoder(master.getSelectedSensorPosition(pidIdx).toDouble())
+    fun getVelocity(pidIdx: Int = 0) = AngularVelocityMeasureCTREMagEncoder(master.getSelectedSensorVelocity(pidIdx).toDouble())
 
-    fun setPosition(position: AngularDistanceMeasure, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.setSelectedSensorPosition(position.toUnit(AngularDistanceUnitCTREMagEncoder).value.toInt(), pidIdx, timeout)
-    fun setSensor(sensor: FeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
-    fun setSensor(sensor: RemoteFeedbackDevice, pidIdx: Int = CTREConstants.PID_IDX, timeout: Int = CTREConstants.CONFIG_TIMEOUT) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
+    fun setPosition(position: AngularDistanceMeasure, pidIdx: Int = 0, timeout: Int = 0) = master.setSelectedSensorPosition(position.toUnit(AngularDistanceUnitCTREMagEncoder).value.toInt(), pidIdx, timeout)
+    fun setSensor(sensor: FeedbackDevice, pidIdx: Int = 0, timeout: Int = 0) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
+    fun setSensor(sensor: RemoteFeedbackDevice, pidIdx: Int = 0, timeout: Int = 0) = master.configSelectedFeedbackSensor(sensor, pidIdx, timeout)
     fun setSensorPhase(phase: Boolean) = master.setSensorPhase(phase)
 
-    fun setCurrentLimit(continuousCurrent: Int, peakCurrent: Int = 0, peakDuration: Int = 0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
+    fun setCurrentLimit(continuousCurrent: Int, peakCurrent: Int = 0, peakDuration: Int = 0, timeout: Int = 0) {
         if (continuousCurrent == 0) {
             master.enableCurrentLimit(false)
             return
@@ -73,12 +71,12 @@ class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorCon
         master.configPeakCurrentDuration(peakDuration, timeout)
     }
     
-    fun setRampRate(closedLoop: Double = 0.0, openLoop: Double = 0.0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
+    fun setRampRate(closedLoop: Double = 0.0, openLoop: Double = 0.0, timeout: Int = 0) {
         master.configClosedloopRamp(closedLoop, timeout)
         master.configOpenloopRamp(openLoop, timeout)
     }
 
-    fun setOutputLimits(peakForward: Double = 1.0, peakReverse: Double = 1.0, nominalForward: Double = 1.0, nominalReverse: Double = 1.0, timeout: Int = CTREConstants.CONFIG_TIMEOUT) {
+    fun setOutputLimits(peakForward: Double = 1.0, peakReverse: Double = 1.0, nominalForward: Double = 1.0, nominalReverse: Double = 1.0, timeout: Int = 0) {
         master.configPeakOutputForward(peakForward, timeout)
         master.configPeakOutputReverse(peakReverse, timeout)
         master.configNominalOutputForward(nominalForward, timeout)
