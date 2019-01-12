@@ -37,7 +37,7 @@ class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultP
         /**
          * Runs the command on a drivetrain
          */
-        fun applyTo(drivetrain: TankDrivetrain, controlMode: ControlMode) {
+        fun applyTo(drivetrain: TankDrivetrain, controlMode: ControlMode = ControlMode.PercentOutput) {
             drivetrain.tank(controlMode, left, right)
         }
     }

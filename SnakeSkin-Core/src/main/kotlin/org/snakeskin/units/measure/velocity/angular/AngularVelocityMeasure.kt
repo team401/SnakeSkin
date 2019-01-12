@@ -52,4 +52,29 @@ interface AngularVelocityMeasure: Measure<AngularVelocityUnit, AngularVelocityMe
     operator fun times(other: AngularVelocityMeasure): AngularVelocityMeasure {
         return create((this.value * other.toUnit(this.unit).value), this.unit)
     }
+
+    operator fun plus(other: Double): AngularVelocityMeasure {
+        return create((this.value + other), this.unit)
+    }
+
+    operator fun minus(other: Double): AngularVelocityMeasure {
+        return create((this.value - other), this.unit)
+    }
+
+    operator fun div(other: Double): AngularVelocityMeasure {
+        return create((this.value / other), this.unit)
+    }
+
+    operator fun times(other: Double): AngularVelocityMeasure {
+        return create((this.value * other), this.unit)
+    }
+
+    operator fun compareTo(other: AngularVelocityMeasure): Int {
+        val otherVal = other.toUnit(this.unit).value
+        return when {
+            this.value < otherVal -> -1
+            this.value > otherVal -> 1
+            else -> 0
+        }
+    }
 }

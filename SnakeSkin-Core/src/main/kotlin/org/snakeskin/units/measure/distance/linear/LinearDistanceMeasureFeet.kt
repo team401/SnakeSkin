@@ -28,4 +28,20 @@ class LinearDistanceMeasureFeet(override val value: Double): LinearDistanceMeasu
             else -> unit.convert(this)
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is LinearDistanceMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
+
+    override fun toString(): String {
+        return "$value ft"
+    }
 }

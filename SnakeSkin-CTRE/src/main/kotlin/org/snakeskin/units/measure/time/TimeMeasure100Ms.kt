@@ -29,4 +29,21 @@ class TimeMeasure100Ms(override val value: Double): TimeMeasure {
             else -> unit.convert(this)
         }
     }
+
+
+    override fun equals(other: Any?): Boolean {
+        if (other is TimeMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
+
+    override fun toString(): String {
+        return "$value 100ms"
+    }
 }

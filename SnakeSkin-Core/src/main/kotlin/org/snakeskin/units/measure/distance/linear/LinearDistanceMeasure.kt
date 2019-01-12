@@ -70,4 +70,29 @@ interface LinearDistanceMeasure: Measure<LinearDistanceUnit, LinearDistanceMeasu
     operator fun times(other: LinearDistanceMeasure): LinearDistanceMeasure {
         return create((this.value * other.toUnit(this.unit).value), this.unit)
     }
+
+    operator fun plus(other: Double): LinearDistanceMeasure {
+        return create((this.value + other), this.unit)
+    }
+
+    operator fun minus(other: Double): LinearDistanceMeasure {
+        return create((this.value - other), this.unit)
+    }
+
+    operator fun div(other: Double): LinearDistanceMeasure {
+        return create((this.value / other), this.unit)
+    }
+
+    operator fun times(other: Double): LinearDistanceMeasure {
+        return create((this.value * other), this.unit)
+    }
+
+    operator fun compareTo(other: LinearDistanceMeasure): Int {
+        val otherVal = other.toUnit(this.unit).value
+        return when {
+            this.value < otherVal -> -1
+            this.value > otherVal -> 1
+            else -> 0
+        }
+    }
 }

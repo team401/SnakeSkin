@@ -26,4 +26,19 @@ class AngularDistanceMeasureRadians(override val value: Double): AngularDistance
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other is AngularDistanceMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
+
+    override fun toString(): String {
+        return "$value rad"
+    }
 }
