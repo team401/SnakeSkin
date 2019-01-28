@@ -20,9 +20,23 @@ interface ISensoredGearbox: IGearbox {
     fun getVelocity(): AngularVelocityMeasure
 
     /**
-     * Resets the position of the gearbox to 0
+     * The current angular position of the gearbox in radians
+     * Avoids creating unit objects in high quantities
      */
-    fun resetPosition()
+    fun getPositionRadians(): Double
+
+    /**
+     * The current angular velocity of the gearbox in radians per second
+     * Avoids creating unit objects in high quantities
+     */
+    fun getVelocityRadiansPerSecond(): Double
+
+    /**
+     * Sets the position of the sensor to the specified position.
+     * Note: Implementations may not honor the distance passed, and may
+     * instead set the distance to 0
+     */
+    fun setPosition(position: AngularDistanceMeasure)
 
     /**
      * Sets the angle travelled per tick of the encoder.

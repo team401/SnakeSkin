@@ -1,5 +1,6 @@
 package org.snakeskin.component
 
+import org.snakeskin.component.template.TankDrivetrainGeometryTemplate
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 
 /**
@@ -7,9 +8,14 @@ import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
  * @version 1/9/2019
  *
  */
-interface ITankDrivetrain {
-    val left: IGearbox
-    val right: IGearbox
+interface IDifferentialDrivetrain<out G: IGearbox> {
+    val left: G
+    val right: G
+
+    fun both(action: G.() -> Unit) {
+        left.action()
+        right.action()
+    }
 
     /**
      * The geometric wheelbase of the drivetrain.  This should be a parameter measured either in CAD or on the hardware.
@@ -20,6 +26,11 @@ interface ITankDrivetrain {
      * The geometric wheel radius of the drivetrain's wheels.  This should be measured with a geometric test on the hardware.
      */
     var wheelRadius: LinearDistanceMeasure
+
+    /**
+     * Updates the geometry from the template provided
+     */
+    fun updateGeometry(template: TankDrivetrainGeometryTemplate)
 
     /**
      * Operates the drivetrain in "tank" mode, meaning the left setpoint sets the speed of the left gearbox, and the

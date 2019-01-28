@@ -11,6 +11,7 @@ import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
  * @version 7/21/2018
  *
  */
+@Deprecated("Replace with new drivetrain abstractions")
 interface TankDrivetrain {
     var wheelRadius: LinearDistanceMeasure
     var wheelbase: LinearDistanceMeasure

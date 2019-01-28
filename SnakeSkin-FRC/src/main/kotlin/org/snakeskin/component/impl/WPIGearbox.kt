@@ -8,7 +8,7 @@ import org.snakeskin.component.IGearbox
  * @version 1/9/2019
  *
  */
-open class BasicGearbox(private vararg val motorControllers: PWMSpeedController): IGearbox {
+open class WPIGearbox(private vararg val motorControllers: PWMSpeedController): IGearbox {
     override var inverted = false
 
     override fun set(setpoint: Double) {

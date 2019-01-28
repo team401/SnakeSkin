@@ -10,6 +10,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMa
  * @author Cameron Earle
  * @version 12/25/17
  */
+@Deprecated("Replace with new gearbox abstractions")
 class Gearbox(val master: IMotorControllerEnhanced, vararg val slaves: IMotorController) {
     private fun runOnMaster(index: Int = 0, action: IMotorController.() -> Unit) {
         if (index == -1 || index == 0) {
