@@ -3,6 +3,7 @@ package org.snakeskin.units.measure.distance.linear
 import org.snakeskin.units.LinearDistanceUnit
 import org.snakeskin.units.LinearVelocityUnit
 import org.snakeskin.units.measure.Measure
+import org.snakeskin.units.measure.UnitlessMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians
 import org.snakeskin.units.measure.time.TimeMeasure
@@ -71,20 +72,20 @@ interface LinearDistanceMeasure: Measure<LinearDistanceUnit, LinearDistanceMeasu
         return create((this.value * other.toUnit(this.unit).value), this.unit)
     }
 
-    operator fun plus(other: Double): LinearDistanceMeasure {
-        return create((this.value + other), this.unit)
+    operator fun plus(other: UnitlessMeasure): LinearDistanceMeasure {
+        return create((this.value + other.value), this.unit)
     }
 
-    operator fun minus(other: Double): LinearDistanceMeasure {
-        return create((this.value - other), this.unit)
+    operator fun minus(other: UnitlessMeasure): LinearDistanceMeasure {
+        return create((this.value - other.value), this.unit)
     }
 
-    operator fun div(other: Double): LinearDistanceMeasure {
-        return create((this.value / other), this.unit)
+    operator fun div(other: UnitlessMeasure): LinearDistanceMeasure {
+        return create((this.value / other.value), this.unit)
     }
 
-    operator fun times(other: Double): LinearDistanceMeasure {
-        return create((this.value * other), this.unit)
+    operator fun times(other: UnitlessMeasure): LinearDistanceMeasure {
+        return create((this.value * other.value), this.unit)
     }
 
     operator fun compareTo(other: LinearDistanceMeasure): Int {

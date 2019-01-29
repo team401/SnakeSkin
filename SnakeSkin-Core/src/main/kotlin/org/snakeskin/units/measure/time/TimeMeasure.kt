@@ -2,6 +2,7 @@ package org.snakeskin.units.measure.time
 
 import org.snakeskin.units.TimeUnit
 import org.snakeskin.units.measure.Measure
+import org.snakeskin.units.measure.UnitlessMeasure
 
 /**
  * @author Cameron Earle
@@ -38,20 +39,20 @@ interface TimeMeasure: Measure<TimeUnit, TimeMeasure> {
         return create((this.value * other.toUnit(this.unit).value), this.unit)
     }
 
-    operator fun plus(other: Double): TimeMeasure {
-        return create((this.value + other), this.unit)
+    operator fun plus(other: UnitlessMeasure): TimeMeasure {
+        return create((this.value + other.value), this.unit)
     }
 
-    operator fun minus(other: Double): TimeMeasure {
-        return create((this.value - other), this.unit)
+    operator fun minus(other: UnitlessMeasure): TimeMeasure {
+        return create((this.value - other.value), this.unit)
     }
 
-    operator fun div(other: Double): TimeMeasure {
-        return create((this.value / other), this.unit)
+    operator fun div(other: UnitlessMeasure): TimeMeasure {
+        return create((this.value / other.value), this.unit)
     }
 
-    operator fun times(other: Double): TimeMeasure {
-        return create((this.value * other), this.unit)
+    operator fun times(other: UnitlessMeasure): TimeMeasure {
+        return create((this.value * other.value), this.unit)
     }
 
     operator fun compareTo(other: TimeMeasure): Int {

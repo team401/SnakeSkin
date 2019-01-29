@@ -3,6 +3,7 @@ package org.snakeskin.units.measure.velocity.linear
 import org.snakeskin.units.AngularVelocityUnit
 import org.snakeskin.units.LinearVelocityUnit
 import org.snakeskin.units.measure.Measure
+import org.snakeskin.units.measure.UnitlessMeasure
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 import org.snakeskin.units.measure.time.TimeMeasure
 import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
@@ -70,20 +71,20 @@ interface LinearVelocityMeasure: Measure<LinearVelocityUnit, LinearVelocityMeasu
         return create((this.value * other.toUnit(this.unit).value), this.unit)
     }
 
-    operator fun plus(other: Double): LinearVelocityMeasure {
-        return create((this.value + other), this.unit)
+    operator fun plus(other: UnitlessMeasure): LinearVelocityMeasure {
+        return create((this.value + other.value), this.unit)
     }
 
-    operator fun minus(other: Double): LinearVelocityMeasure {
-        return create((this.value - other), this.unit)
+    operator fun minus(other: UnitlessMeasure): LinearVelocityMeasure {
+        return create((this.value - other.value), this.unit)
     }
 
-    operator fun div(other: Double): LinearVelocityMeasure {
-        return create((this.value / other), this.unit)
+    operator fun div(other: UnitlessMeasure): LinearVelocityMeasure {
+        return create((this.value / other.value), this.unit)
     }
 
-    operator fun times(other: Double): LinearVelocityMeasure {
-        return create((this.value * other), this.unit)
+    operator fun times(other: UnitlessMeasure): LinearVelocityMeasure {
+        return create((this.value * other.value), this.unit)
     }
 
     operator fun compareTo(other: LinearVelocityMeasure): Int {

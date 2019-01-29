@@ -1,5 +1,6 @@
 package org.snakeskin.units
 
+import org.snakeskin.units.measure.UnitlessMeasure
 import org.snakeskin.units.measure.distance.angular.*
 import org.snakeskin.units.measure.distance.linear.*
 import org.snakeskin.units.measure.time.*
@@ -15,6 +16,10 @@ import org.snakeskin.units.measure.velocity.linear.*
  * val someVal = 1.23.Inches
  * val otherVal = someVal toUnit Centimeters
  */
+//Unitless
+val Number.Unitless
+    get() = UnitlessMeasure(this.toDouble())
+
 //Angular distance
 val Degrees = AngularDistanceUnit.Standard.DEGREES
 val Number.Degrees

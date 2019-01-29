@@ -8,14 +8,17 @@ import org.snakeskin.exception.ItemNotFoundException
 import org.snakeskin.hardware.Environment
 import org.snakeskin.hardware.Hardware
 import org.snakeskin.logic.LockingDelegate
-import java.util.concurrent.atomic.AtomicReference
 
 /**
  * @author Cameron Earle
  * @version 7/16/17
  */
 abstract class Controller(internal val id: Int, enabled: Boolean = true) {
-    private val enabledRef = AtomicReference<Boolean>(enabled)
+    class EnabledReference(enabledInitial: Boolean) {
+        var enabled by LockingDelegate(enabledInitial)
+    }
+
+    private val enabledRef = EnabledReference(enabled)
 
     /**
      * Controls whether or not the current controller is "enabled".
@@ -26,8 +29,8 @@ abstract class Controller(internal val id: Int, enabled: Boolean = true) {
      * so this can be used to have multiple control mappings
      */
     var enabled: Boolean
-        get() = enabledRef.get()
-        set(value) = enabledRef.set(value)
+        get() = enabledRef.enabled
+        set(value) { enabledRef.enabled = value }
 
     private val provider: ControllerProvider = HardwareControllerProvider(Joystick(id))
 

@@ -5,6 +5,7 @@ import org.snakeskin.units.measure.Measure
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 import org.snakeskin.units.measure.time.TimeMeasure
 import org.snakeskin.units.AngularVelocityUnit
+import org.snakeskin.units.measure.UnitlessMeasure
 import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
 
 /**
@@ -71,20 +72,20 @@ interface AngularDistanceMeasure: Measure<AngularDistanceUnit, AngularDistanceMe
         return create((this.value * other.toUnit(this.unit).value), this.unit)
     }
 
-    operator fun plus(other: Double): AngularDistanceMeasure {
-        return create((this.value + other), this.unit)
+    operator fun plus(other: UnitlessMeasure): AngularDistanceMeasure {
+        return create((this.value + other.value), this.unit)
     }
 
-    operator fun minus(other: Double): AngularDistanceMeasure {
-        return create((this.value - other), this.unit)
+    operator fun minus(other: UnitlessMeasure): AngularDistanceMeasure {
+        return create((this.value - other.value), this.unit)
     }
 
-    operator fun div(other: Double): AngularDistanceMeasure {
-        return create((this.value / other), this.unit)
+    operator fun div(other: UnitlessMeasure): AngularDistanceMeasure {
+        return create((this.value / other.value), this.unit)
     }
 
-    operator fun times(other: Double): AngularDistanceMeasure {
-        return create((this.value * other), this.unit)
+    operator fun times(other: UnitlessMeasure): AngularDistanceMeasure {
+        return create((this.value * other.value), this.unit)
     }
 
     operator fun compareTo(other: AngularDistanceMeasure): Int {

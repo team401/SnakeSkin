@@ -1,7 +1,6 @@
 package org.snakeskin.controls
 
 import org.snakeskin.ability.AReadable
-import java.util.concurrent.atomic.AtomicReference
 
 /**
  * @author Cameron Earle
@@ -9,9 +8,9 @@ import java.util.concurrent.atomic.AtomicReference
  */
 class Hat(private val provider: ControllerProvider,
           private val hat: Int,
-          private val enabled: AtomicReference<Boolean>): AReadable<Int> {
+          private val enabled: Controller.EnabledReference): AReadable<Int> {
     override fun read(): Int {
-        if (!enabled.get()) return default
+        if (!enabled.enabled) return default
         return provider.readHat(hat)
     }
 

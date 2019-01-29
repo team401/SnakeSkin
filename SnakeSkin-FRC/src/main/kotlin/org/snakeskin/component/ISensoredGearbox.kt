@@ -37,9 +37,4 @@ interface ISensoredGearbox: IGearbox {
      * instead set the distance to 0
      */
     fun setPosition(position: AngularDistanceMeasure)
-
-    /**
-     * Sets the angle travelled per tick of the encoder.
-     */
-    fun setDistancePerTick(dpt: AngularDistanceMeasure)
 }
