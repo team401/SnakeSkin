@@ -8,7 +8,7 @@ import org.snakeskin.units.AngularVelocityUnitCTREMagEncoder
  * @version 7/19/2018
  *
  */
-class AngularVelocityMeasureCTREMagEncoder(override val value: Double): AngularVelocityMeasure {
+inline class AngularVelocityMeasureCTREMagEncoder(override val value: Double): AngularVelocityMeasure {
     companion object {
         const val MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_REVOLUTIONS_PER_SECOND = 10.0 / 4096.0
         const val MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_REVOLUTIONS_PER_MINUTE = 600.0 / 4096.0
@@ -28,19 +28,6 @@ class AngularVelocityMeasureCTREMagEncoder(override val value: Double): AngularV
             AngularVelocityUnit.Standard.DEGREES_PER_SECOND -> AngularVelocityMeasureDegreesPerSecond(value * MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_DEGREES_PER_SECOND)
             else -> unit.convert(this)
         }
-    }
-
-
-    override fun equals(other: Any?): Boolean {
-        if (other is AngularVelocityMeasure) {
-            val converted = other.toUnit(unit).value
-            return converted == value
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
     }
 
     override fun toString(): String {

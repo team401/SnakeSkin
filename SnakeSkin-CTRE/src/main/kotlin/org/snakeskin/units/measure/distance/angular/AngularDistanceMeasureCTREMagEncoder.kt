@@ -8,7 +8,7 @@ import org.snakeskin.units.AngularDistanceUnitCTREMagEncoder
  * @version 7/19/2018
  *
  */
-class AngularDistanceMeasureCTREMagEncoder(override val value: Double): AngularDistanceMeasure {
+inline class AngularDistanceMeasureCTREMagEncoder(override val value: Double): AngularDistanceMeasure {
     companion object {
         const val MAG_ENCODER_TICKS_TO_REVOLUTIONS = 1.0 / 4096.0
         const val MAG_ENCODER_TICKS_TO_RADIANS = (2 * Math.PI) / 4096.0
@@ -26,19 +26,6 @@ class AngularDistanceMeasureCTREMagEncoder(override val value: Double): AngularD
             AngularDistanceUnit.Standard.DEGREES -> AngularDistanceMeasureDegrees(value * MAG_ENCODER_TICKS_TO_DEGREES)
             else -> unit.convert(this)
         }
-    }
-
-
-    override fun equals(other: Any?): Boolean {
-        if (other is AngularDistanceMeasure) {
-            val converted = other.toUnit(unit).value
-            return converted == value
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
     }
 
     override fun toString(): String {
