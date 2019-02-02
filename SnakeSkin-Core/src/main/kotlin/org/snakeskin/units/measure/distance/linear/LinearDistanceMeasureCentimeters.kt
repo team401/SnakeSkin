@@ -8,7 +8,7 @@ import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
  * @version 7/14/2018
  *
  */
-class LinearDistanceMeasureCentimeters(override val value: Double): LinearDistanceMeasure {
+inline class LinearDistanceMeasureCentimeters(override val value: Double): LinearDistanceMeasure {
     companion object {
         const val CENTIMETERS_TO_METERS = 0.01
         const val CENTIMETERS_TO_INCHES = 0.393701
@@ -28,18 +28,6 @@ class LinearDistanceMeasureCentimeters(override val value: Double): LinearDistan
             LinearDistanceUnit.Standard.MILES -> LinearDistanceMeasureMiles(value * CENTIMETERS_TO_MILES)
             else -> unit.convert(this)
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is LinearDistanceMeasure) {
-            val converted = other.toUnit(unit).value
-            return converted == value
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
     }
 
     override fun toString(): String {

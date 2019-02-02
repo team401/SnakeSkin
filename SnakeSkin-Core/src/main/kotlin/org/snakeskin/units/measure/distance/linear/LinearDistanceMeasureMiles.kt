@@ -7,7 +7,7 @@ import org.snakeskin.units.LinearDistanceUnit
  * @version 7/15/2018
  *
  */
-class LinearDistanceMeasureMiles(override val value: Double): LinearDistanceMeasure {
+inline class LinearDistanceMeasureMiles(override val value: Double): LinearDistanceMeasure {
     companion object {
         const val MILES_TO_CENTIMETERS = 160934.0
         const val MILES_TO_METERS = 1609.34
@@ -27,18 +27,6 @@ class LinearDistanceMeasureMiles(override val value: Double): LinearDistanceMeas
             LinearDistanceUnit.Standard.FEET -> LinearDistanceMeasureFeet(value * MILES_TO_FEET)
             else -> unit.convert(this)
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is LinearDistanceMeasure) {
-            val converted = other.toUnit(unit).value
-            return converted == value
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
     }
 
     override fun toString(): String {
