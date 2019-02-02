@@ -14,7 +14,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadian
  * @version 1/9/2019
  *
  */
-class WPISensoredGearbox(private val encoder: Encoder, vararg motorControllers: PWMSpeedController,
+open class WPISensoredGearbox(private val encoder: Encoder, vararg motorControllers: PWMSpeedController,
                          radiansPerTick: Double): WPIGearbox(*motorControllers), ISensoredGearbox {
     init {
         encoder.distancePerPulse = radiansPerTick

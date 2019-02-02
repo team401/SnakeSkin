@@ -16,7 +16,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadian
  * @version 1/26/2019
  *
  */
-class WPIGyroDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val gyro: Gyro, geometry: TankDrivetrainGeometryTemplate):
+open class WPIGyroDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val gyro: Gyro, geometry: TankDrivetrainGeometryTemplate):
         IYawSensoredDifferentialDrivetrain<G>, IDifferentialDrivetrain<G> by DifferentialDrivetrain(left, right, geometry) {
     override fun getYawRadians(): Double {
         return AngularDistanceMeasureDegrees.DEGREES_TO_RADIANS * gyro.angle

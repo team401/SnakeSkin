@@ -10,7 +10,7 @@ import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
  * @version 1/9/2019
  *
  */
-class DifferentialDrivetrain<G: IGearbox>(override val left: G, override val right: G, geometry: TankDrivetrainGeometryTemplate): IDifferentialDrivetrain<G> {
+open class DifferentialDrivetrain<G: IGearbox>(override val left: G, override val right: G, geometry: TankDrivetrainGeometryTemplate): IDifferentialDrivetrain<G> {
     override fun updateGeometry(template: TankDrivetrainGeometryTemplate) {
         wheelRadius = template.wheelRadius
         wheelbase = template.wheelbase

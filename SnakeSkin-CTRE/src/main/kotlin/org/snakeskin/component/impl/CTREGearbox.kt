@@ -17,7 +17,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadian
  *
  * This assumes you are using a mag encoder.
  */
-class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves: IMotorController,
+open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves: IMotorController,
                   private val nativeUnitsToRadians: Double = AngularDistanceMeasureCTREMagEncoder.MAG_ENCODER_TICKS_TO_RADIANS,
                   private val nativeUnitsToRadiansPerSecond: Double = AngularVelocityMeasureCTREMagEncoder.MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_RADIANS_PER_SECOND): ICTREGearbox {
     init {

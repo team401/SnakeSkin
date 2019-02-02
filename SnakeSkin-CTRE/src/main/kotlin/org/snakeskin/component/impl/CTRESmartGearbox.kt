@@ -14,7 +14,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMa
  * @version 1/29/2019
  *
  */
-class CTRESmartGearbox<M: IMotorControllerEnhanced>(
+open class CTRESmartGearbox<M: IMotorControllerEnhanced>(
         val master: M, vararg val slaves: IMotorController,
         nativeUnitsToRadians: Double = AngularDistanceMeasureCTREMagEncoder.MAG_ENCODER_TICKS_TO_RADIANS,
         nativeUnitsToRadiansPerSecond: Double = AngularVelocityMeasureCTREMagEncoder.MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_RADIANS_PER_SECOND

@@ -21,7 +21,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadian
  * @version 1/26/2019
  *
  */
-class PigeonIMUDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val imu: PigeonIMU, geometry: TankDrivetrainGeometryTemplate):
+open class PigeonIMUDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val imu: PigeonIMU, geometry: TankDrivetrainGeometryTemplate):
         IYawSensoredDifferentialDrivetrain<G>, IDifferentialDrivetrain<G> by DifferentialDrivetrain(left, right, geometry) {
 
     private val ypr = DoubleArray(3)
