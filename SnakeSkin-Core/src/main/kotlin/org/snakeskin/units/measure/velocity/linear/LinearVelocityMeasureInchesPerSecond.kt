@@ -8,7 +8,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  * @version 7/14/2018
  *
  */
-inline class LinearVelocityMeasureInchesPerSecond(override val value: Double): LinearVelocityMeasure {
+class LinearVelocityMeasureInchesPerSecond(override val value: Double): LinearVelocityMeasure {
     companion object {
         const val INCHES_PER_SECOND_TO_FEET_PER_SECOND = 0.083333333
         const val INCHES_PER_SECOND_TO_METERS_PER_SECOND = 0.0254
@@ -36,6 +36,18 @@ inline class LinearVelocityMeasureInchesPerSecond(override val value: Double): L
             LinearVelocityUnit.Standard.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value * INCHES_PER_SECOND_TO_MILES_PER_HOUR)
             else -> unit.convert(this)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is LinearVelocityMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 
     override fun toString(): String {

@@ -7,7 +7,7 @@ import org.snakeskin.units.AngularVelocityUnit
  * @version 7/15/18
  *
  */
-inline class AngularVelocityMeasureRadiansPerSecond(override val value: Double): AngularVelocityMeasure {
+class AngularVelocityMeasureRadiansPerSecond(override val value: Double): AngularVelocityMeasure {
     companion object {
         const val RADIANS_PER_SECOND_TO_REVOLUTIONS_PER_SECOND = 1 / (2 * Math.PI)
         const val RADIANS_PER_SECOND_TO_REVOLUTIONS_PER_MINUTE = 30.0 / Math.PI
@@ -25,6 +25,18 @@ inline class AngularVelocityMeasureRadiansPerSecond(override val value: Double):
             AngularVelocityUnit.Standard.DEGREES_PER_SECOND -> AngularVelocityMeasureDegreesPerSecond(value * RADIANS_PER_SECOND_TO_DEGREES_PER_SECOND)
             else -> unit.convert(this)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is AngularVelocityMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 
     override fun toString(): String {

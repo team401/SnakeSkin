@@ -7,7 +7,7 @@ import org.snakeskin.units.TimeUnit
  * @version 7/15/18
  *
  */
-inline class TimeMeasureSeconds(override val value: Double): TimeMeasure {
+class TimeMeasureSeconds(override val value: Double): TimeMeasure {
     companion object {
         const val SECONDS_TO_MILLISECONDS = 1000.0
         const val SECONDS_TO_MINUTES = 1 / 60.0
@@ -25,6 +25,18 @@ inline class TimeMeasureSeconds(override val value: Double): TimeMeasure {
             TimeUnit.Standard.HOURS -> TimeMeasureHours(value * SECONDS_TO_HOURS)
             else -> unit.convert(this)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is TimeMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 
     override fun toString(): String {

@@ -12,7 +12,7 @@ import org.snakeskin.units.measure.velocity.linear.LinearVelocityMeasure
  * @version 1/28/2019
  *
  */
-inline class UnitlessMeasure(val value: Double) {
+class UnitlessMeasure(val value: Double) {
     //Angular distance
     operator fun plus(other: AngularDistanceMeasure): AngularDistanceMeasure {
         return AngularDistanceMeasure.create((this.value + other.value), other.unit)

@@ -8,7 +8,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  * @version 7/14/2018
  *
  */
-inline class LinearVelocityMeasureCentimetersPerSecond(override val value: Double): LinearVelocityMeasure {
+class LinearVelocityMeasureCentimetersPerSecond(override val value: Double): LinearVelocityMeasure {
     companion object {
         const val CENTIMETERS_PER_SECOND_TO_INCHES_PER_SECOND = 0.393700787
         const val CENTIMETERS_PER_SECOND_TO_FEET_PER_SECOND = 0.032808399
@@ -36,6 +36,18 @@ inline class LinearVelocityMeasureCentimetersPerSecond(override val value: Doubl
             LinearVelocityUnit.Standard.MILES_PER_HOUR -> LinearVelocityMeasureMilesPerHour(value * CENTIMETERS_PER_SECOND_TO_MILES_PER_HOUR)
             else -> unit.convert(this)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is LinearVelocityMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 
     override fun toString(): String {

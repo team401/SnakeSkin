@@ -8,7 +8,7 @@ import org.snakeskin.units.AngularDistanceUnit
  *
  * TODO Class to be inlined in Kotlin 1.3
  */
-inline class AngularDistanceMeasureRadians(override val value: Double): AngularDistanceMeasure {
+class AngularDistanceMeasureRadians(override val value: Double): AngularDistanceMeasure {
     companion object {
         const val RADIANS_TO_REVOLUTIONS = 1 / (2 * Math.PI)
         const val RADIANS_TO_DEGREES = 180.0 / Math.PI
@@ -24,6 +24,18 @@ inline class AngularDistanceMeasureRadians(override val value: Double): AngularD
             AngularDistanceUnit.Standard.DEGREES -> AngularDistanceMeasureDegrees(value * RADIANS_TO_DEGREES)
             else -> unit.convert(this)
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is AngularDistanceMeasure) {
+            val converted = other.toUnit(unit).value
+            return converted == value
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 
     override fun toString(): String {
