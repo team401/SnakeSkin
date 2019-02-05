@@ -5,11 +5,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.component.Gearbox
 import org.snakeskin.component.TankDrivetrain
-import org.snakeskin.component.template.TankDrivetrainGeometryTemplate
+import org.snakeskin.template.TankDrivetrainGeometryTemplate
 import org.snakeskin.units.AngularDistanceUnit
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureDegrees
-import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 
 /**
  * @author Cameron Earle

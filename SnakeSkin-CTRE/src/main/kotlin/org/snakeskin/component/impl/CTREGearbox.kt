@@ -3,6 +3,8 @@ package org.snakeskin.component.impl
 import com.ctre.phoenix.ErrorCode
 import com.ctre.phoenix.motorcontrol.*
 import org.snakeskin.component.ICTREGearbox
+import org.snakeskin.component.ISmartGearbox
+import org.snakeskin.template.PIDFTemplate
 import org.snakeskin.units.AngularDistanceUnit
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureCTREMagEncoder
@@ -24,6 +26,61 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
         slaves.forEach {
             it.follow(master)
         }
+    }
+
+    override fun setNeutralMode(mode: ISmartGearbox.CommonNeutralMode): Boolean {
+        when (mode) {
+            ISmartGearbox.CommonNeutralMode.BRAKE -> setNeutralMode(NeutralMode.Brake)
+            ISmartGearbox.CommonNeutralMode.COAST -> setNeutralMode(NeutralMode.Coast)
+        }
+        return true
+    }
+
+    override fun setRampRate(secondsFromNeutralToFull: Double): Boolean {
+        return setRampRate(secondsFromNeutralToFull, secondsFromNeutralToFull) == ErrorCode.OK
+    }
+
+    override fun setDeadband(deadbandPercent: Double): Boolean {
+        return setDeadband(deadbandPercent, 0) == ErrorCode.OK
+    }
+
+    override fun set(controlMode: ISmartGearbox.CommonControlMode, setpoint: Double) {
+        when (controlMode) {
+            ISmartGearbox.CommonControlMode.PERCENTAGE -> set(ControlMode.PercentOutput, setpoint)
+            ISmartGearbox.CommonControlMode.POSITION -> set(ControlMode.Position, setpoint)
+            ISmartGearbox.CommonControlMode.VELOCITY -> set(ControlMode.Velocity, setpoint)
+        }
+    }
+
+    override fun set(controlMode: ISmartGearbox.CommonControlMode, setpoint: Double, arbFF: Double) {
+        when (controlMode) {
+            ISmartGearbox.CommonControlMode.PERCENTAGE -> set(ControlMode.PercentOutput, setpoint, arbFF)
+            ISmartGearbox.CommonControlMode.POSITION -> set(ControlMode.Position, setpoint, arbFF)
+            ISmartGearbox.CommonControlMode.VELOCITY -> set(ControlMode.Velocity, setpoint, arbFF)
+        }
+    }
+
+    override fun getMasterVbus(): Double {
+        return master.busVoltage
+    }
+
+    /**
+     * IMotorController doesn't support current measurements, so this implementation returns 0 if the master isn't
+     * an IMotorControllerEnhanced
+     */
+    override fun getMasterOutputCurrent(): Double {
+        if (master is IMotorControllerEnhanced) {
+            return master.outputCurrent
+        }
+        return 0.0
+    }
+
+    override fun setPIDF(kP: Double, kI: Double, kD: Double, kF: Double, slot: Int): Boolean {
+        return setPIDF(kP, kI, kD, kF, slot, 0) == ErrorCode.OK
+    }
+
+    override fun setPIDF(template: PIDFTemplate, slot: Int): Boolean {
+        return setPIDF(template, slot, 0) == ErrorCode.OK
     }
 
     override fun set(mode: ControlMode, setpoint: Double) {
@@ -81,10 +138,6 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
             master.enableVoltageCompensation(true)
         }
         return master.configVoltageCompSaturation(maximumVoltage, timeoutMs)
-    }
-
-    override fun getMasterVbusVolts(): Double {
-        return master.busVoltage
     }
 
     override fun getOutputPercent(): Double {
@@ -165,12 +218,12 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
         )
     }
 
-    override fun setPIDF(p: Double, i: Double, d: Double, f: Double, slotIdx: Int, timeoutMs: Int): ErrorCode {
+    override fun setPIDF(kP: Double, kI: Double, kD: Double, kF: Double, slotIdx: Int, timeoutMs: Int): ErrorCode {
         return ErrorCode.worstOne(
-                master.config_kP(slotIdx, p, timeoutMs),
-                master.config_kI(slotIdx, i, timeoutMs),
-                master.config_kD(slotIdx, d, timeoutMs),
-                master.config_kF(slotIdx, f, timeoutMs)
+                master.config_kP(slotIdx, kP, timeoutMs),
+                master.config_kI(slotIdx, kI, timeoutMs),
+                master.config_kD(slotIdx, kD, timeoutMs),
+                master.config_kF(slotIdx, kF, timeoutMs)
         )
     }
 
@@ -202,4 +255,15 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
                 it.inverted = value
             }
         }
+
+    override fun all(action: IMotorController.() -> Unit) {
+        action(master)
+        slaves(action)
+    }
+
+    override fun slaves(action: IMotorController.() -> Unit) {
+        slaves.forEach {
+            action(it)
+        }
+    }
 }

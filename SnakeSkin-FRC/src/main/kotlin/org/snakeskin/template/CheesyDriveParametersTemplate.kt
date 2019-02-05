@@ -1,7 +1,6 @@
 package org.snakeskin.template
 
 import org.snakeskin.logic.scalars.Scalar
-import org.snakeskin.utility.CheesyDriveController
 
 /**
  * @author Cameron Earle

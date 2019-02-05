@@ -11,7 +11,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
  * @version 1/24/2019
  *
  */
-interface ICTREGearbox: ISensoredGearbox {
+interface ICTREGearbox: ISmartGearbox<IMotorController> {
     fun set(mode: ControlMode, setpoint: Double)
     fun set(mode: ControlMode, setpoint: Double, arbFF: Double)
 
@@ -24,9 +24,6 @@ interface ICTREGearbox: ISensoredGearbox {
     fun setDeadband(percent: Double, timeoutMs: Int = 0): ErrorCode
     fun setVoltageCompenstion(maximumVoltage: Double, timeoutMs: Int = 0): ErrorCode
 
-    fun getMasterVbusVolts(): Double
-    fun getOutputPercent(): Double
-    fun getOutputVoltage(): Double
     fun getMasterTemperatureCelsius(): Double
     fun setFeedbackSensor(device: RemoteFeedbackDevice, pidIdx: Int = 0, timeoutMs: Int = 0): ErrorCode
     fun getPosition(pidIdx: Int): AngularDistanceMeasure
@@ -38,13 +35,13 @@ interface ICTREGearbox: ISensoredGearbox {
     fun setReverseLimitSwitch(source: RemoteLimitSwitchSource, normal: LimitSwitchNormal, deviceId: Int, timeoutMs: Int = 0): ErrorCode
     fun setForwardSoftLimit(enable: Boolean, limit: AngularDistanceMeasure, timeoutMs: Int = 0): ErrorCode
     fun setReverseSoftLimit(enable: Boolean, limit: AngularDistanceMeasure, timeoutMs: Int = 0): ErrorCode
-    fun setPIDF(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.0, slotIdx: Int = 0, timeoutMs: Int = 0): ErrorCode
-    fun setPIDF(template: PIDFTemplate, slotIdx: Int = 0, timeoutMs: Int = 0) {
-        setPIDF(
-                template.p,
-                template.i,
-                template.d,
-                template.f,
+    fun setPIDF(kP: Double = 0.0, kI: Double = 0.0, kD: Double = 0.0, kF: Double = 0.0, slotIdx: Int = 0, timeoutMs: Int = 0): ErrorCode
+    fun setPIDF(template: PIDFTemplate, slotIdx: Int = 0, timeoutMs: Int = 0): ErrorCode {
+        return setPIDF(
+                template.kP,
+                template.kI,
+                template.kD,
+                template.kF,
                 slotIdx,
                 timeoutMs
         )
@@ -52,4 +49,14 @@ interface ICTREGearbox: ISensoredGearbox {
     fun hasMasterResetOccurred(): Boolean
     fun hasSlaveResetOccurred(): Boolean
     fun hasSlaveResetOccurred(idx: Int): Boolean
+
+    /**
+     * Runs an action on all of the motor controllers in the gearbox
+     */
+    fun all(action: IMotorController.() -> Unit)
+
+    /**
+     * Runs an action on all of the slave motor controllers in the gearbox
+     */
+    fun slaves(action: IMotorController.() -> Unit)
 }

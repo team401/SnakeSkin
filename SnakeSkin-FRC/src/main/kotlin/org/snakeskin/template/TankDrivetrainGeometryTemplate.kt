@@ -1,4 +1,4 @@
-package org.snakeskin.component.template
+package org.snakeskin.template
 
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 

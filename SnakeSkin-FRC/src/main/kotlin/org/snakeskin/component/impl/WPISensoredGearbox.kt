@@ -1,7 +1,7 @@
 package org.snakeskin.component.impl
 
 import edu.wpi.first.wpilibj.Encoder
-import edu.wpi.first.wpilibj.PWMSpeedController
+import edu.wpi.first.wpilibj.SpeedController
 import org.snakeskin.component.ISensoredGearbox
 import org.snakeskin.units.AngularDistanceUnit
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
@@ -14,7 +14,7 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadian
  * @version 1/9/2019
  *
  */
-open class WPISensoredGearbox(private val encoder: Encoder, vararg motorControllers: PWMSpeedController,
+open class WPISensoredGearbox(private val encoder: Encoder, vararg motorControllers: SpeedController,
                          radiansPerTick: Double): WPIGearbox(*motorControllers), ISensoredGearbox {
     init {
         encoder.distancePerPulse = radiansPerTick

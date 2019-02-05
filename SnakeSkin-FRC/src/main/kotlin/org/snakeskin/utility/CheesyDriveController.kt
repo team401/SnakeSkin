@@ -1,10 +1,9 @@
 package org.snakeskin.utility
 
-import com.ctre.phoenix.motorcontrol.ControlMode
-import org.snakeskin.component.TankDrivetrain
+import org.snakeskin.component.IDifferentialDrivetrain
+import org.snakeskin.component.IGearbox
 import org.snakeskin.logic.scalars.NoScaling
 import org.snakeskin.logic.scalars.Scalar
-import org.snakeskin.logic.scalars.ScalarGroup
 import org.snakeskin.template.CheesyDriveParametersTemplate
 
 /**
@@ -37,8 +36,8 @@ class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultP
         /**
          * Runs the command on a drivetrain
          */
-        fun applyTo(drivetrain: TankDrivetrain, controlMode: ControlMode = ControlMode.PercentOutput) {
-            drivetrain.tank(controlMode, left, right)
+        fun applyTo(drivetrain: IDifferentialDrivetrain<IGearbox>) {
+            drivetrain.tank(left, right)
         }
     }
 

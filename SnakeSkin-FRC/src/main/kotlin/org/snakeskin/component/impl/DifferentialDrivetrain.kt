@@ -2,7 +2,7 @@ package org.snakeskin.component.impl
 
 import org.snakeskin.component.IGearbox
 import org.snakeskin.component.IDifferentialDrivetrain
-import org.snakeskin.component.template.TankDrivetrainGeometryTemplate
+import org.snakeskin.template.TankDrivetrainGeometryTemplate
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 
 /**

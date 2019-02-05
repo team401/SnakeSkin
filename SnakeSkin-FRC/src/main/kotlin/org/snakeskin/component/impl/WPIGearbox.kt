@@ -1,6 +1,6 @@
 package org.snakeskin.component.impl
 
-import edu.wpi.first.wpilibj.PWMSpeedController
+import edu.wpi.first.wpilibj.SpeedController
 import org.snakeskin.component.IGearbox
 
 /**
@@ -8,7 +8,7 @@ import org.snakeskin.component.IGearbox
  * @version 1/9/2019
  *
  */
-open class WPIGearbox(private vararg val motorControllers: PWMSpeedController): IGearbox {
+open class WPIGearbox(private vararg val motorControllers: SpeedController): IGearbox {
     override var inverted = false
 
     override fun set(setpoint: Double) {

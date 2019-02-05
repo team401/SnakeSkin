@@ -1,18 +1,14 @@
 package org.snakeskin.component.impl
 
 import com.ctre.phoenix.sensors.PigeonIMU
-import edu.wpi.first.wpilibj.Encoder
 import org.snakeskin.component.IDifferentialDrivetrain
 import org.snakeskin.component.IGearbox
-import org.snakeskin.component.ISensoredGearbox
 import org.snakeskin.component.IYawSensoredDifferentialDrivetrain
-import org.snakeskin.component.template.TankDrivetrainGeometryTemplate
+import org.snakeskin.template.TankDrivetrainGeometryTemplate
 import org.snakeskin.units.AngularDistanceUnit
-import org.snakeskin.units.Inches
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureDegrees
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians
-import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureDegreesPerSecond
 import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 

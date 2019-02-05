@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro
 import org.snakeskin.component.IGearbox
 import org.snakeskin.component.IDifferentialDrivetrain
 import org.snakeskin.component.IYawSensoredDifferentialDrivetrain
-import org.snakeskin.component.template.TankDrivetrainGeometryTemplate
+import org.snakeskin.template.TankDrivetrainGeometryTemplate
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureDegrees
 import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians

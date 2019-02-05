@@ -1,6 +1,6 @@
 package org.snakeskin.component
 
-import org.snakeskin.component.template.TankDrivetrainGeometryTemplate
+import org.snakeskin.template.TankDrivetrainGeometryTemplate
 import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 
 /**
