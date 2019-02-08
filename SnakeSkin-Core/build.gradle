@@ -47,3 +47,9 @@ jar {
 
     from fileTree(buildDir).matching { include "META-INF/snakeskin-version.properties"}
 }
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/generated'
+}
+
+compileKotlin.dependsOn rootProject.genUnitsClasses

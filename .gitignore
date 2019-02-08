@@ -26,3 +26,4 @@ build/
 grav.perl
 
 # Add other files here:
+SnakeSkin-Core/src/main/generated
