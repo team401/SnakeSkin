@@ -2,8 +2,8 @@ package org.snakeskin.component.impl
 
 import org.snakeskin.component.IGearbox
 import org.snakeskin.component.IDifferentialDrivetrain
+import org.snakeskin.measure.distance.linear.LinearDistanceMeasureInches
 import org.snakeskin.template.TankDrivetrainGeometryTemplate
-import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 
 /**
  * @author Cameron Earle
@@ -16,8 +16,8 @@ open class DifferentialDrivetrain<G: IGearbox>(override val left: G, override va
         wheelbase = template.wheelbase
     }
 
-    override var wheelRadius: LinearDistanceMeasure = geometry.wheelRadius
-    override var wheelbase: LinearDistanceMeasure = geometry.wheelbase
+    override var wheelRadius: LinearDistanceMeasureInches = geometry.wheelRadius
+    override var wheelbase: LinearDistanceMeasureInches = geometry.wheelbase
 
     override fun tank(leftSetpoint: Double, rightSetpoint: Double) {
         left.set(leftSetpoint)

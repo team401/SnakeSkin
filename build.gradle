@@ -37,6 +37,10 @@ subprojects { subproj ->
         maven  {
             url "http://devsite.ctr-electronics.com/maven/release/"
         }
+        //SnakeSkin bintray
+        maven {
+            url "http://dl.bintray.com/team401/SnakeSkin"
+        }
     }
 
     //Jars built for github releases

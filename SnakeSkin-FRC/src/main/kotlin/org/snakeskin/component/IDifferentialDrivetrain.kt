@@ -1,7 +1,7 @@
 package org.snakeskin.component
 
+import org.snakeskin.measure.distance.linear.LinearDistanceMeasureInches
 import org.snakeskin.template.TankDrivetrainGeometryTemplate
-import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
 
 /**
  * @author Cameron Earle
@@ -20,12 +20,12 @@ interface IDifferentialDrivetrain<out G: IGearbox> {
     /**
      * The geometric wheelbase of the drivetrain.  This should be a parameter measured either in CAD or on the hardware.
      */
-    var wheelbase: LinearDistanceMeasure
+    var wheelbase: LinearDistanceMeasureInches
 
     /**
      * The geometric wheel radius of the drivetrain's wheels.  This should be measured with a geometric test on the hardware.
      */
-    var wheelRadius: LinearDistanceMeasure
+    var wheelRadius: LinearDistanceMeasureInches
 
     /**
      * Updates the geometry from the template provided

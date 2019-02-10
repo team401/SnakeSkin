@@ -4,10 +4,7 @@ import com.ctre.phoenix.ErrorCode
 import com.ctre.phoenix.motorcontrol.*
 import org.snakeskin.component.ICTREGearbox
 import org.snakeskin.component.ICTRESmartGearbox
-import org.snakeskin.units.TimeUnit
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureCTREMagEncoder
-import org.snakeskin.units.measure.time.TimeMeasure
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMagEncoder
+import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
  * @author Cameron Earle
@@ -16,8 +13,8 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMa
  */
 open class CTRESmartGearbox<M: IMotorControllerEnhanced>(
         val master: M, vararg val slaves: IMotorController,
-        nativeUnitsToRadians: Double = AngularDistanceMeasureCTREMagEncoder.MAG_ENCODER_TICKS_TO_RADIANS,
-        nativeUnitsToRadiansPerSecond: Double = AngularVelocityMeasureCTREMagEncoder.MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_RADIANS_PER_SECOND
+        nativeUnitsToRadians: Double = (2 * Math.PI) / 4096.0,
+        nativeUnitsToRadiansPerSecond: Double = (20.0 * Math.PI) / 4096.0
 ): ICTRESmartGearbox, ICTREGearbox by CTREGearbox<M>(master, *slaves,
         nativeUnitsToRadians = nativeUnitsToRadians, nativeUnitsToRadiansPerSecond = nativeUnitsToRadiansPerSecond) {
 
@@ -37,7 +34,7 @@ open class CTRESmartGearbox<M: IMotorControllerEnhanced>(
         return master.configReverseLimitSwitchSource(source, normal, timeoutMs)
     }
 
-    override fun setCurrentLimit(continuousAmps: Double, peakLimit: Double, peakDuration: TimeMeasure, timeoutMs: Int): ErrorCode {
+    override fun setCurrentLimit(continuousAmps: Double, peakLimit: Double, peakDuration: TimeMeasureSeconds, timeoutMs: Int): ErrorCode {
         if (continuousAmps == 0.0) {
             master.enableCurrentLimit(false)
         } else {
@@ -47,7 +44,7 @@ open class CTRESmartGearbox<M: IMotorControllerEnhanced>(
         return ErrorCode.worstOne(
             master.configContinuousCurrentLimit(continuousAmps.toInt(), timeoutMs),
             master.configPeakCurrentLimit(peakLimit.toInt(), timeoutMs),
-            master.configPeakCurrentDuration(peakDuration.toUnit(TimeUnit.Standard.MILLISECONDS).value.toInt(), timeoutMs)
+            master.configPeakCurrentDuration(peakDuration.toMilliseconds().value.toInt(), timeoutMs)
         )
     }
 

@@ -7,7 +7,7 @@ import org.snakeskin.controls.listener.ButtonHoldListener
 import org.snakeskin.controls.listener.HatChangeListener
 import org.snakeskin.controls.mappings.*
 import org.snakeskin.logic.scalars.Scalar
-import org.snakeskin.units.measure.time.TimeMeasure
+import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
  * @author Cameron Earle
@@ -35,7 +35,7 @@ object HumanControls {
     }
 
     class ButtonHandlerBuilder(private val controller: Controller, private val button: Int) {
-        fun heldFor(duration: TimeMeasure, action: (Boolean) -> Unit) = controller.registerListener(ButtonHoldListener(controller.getButton(button), duration, action))
+        fun heldFor(duration: TimeMeasureSeconds, action: (Boolean) -> Unit) = controller.registerListener(ButtonHoldListener(controller.getButton(button), duration, action))
         fun pressed(action: (Boolean) -> Unit) = controller.registerListener(ButtonEdgeListener(controller.getButton(button), ButtonEdgeListener.EdgeType.PRESSED, action))
         fun released(action: (Boolean) -> Unit) = controller.registerListener(ButtonEdgeListener(controller.getButton(button), ButtonEdgeListener.EdgeType.RELEASED, action))
     }

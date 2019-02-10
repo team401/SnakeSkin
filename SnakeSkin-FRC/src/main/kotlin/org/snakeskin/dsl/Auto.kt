@@ -2,11 +2,7 @@ package org.snakeskin.dsl
 
 import org.snakeskin.auto.RobotAuto
 import org.snakeskin.auto.steps.*
-import org.snakeskin.units.Milliseconds
-import org.snakeskin.units.Minutes
-import org.snakeskin.units.Seconds
-import org.snakeskin.units.measure.time.TimeMeasure
-import org.snakeskin.units.measure.time.TimeMeasureSeconds
+import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
  * @author Cameron Earle
@@ -40,7 +36,7 @@ abstract class AutoStepBuilder<T: AutoStep>: Builder<T> {
         addStep(autoStep)
     }
 
-    fun delay(amount: TimeMeasure) {
+    fun delay(amount: TimeMeasureSeconds) {
         addStep(DelayStep(amount))
     }
 
@@ -48,7 +44,7 @@ abstract class AutoStepBuilder<T: AutoStep>: Builder<T> {
         addStep(LambdaStep { println(output) })
     }
 
-    fun waitFor(timeout: TimeMeasure = TimeMeasureSeconds(-1.0), condition: () -> Boolean) {
+    fun waitFor(timeout: TimeMeasureSeconds = TimeMeasureSeconds(-1.0), condition: () -> Boolean) {
         addStep(WaitStep(timeout, condition))
     }
 }

@@ -4,13 +4,9 @@ import com.ctre.phoenix.ErrorCode
 import com.ctre.phoenix.motorcontrol.*
 import org.snakeskin.component.ICTREGearbox
 import org.snakeskin.component.ISmartGearbox
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 import org.snakeskin.template.PIDFTemplate
-import org.snakeskin.units.AngularDistanceUnit
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureCTREMagEncoder
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureCTREMagEncoder
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * @author Cameron Earle
@@ -20,8 +16,8 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadian
  * This assumes you are using a mag encoder.
  */
 open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves: IMotorController,
-                  private val nativeUnitsToRadians: Double = AngularDistanceMeasureCTREMagEncoder.MAG_ENCODER_TICKS_TO_RADIANS,
-                  private val nativeUnitsToRadiansPerSecond: Double = AngularVelocityMeasureCTREMagEncoder.MAG_ENCODER_TICKS_PER_HUNDRED_MS_TO_RADIANS_PER_SECOND): ICTREGearbox {
+                  private val nativeUnitsToRadians: Double = (2 * Math.PI) / 4096.0,
+                  private val nativeUnitsToRadiansPerSecond: Double = (20.0 * Math.PI) / 4096.0): ICTREGearbox {
     init {
         slaves.forEach {
             it.follow(master)
@@ -156,24 +152,8 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
         return master.configSelectedFeedbackSensor(device, pidIdx, timeoutMs)
     }
 
-    override fun getPositionRadians(pidIdx: Int): Double {
-        return master.getSelectedSensorPosition(pidIdx) * nativeUnitsToRadians
-    }
-
-    override fun getPositionRadians(): Double {
-        return getPositionRadians(0)
-    }
-
-    override fun getVelocityRadiansPerSecond(pidIdx: Int): Double {
-        return master.getSelectedSensorVelocity(pidIdx) * nativeUnitsToRadiansPerSecond
-    }
-
-    override fun getVelocityRadiansPerSecond(): Double {
-        return getVelocityRadiansPerSecond(0)
-    }
-
     override fun getPosition(pidIdx: Int): AngularDistanceMeasureRadians {
-        return AngularDistanceMeasureRadians(getPositionRadians(pidIdx))
+        return AngularDistanceMeasureRadians(master.getSelectedSensorPosition(pidIdx) * nativeUnitsToRadians)
     }
 
     override fun getPosition(): AngularDistanceMeasureRadians {
@@ -181,18 +161,18 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
     }
 
     override fun getVelocity(pidIdx: Int): AngularVelocityMeasureRadiansPerSecond {
-        return AngularVelocityMeasureRadiansPerSecond(getVelocityRadiansPerSecond(pidIdx))
+        return AngularVelocityMeasureRadiansPerSecond(master.getSelectedSensorVelocity(pidIdx) * nativeUnitsToRadiansPerSecond)
     }
 
     override fun getVelocity(): AngularVelocityMeasureRadiansPerSecond {
         return getVelocity(0)
     }
 
-    override fun setPosition(position: AngularDistanceMeasure, pidIdx: Int) {
-        master.setSelectedSensorPosition((position.toUnit(AngularDistanceUnit.Standard.RADIANS).value / nativeUnitsToRadiansPerSecond).toInt(), pidIdx, 0)
+    override fun setPosition(position: AngularDistanceMeasureRadians, pidIdx: Int) {
+        master.setSelectedSensorPosition((position.value / nativeUnitsToRadiansPerSecond).toInt(), pidIdx, 0)
     }
 
-    override fun setPosition(position: AngularDistanceMeasure) {
+    override fun setPosition(position: AngularDistanceMeasureRadians) {
         setPosition(position, 0)
     }
 
@@ -204,17 +184,17 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
         return master.configReverseLimitSwitchSource(source, normal, deviceId, timeoutMs)
     }
 
-    override fun setForwardSoftLimit(enable: Boolean, limit: AngularDistanceMeasure, timeoutMs: Int): ErrorCode {
+    override fun setForwardSoftLimit(enable: Boolean, limit: AngularDistanceMeasureRadians, timeoutMs: Int): ErrorCode {
         return ErrorCode.worstOne(
                 master.configForwardSoftLimitEnable(enable, timeoutMs),
-                master.configForwardSoftLimitThreshold(((limit.toUnit(AngularDistanceUnit.Standard.RADIANS).value) / nativeUnitsToRadians).toInt(), timeoutMs)
+                master.configForwardSoftLimitThreshold(((limit.value) / nativeUnitsToRadians).toInt(), timeoutMs)
         )
     }
 
-    override fun setReverseSoftLimit(enable: Boolean, limit: AngularDistanceMeasure, timeoutMs: Int): ErrorCode {
+    override fun setReverseSoftLimit(enable: Boolean, limit: AngularDistanceMeasureRadians, timeoutMs: Int): ErrorCode {
         return ErrorCode.worstOne(
                 master.configReverseSoftLimitEnable(enable, timeoutMs),
-                master.configReverseSoftLimitThreshold(((limit.toUnit(AngularDistanceUnit.Standard.RADIANS).value) / nativeUnitsToRadians).toInt(), timeoutMs)
+                master.configReverseSoftLimitThreshold(((limit.value) / nativeUnitsToRadians).toInt(), timeoutMs)
         )
     }
 

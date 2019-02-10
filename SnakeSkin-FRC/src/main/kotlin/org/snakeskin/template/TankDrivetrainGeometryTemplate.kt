@@ -1,6 +1,6 @@
 package org.snakeskin.template
 
-import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
+import org.snakeskin.measure.distance.linear.LinearDistanceMeasureInches
 
 /**
  * @author Cameron Earle
@@ -8,6 +8,6 @@ import org.snakeskin.units.measure.distance.linear.LinearDistanceMeasure
  *
  */
 interface TankDrivetrainGeometryTemplate {
-    val wheelRadius: LinearDistanceMeasure
-    val wheelbase: LinearDistanceMeasure
+    val wheelRadius: LinearDistanceMeasureInches
+    val wheelbase: LinearDistanceMeasureInches
 }

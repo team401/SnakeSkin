@@ -2,9 +2,9 @@ package org.snakeskin.component
 
 import com.ctre.phoenix.ErrorCode
 import com.ctre.phoenix.motorcontrol.*
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 import org.snakeskin.template.PIDFTemplate
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
 
 /**
  * @author Cameron Earle
@@ -26,15 +26,13 @@ interface ICTREGearbox: ISmartGearbox<IMotorController> {
 
     fun getMasterTemperatureCelsius(): Double
     fun setFeedbackSensor(device: RemoteFeedbackDevice, pidIdx: Int = 0, timeoutMs: Int = 0): ErrorCode
-    fun getPosition(pidIdx: Int): AngularDistanceMeasure
-    fun getVelocity(pidIdx: Int): AngularVelocityMeasure
-    fun getPositionRadians(pidIdx: Int): Double
-    fun getVelocityRadiansPerSecond(pidIdx: Int): Double
-    fun setPosition(position: AngularDistanceMeasure, pidIdx: Int)
+    fun getPosition(pidIdx: Int): AngularDistanceMeasureRadians
+    fun getVelocity(pidIdx: Int): AngularVelocityMeasureRadiansPerSecond
+    fun setPosition(position: AngularDistanceMeasureRadians, pidIdx: Int)
     fun setForwardLimitSwitch(source: RemoteLimitSwitchSource, normal: LimitSwitchNormal, deviceId: Int, timeoutMs: Int = 0): ErrorCode
     fun setReverseLimitSwitch(source: RemoteLimitSwitchSource, normal: LimitSwitchNormal, deviceId: Int, timeoutMs: Int = 0): ErrorCode
-    fun setForwardSoftLimit(enable: Boolean, limit: AngularDistanceMeasure, timeoutMs: Int = 0): ErrorCode
-    fun setReverseSoftLimit(enable: Boolean, limit: AngularDistanceMeasure, timeoutMs: Int = 0): ErrorCode
+    fun setForwardSoftLimit(enable: Boolean, limit: AngularDistanceMeasureRadians, timeoutMs: Int = 0): ErrorCode
+    fun setReverseSoftLimit(enable: Boolean, limit: AngularDistanceMeasureRadians, timeoutMs: Int = 0): ErrorCode
     fun setPIDF(kP: Double = 0.0, kI: Double = 0.0, kD: Double = 0.0, kF: Double = 0.0, slotIdx: Int = 0, timeoutMs: Int = 0): ErrorCode
     fun setPIDF(template: PIDFTemplate, slotIdx: Int = 0, timeoutMs: Int = 0): ErrorCode {
         return setPIDF(

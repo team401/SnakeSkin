@@ -4,13 +4,11 @@ import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.component.IDifferentialDrivetrain
 import org.snakeskin.component.IGearbox
 import org.snakeskin.component.IYawSensoredDifferentialDrivetrain
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureDegreesPerSecond
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 import org.snakeskin.template.TankDrivetrainGeometryTemplate
-import org.snakeskin.units.AngularDistanceUnit
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureDegrees
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureDegreesPerSecond
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * @author Cameron Earle
@@ -23,25 +21,17 @@ open class PigeonIMUDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val i
     private val ypr = DoubleArray(3)
     private val xyzDps = DoubleArray(3)
 
-    override fun getYawRadians(): Double {
-        imu.getYawPitchRoll(ypr)
-        return AngularDistanceMeasureDegrees.DEGREES_TO_RADIANS * ypr[0]
-    }
-
-    override fun getYawRateRadiansPerSecond(): Double {
-        imu.getRawGyro(xyzDps)
-        return AngularVelocityMeasureDegreesPerSecond.DEGREES_PER_SECOND_TO_RADIANS_PER_SECOND * xyzDps[2]
-    }
-
     override fun getYaw(): AngularDistanceMeasureRadians {
-        return AngularDistanceMeasureRadians(getYawRadians())
+        imu.getYawPitchRoll(ypr)
+        return AngularDistanceMeasureDegrees(ypr[0]).toRadians()
     }
 
     override fun getYawRate(): AngularVelocityMeasureRadiansPerSecond {
-        return AngularVelocityMeasureRadiansPerSecond(getYawRateRadiansPerSecond())
+        imu.getRawGyro(xyzDps)
+        return AngularVelocityMeasureDegreesPerSecond(xyzDps[2]).toRadiansPerSecond()
     }
 
-    override fun setYaw(yaw: AngularDistanceMeasure) {
-        imu.setYaw(yaw.toUnit(AngularDistanceUnit.Standard.DEGREES).value)
+    override fun setYaw(yaw: AngularDistanceMeasureRadians) {
+        imu.setYaw(yaw.toDegrees().value)
     }
 }

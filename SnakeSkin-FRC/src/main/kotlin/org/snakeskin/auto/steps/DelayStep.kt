@@ -1,15 +1,14 @@
 package org.snakeskin.auto.steps
 
-import org.snakeskin.units.TimeUnit
-import org.snakeskin.units.measure.time.TimeMeasure
+import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
  * @author Cameron Earle
  * @version 5/11/18
  */
-class DelayStep(val time: TimeMeasure): AutoStep() {
+class DelayStep(val time: TimeMeasureSeconds): AutoStep() {
     var startTime = 0.0
-    private val timeSeconds = time.toUnit(TimeUnit.Standard.SECONDS).value
+    private val timeSeconds = time.value
 
     override fun entry(currentTime: Double) {
         startTime = currentTime

@@ -3,10 +3,8 @@ package org.snakeskin.component.impl
 import edu.wpi.first.wpilibj.Encoder
 import edu.wpi.first.wpilibj.SpeedController
 import org.snakeskin.component.ISensoredGearbox
-import org.snakeskin.units.AngularDistanceUnit
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 
 /**
@@ -20,27 +18,19 @@ open class WPISensoredGearbox(private val encoder: Encoder, vararg motorControll
         encoder.distancePerPulse = radiansPerTick
     }
 
-    override fun getPositionRadians(): Double {
-        return encoder.distance
-    }
-
-    override fun getVelocityRadiansPerSecond(): Double {
-        return encoder.rate
-    }
-
     override fun getPosition(): AngularDistanceMeasureRadians {
-        return AngularDistanceMeasureRadians(getPositionRadians())
+        return AngularDistanceMeasureRadians(encoder.distance)
     }
 
     override fun getVelocity(): AngularVelocityMeasureRadiansPerSecond {
-        return AngularVelocityMeasureRadiansPerSecond(getVelocityRadiansPerSecond())
+        return AngularVelocityMeasureRadiansPerSecond(encoder.rate)
     }
 
     /**
      * This implementation does not honor the position passed in, and
      * will instead set the encoder position to 0
      */
-    override fun setPosition(position: AngularDistanceMeasure) {
+    override fun setPosition(position: AngularDistanceMeasureRadians) {
         encoder.reset()
     }
 }

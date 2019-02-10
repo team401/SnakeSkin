@@ -1,7 +1,7 @@
 package org.snakeskin.component
 
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * @author Cameron Earle
@@ -12,28 +12,16 @@ interface IYawSensoredDifferentialDrivetrain<out G: IGearbox>: IDifferentialDriv
     /**
      * Gets the yaw of the drivetrain, as measured by a properly aligned sensor.
      */
-    fun getYaw(): AngularDistanceMeasure
-
-    /**
-     * Gets the yaw of the drivetrain in radians, as measured by a properly aligned sensor.
-     * Avoids creating unit objects in high quantities
-     */
-    fun getYawRadians(): Double
+    fun getYaw(): AngularDistanceMeasureRadians
 
     /**
      * Gets the rate of change of the yaw of the drivetrain, as measured by a properly aligned sensor.
      */
-    fun getYawRate(): AngularVelocityMeasure
-
-    /**
-     * Gets the rate of change of the yaw of the drivetrain in radians per second, as measured by a properly aligned sensor.
-     * Avoids creating unit objects in high quantities
-     */
-    fun getYawRateRadiansPerSecond(): Double
+    fun getYawRate(): AngularVelocityMeasureRadiansPerSecond
 
     /**
      * Sets the yaw to the specified value.
      * Note: Implementations may not honor the value passed in, and may instead just set the yaw to 0
      */
-    fun setYaw(yaw: AngularDistanceMeasure)
+    fun setYaw(yaw: AngularDistanceMeasureRadians)
 }

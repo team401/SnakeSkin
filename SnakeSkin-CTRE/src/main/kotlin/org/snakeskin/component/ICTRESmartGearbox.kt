@@ -2,7 +2,7 @@ package org.snakeskin.component
 
 import com.ctre.phoenix.ErrorCode
 import com.ctre.phoenix.motorcontrol.*
-import org.snakeskin.units.measure.time.TimeMeasure
+import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
  * @author Cameron Earle
@@ -14,6 +14,6 @@ interface ICTRESmartGearbox: ICTREGearbox {
     fun getMasterCurrentAmps(): Double
     fun setForwardLimitSwitch(source: LimitSwitchSource, normal: LimitSwitchNormal, timeoutMs: Int = 0): ErrorCode
     fun setReverseLimitSwitch(source: LimitSwitchSource, normal: LimitSwitchNormal, timeoutMs: Int = 0): ErrorCode
-    fun setCurrentLimit(continuousAmps: Double, peakLimit: Double, peakDuration: TimeMeasure, timeoutMs: Int = 0): ErrorCode
+    fun setCurrentLimit(continuousAmps: Double, peakLimit: Double, peakDuration: TimeMeasureSeconds, timeoutMs: Int = 0): ErrorCode
     fun getSensorCollection(): SensorCollection
 }

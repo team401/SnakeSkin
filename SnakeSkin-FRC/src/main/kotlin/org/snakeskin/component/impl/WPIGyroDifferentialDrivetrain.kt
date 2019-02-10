@@ -4,12 +4,11 @@ import edu.wpi.first.wpilibj.interfaces.Gyro
 import org.snakeskin.component.IGearbox
 import org.snakeskin.component.IDifferentialDrivetrain
 import org.snakeskin.component.IYawSensoredDifferentialDrivetrain
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureDegreesPerSecond
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 import org.snakeskin.template.TankDrivetrainGeometryTemplate
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureDegrees
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasureRadians
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureDegreesPerSecond
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * @author Cameron Earle
@@ -18,26 +17,18 @@ import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasureRadian
  */
 open class WPIGyroDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val gyro: Gyro, geometry: TankDrivetrainGeometryTemplate):
         IYawSensoredDifferentialDrivetrain<G>, IDifferentialDrivetrain<G> by DifferentialDrivetrain(left, right, geometry) {
-    override fun getYawRadians(): Double {
-        return AngularDistanceMeasureDegrees.DEGREES_TO_RADIANS * gyro.angle
-    }
-
-    override fun getYawRateRadiansPerSecond(): Double {
-        return AngularVelocityMeasureDegreesPerSecond.DEGREES_PER_SECOND_TO_RADIANS_PER_SECOND * gyro.rate
-    }
-
     override fun getYaw(): AngularDistanceMeasureRadians {
-        return AngularDistanceMeasureRadians(getYawRadians())
+        return AngularDistanceMeasureDegrees(gyro.angle).toRadians()
     }
 
     override fun getYawRate(): AngularVelocityMeasureRadiansPerSecond {
-        return AngularVelocityMeasureRadiansPerSecond(getYawRateRadiansPerSecond())
+        return AngularVelocityMeasureDegreesPerSecond(gyro.rate).toRadiansPerSecond()
     }
 
     /**
      * This implementation does not honor the value passed in for yaw, and instead resets the angle to 0
      */
-    override fun setYaw(yaw: AngularDistanceMeasure) {
+    override fun setYaw(yaw: AngularDistanceMeasureRadians) {
         gyro.reset()
     }
 }

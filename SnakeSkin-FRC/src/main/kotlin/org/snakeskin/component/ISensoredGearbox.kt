@@ -1,7 +1,7 @@
 package org.snakeskin.component
 
-import org.snakeskin.units.measure.distance.angular.AngularDistanceMeasure
-import org.snakeskin.units.measure.velocity.angular.AngularVelocityMeasure
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * @author Cameron Earle
@@ -12,29 +12,17 @@ interface ISensoredGearbox: IGearbox {
     /**
      * The current angular position of the gearbox.
      */
-    fun getPosition(): AngularDistanceMeasure
+    fun getPosition(): AngularDistanceMeasureRadians
 
     /*
      * The current angular velocity of the gearbox.
      */
-    fun getVelocity(): AngularVelocityMeasure
-
-    /**
-     * The current angular position of the gearbox in radians
-     * Avoids creating unit objects in high quantities
-     */
-    fun getPositionRadians(): Double
-
-    /**
-     * The current angular velocity of the gearbox in radians per second
-     * Avoids creating unit objects in high quantities
-     */
-    fun getVelocityRadiansPerSecond(): Double
+    fun getVelocity(): AngularVelocityMeasureRadiansPerSecond
 
     /**
      * Sets the position of the sensor to the specified position.
      * Note: Implementations may not honor the distance passed, and may
      * instead set the distance to 0
      */
-    fun setPosition(position: AngularDistanceMeasure)
+    fun setPosition(position: AngularDistanceMeasureRadians)
 }

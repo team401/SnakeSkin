@@ -1,10 +1,10 @@
 package org.snakeskin.dsl
 
 import org.snakeskin.executor.ThreadPoolSchedulingContext
+import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.state.State
 import org.snakeskin.state.StateMachine
 import org.snakeskin.subsystem.States
-import org.snakeskin.units.measure.time.TimeMeasure
 
 /**
  * @author Cameron Earle
@@ -129,7 +129,7 @@ class MutableStateBuilder<T>(name: T): StateBuilder<T>(name) {
      * @param timeout The time, in ms, to wait for the timeout
      * @param timeoutTo The name of the state to timeout to
      */
-    fun timeout(timeout: TimeMeasure, timeoutTo: T) {
+    fun timeout(timeout: TimeMeasureSeconds, timeoutTo: T) {
         builder.timeout = timeout
         builder.timeoutTo = timeoutTo as Any
     }

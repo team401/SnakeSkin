@@ -1,7 +1,6 @@
 package org.snakeskin.utility
 
-import org.snakeskin.units.TimeUnit
-import org.snakeskin.units.measure.time.TimeMeasure
+import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
  * @author Cameron Earle
@@ -24,8 +23,8 @@ class Ticker(private val condition: () -> Boolean, private val threshold: Long) 
      * tracking time for you, and thus it is your job as the caller to ensure that you are maintaining the interval
      *
      */
-    constructor(condition: () -> Boolean, timeThreshold: TimeMeasure, timeInterval: TimeMeasure) : this(condition,
-            (timeThreshold.toUnit(TimeUnit.Standard.MILLISECONDS).value / timeInterval.toUnit(TimeUnit.Standard.MILLISECONDS).value).toLong()
+    constructor(condition: () -> Boolean, timeThreshold: TimeMeasureSeconds, timeInterval: TimeMeasureSeconds) : this(condition,
+            (timeThreshold.toMilliseconds().value / timeInterval.toMilliseconds().value).toLong()
     )
 
     /**
