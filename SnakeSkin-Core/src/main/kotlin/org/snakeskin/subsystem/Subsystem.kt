@@ -1,14 +1,10 @@
 package org.snakeskin.subsystem
 
-import org.snakeskin.logic.Parameters
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
 import org.snakeskin.exception.InitException
-import org.snakeskin.exception.ItemNotFoundException
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.state.StateMachine
-import java.lang.reflect.InvocationTargetException
-import java.util.*
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
@@ -30,31 +26,31 @@ open class Subsystem(private val loopRate: Long = 20L) {
      */
     fun addStateMachine(machine: StateMachine<*>) = stateMachines.add(machine)
 
-    private val faults = Vector<Any>()
+    private val faults = hashSetOf<Any>()
     /**
      * Registers the specified fault to this subsystem
      * @param fault The fault to add
      */
-    fun fault(fault: Any) = faults.add(fault)
+    @Synchronized fun fault(fault: Any) = faults.add(fault)
 
     /**
      * Removes a fault from this subsystem
      * @param fault The fault to remove
      */
-    fun clearFault(fault: Any) = faults.remove(fault)
+    @Synchronized fun clearFault(fault: Any) = faults.remove(fault)
 
     /**
      * Returns true if this subsystem has any faults
      * @return true if this subsystem has any faults, false otherwise
      */
-    fun isFaulted() = faults.isNotEmpty()
+    @Synchronized fun isFaulted() = faults.isNotEmpty()
 
     /**
      * Returns true if this subsystem has any of the provided faults
      * @param faults The faults to check
      * @return true if this subsystem has any of the provided faults, false otherwise
      */
-    fun isFaulted(vararg faults: Any) = faults.any { this.faults.contains(it) }
+    @Synchronized fun isFaulted(vararg faults: Any) = faults.any { this.faults.contains(it) }
 
     /**
      * Setup tasks for this subsystem
