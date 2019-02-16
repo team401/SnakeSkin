@@ -19,9 +19,7 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
                   private val nativeUnitsToRadians: Double = (2 * Math.PI) / 4096.0,
                   private val nativeUnitsToRadiansPerSecond: Double = (20.0 * Math.PI) / 4096.0): ICTREGearbox {
     init {
-        slaves.forEach {
-            it.follow(master)
-        }
+        link()
     }
 
     override fun setNeutralMode(mode: ISmartGearbox.CommonNeutralMode): Boolean {
@@ -244,6 +242,12 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
     override fun slaves(action: IMotorController.() -> Unit) {
         slaves.forEach {
             action(it)
+        }
+    }
+
+    final override fun link() {
+        slaves.forEach {
+            it.follow(master)
         }
     }
 }

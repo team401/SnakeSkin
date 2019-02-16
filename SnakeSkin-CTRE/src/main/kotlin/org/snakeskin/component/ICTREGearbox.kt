@@ -48,6 +48,10 @@ interface ICTREGearbox: ISmartGearbox<IMotorController> {
     fun hasSlaveResetOccurred(): Boolean
     fun hasSlaveResetOccurred(idx: Int): Boolean
 
+    fun hasAnyResetOccurred(): Boolean {
+        return hasMasterResetOccurred() || hasSlaveResetOccurred()
+    }
+
     /**
      * Runs an action on all of the motor controllers in the gearbox
      */

@@ -113,4 +113,11 @@ interface ISmartGearbox<T>: ISensoredGearbox {
      * @return false if there was an error
      */
     fun setPIDF(template: PIDFTemplate, slot: Int = 0): Boolean
+
+    /**
+     * Links the slaves to the master.  This is called automatically when the gearbox is created,
+     * but can be called from user code if, for example, a motor controller resets and the gearbox
+     * needs to be reinitialized
+     */
+    fun link()
 }
