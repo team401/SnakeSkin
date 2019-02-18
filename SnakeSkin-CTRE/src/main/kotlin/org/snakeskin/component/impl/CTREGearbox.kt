@@ -167,7 +167,7 @@ open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves
     }
 
     override fun setPosition(position: AngularDistanceMeasureRadians, pidIdx: Int) {
-        master.setSelectedSensorPosition((position.value / nativeUnitsToRadiansPerSecond).toInt(), pidIdx, 0)
+        master.setSelectedSensorPosition((position.value / nativeUnitsToRadians).toInt(), pidIdx, 0)
     }
 
     override fun setPosition(position: AngularDistanceMeasureRadians) {
