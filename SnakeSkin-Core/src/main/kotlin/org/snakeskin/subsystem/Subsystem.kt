@@ -58,6 +58,29 @@ open class Subsystem(private val loopRate: Long = 20L) {
     open fun setup() {}
 
     /**
+     * Check tasks for this subsystem
+     */
+    open fun check(ctx: SubsystemCheckContext) {}
+
+    /**
+     * Performs subsystem checks
+     */
+    fun checkSubsystem() {
+        println("Beginning checks for subsystem $name")
+        val ctx = SubsystemCheckContext(
+                {
+                    check ->
+                    println("S[$name]\tC[$check]\tPASSED")
+                },
+                {
+                    check, reason ->
+                    println("S[$name]\tC[$check]\tFAILED\t-\t$reason")
+                }
+        )
+        println("Checks done for subsystem $name")
+    }
+
+    /**
      * Looping actions for this subsystem
      */
     open fun action() {
