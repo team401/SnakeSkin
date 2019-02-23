@@ -31,12 +31,15 @@ class StateMachine<T> {
     private val executor = ExecutorFactory.getExecutor("State Machine")
     private val scheduler = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
 
-    private val states = arrayListOf<State<*>>()
-    private val globalRejections = HashMap<List<*>, () -> Boolean>()
+    private val states = arrayListOf<State<*>>() //List of states that this state machine has
+    private val globalRejections = hashMapOf<List<*>, () -> Boolean>() //Map of global rejection conditions for specific states
 
     /**
      * Adds a global rejection to the state machine, which will
      * reject all of the given states if the condition is met
+     *
+     * If no states are passed, the rejection condition will reject ALL states if the condition is met
+     * Note that this case will also prevent your state machine from disabling, so be careful when using this.
      *
      * Makes cleaner syntax for rejecting a bunch of states for one reason
      */
@@ -47,7 +50,7 @@ class StateMachine<T> {
 
     private fun isGloballyRejected(state: Any): Boolean {
         for (pair in globalRejections) {
-            if (pair.key.contains(state)) { //If this key-value pair contains the given state
+            if (pair.key.isEmpty() || pair.key.contains(state)) { //If this key-value pair contains the given state OR the list is empty (reject ALL)
                 if (pair.value()) { //If this pair's rejection case evaluates true
                     return true
                 }

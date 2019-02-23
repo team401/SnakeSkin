@@ -1,5 +1,5 @@
 dependencies {
-    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2019.1.1'
+    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2019.3.1'
     implementation project(':SnakeSkin-Core')
 }
 
