@@ -15,6 +15,18 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  */
 object HumanControls {
     open class ControlsBuilder(private val controller: Controller) {
+        fun readButton(button: Int): Boolean {
+            return controller.readButton(button)
+        }
+
+        fun readAxis(axis: Int): Double {
+            return controller.readAxis(axis)
+        }
+
+        fun readHat(hat: Int): Int {
+            return controller.readHat(hat)
+        }
+
         fun whenButton(button: Int, setup: ButtonHandlerBuilder.() -> Unit) {
             val builder = ButtonHandlerBuilder(controller, button)
             builder.setup()
