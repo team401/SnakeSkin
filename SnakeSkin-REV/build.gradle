@@ -1,0 +1,33 @@
+dependencies {
+    implementation project(':SnakeSkin-Core')
+    //TODO add REV libraries
+    //TODO add CTRE libraries (for interop)
+}
+
+publishing {
+    publications {
+        Rev(MavenPublication) {
+            from components.java
+            groupId 'org.snakeskin'
+            artifactId 'SnakeSkin-REV'
+            artifact sourcesJar
+            version this.version
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('user') ? project.property('user') : System.getenv("BINTRAY_USER") != null ? System.getenv("BINTRAY_USER") : ""
+    key = project.hasProperty('key') ? project.property('key'): System.getenv("BINTRAY_KEY") != null ? System.getenv("BINTRAY_KEY") : ""
+    publications = ['Rev']
+    pkg {
+        repo = "SnakeSkin"
+        name = "SnakeSkin-REV"
+        userOrg = "team401"
+        licenses = ["GPL-3.0"]
+        vcsUrl = "https://github.com/team401/snakeskin"
+        version {
+            name = this.version
+        }
+    }
+}
