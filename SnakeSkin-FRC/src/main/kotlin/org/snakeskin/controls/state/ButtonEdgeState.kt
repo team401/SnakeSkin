@@ -17,16 +17,18 @@ class ButtonEdgeState(override val listener: ButtonEdgeListener): ControlSurface
         ButtonEdgeListener.EdgeType.RELEASED -> false
     }
 
-    override fun update(timestamp: Double): Runnable? {
+    override fun update(timestamp: Double): Boolean {
         history.update(listener.surface.read())
 
         if (history.current == edgeValue) {
             if (history.last == !edgeValue) {
-                return Runnable {
-                    listener.action(edgeValue)
-                }
+                return true
             }
         }
-        return null
+        return false
+    }
+
+    override fun run() {
+        listener.action(edgeValue)
     }
 }

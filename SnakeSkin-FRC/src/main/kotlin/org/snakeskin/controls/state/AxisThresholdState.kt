@@ -18,20 +18,23 @@ class AxisThresholdState(override val listener: AxisThresholdListener): ControlS
     }
 
     private var eventFired = false
+    private var currentValue = 0.0
 
-    override fun update(timestamp: Double): Runnable? {
-        val currentValue = listener.surface.read()
+    override fun update(timestamp: Double): Boolean {
+        currentValue = listener.surface.read()
         if (isPassedThreshold(currentValue)) {
             //We only want to fire the event once per crossing of the threshold, so this ensures that
             if (!eventFired) {
                 eventFired = true
-                return Runnable {
-                    listener.action(currentValue)
-                }
+                return true
             }
         } else {
             eventFired = false
         }
-        return null
+        return false
+    }
+
+    override fun run() {
+        listener.action(currentValue)
     }
 }

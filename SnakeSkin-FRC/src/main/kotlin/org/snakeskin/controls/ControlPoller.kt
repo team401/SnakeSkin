@@ -35,9 +35,8 @@ object ControlPoller {
     fun update() {
         val timestamp = Hardware.getRelativeTime()
         states.forEach {
-            val action = it.update(timestamp)
-            if (action != null) {
-                handlerExecutor.submit(action)
+            if (it.update(timestamp)) { //If the controller state changed
+                handlerExecutor.submit(it) //Run the action
             }
         }
     }

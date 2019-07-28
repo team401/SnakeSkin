@@ -11,15 +11,17 @@ import org.snakeskin.logic.History
 class HatState(override val listener: HatChangeListener): ControlSurfaceState<Int> {
     private val history = History<Int>()
 
-    override fun update(timestamp: Double): Runnable? {
+    override fun update(timestamp: Double): Boolean {
         history.update(listener.surface.read())
         if (history.current != null && history.last != null) {
             if (history.current != history.last) {
-                return Runnable {
-                    listener.action(history.current!!)
-                }
+                return true
             }
         }
-        return null
+        return false
+    }
+
+    override fun run() {
+        listener.action(history.current!!)
     }
 }

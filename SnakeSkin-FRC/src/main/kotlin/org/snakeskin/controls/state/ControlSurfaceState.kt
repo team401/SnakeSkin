@@ -7,7 +7,7 @@ import org.snakeskin.controls.listener.ControlListener
  * @version 12/12/2018
  *
  */
-interface ControlSurfaceState<T> {
+interface ControlSurfaceState<T>: Runnable {
     val listener: ControlListener<*, T>
-    fun update(timestamp: Double): Runnable?
+    fun update(timestamp: Double): Boolean
 }
