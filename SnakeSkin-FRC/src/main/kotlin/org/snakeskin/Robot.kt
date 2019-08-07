@@ -1,5 +1,8 @@
 package org.snakeskin
 
+import edu.wpi.first.hal.FRCNetComm
+import edu.wpi.first.hal.HAL
+import edu.wpi.first.wpilibj.IterativeRobotBase
 import edu.wpi.first.wpilibj.TimedRobot
 import org.snakeskin.auto.AutoManager
 import org.snakeskin.controls.ControlPoller
@@ -14,8 +17,26 @@ import org.snakeskin.registry.Subsystems
 /**
  * @author Cameron Earle
  * @version 12/14/17
+ *
+ * Implements the old "IterativeRobot" that waits for driver station data.  Also removes the annoying overrun messages
  */
-class Robot: TimedRobot() {
+class Robot: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
+    init {
+        HAL.report(FRCNetComm.tResourceType.kResourceType_Framework, FRCNetComm.tInstances.kFramework_ROS) //Who's Marshall?
+    }
+
+    override fun startCompetition() {
+        robotInit()
+
+        HAL.observeUserProgramStarting()
+
+        val thread = Thread.currentThread()
+        while (!thread.isInterrupted) {
+            m_ds.waitForData()
+            loopFunc()
+        }
+    }
+
     override fun testPeriodic() {}
     override fun disabledPeriodic() {}
     override fun robotPeriodic() {}
