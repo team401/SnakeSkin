@@ -9,5 +9,7 @@ package org.snakeskin.rt
  */
 interface RealTimeTask {
     val name: String
+    get() = this.javaClass.simpleName
+
     fun action(ctx: RealTimeExecutor.RealTimeContext)
 }

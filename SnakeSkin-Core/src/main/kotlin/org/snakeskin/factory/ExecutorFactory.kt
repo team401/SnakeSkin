@@ -30,4 +30,6 @@ object ExecutorFactory {
 
     @Suppress("UNUSED_PARAMETER") //We plan to use 'reason' in the future
     fun getSingleExecutor(reason: String) = newSingleThreadScheduledExecutor()!!
+
+    fun getExecutor() = executor
 }
