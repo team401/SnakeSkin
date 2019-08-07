@@ -5,6 +5,10 @@ import org.snakeskin.component.IGearbox
 import org.snakeskin.logic.scalars.NoScaling
 import org.snakeskin.logic.scalars.Scalar
 import org.snakeskin.template.CheesyDriveParametersTemplate
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.sin
 
 /**
  * @author Cameron Earle
@@ -12,7 +16,7 @@ import org.snakeskin.template.CheesyDriveParametersTemplate
  *
  *  Implements the Cheesy Poofs "Cheesy Drive"
  */
-class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultParameters()) {
+class CheesyDriveController(private val config: CheesyDriveParametersTemplate = DefaultParameters()) {
     open class DefaultParameters: CheesyDriveParametersTemplate {
         override val highWheelNonLinearity: Double = 0.65
         override val lowWheelNonLinearity: Double = 0.5
@@ -45,8 +49,8 @@ class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultP
     private var quickStopAccumulator = 0.0
     private var negInertiaAccumulator = 0.0
 
-    private val highDenom = Math.sin(Math.PI / 2.0 * config.highWheelNonLinearity)
-    private val lowDenom = Math.sin(Math.PI / 2.0 * config.lowWheelNonLinearity)
+    private val highDenom = sin(Math.PI / 2.0 * config.highWheelNonLinearity)
+    private val lowDenom = sin(Math.PI / 2.0 * config.lowWheelNonLinearity)
 
     fun reset() {
         oldWheel = 0.0
@@ -56,7 +60,6 @@ class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultP
 
     fun update(throttleIn: Double, wheelIn: Double, isHigh: Boolean, quickTurn: Boolean = false): Output {
         var wheel = wheelIn
-        var throttle = throttleIn
 
         if (quickTurn) {
             wheel = config.quickTurnScalar.scale(wheel)
@@ -67,33 +70,33 @@ class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultP
 
         if (isHigh) {
             for (i in 0 until config.highSinCount) {
-                wheel = Math.sin(Math.PI / 2.0 * config.highWheelNonLinearity * wheel) / highDenom
+                wheel = sin(Math.PI / 2.0 * config.highWheelNonLinearity * wheel) / highDenom
             }
         } else {
             for (i in 0 until config.lowSinCount) {
-                wheel = Math.sin(Math.PI / 2.0 * config.lowWheelNonLinearity * wheel) / lowDenom
+                wheel = sin(Math.PI / 2.0 * config.lowWheelNonLinearity * wheel) / lowDenom
             }
         }
 
-        var leftOut = 0.0
-        var rightOut = 0.0
-        var overPower = 0.0
-        var sensitivity = 0.0
-        var angularPower = 0.0
-        var linearPower = 0.0
-        var negInertiaScalar = 0.0
+        var leftOut: Double
+        var rightOut: Double
+        val overPower: Double
+        val sensitivity: Double
+        val angularPower: Double
+        val linearPower: Double = throttleIn
+        val negInertiaScalar: Double
 
         if (isHigh) {
             negInertiaScalar = config.highNegInertiaScalar
             sensitivity = config.highSensitivity
         } else {
-            if (wheel * negInertia > 0) {
-                negInertiaScalar = config.lowNegInertiaTurnScalar
+            negInertiaScalar = if (wheel * negInertia > 0) {
+                config.lowNegInertiaTurnScalar
             } else {
-                if (Math.abs(wheel) > config.lowNegInertiaThreshold) {
-                    negInertiaScalar = config.lowNegInertiaFarScalar
+                if (abs(wheel) > config.lowNegInertiaThreshold) {
+                    config.lowNegInertiaFarScalar
                 } else {
-                    negInertiaScalar = config.lowNegInertiaCloseScalar
+                    config.lowNegInertiaCloseScalar
                 }
             }
             sensitivity = config.lowSensitivity
@@ -102,50 +105,50 @@ class CheesyDriveController(val config: CheesyDriveParametersTemplate = DefaultP
         negInertiaAccumulator += negInertiaPower
 
         wheel += negInertiaAccumulator
-        if (negInertiaAccumulator > 1.0) {
-            negInertiaAccumulator -= 1.0
-        } else if (negInertiaAccumulator < -1.0) {
-            negInertiaAccumulator += 1.0
-        } else {
-            negInertiaAccumulator = 0.0
+        when {
+            negInertiaAccumulator > 1.0 -> negInertiaAccumulator -= 1.0
+            negInertiaAccumulator < -1.0 -> negInertiaAccumulator += 1.0
+            else -> negInertiaAccumulator = 0.0
         }
-        linearPower = throttle
 
         if (quickTurn) {
-            if (Math.abs(linearPower) < config.quickStopDeadband) {
+            if (abs(linearPower) < config.quickStopDeadband) {
                 val alpha = config.quickStopWeight
-                quickStopAccumulator = (1 - alpha) * quickStopAccumulator
-                + alpha * Math.min(1.0, Math.max(-1.0, wheel)) * config.quickStopScalar
+                quickStopAccumulator *= (1 - alpha)
+                + alpha * min(1.0, max(-1.0, wheel)) * config.quickStopScalar
             }
             overPower = 1.0
             angularPower = wheel
         } else {
             overPower = 0.0
-            angularPower = Math.abs(throttle) * wheel * sensitivity - quickStopAccumulator
-            if (quickStopAccumulator > 1) {
-                quickStopAccumulator -= 1.0
-            } else if (quickStopAccumulator < -1) {
-                quickStopAccumulator += 1
-            } else {
-                quickStopAccumulator = 0.0
+            angularPower = abs(throttleIn) * wheel * sensitivity - quickStopAccumulator
+            when {
+                quickStopAccumulator > 1 -> quickStopAccumulator -= 1.0
+                quickStopAccumulator < -1 -> quickStopAccumulator += 1
+                else -> quickStopAccumulator = 0.0
             }
         }
 
         leftOut = linearPower + angularPower
         rightOut = linearPower - angularPower
 
-        if (leftOut > 1.0) {
-            rightOut -= overPower * (leftOut - 1.0)
-            leftOut = 1.0
-        } else if (rightOut > 1.0) {
-            leftOut -= overPower * (rightOut - 1.0)
-            rightOut = 1.0
-        } else if (leftOut < -1.0) {
-            rightOut += overPower * (-1.0 - leftOut)
-            leftOut = -1.0
-        } else if (rightOut < -1.0) {
-            leftOut += overPower * (-1.0 - rightOut)
-            rightOut = -1.0
+        when {
+            leftOut > 1.0 -> {
+                rightOut -= overPower * (leftOut - 1.0)
+                leftOut = 1.0
+            }
+            rightOut > 1.0 -> {
+                leftOut -= overPower * (rightOut - 1.0)
+                rightOut = 1.0
+            }
+            leftOut < -1.0 -> {
+                rightOut += overPower * (-1.0 - leftOut)
+                leftOut = -1.0
+            }
+            rightOut < -1.0 -> {
+                leftOut += overPower * (-1.0 - rightOut)
+                rightOut = -1.0
+            }
         }
 
         return Output(leftOut * config.outputScalar, rightOut * config.outputScalar)
