@@ -3,9 +3,9 @@ package org.snakeskin.rt
 import org.snakeskin.hardware.Environment
 import org.snakeskin.hardware.Hardware
 import org.snakeskin.logging.LoggerManager
-import org.snakeskin.logic.LockingDelegate
 import org.snakeskin.rt.impl.HardwareRealTimeSchedulingProvider
 import org.snakeskin.rt.impl.SoftwareRealTimeSchedulingProvider
+import org.snakeskin.utility.value.AsyncDouble
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -31,7 +31,7 @@ object RealTimeExecutor {
         var lastTime = 0.0; private set
 
         //This property is accessible outside of a real time task, so we need to secure it from simultaneous read/writes
-        var dt by LockingDelegate(0.0); private set
+        var dt by AsyncDouble(0.0); private set
 
         internal fun updateTime() {
             time = Hardware.getRelativeTime()

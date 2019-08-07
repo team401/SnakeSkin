@@ -1,6 +1,9 @@
 package org.snakeskin.logic
 
 import org.snakeskin.ability.AUpdatable
+import org.snakeskin.utility.value.AsyncDouble
+import kotlin.math.abs
+
 /**
  * @author Cameron Earle
  * @version 12/23/2017
@@ -18,20 +21,20 @@ class PIDController(p: Double = 0.0,
                     outMagnitude: Double = 1.0): AUpdatable<Double> {
 
     //Proportional, integral, derivative, and feedforward gains
-    var p: Double by LockingDelegate(p)
-    var i: Double by LockingDelegate(i)
-    var d: Double by LockingDelegate(d)
-    var f: Double by LockingDelegate(f)
+    var p: Double by AsyncDouble(p)
+    var i: Double by AsyncDouble(i)
+    var d: Double by AsyncDouble(d)
+    var f: Double by AsyncDouble(f)
 
-    var allowedError: Double by LockingDelegate(allowedError) //Acceptable error (aka tolerance) for the controller.
+    var allowedError: Double by AsyncDouble(allowedError) //Acceptable error (aka tolerance) for the controller.
 
-    var iMagnitude: Double by LockingDelegate(iMagnitude) //Maximum allowed output magnitude from integral term
-    var iZone: Double by LockingDelegate(iZone) //Range around setpoint where integral accumulator should be active. Only takes positive range values.
+    var iMagnitude: Double by AsyncDouble(iMagnitude) //Maximum allowed output magnitude from integral term
+    var iZone: Double by AsyncDouble(iZone) //Range around setpoint where integral accumulator should be active. Only takes positive range values.
 
-    var outMagnitude: Double by LockingDelegate(outMagnitude) //Maximum allowed output magnitude from the controller
+    var outMagnitude: Double by AsyncDouble(outMagnitude) //Maximum allowed output magnitude from the controller
 
-    var setpoint: Double by LockingDelegate(setpoint)
-    var output: Double by LockingDelegate(0.0)
+    var setpoint: Double by AsyncDouble(setpoint)
+    var output: Double by AsyncDouble(0.0)
         private set
 
     private var iAccum = 0.0
@@ -44,13 +47,13 @@ class PIDController(p: Double = 0.0,
         iAccum += i * error
         iAccum = if (iAccum > iMagnitude) iMagnitude else iAccum
         iAccum = if (iAccum < -iMagnitude) -iMagnitude else iAccum
-        iAccum = if (Math.abs(error) > iZone) 0.0 else iAccum
+        iAccum = if (abs(error) > iZone) 0.0 else iAccum
 
         out = (p * error) + iAccum + (d * (error - prevError)) + f
 
         prevError = error
 
-        if (Math.abs(error) > allowedError) {
+        if (abs(error) > allowedError) {
             if (out > outMagnitude) out = outMagnitude
             if (out < -outMagnitude) out = -outMagnitude
         } else {
@@ -64,7 +67,7 @@ class PIDController(p: Double = 0.0,
         iAccum = 0.0
     }
 
-    @Synchronized fun atSetpoint() = Math.abs(error) < allowedError
+    @Synchronized fun atSetpoint() = abs(error) < allowedError
 
     @Synchronized fun reset() {
         resetIAccum()

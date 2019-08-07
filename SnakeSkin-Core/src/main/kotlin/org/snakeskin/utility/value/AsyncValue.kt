@@ -1,14 +1,13 @@
-package org.snakeskin.logic
+package org.snakeskin.utility.value
 
-import java.util.concurrent.atomic.AtomicReference
 import kotlin.reflect.KProperty
 
 /**
  * @author Cameron Earle
- * @version 12/22/17
+ * @version 8/7/2019
+ *
  */
-@Deprecated("Replaced with new type-specific async delegates", ReplaceWith("Async*", "org.snakeskin.utility.async.*"))
-class LockingDelegate<T>(initialValue: T) {
+class AsyncValue<T>(initialValue: T) {
     private val lock = Any()
     private var value = initialValue
 

@@ -4,7 +4,7 @@ import org.snakeskin.controls.listener.*
 import org.snakeskin.controls.state.*
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.hardware.Hardware
-import org.snakeskin.logic.LockingDelegate
+import org.snakeskin.utility.value.AsyncBoolean
 import java.util.*
 
 /**
@@ -20,7 +20,7 @@ object ControlPoller {
      * Whether or not to poll the controls in the autonomous mode.
      * This should be enabled to support the "Sandstorm" period in the 2019 game
      */
-    var pollInAutonomous by LockingDelegate(false)
+    var pollInAutonomous by AsyncBoolean(false)
 
     private fun createStateForListener(listener: ControlListener<*, *>): ControlSurfaceState<*> {
         return when (listener) {

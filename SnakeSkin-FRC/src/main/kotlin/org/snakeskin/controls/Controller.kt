@@ -5,9 +5,7 @@ import org.snakeskin.controls.impl.HardwareControllerProvider
 import org.snakeskin.controls.listener.ControlListener
 import org.snakeskin.controls.mappings.IMappingDefinitions
 import org.snakeskin.exception.ItemNotFoundException
-import org.snakeskin.hardware.Environment
-import org.snakeskin.hardware.Hardware
-import org.snakeskin.logic.LockingDelegate
+import org.snakeskin.utility.value.AsyncBoolean
 
 /**
  * @author Cameron Earle
@@ -15,7 +13,7 @@ import org.snakeskin.logic.LockingDelegate
  */
 abstract class Controller(internal val id: Int, enabled: Boolean = true) {
     class EnabledReference(enabledInitial: Boolean) {
-        var enabled by LockingDelegate(enabledInitial)
+        var enabled by AsyncBoolean(enabledInitial)
     }
 
     private val enabledRef = EnabledReference(enabled)
