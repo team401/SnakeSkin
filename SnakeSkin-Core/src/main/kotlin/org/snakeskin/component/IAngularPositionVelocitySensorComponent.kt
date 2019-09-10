@@ -6,4 +6,4 @@ import org.snakeskin.component.provider.IAngularVelocityProvider
 /**
  * Marker interface for a position and velocity sensor combo
  */
-interface IAngularPositionVelocitySensor : IAngularPositionProvider, IAngularVelocityProvider
+interface IAngularPositionVelocitySensorComponent : IAngularPositionProvider, IAngularVelocityProvider

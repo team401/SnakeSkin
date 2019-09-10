@@ -7,6 +7,6 @@ import org.snakeskin.component.provider.*
  */
 interface IMotorControllerSmart :
         IPercentOutputMotorControlProvider,
-        IAngularPositionVelocitySensor,
+        IAngularPositionVelocitySensorComponent,
         IAngularPositionMotorControlProvider,
         IAngularVelocityMotorControlProvider

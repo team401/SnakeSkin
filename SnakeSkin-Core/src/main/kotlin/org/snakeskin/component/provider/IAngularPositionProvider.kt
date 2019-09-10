@@ -1,7 +1,6 @@
 package org.snakeskin.component.provider
 
-import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
-import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
 
 /**
  * Represents a component that can provide rotational position data
@@ -10,10 +9,10 @@ interface IAngularPositionProvider {
     /**
      * Returns the rotational position of the component in radians
      */
-    fun getRotationalPosition(): AngularDistanceMeasureDegrees
+    fun getRotationalPosition(): AngularDistanceMeasureRevolutions
 
     /**
      * Sets the rotational position of the component to the specified angle in radians
      */
-    fun setRotationalPosition(angle: AngularDistanceMeasureRadians)
+    fun setRotationalPosition(angle: AngularDistanceMeasureRevolutions)
 }

@@ -1,6 +1,6 @@
 package org.snakeskin.component.provider
 
-import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
 
 /**
  * Represents a component that can provide angular position control
@@ -11,5 +11,5 @@ interface IAngularPositionMotorControlProvider {
      * @param setpoint The setpoint to configure
      * @param ffVolts Optional feedforward voltage to apply as a sum to the control output
      */
-    fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRadians, ffVolts: Double = 0.0)
+    fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double = 0.0)
 }
