@@ -7,6 +7,7 @@ import org.snakeskin.debug.DebuggerShell
 import org.snakeskin.hardware.Environment
 import org.snakeskin.hardware.Hardware
 import org.snakeskin.init.InitManager
+import org.snakeskin.runtime.SnakeskinPlatform
 
 /**
  * @author Cameron Earle
@@ -36,7 +37,7 @@ object SoftwareRobot {
             }
         })
 
-        InitManager.init()
+        InitManager.init(SnakeskinPlatform.SOFTWARE)
 
         //RobotBase.main(*args) //TODO fix this
     }

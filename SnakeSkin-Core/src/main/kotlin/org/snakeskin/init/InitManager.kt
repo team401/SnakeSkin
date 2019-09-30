@@ -11,6 +11,8 @@ import org.snakeskin.exception.StartupException
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.logging.LoggerManager
 import org.snakeskin.registry.Subsystems
+import org.snakeskin.runtime.SnakeskinPlatform
+import org.snakeskin.runtime.SnakeskinRuntime
 import java.lang.ClassCastException
 
 /**
@@ -26,7 +28,8 @@ object InitManager {
     private val initializerClasses = arrayOf(
             "org.snakeskin.init.CoreInit",
             "org.snakeskin.init.FrcInit",
-            "org.snakeskin.init.CtreInit"
+            "org.snakeskin.init.CtreInit",
+            "org.snakeskin.init.RevInit"
     )
 
     private val initializers = ArrayList<Initializer>(initializerClasses.size)
@@ -104,7 +107,7 @@ object InitManager {
     /**
      * This method does the initialization
      */
-    @JvmStatic fun init() {
+    @JvmStatic fun init(platform: SnakeskinPlatform) {
         //First, we'll initialize and start the logger
         LoggerManager.init()
         LoggerManager.logMainThread()
@@ -120,6 +123,9 @@ object InitManager {
 
         //Next, we'll run the "pre-startup" init tasks
         preStartup()
+
+        //Next, we'll initialize the runtime
+        SnakeskinRuntime.start(platform)
 
         //Next, we'll load the setup methods
         val setupMethods = RuntimeLoader.getAnnotated(Setup::class.java)

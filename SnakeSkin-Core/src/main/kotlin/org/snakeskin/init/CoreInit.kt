@@ -2,6 +2,8 @@ package org.snakeskin.init
 
 import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.registry.Subsystems
+import org.snakeskin.runtime.SnakeskinModules
+import org.snakeskin.runtime.SnakeskinRuntime
 
 /**
  * @author Cameron Earle
@@ -10,6 +12,7 @@ import org.snakeskin.registry.Subsystems
  */
 class CoreInit: Initializer {
     override fun preStartup() {
+        SnakeskinRuntime.registerModule(SnakeskinModules.CORE)
         ExecutorFactory.init()
     }
 

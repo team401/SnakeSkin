@@ -13,16 +13,18 @@ import org.snakeskin.hardware.Hardware
 import org.snakeskin.hardware.impl.HardwareTimeSource
 import org.snakeskin.init.InitManager
 import org.snakeskin.registry.Subsystems
+import org.snakeskin.runtime.SnakeskinPlatform
 
 /**
  * @author Cameron Earle
  * @version 12/14/17
  *
+ * Main class for loading
  * Implements the old "IterativeRobot" that waits for driver station data.  Also removes the annoying overrun messages
  */
-class Robot: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
+class FrcRoborioRobot: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
     init {
-        HAL.report(FRCNetComm.tResourceType.kResourceType_Framework, FRCNetComm.tInstances.kFramework_ROS) //Who's Marshall?
+        HAL.report(FRCNetComm.tResourceType.kResourceType_Framework, FRCNetComm.tInstances.kFramework_Timed)
     }
 
     override fun startCompetition() {
@@ -42,12 +44,8 @@ class Robot: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to 
     override fun robotPeriodic() {}
 
     override fun robotInit() {
-        //Configure the environment to be hardware (RoboRIO), and set the timesource to the FPGA
-        Hardware.configureEnvironment(Environment.HARDWARE)
-        Hardware.setTimeSource(HardwareTimeSource())
-
         //Run the Init Manager to initialize the user code
-        InitManager.init()
+        InitManager.init(SnakeskinPlatform.FRC_ROBORIO)
     }
 
     override fun disabledInit() {

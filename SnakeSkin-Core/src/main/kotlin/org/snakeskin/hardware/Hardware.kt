@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Base object to obtain instances of hardware objects.  Designed to be extended through extension functions
  * by other modules.
  */
+@Deprecated("Replaced by new Runtime API", ReplaceWith("org.snakeskin.runtime.SnakeskinRuntime"))
 object Hardware {
     /**
      * The environment to initialize hardware in
