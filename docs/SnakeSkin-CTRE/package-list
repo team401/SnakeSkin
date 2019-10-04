@@ -1,10 +1,3 @@
-org.snakeskin
 org.snakeskin.component
 org.snakeskin.component.impl
-org.snakeskin.dsl
-org.snakeskin.template
-org.snakeskin.units
-org.snakeskin.units.measure.distance.angular
-org.snakeskin.units.measure.time
-org.snakeskin.units.measure.velocity.angular
-org.snakeskin.utility
+org.snakeskin.init

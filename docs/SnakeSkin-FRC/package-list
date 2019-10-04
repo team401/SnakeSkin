@@ -1,7 +1,7 @@
 org.snakeskin
 org.snakeskin.auto
 org.snakeskin.auto.steps
-org.snakeskin.component
+org.snakeskin.component.impl
 org.snakeskin.controls
 org.snakeskin.controls.impl
 org.snakeskin.controls.listener
@@ -13,6 +13,6 @@ org.snakeskin.init
 org.snakeskin.logic
 org.snakeskin.publish
 org.snakeskin.registry
-org.snakeskin.rt
 org.snakeskin.rt.impl
+org.snakeskin.runtime.impl
 org.snakeskin.sensors
