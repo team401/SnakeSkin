@@ -1,7 +1,8 @@
 package org.snakeskin.registry
 
-import org.snakeskin.rt.RealTimeExecutor
+import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.RealTimeTask
+import org.snakeskin.runtime.SnakeskinRuntime
 
 /**
  * @author Cameron Earle
@@ -13,7 +14,7 @@ import org.snakeskin.rt.RealTimeTask
 object RealTimeTasks {
     fun add(vararg tasks: RealTimeTask) {
         tasks.forEach {
-            RealTimeExecutor.addTask(it)
+            SnakeskinRuntime.registerRealTimeTask(it)
         }
     }
 }

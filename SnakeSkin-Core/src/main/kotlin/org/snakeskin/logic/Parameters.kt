@@ -6,6 +6,7 @@ import org.snakeskin.exception.ItemNotFoundException
  * @author Cameron Earle
  * @version 7/4/17
  */
+@Deprecated("Parameters are no longer used by the event system")
 class Parameters {
     private val strings: HashMap<String, String>
     private val booleans: HashMap<String, Boolean>

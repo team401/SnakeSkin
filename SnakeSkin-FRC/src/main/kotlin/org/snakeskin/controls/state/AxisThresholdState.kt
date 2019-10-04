@@ -1,6 +1,7 @@
 package org.snakeskin.controls.state
 
 import org.snakeskin.controls.listener.AxisThresholdListener
+import org.snakeskin.executor.ExceptionHandlingRunnable
 
 /**
  * @author Cameron Earle
@@ -34,7 +35,7 @@ class AxisThresholdState(override val listener: AxisThresholdListener): ControlS
         return false
     }
 
-    override fun run() {
+    override val action = ExceptionHandlingRunnable {
         listener.action(currentValue)
     }
 }

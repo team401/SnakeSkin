@@ -2,11 +2,16 @@ package org.snakeskin.runtime
 
 import org.snakeskin.compiler.VersionManager
 import org.snakeskin.exception.InitException
+import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.executor.IExecutor
+import org.snakeskin.executor.IExecutorTaskHandle
+import org.snakeskin.measure.time.TimeMeasureSeconds
+import org.snakeskin.rt.IRealTimeExecutor
+import org.snakeskin.rt.RealTimeTask
 import org.snakeskin.utility.value.AsyncBoolean
-import java.lang.ClassCastException
 
 /**
- * SnakeSkin runtime objects.  This object can be used to access various information
+ * SnakeSkin runtime object.  This object can be used to access various information
  * about the running instance of SnakeSkin
  */
 object SnakeskinRuntime {
@@ -33,6 +38,35 @@ object SnakeskinRuntime {
     private val modules = mutableSetOf<SnakeskinModules>()
 
     /**
+     * The primary executor
+     */
+    lateinit var primaryExecutor: IExecutor
+    private set
+
+    /**
+     * The default real time executor
+     */
+    private lateinit var rtExecutor: IRealTimeExecutor
+
+    /**
+     * Other real time executors
+     */
+    private val rtExecutors = hashMapOf<String, IRealTimeExecutor>()
+
+    /**
+     * The current system timestamp, in seconds
+     */
+    val timestamp: TimeMeasureSeconds
+    get() = TimeMeasureSeconds(binding.getTimestampSeconds())
+
+    /**
+     * Delays for the specified time, in seconds
+     */
+    fun delay(time: TimeMeasureSeconds) {
+        binding.blockMilliseconds(time.toMilliseconds().value.toLong())
+    }
+
+    /**
      * Returns true if the given module is loaded, false otherwise
      */
     @Synchronized
@@ -46,7 +80,7 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun registerModule(module: SnakeskinModules) {
-        check (!isRunning) { "Cannot register module '$module' when runtime is already started!"}
+        check (!isRunning) { "Cannot register module '$module' when runtime is already started"}
     }
 
     /**
@@ -65,6 +99,7 @@ object SnakeskinRuntime {
     /**
      * Returns the currently running version of SnakeSkin
      */
+    @Synchronized
     fun getVersion(): String {
         return VersionManager.getVersion()
     }
@@ -74,9 +109,98 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun start(platform: SnakeskinPlatform) {
-        check(!isRunning) { "SnakeSkin runtime is already started!" }
+        //Initial setup
+        check(!isRunning) { "SnakeSkin runtime is already started" }
         binding = loadPlatformBinding(platform) //Could potentially throw
         this.platform = platform
+
+        //Start services
+        primaryExecutor = binding.allocatePrimaryExecutor()
+
         isRunning = true
+    }
+
+    /**
+     * Executes a task on the primary executor as soon as possible
+     * @param task The task to execute
+     */
+    @Synchronized
+    fun executeTask(task: ExceptionHandlingRunnable): IExecutorTaskHandle {
+        check(isRunning) { "SnakeSkin runtime is not started" }
+        return primaryExecutor.scheduleSingleTaskNow(task)
+    }
+
+    @Synchronized
+    fun executeTaskAfter(task: ExceptionHandlingRunnable, delay: TimeMeasureSeconds): IExecutorTaskHandle {
+        check(isRunning) { "SnakeSkin runtime is not started" }
+        return primaryExecutor.scheduleSingleTask(task, delay)
+    }
+
+    /**
+     * Schedules a task to run at a fixed rate on the primary executor
+     * @param task The task to execute periodically
+     * @param rate The rate to execute the task at in seconds
+     */
+    @Synchronized
+    fun startPeriodicTask(task: ExceptionHandlingRunnable, rate: TimeMeasureSeconds): IExecutorTaskHandle {
+        check(isRunning) { "SnakeSkin runtime is not started" }
+        return primaryExecutor.schedulePeriodicTask(task, rate)
+    }
+
+    /**
+     * Creates and starts a single use executor, which allows certain tasks to be executed
+     * off of the primary executor
+     */
+    @Synchronized
+    fun createSingleUseExecutor(): IExecutor {
+        check (isRunning) { "SnakeSkin runtime is not started" }
+        return binding.allocateSingleUseExecutor()
+    }
+
+    /**
+     * Creates a new real time executor at the specified rate
+     * @param rate The runtime rate of the executor in seconds
+     * @param name The name of the executor to create.  If not provided, this creates the default executor
+     */
+    @Synchronized
+    fun createRealTimeExecutor(rate: TimeMeasureSeconds, name: String? = null) {
+        check(isRunning) { "SnakeSkin runtime is not started" }
+        if (name == null) {
+            check(!::rtExecutor.isInitialized) { "Default RT executor is already created" }
+            rtExecutor = binding.allocateRealTimeExecutor(rate.value)
+        } else {
+            check(!rtExecutors.containsKey(name)) { "An RT executor with name '$name' already exists" }
+            rtExecutors[name] = binding.allocateRealTimeExecutor(rate.value)
+        }
+    }
+
+    /**
+     * Registers a real time task
+     * @param task The task to register
+     * @param executorName The executor to register the task on.  If not provided, schedule on the default executor
+     */
+    @Synchronized
+    fun registerRealTimeTask(task: RealTimeTask, executorName: String? = null) {
+        check(isRunning) { "SnakeSkin runtime is not started" }
+        if (executorName == null) {
+            check(::rtExecutor.isInitialized) { "Default RT executor has not been created" }
+            rtExecutor.registerTask(task)
+        } else {
+            check(rtExecutors.containsKey(executorName)) { "No RT executor found with name '$executorName'" }
+            rtExecutors[executorName]!!.registerTask(task)
+        }
+    }
+
+    /**
+     * Starts all created real time executors
+     */
+    @Synchronized
+    fun startRealTimeExecutors() {
+        if (::rtExecutor.isInitialized) {
+            rtExecutor.start()
+        }
+        rtExecutors.forEach { (_, executor) ->
+            executor.start()
+        }
     }
 }

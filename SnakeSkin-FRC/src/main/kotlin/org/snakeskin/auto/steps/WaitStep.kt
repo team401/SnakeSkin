@@ -1,22 +1,23 @@
 package org.snakeskin.auto.steps
 
+import org.snakeskin.measure.MeasureUnitless
 import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
  * @author Cameron Earle
  * @version 5/11/18
  */
-class WaitStep(timeout: TimeMeasureSeconds = TimeMeasureSeconds(-1.0), val condition: () -> Boolean): AutoStep() {
-    var startTime = 0.0
-    private val timeoutSeconds = timeout.value
+class WaitStep(private val timeout: TimeMeasureSeconds = TimeMeasureSeconds(-1.0), val condition: () -> Boolean): AutoStep() {
+    var startTime = TimeMeasureSeconds(0.0)
+    private val hasTimeout = timeout > MeasureUnitless(0.0)
 
-    override fun entry(currentTime: Double) {
+    override fun entry(currentTime: TimeMeasureSeconds) {
         startTime = currentTime
     }
 
-    override fun action(currentTime: Double, lastTime: Double): Boolean {
-        return ((timeoutSeconds > 0.0 && currentTime - startTime >= timeoutSeconds) || condition())
+    override fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds): Boolean {
+        return ((hasTimeout && currentTime - startTime >= timeout) || condition())
     }
 
-    override fun exit(currentTime: Double) {}
+    override fun exit(currentTime: TimeMeasureSeconds) {}
 }

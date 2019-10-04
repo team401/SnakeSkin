@@ -1,23 +1,21 @@
 package org.snakeskin.event
 
-import org.snakeskin.factory.ExecutorFactory
-import org.snakeskin.logic.MutableParameters
-import org.snakeskin.logic.Parameters
+import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.runtime.SnakeskinRuntime
 
 /**
  * @author Cameron Earle
  * @version 7/4/17
  */
 object EventRouter {
-    private val handlers = hashMapOf<Any, ArrayList<(Parameters) -> Unit>>()
-    private val executor = ExecutorFactory.getExecutor("Event Router")
+    private val handlers = hashMapOf<Any, ArrayList<ExceptionHandlingRunnable>>()
 
     /**
      * Registers an event handler on the event router
      * @param event The event to listen for
      * @param handler The function to call when the event is received.  This lambda receives a Parameters object.  @see Parameters
      */
-    @Synchronized @JvmStatic fun registerHandler(event: Any, handler: (Parameters) -> Unit) {
+    @Synchronized @JvmStatic fun registerHandler(event: Any, handler: ExceptionHandlingRunnable) {
         handlers.putIfAbsent(event, arrayListOf())
         handlers[event]!!.add(handler)
     }
@@ -25,11 +23,10 @@ object EventRouter {
     /**
      * Fires an event on the event router
      * @param event The event to fire
-     * @param parameters The parameters to send
      */
-    @Synchronized @JvmStatic @JvmOverloads fun fireEvent(event: Any, parameters: MutableParameters = MutableParameters()) {
+    @Synchronized @JvmStatic fun fireEvent(event: Any) {
         handlers[event]?.forEach {
-            executor.submit { it(parameters.toParameters()) }
+            SnakeskinRuntime.executeTask(it)
         }
     }
 }

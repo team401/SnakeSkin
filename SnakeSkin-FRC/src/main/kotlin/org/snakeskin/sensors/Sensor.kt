@@ -2,6 +2,7 @@ package org.snakeskin.sensors
 
 import org.snakeskin.ability.AReadable
 import org.snakeskin.ability.AUpdatable
+import org.snakeskin.measure.time.TimeMeasureSeconds
 import java.util.Vector
 
 /**
@@ -9,7 +10,7 @@ import java.util.Vector
  * @version 9/10/17
  */
 abstract class Sensor<T>: AReadable<T> {
-    abstract internal fun pollImpl()
+    internal abstract fun pollImpl()
     var changedListener = {}
     var receivingChangeListener: (T) -> Unit = {}
     private val updatableListeners = Vector<AUpdatable<T>>()
@@ -26,5 +27,5 @@ abstract class Sensor<T>: AReadable<T> {
         updatableListeners.addElement(updatable)
     }
 
-    var pollRate = 20L
+    var pollRate: TimeMeasureSeconds = TimeMeasureSeconds(0.02)
 }

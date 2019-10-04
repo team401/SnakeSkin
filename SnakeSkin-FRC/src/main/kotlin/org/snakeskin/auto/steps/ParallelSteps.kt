@@ -1,10 +1,12 @@
 package org.snakeskin.auto.steps
 
+import org.snakeskin.measure.time.TimeMeasureSeconds
+
 /**
  * @author Cameron Earle
  * @version 5/11/18
  */
-class ParallelSteps(vararg val steps: AutoStep): AutoStep() {
+class ParallelSteps(private vararg val steps: AutoStep): AutoStep() {
     override fun reset() {
         super.reset()
         steps.forEach {
@@ -12,19 +14,19 @@ class ParallelSteps(vararg val steps: AutoStep): AutoStep() {
         }
     }
 
-    override fun entry(currentTime: Double) {
+    override fun entry(currentTime: TimeMeasureSeconds) {
     }
 
-    override fun action(currentTime: Double, lastTime: Double): Boolean {
+    override fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds): Boolean {
         steps.forEach {
             it.tick(currentTime, lastTime)
         }
         return (steps.all { it.doContinue() } || steps.isEmpty())
     }
 
-    override fun exit(currentTime: Double) {
+    override fun exit(currentTime: TimeMeasureSeconds) {
         steps.forEach {
-            if (it.stepState != AutoStep.StepState.CONTINUE) {
+            if (it.stepState != StepState.CONTINUE) {
                 it.exit(currentTime)
             }
         }

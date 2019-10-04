@@ -3,7 +3,11 @@ package org.snakeskin.auto
 import edu.wpi.first.wpilibj.DriverStation
 import org.snakeskin.auto.steps.AutoStep
 import org.snakeskin.auto.steps.SequentialSteps
-import org.snakeskin.factory.ExecutorFactory
+import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.executor.IExecutorTaskHandle
+import org.snakeskin.measure.MeasureUnitless
+import org.snakeskin.measure.time.TimeMeasureSeconds
+import org.snakeskin.runtime.SnakeskinRuntime
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
@@ -13,9 +17,9 @@ import java.util.concurrent.TimeUnit
  *
  * Defines an auto loop that has several conveniences for using on an FRC robot.
  */
-abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L): AutoLoop() {
-    private val executor = ExecutorFactory.getExecutor("Auto Pre Tasks") //This will be used to execute pre tasks
-    private var preFuture: ScheduledFuture<*>? = null
+abstract class RobotAuto(override val rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02), val preRate: TimeMeasureSeconds = TimeMeasureSeconds(0.1)): AutoLoop() {
+    private val executor = SnakeskinRuntime.primaryExecutor
+    private var preTaskHandle: IExecutorTaskHandle? = null
 
     private val sequence = arrayListOf<AutoStep>()
     private var sequenceIdx = 0
@@ -32,7 +36,9 @@ abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L)
      * Runs certain tasks prior to auto's execution, at the rate defined by property "preRate"
      * If the preRate is <= 0, this function will not be called
      */
-    open fun preAuto() {}
+    open fun preAuto() {
+        preTaskHandle?.stopTask(false) //If the user doesn't override the default, cancel the task
+    }
 
     /**
      * Assembles the auto sequence.  This method must return before the auto sequence can be executed,
@@ -43,21 +49,21 @@ abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L)
 
     override fun startTasks() {
         val ds = DriverStation.getInstance()
-        //If the prerate is defined
-        if (preRate > 0L) {
-            preFuture = executor.scheduleAtFixedRate({
+        //If the pre rate is defined
+        if (preRate > MeasureUnitless(0.0)) {
+            preTaskHandle = executor.schedulePeriodicTask(ExceptionHandlingRunnable {
                 if (ds.isDisabled) {
                     preAuto()
                 }
-            }, 0L, preRate, TimeUnit.MILLISECONDS)
+            }, preRate)
         }
     }
 
     override fun stopTasks() {
-        preFuture?.cancel(true)
+        preTaskHandle?.stopTask(true)
     }
 
-    override fun entry(currentTime: Double) {
+    override fun entry(currentTime: TimeMeasureSeconds) {
         done = false
         preAuto()
         sequence.clear()
@@ -68,7 +74,7 @@ abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L)
         }
     }
 
-    override fun action(currentTime: Double, lastTime: Double) {
+    override fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds) {
         if (sequenceIdx < sequence.size) {
             sequence[sequenceIdx].tick(currentTime, lastTime)
             if (sequence[sequenceIdx].doContinue()) {
@@ -79,7 +85,7 @@ abstract class RobotAuto(override val rate: Long = 5L, val preRate: Long = 100L)
         }
     }
 
-    override fun exit(currentTime: Double) {
+    override fun exit(currentTime: TimeMeasureSeconds) {
         sequence.forEach {
             if (!it.doContinue()) {
                 it.exit(currentTime)

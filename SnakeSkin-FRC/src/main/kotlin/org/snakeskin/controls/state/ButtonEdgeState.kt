@@ -1,6 +1,7 @@
 package org.snakeskin.controls.state
 
 import org.snakeskin.controls.listener.ButtonEdgeListener
+import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.logic.History
 
 /**
@@ -28,7 +29,7 @@ class ButtonEdgeState(override val listener: ButtonEdgeListener): ControlSurface
         return false
     }
 
-    override fun run() {
+    override val action = ExceptionHandlingRunnable {
         listener.action(edgeValue)
     }
 }

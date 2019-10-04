@@ -1,7 +1,5 @@
 package org.snakeskin.logging
 
-import com.google.gson.Gson
-import org.snakeskin.factory.ExecutorFactory
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -13,13 +11,9 @@ import java.util.*
  */
 
 object LoggerManager {
-    const val MAX_LOG_FILES = 10
+    private const val MAX_LOG_FILES = 10
 
     private val HOME_DIR = System.getProperty("user.home")
-
-    private val EXECUTOR = ExecutorFactory.getSingleExecutor("Logger")
-
-    private val gson = Gson()
 
     private fun crashMessage(date: Date, t: Throwable): String {
         val sw = StringWriter()
@@ -47,7 +41,7 @@ Full stack trace below:
 
     private fun deleteFiles(folder: File) {
         if (folder.isDirectory) {
-            var files = folder.listFiles()
+            var files = folder.listFiles() ?: return
             files.sortBy {
                 it.lastModified()
             }
@@ -55,7 +49,7 @@ Full stack trace below:
             while (files.size >= MAX_LOG_FILES) {
                 files[0]?.delete()
 
-                files = folder.listFiles()
+                files = folder.listFiles() ?: return
                 files.sortBy {
                     it.lastModified()
                 }
@@ -96,19 +90,19 @@ Full stack trace below:
         println(message)
     }
 
-    fun getExceptionHandler() = Thread.UncaughtExceptionHandler { t, e ->
+    private val exceptionHandler = Thread.UncaughtExceptionHandler { t, e ->
         logThrowable(e, t)
     }
 
-    fun getMainThreadExceptionHandler() = Thread.UncaughtExceptionHandler { t, e ->
+    private val mainThreadExceptionHandler = Thread.UncaughtExceptionHandler { t, e ->
         logCrash(e, t)
     }
 
     @JvmStatic fun logCurrentThread() {
-        Thread.currentThread().uncaughtExceptionHandler = getExceptionHandler()
+        Thread.currentThread().uncaughtExceptionHandler = exceptionHandler
     }
 
     @JvmStatic fun logMainThread() {
-        Thread.currentThread().uncaughtExceptionHandler = getMainThreadExceptionHandler()
+        Thread.currentThread().uncaughtExceptionHandler = mainThreadExceptionHandler
     }
 }

@@ -11,6 +11,6 @@ import edu.wpi.first.wpilibj.RobotBase
 object SnakeskinMain {
     @JvmStatic
     fun main(args: Array<String>) {
-        RobotBase.startRobot { FrcRoborioRobot() }
+        RobotBase.startRobot { RobotFrcRoborio() }
     }
 }

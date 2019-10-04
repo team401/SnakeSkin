@@ -1,6 +1,7 @@
 package org.snakeskin.controls.state
 
 import org.snakeskin.controls.listener.HatChangeListener
+import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.logic.History
 
 /**
@@ -21,7 +22,7 @@ class HatState(override val listener: HatChangeListener): ControlSurfaceState<In
         return false
     }
 
-    override fun run() {
+    override val action = ExceptionHandlingRunnable {
         listener.action(history.current!!)
     }
 }

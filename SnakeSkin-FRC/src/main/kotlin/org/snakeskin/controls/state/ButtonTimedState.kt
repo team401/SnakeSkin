@@ -2,6 +2,7 @@ package org.snakeskin.controls.state
 
 import org.snakeskin.controls.listener.ButtonEdgeListener
 import org.snakeskin.controls.listener.ButtonHoldListener
+import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.hardware.Hardware
 
 /**
@@ -31,7 +32,7 @@ class ButtonTimedState(override val listener: ButtonHoldListener): ControlSurfac
         return false
     }
 
-    override fun run() {
+    override val action = ExceptionHandlingRunnable {
         listener.action(true)
     }
 }

@@ -6,6 +6,8 @@ import org.snakeskin.exception.ItemNotFoundException
  * @author Cameron Earle
  * @version 7/8/17
  */
+@Suppress("DEPRECATION")
+@Deprecated("Parameters are no longer used by the event system")
 class MutableParameters {
     private val strings: HashMap<String, String> = hashMapOf()
     private val booleans: HashMap<String, Boolean> = hashMapOf()

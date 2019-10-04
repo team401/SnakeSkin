@@ -7,16 +7,15 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  * @version 5/11/18
  */
 class DelayStep(val time: TimeMeasureSeconds): AutoStep() {
-    var startTime = 0.0
-    private val timeSeconds = time.value
+    var startTime = TimeMeasureSeconds(0.0)
 
-    override fun entry(currentTime: Double) {
+    override fun entry(currentTime: TimeMeasureSeconds) {
         startTime = currentTime
     }
 
-    override fun action(currentTime: Double, lastTime: Double): Boolean {
-        return (currentTime - startTime >= timeSeconds)
+    override fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds): Boolean {
+        return (currentTime - startTime >= time)
     }
 
-    override fun exit(currentTime: Double) {}
+    override fun exit(currentTime: TimeMeasureSeconds) {}
 }

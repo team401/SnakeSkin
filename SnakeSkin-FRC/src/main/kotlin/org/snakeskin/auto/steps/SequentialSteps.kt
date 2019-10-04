@@ -1,5 +1,7 @@
 package org.snakeskin.auto.steps
 
+import org.snakeskin.measure.time.TimeMeasureSeconds
+
 /**
  * @author Cameron Earle
  * @version 5/11/18
@@ -14,11 +16,11 @@ class SequentialSteps(vararg val steps: AutoStep): AutoStep() {
         }
     }
 
-    override fun entry(currentTime: Double) {
+    override fun entry(currentTime: TimeMeasureSeconds) {
         idx = 0
     }
 
-    override fun action(currentTime: Double, lastTime: Double): Boolean {
+    override fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds): Boolean {
         if (idx < steps.size) {
             steps[idx].tick(currentTime, lastTime)
             if (steps[idx].doContinue()) {
@@ -30,9 +32,9 @@ class SequentialSteps(vararg val steps: AutoStep): AutoStep() {
         return false
     }
 
-    override fun exit(currentTime: Double) {
+    override fun exit(currentTime: TimeMeasureSeconds) {
         steps.forEach {
-            if (it.stepState != AutoStep.StepState.CONTINUE) {
+            if (it.stepState != StepState.CONTINUE) {
                 it.exit(currentTime)
             }
         }

@@ -1,11 +1,13 @@
 package org.snakeskin.state
 
 import org.snakeskin.ability.AWaitable
-import org.snakeskin.factory.ExecutorFactory
+import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.executor.IExecutorTaskHandle
 import org.snakeskin.logic.History
 import org.snakeskin.logic.NullWaitable
 import org.snakeskin.logic.TickedWaitable
 import org.snakeskin.logic.WaitableFuture
+import org.snakeskin.runtime.SnakeskinRuntime
 import org.snakeskin.subsystem.States
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledFuture
@@ -21,15 +23,8 @@ import java.util.concurrent.locks.ReentrantLock
  * and ensure that you don't put the wrong state name in the wrong place
  */
 class StateMachine<T> {
-    companion object {
-        /**
-         * An shared reference to an empty lambda, which can be used as a default value to avoid running empty
-         * tasks on the executor.  Checks should be made using the "===" in Kotlin to check reference equality
-         */
-        val EMPTY_LAMBDA = {}
-    }
-    private val executor = ExecutorFactory.getExecutor("State Machine")
-    private val scheduler = ExecutorFactory.getSingleExecutor("State Machine Scheduler")
+    private val executor = SnakeskinRuntime.primaryExecutor
+    private val scheduler = SnakeskinRuntime.createSingleUseExecutor()
 
     private val states = arrayListOf<State<*>>() //List of states that this state machine has
     private val globalRejections = hashMapOf<List<*>, () -> Boolean>() //Map of global rejection conditions for specific states
@@ -69,11 +64,11 @@ class StateMachine<T> {
     /**
      * The state to go to when a state change is requested for a state that doesn't exist
      */
-    var elseCondition = State(States.ELSE, EMPTY_LAMBDA, EMPTY_LAMBDA, EMPTY_LAMBDA)
+    var elseCondition = State(States.ELSE)
 
     private var activeState: State<*>? = null
-    private var activeFuture: Future<*>? = null //Represents whatever task the state machine is currently running
-    private var activeTimeoutFuture: ScheduledFuture<*>? = null //Represents the timeout that the state machine is currently running
+    private var activeActionManager: IStateActionManager? = null //Represents whatever task the state machine is currently running
+    private var activeTimeoutHandle: IExecutorTaskHandle? = null //Represents the timeout that the state machine is currently running
 
     private val stateHistory = History<Any>() //State logic ignores T
 
@@ -91,14 +86,14 @@ class StateMachine<T> {
 
             if (!desiredState.rejectionConditions() && !isGloballyRejected(desiredState)) { //If the switch is not rejected
                 //STOP THE OLD STATE TIMEOUT
-                activeTimeoutFuture?.cancel(true)
+                activeTimeoutHandle?.stopTask(true)
 
                 //EXIT THE OLD STATE
                 if (activeState != null) {
-                    activeFuture?.cancel(true) //Cancel the action loop
-                    executor.submit {
-                        activeState?.exit?.invoke() //Run the exit method
-                    }.get() //And wait
+                    activeActionManager?.stopAction() //Cancel the action loop
+
+                    //Run the exit method and wait
+                    executor.scheduleSingleTaskNow(activeState?.exit ?: ExceptionHandlingRunnable.EMPTY).waitFor()
                 }
 
                 //UPDATE THE STORED STATE
@@ -106,21 +101,20 @@ class StateMachine<T> {
                 stateHistory.update(state) //Update the state history to the new state
 
                 //ENTER THE NEW STATE
-                executor.submit {
-                    desiredState.entry() //Run the entry method of the desired state
+                executor.scheduleSingleTaskNow(ExceptionHandlingRunnable {
+                    desiredState.entry.run() //Run the entry method of the desired state
                     toReturn.tick() //Tick the waitable
-                }.get() //And wait
+                }).waitFor() //And wait
 
                 //RUN THE LOOP OF THE NEW STATE
-                if (desiredState.action !== EMPTY_LAMBDA) { //If the target state has an action
-                    activeFuture = desiredState.schedulingContext.schedule()
-                }
+                activeActionManager = desiredState.actionManager
+                activeActionManager?.startAction()
 
                 //SET UP THE TIMEOUT OF THE NEW STATE
                 if (desiredState.timeout.value != -1.0) {
-                    activeTimeoutFuture = executor.schedule({
+                    activeTimeoutHandle = executor.scheduleSingleTask(ExceptionHandlingRunnable {
                         setStateInternal(desiredState.timeoutTo)
-                    }, desiredState.timeout.toMilliseconds().value.toLong(), TimeUnit.MILLISECONDS)
+                    }, desiredState.timeout)
                 }
 
                 return toReturn //Return the waitable
@@ -134,11 +128,14 @@ class StateMachine<T> {
 
     internal fun setStateInternal(state: Any): AWaitable {
         val waitable = WaitableFuture()
-        scheduler.submit {
-            switchLock.lock()
-            waitable.initWaitable(setStateImpl(state))
-            switchLock.unlock()
-        }
+        scheduler.scheduleSingleTaskNow(ExceptionHandlingRunnable {
+            try {
+                switchLock.lock()
+                waitable.initWaitable(setStateImpl(state))
+            } finally {
+                switchLock.unlock()
+            }
+        })
         return waitable
     }
 

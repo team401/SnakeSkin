@@ -1,5 +1,7 @@
 package org.snakeskin.dsl
 
+import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.state.State
 import org.snakeskin.state.StateMachine
 
 /**
@@ -58,16 +60,8 @@ fun <S, V> Subsystem.commandMachine(states: Map<S, V>, mapping: StateValuePair<S
  */
 fun <S, V> Subsystem.commandMachine(states: Map<S, V>, mapping: StateValuePair<S, V>.() -> Unit, setup: StateMachineBuilder<S>.() -> Unit = {}): StateMachine<S> {
     val machine = stateMachine(setup) //Build a machine from the setup method
-    states.forEach {
-        state, value ->
-        machine.addState(
-                org.snakeskin.state.State(
-                        state,
-                        { mapping(StateValuePair(state, value)) },
-                        StateMachine.EMPTY_LAMBDA,
-                        StateMachine.EMPTY_LAMBDA
-                )
-        )
+    states.forEach { (state, value) ->
+        machine.addState(State(state, ExceptionHandlingRunnable { mapping(StateValuePair(state, value)) }))
     }
     return machine
 }

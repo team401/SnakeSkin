@@ -1,6 +1,5 @@
 package org.snakeskin.init
 
-import org.slf4j.LoggerFactory
 import org.snakeskin.annotation.PostStartup
 import org.snakeskin.annotation.PreStartup
 import org.snakeskin.annotation.Setup
@@ -8,20 +7,16 @@ import org.snakeskin.compiler.RuntimeLoader
 import org.snakeskin.compiler.VersionManager
 import org.snakeskin.exception.InitException
 import org.snakeskin.exception.StartupException
-import org.snakeskin.factory.ExecutorFactory
 import org.snakeskin.logging.LoggerManager
-import org.snakeskin.registry.Subsystems
 import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
 import java.lang.ClassCastException
 
 /**
  * @author Cameron Earle
- * @version 7/16/17
+ * @version 9/30/2019
  */
 object InitManager {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     /**
      * List of module initializers.  We may find them, we may not.  They will be loaded in order
      */

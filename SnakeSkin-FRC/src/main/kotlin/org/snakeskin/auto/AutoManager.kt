@@ -1,28 +1,28 @@
 package org.snakeskin.auto
 
-import org.snakeskin.factory.ExecutorFactory
-import org.snakeskin.hardware.Hardware
-import java.util.concurrent.ScheduledFuture
-import java.util.concurrent.TimeUnit
+import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.executor.IExecutorTaskHandle
+import org.snakeskin.measure.time.TimeMeasureSeconds
+import org.snakeskin.runtime.SnakeskinRuntime
 
 /**
  * @author Cameron Earle
  * @version 4/3/18
  */
 object AutoManager {
-    private val executor = ExecutorFactory.getExecutor("Auto")
-    private var future: ScheduledFuture<*>? = null
+    private val executor = SnakeskinRuntime.primaryExecutor
+    private var autoTaskHandle: IExecutorTaskHandle? = null
     private var wasRunning = false
-    private var time = 0.0
-    private var lastTime = 0.0
+    private var time: TimeMeasureSeconds = TimeMeasureSeconds(0.0)
+    private var lastTime: TimeMeasureSeconds = TimeMeasureSeconds(0.0)
 
     private var auto: AutoLoop = object : AutoLoop() {
-        override val rate = 20L
+        override val rate = TimeMeasureSeconds(0.02)
         override fun startTasks() {}
         override fun stopTasks() {}
-        override fun entry(currentTime: Double) {}
-        override fun action(currentTime: Double, lastTime: Double) {}
-        override fun exit(currentTime: Double) {}
+        override fun entry(currentTime: TimeMeasureSeconds) {}
+        override fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds) {}
+        override fun exit(currentTime: TimeMeasureSeconds) {}
     }
 
     fun setAutoLoop(loop: AutoLoop) {
@@ -32,7 +32,7 @@ object AutoManager {
     }
 
     private fun tick() {
-        time = Hardware.getRelativeTime()
+        time = SnakeskinRuntime.timestamp
         if (auto.tick(time, lastTime)) {
             stop()
         }
@@ -40,17 +40,17 @@ object AutoManager {
     }
 
     @Synchronized fun start() {
-        time = Hardware.getRelativeTime()
+        time = SnakeskinRuntime.timestamp
         auto.entry(time)
         wasRunning = true
-        lastTime = 0.0
-        future = executor.scheduleAtFixedRate(::tick, 0L, auto.rate, TimeUnit.MILLISECONDS)
+        lastTime = TimeMeasureSeconds(0.0)
+        autoTaskHandle = executor.schedulePeriodicTask(ExceptionHandlingRunnable(::tick), auto.rate)
     }
 
     @Synchronized fun stop() {
-        time = Hardware.getRelativeTime()
+        time = SnakeskinRuntime.timestamp
 
-        future?.cancel(true)
+        autoTaskHandle?.stopTask(true)
         if (wasRunning) {
             auto.exit(time)
         }

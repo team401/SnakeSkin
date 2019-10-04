@@ -1,7 +1,9 @@
 package org.snakeskin.dsl
 
-import org.snakeskin.executor.ThreadPoolSchedulingContext
+import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.measure.time.TimeMeasureSeconds
+import org.snakeskin.state.DefaultStateActionManager
+import org.snakeskin.state.RealTimeStateActionManager
 import org.snakeskin.state.State
 import org.snakeskin.state.StateMachine
 import org.snakeskin.subsystem.States
@@ -81,34 +83,41 @@ class StateMachineBuilder<T>: Builder<StateMachine<T>> {
  * Builds a State object
  */
 open class StateBuilder<T>(name: T): Builder<State<T>> {
-    val builder = State(name, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA, StateMachine.EMPTY_LAMBDA)
+    val builder = State(name)
     override fun build() = builder
 
     /**
      * Adds the entry method to the state
-     * @param action The function to run on the state's entry
+     * @param entryBlock The function to run on the state's entry
      */
-    fun entry(action: () -> Unit) {
-        builder.entry = action
+    fun entry(entryBlock: () -> Unit) {
+        builder.entry = ExceptionHandlingRunnable(entryBlock)
     }
 
     /**
      * Adds the action method to the state
      * @param rate The rate, in ms, to run the action loop at
-     * @param action The function to run on the state's loop
+     * @param actionBlock The function to run on the state's loop
      */
-    fun action(rate: Long = 20L, action: () -> Unit) {
-        builder.rate = rate
-        builder.action = action
-        builder.schedulingContext = ThreadPoolSchedulingContext(action, rate)
+    fun action(rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02), actionBlock: () -> Unit) {
+        builder.actionManager = DefaultStateActionManager(ExceptionHandlingRunnable(actionBlock), rate)
+    }
+
+    /**
+     * Adds a "real-time" action method to the state.  This action will be run on a real time executor instead of the default
+     * @param executorName The name of the real-time executor to use.  If not provided, the default RT executor is used
+     * @param rtActionBlock The function to run on the state's loop.  The first parameter is the timestamp, the second is the dt
+     */
+    fun rtAction(executorName: String? = null, rtActionBlock: (timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) -> Unit) {
+        builder.actionManager = RealTimeStateActionManager(rtActionBlock, executorName)
     }
 
     /**
      * Adds the exit method to the state
-     * @param action The function to run on the state's exit
+     * @param exitBlock The function to run on the state's exit
      */
-    fun exit(action: () -> Unit) {
-        builder.exit = action
+    fun exit(exitBlock: () -> Unit) {
+        builder.exit = ExceptionHandlingRunnable(exitBlock)
     }
 }
 

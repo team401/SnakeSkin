@@ -1,5 +1,7 @@
 package org.snakeskin.auto
 
+import org.snakeskin.measure.time.TimeMeasureSeconds
+
 /**
  * @author Cameron Earle
  * @version 4/3/18
@@ -7,17 +9,17 @@ package org.snakeskin.auto
  * Defines a basic auto loop, with the minimum requirements for the auto executor to function.
  */
 abstract class AutoLoop {
-    open val rate = 10L
+    open val rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02)
     open var done = false
 
     abstract fun startTasks()
     abstract fun stopTasks()
 
-    abstract fun entry(currentTime: Double)
-    abstract fun action(currentTime: Double, lastTime: Double)
-    abstract fun exit(currentTime: Double)
+    abstract fun entry(currentTime: TimeMeasureSeconds)
+    abstract fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds)
+    abstract fun exit(currentTime: TimeMeasureSeconds)
 
-    fun tick(currentTime: Double, lastTime: Double): Boolean {
+    fun tick(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds): Boolean {
         if (!done) {
             action(currentTime, lastTime)
         }

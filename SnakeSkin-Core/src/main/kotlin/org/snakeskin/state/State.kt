@@ -1,7 +1,6 @@
 package org.snakeskin.state
 
-import org.snakeskin.executor.SchedulingContext
-import org.snakeskin.executor.ThreadPoolSchedulingContext
+import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
@@ -10,7 +9,7 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  *
  * @param name The name of the state
  * @param entry The entry actions of the state
- * @param action The looping actions of the state
+ * @param actionManager The object that manages the execution of this state's action loop
  * @param exit The exit actions of the state
  * @param rate The rate, in ms, to run the action loop at
  * @param rejectionConditions The rejection conditions for this state, which will prevent it being switched to
@@ -18,11 +17,10 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  * @param timeoutTo The state to timeout to
  */
 data class State<T>(val name: T,
-                    var entry: () -> Unit,
-                    var action: () -> Unit,
-                    var exit: () -> Unit,
-                    var rate: Long = 20,
+                    var entry: ExceptionHandlingRunnable = ExceptionHandlingRunnable.EMPTY,
+                    var actionManager: IStateActionManager = EmptyStateActionManager,
+                    var exit: ExceptionHandlingRunnable = ExceptionHandlingRunnable.EMPTY,
                     var rejectionConditions: () -> Boolean = {false},
                     var timeout: TimeMeasureSeconds = TimeMeasureSeconds(-1.0),
-                    var timeoutTo: Any = "",
-                    var schedulingContext: SchedulingContext = ThreadPoolSchedulingContext(action, rate))
+                    var timeoutTo: Any = ""
+)

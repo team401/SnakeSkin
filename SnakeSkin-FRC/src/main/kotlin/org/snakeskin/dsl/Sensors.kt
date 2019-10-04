@@ -2,6 +2,7 @@ package org.snakeskin.dsl
 
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DigitalInput
+import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.sensors.*
 
 /**
@@ -12,12 +13,12 @@ object Sensors {
     open class SensorBuilder<out T: Sensor<*>>(private val sensor: T): Builder<T> {
         override fun build() = sensor
 
-        fun pollAt(rate: Long) {
+        fun pollAt(rate: TimeMeasureSeconds) {
             sensor.pollRate = rate
         }
 
         fun noPoll() {
-            sensor.pollRate = -1
+            sensor.pollRate = TimeMeasureSeconds(-1.0)
         }
 
         fun whenChanged(action: () -> Unit) {

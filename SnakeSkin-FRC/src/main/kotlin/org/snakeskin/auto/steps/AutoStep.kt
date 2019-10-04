@@ -1,5 +1,7 @@
 package org.snakeskin.auto.steps
 
+import org.snakeskin.measure.time.TimeMeasureSeconds
+
 /**
  * @author Cameron Earle
  * @version 5/11/18
@@ -20,7 +22,7 @@ abstract class AutoStep {
 
     fun doContinue() = (stepState == StepState.CONTINUE)
 
-    fun tick(currentTime: Double, lastTime: Double) {
+    fun tick(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds) {
         when (stepState) {
             StepState.ENTRY -> {
                 entry(currentTime)
@@ -39,11 +41,11 @@ abstract class AutoStep {
         }
     }
 
-    abstract fun entry(currentTime: Double)
-    abstract fun exit(currentTime: Double)
+    abstract fun entry(currentTime: TimeMeasureSeconds)
+    abstract fun exit(currentTime: TimeMeasureSeconds)
 
     /**
      * This function should return true when it is done.  Doing this will allow the sequence to continue
      */
-    abstract fun action(currentTime: Double, lastTime: Double): Boolean
+    abstract fun action(currentTime: TimeMeasureSeconds, lastTime: TimeMeasureSeconds): Boolean
 }

@@ -3,14 +3,10 @@ package org.snakeskin
 import edu.wpi.first.hal.FRCNetComm
 import edu.wpi.first.hal.HAL
 import edu.wpi.first.wpilibj.IterativeRobotBase
-import edu.wpi.first.wpilibj.TimedRobot
 import org.snakeskin.auto.AutoManager
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
-import org.snakeskin.hardware.Environment
-import org.snakeskin.hardware.Hardware
-import org.snakeskin.hardware.impl.HardwareTimeSource
 import org.snakeskin.init.InitManager
 import org.snakeskin.registry.Subsystems
 import org.snakeskin.runtime.SnakeskinPlatform
@@ -22,7 +18,7 @@ import org.snakeskin.runtime.SnakeskinPlatform
  * Main class for loading
  * Implements the old "IterativeRobot" that waits for driver station data.  Also removes the annoying overrun messages
  */
-class FrcRoborioRobot: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
+class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
     init {
         HAL.report(FRCNetComm.tResourceType.kResourceType_Framework, FRCNetComm.tInstances.kFramework_Timed)
     }

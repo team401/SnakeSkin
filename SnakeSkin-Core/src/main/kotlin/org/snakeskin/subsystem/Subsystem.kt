@@ -3,7 +3,10 @@ package org.snakeskin.subsystem
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
 import org.snakeskin.exception.InitException
-import org.snakeskin.factory.ExecutorFactory
+import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.executor.IExecutorTaskHandle
+import org.snakeskin.measure.time.TimeMeasureSeconds
+import org.snakeskin.runtime.SnakeskinRuntime
 import org.snakeskin.state.StateMachine
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -12,12 +15,12 @@ import java.util.concurrent.TimeUnit
  * @author Cameron Earle
  * @version 7/4/17
  */
-open class Subsystem(private val loopRate: Long = 20L) {
+open class Subsystem(private val loopRate: TimeMeasureSeconds = TimeMeasureSeconds(0.02)) {
     val name: String = this.javaClass.simpleName //Use reflection to get the name of the implementing class
 
     //Executor, for running subsystem actions
-    private val executor = ExecutorFactory.getExecutor("Subsystem")
-    private var loopFuture: ScheduledFuture<*>? = null
+    private val executor = SnakeskinRuntime.primaryExecutor
+    private var loopTaskHandle: IExecutorTaskHandle? = null
     private val stateMachines = arrayListOf<StateMachine<*>>()
 
     /**
@@ -84,7 +87,7 @@ open class Subsystem(private val loopRate: Long = 20L) {
      * Looping actions for this subsystem
      */
     open fun action() {
-        loopFuture?.cancel(true) //Cancel the loopable task since there isn't one (default)
+        loopTaskHandle?.stopTask(false) //Cancel the loopable task since there isn't one (default)
     }
 
     internal fun init() {
@@ -95,10 +98,10 @@ open class Subsystem(private val loopRate: Long = 20L) {
         }
         stateMachines.forEach {
             machine ->
-            EventRouter.registerHandler(Events.DISABLED) {
+            EventRouter.registerHandler(Events.DISABLED, ExceptionHandlingRunnable {
                 machine.setStateInternal(States.DISABLED)
-            }
+            })
         }
-        loopFuture = executor.scheduleAtFixedRate(this::action, 0L, loopRate, TimeUnit.MILLISECONDS)
+        loopTaskHandle = executor.schedulePeriodicTask(ExceptionHandlingRunnable(::action), loopRate)
     }
 }
