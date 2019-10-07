@@ -1,6 +1,6 @@
 package org.snakeskin.utility
 
-import org.snakeskin.hardware.Hardware
+import org.snakeskin.runtime.SnakeskinRuntime
 import java.io.File
 import java.io.OutputStream
 import java.io.PrintWriter
@@ -24,7 +24,7 @@ class Recorder(private val stream: OutputStream, val mode: RecordingMode) {
          * The final file will be: path/name-current system time.csv
          */
         fun toCSV(path: String, name: String): Recorder {
-            return Recorder(File("$path/$name-${Hardware.getAbsoluteTime()}.csv").outputStream(), RecordingMode.CSV)
+            return Recorder(File("$path/$name-${System.currentTimeMillis()}.csv").outputStream(), RecordingMode.CSV)
         }
     }
 
@@ -32,7 +32,7 @@ class Recorder(private val stream: OutputStream, val mode: RecordingMode) {
     private val columnTitles = hashMapOf<Any, String>(
             *SpecialMarkers.values().map { it to it.title }.toTypedArray()
     )
-    private val createdAt = Hardware.getRelativeTime()
+    private val createdAt = SnakeskinRuntime.timestamp
 
     /**
      * Records a new value
@@ -49,7 +49,7 @@ class Recorder(private val stream: OutputStream, val mode: RecordingMode) {
      * under the column name "Timestamp (s)"
      */
     fun recordTimestamp() {
-        record(SpecialMarkers.TIMESTAMP, Hardware.getRelativeTime() - createdAt)
+        record(SpecialMarkers.TIMESTAMP, (SnakeskinRuntime.timestamp - createdAt).value)
     }
 
     /**

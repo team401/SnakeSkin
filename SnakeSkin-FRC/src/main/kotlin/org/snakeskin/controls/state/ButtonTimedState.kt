@@ -1,9 +1,7 @@
 package org.snakeskin.controls.state
 
-import org.snakeskin.controls.listener.ButtonEdgeListener
 import org.snakeskin.controls.listener.ButtonHoldListener
 import org.snakeskin.executor.ExceptionHandlingRunnable
-import org.snakeskin.hardware.Hardware
 
 /**
  * @author Cameron Earle

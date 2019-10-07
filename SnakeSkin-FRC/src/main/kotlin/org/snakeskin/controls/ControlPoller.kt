@@ -2,7 +2,6 @@ package org.snakeskin.controls
 
 import org.snakeskin.controls.listener.*
 import org.snakeskin.controls.state.*
-import org.snakeskin.hardware.Hardware
 import org.snakeskin.runtime.SnakeskinRuntime
 import org.snakeskin.utility.value.AsyncBoolean
 import java.util.*
@@ -33,9 +32,9 @@ object ControlPoller {
     }
 
     fun update() {
-        val timestamp = Hardware.getRelativeTime()
+        val timestamp = SnakeskinRuntime.timestamp
         states.forEach {
-            if (it.update(timestamp)) { //If the controller state changed
+            if (it.update(timestamp.value)) { //If the controller state changed
                 handlerExecutor.scheduleSingleTaskNow(it.action) //Run the action
             }
         }
