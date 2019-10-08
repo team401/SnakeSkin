@@ -8,4 +8,4 @@ import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
  *
  * In the context of FRC, this is a PWM motor controller.
  */
-interface IDirectMotorControllerBasicComponent : IPercentOutputMotorControlProvider
+interface IMotorControllerDirectComponent : IPercentOutputMotorControlProvider

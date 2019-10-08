@@ -10,8 +10,7 @@ import org.snakeskin.component.provider.IVoltageProvider
  *
  * In the context of FRC, this describes a Victor SPX or other "slave" motor controller
  */
-interface INetworkMotorControllerEnhancedComponent :
+interface IMotorControllerEnhancedComponent :
         IFollowProvider,
         IFollowableProvider,
-        IPercentOutputMotorControlProvider,
-        IVoltageProvider
+        IPercentOutputMotorControlProvider

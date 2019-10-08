@@ -1,8 +1,13 @@
 package org.snakeskin.component.impl
 
-import org.snakeskin.component.IDirectMotorControllerBasicComponent
+import org.snakeskin.component.IMotorControllerEnhancedComponent
+import org.snakeskin.component.provider.IFollowableProvider
 
-class SoftwareDirectMotorControllerBasicComponent : IDirectMotorControllerBasicComponent {
+class SoftwareMotorControllerEnhancedComponent : IMotorControllerEnhancedComponent {
+    override fun follow(master: IFollowableProvider) {
+        //no-op
+    }
+
     override fun setPercentOutput(percentOut: Double) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

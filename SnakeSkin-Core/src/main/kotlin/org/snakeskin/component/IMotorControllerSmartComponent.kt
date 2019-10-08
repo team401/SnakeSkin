@@ -8,8 +8,8 @@ import org.snakeskin.component.provider.IAngularVelocityMotorControlProvider
  *
  * In the context of FRC, this represents a Talon SRX, SPARK MAX, etc.
  */
-interface INetworkMotorControllerSmartComponent :
-        INetworkMotorControllerEnhancedComponent,
+interface IMotorControllerSmartComponent :
+        IMotorControllerEnhancedComponent,
         IAngularPositionVelocitySensorComponent,
         ICurrentVoltageSensorComponent,
         IAngularPositionMotorControlProvider,
