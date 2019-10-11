@@ -8,6 +8,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSe
  * @version 1/26/2019
  *
  */
+@Deprecated("Replaced with new component system")
 interface IYawSensoredDifferentialDrivetrain<out G: IGearbox>: IDifferentialDrivetrain<G> {
     /**
      * Gets the yaw of the drivetrain, as measured by a properly aligned sensor.

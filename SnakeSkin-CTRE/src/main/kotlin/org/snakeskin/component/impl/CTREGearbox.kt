@@ -15,6 +15,7 @@ import org.snakeskin.template.PIDFTemplate
  *
  * This assumes you are using a mag encoder.
  */
+@Deprecated("Replaced with new component system")
 open class CTREGearbox<out M: IMotorController>(val master: M, vararg val slaves: IMotorController,
                   private val nativeUnitsToRadians: Double = (2 * Math.PI) / 4096.0,
                   private val nativeUnitsToRadiansPerSecond: Double = (20.0 * Math.PI) / 4096.0): ICTREGearbox {

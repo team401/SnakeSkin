@@ -11,6 +11,7 @@ import org.snakeskin.template.PIDFTemplate
  *
  * Some common functions include configuring brake/coast mode, configuring current limits, setting a deadband, etc.
  */
+@Deprecated("Replaced with new component system")
 interface ISmartGearbox<T>: ISensoredGearbox {
     /**
      * Common neutral behavior enumerations.

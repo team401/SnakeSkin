@@ -8,6 +8,7 @@ import org.snakeskin.template.TankDrivetrainGeometryTemplate
  * @version 1/9/2019
  *
  */
+@Deprecated("Replaced with new component system")
 interface IDifferentialDrivetrain<out G: IGearbox> {
     val left: G
     val right: G

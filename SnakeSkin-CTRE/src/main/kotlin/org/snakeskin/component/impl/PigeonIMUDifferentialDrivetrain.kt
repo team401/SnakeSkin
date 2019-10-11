@@ -15,6 +15,7 @@ import org.snakeskin.template.TankDrivetrainGeometryTemplate
  * @version 1/26/2019
  *
  */
+@Deprecated("Replaced with new component system")
 open class PigeonIMUDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val imu: PigeonIMU, geometry: TankDrivetrainGeometryTemplate):
         IYawSensoredDifferentialDrivetrain<G>, IDifferentialDrivetrain<G> by DifferentialDrivetrain(left, right, geometry) {
 

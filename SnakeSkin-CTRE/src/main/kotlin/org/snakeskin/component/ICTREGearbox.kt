@@ -11,6 +11,7 @@ import org.snakeskin.template.PIDFTemplate
  * @version 1/24/2019
  *
  */
+@Deprecated("Replaced with new component system")
 interface ICTREGearbox: ISmartGearbox<IMotorController> {
     fun set(mode: ControlMode, setpoint: Double)
     fun set(mode: ControlMode, setpoint: Double, arbFF: Double)

@@ -7,6 +7,7 @@ import org.snakeskin.ability.AInvertable
  * @version 1/9/2019
  *
  */
+@Deprecated("Replaced with new component system")
 interface IGearbox: AInvertable {
     /**
      * Sets the gearbox's "percent output" to the specified value

@@ -12,6 +12,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSe
  * @version 1/9/2019
  *
  */
+@Deprecated("Replaced with new component system")
 open class WPISensoredGearbox(private val encoder: Encoder, vararg motorControllers: SpeedController,
                          radiansPerTick: Double): WPIGearbox(*motorControllers), ISensoredGearbox {
     init {

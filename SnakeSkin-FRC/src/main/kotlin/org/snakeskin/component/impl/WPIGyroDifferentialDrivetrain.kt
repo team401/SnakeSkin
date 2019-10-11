@@ -15,6 +15,7 @@ import org.snakeskin.template.TankDrivetrainGeometryTemplate
  * @version 1/26/2019
  *
  */
+@Deprecated("Replaced with new component system")
 open class WPIGyroDifferentialDrivetrain<G: IGearbox>(left: G, right: G, val gyro: Gyro, geometry: TankDrivetrainGeometryTemplate):
         IYawSensoredDifferentialDrivetrain<G>, IDifferentialDrivetrain<G> by DifferentialDrivetrain(left, right, geometry) {
     override fun getYaw(): AngularDistanceMeasureRadians {

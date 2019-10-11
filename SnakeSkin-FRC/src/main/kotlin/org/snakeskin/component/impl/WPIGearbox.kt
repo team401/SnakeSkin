@@ -8,6 +8,7 @@ import org.snakeskin.component.IGearbox
  * @version 1/9/2019
  *
  */
+@Deprecated("Replaced with new component system")
 open class WPIGearbox(private vararg val motorControllers: SpeedController): IGearbox {
     override var inverted = false
 

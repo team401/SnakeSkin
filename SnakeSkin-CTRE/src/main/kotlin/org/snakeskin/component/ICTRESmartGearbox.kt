@@ -9,6 +9,7 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  * @version 1/29/2019
  *
  */
+@Deprecated("Replaced with new component system")
 interface ICTRESmartGearbox: ICTREGearbox {
     fun setFeedbackSensor(device: FeedbackDevice, pidIdx: Int = 0, timeoutMs: Int = 0): ErrorCode
     fun getMasterCurrentAmps(): Double

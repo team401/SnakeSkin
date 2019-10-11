@@ -4,7 +4,7 @@ dependencies {
     implementation group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.3'
     implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.4.12' //It was Duke's Choice!
     implementation group: 'com.squareup', name: 'javapoet', version: '1.11.1'
-    api group: 'org.snakeskin', name: 'SnakeSkin-Units', version: '1.3.dirty' //TODO fix this in Units
+    api group: 'org.snakeskin', name: 'SnakeSkin-Units', version: '1.4'
 }
 
 publishing {

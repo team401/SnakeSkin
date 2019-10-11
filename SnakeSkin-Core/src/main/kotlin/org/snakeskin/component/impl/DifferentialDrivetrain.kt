@@ -10,6 +10,7 @@ import org.snakeskin.template.TankDrivetrainGeometryTemplate
  * @version 1/9/2019
  *
  */
+@Deprecated("Replaced with new component system")
 open class DifferentialDrivetrain<G: IGearbox>(override val left: G, override val right: G, geometry: TankDrivetrainGeometryTemplate): IDifferentialDrivetrain<G> {
     override fun updateGeometry(template: TankDrivetrainGeometryTemplate) {
         wheelRadius = template.wheelRadius

@@ -11,6 +11,7 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  * @version 1/29/2019
  *
  */
+@Deprecated("Replaced with new component system")
 open class CTRESmartGearbox<M: IMotorControllerEnhanced>(
         val master: M, vararg val slaves: IMotorController,
         nativeUnitsToRadians: Double = (2 * Math.PI) / 4096.0,
