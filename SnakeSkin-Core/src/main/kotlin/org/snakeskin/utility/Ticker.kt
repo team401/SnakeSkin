@@ -63,7 +63,7 @@ class Ticker(private val condition: () -> Boolean, private val threshold: Long) 
      * Checks the condition, and if applicable updates the ticker.
      * Runs the provided action if the ticker is at the threshold
      */
-    @Synchronized inline fun check(action: () -> Unit) {
+    inline fun check(action: () -> Unit) {
         if (check()) action()
     }
 }

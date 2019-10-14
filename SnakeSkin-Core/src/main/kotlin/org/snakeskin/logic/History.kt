@@ -8,6 +8,7 @@ import org.snakeskin.ability.AUpdatable
  *
  * A simple class that tracks history of an object
  */
+@Deprecated("Use new History[TYPE] classes.", ReplaceWith("org.snakeskin.utility.value.History[TYPE]"))
 open class History<T>: AUpdatable<T> {
     var last: T? by LockingDelegate(null); private set
     var current: T? by LockingDelegate(null); private set

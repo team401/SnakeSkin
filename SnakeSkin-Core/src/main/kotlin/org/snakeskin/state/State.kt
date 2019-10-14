@@ -11,7 +11,6 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  * @param entry The entry actions of the state
  * @param actionManager The object that manages the execution of this state's action loop
  * @param exit The exit actions of the state
- * @param rate The rate, in ms, to run the action loop at
  * @param rejectionConditions The rejection conditions for this state, which will prevent it being switched to
  * @param timeout The timeout length, in ms, to active the timeout
  * @param timeoutTo The state to timeout to

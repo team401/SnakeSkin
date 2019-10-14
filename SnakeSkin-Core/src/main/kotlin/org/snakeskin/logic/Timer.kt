@@ -7,6 +7,7 @@ import org.snakeskin.ability.AUpdatable
  * @author Cameron Earle
  * @version 12/26/17
  */
+@Deprecated("Use Ticker or track start and end times using variables.")
 class Timer {
     var last = 0L
     var running = false; private set
