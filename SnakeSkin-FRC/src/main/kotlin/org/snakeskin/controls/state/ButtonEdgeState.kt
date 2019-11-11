@@ -2,7 +2,7 @@ package org.snakeskin.controls.state
 
 import org.snakeskin.controls.listener.ButtonEdgeListener
 import org.snakeskin.executor.ExceptionHandlingRunnable
-import org.snakeskin.logic.History
+import org.snakeskin.utility.value.HistoryBoolean
 
 /**
  * @author Cameron Earle
@@ -10,8 +10,8 @@ import org.snakeskin.logic.History
  *
  * Tracks the state of a button's edge
  */
-class ButtonEdgeState(override val listener: ButtonEdgeListener): ControlSurfaceState<Boolean> {
-    private val history = History<Boolean>()
+class ButtonEdgeState(val listener: ButtonEdgeListener): IControlSurfaceState {
+    private val history = HistoryBoolean()
 
     private val edgeValue = when (listener.edgeType) {
         ButtonEdgeListener.EdgeType.PRESSED -> true

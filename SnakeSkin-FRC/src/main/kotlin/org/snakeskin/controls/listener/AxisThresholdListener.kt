@@ -7,4 +7,4 @@ import org.snakeskin.controls.Axis
  * @version 12/12/2018
  *
  */
-class AxisThresholdListener(override val surface: Axis, val threshold: Double, override val action: (Double) -> Unit): ControlListener<Axis, Double>
+class AxisThresholdListener(val surface: Axis, val threshold: Double, val action: (Double) -> Unit): IControlSurfaceListener

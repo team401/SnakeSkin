@@ -1,6 +1,5 @@
 package org.snakeskin.controls.state
 
-import org.snakeskin.controls.listener.ControlListener
 import org.snakeskin.executor.ExceptionHandlingRunnable
 
 /**
@@ -8,9 +7,7 @@ import org.snakeskin.executor.ExceptionHandlingRunnable
  * @version 12/12/2018
  *
  */
-interface ControlSurfaceState<T> {
-    val listener: ControlListener<*, T>
+interface IControlSurfaceState {
     fun update(timestamp: Double): Boolean
-
     val action: ExceptionHandlingRunnable
 }

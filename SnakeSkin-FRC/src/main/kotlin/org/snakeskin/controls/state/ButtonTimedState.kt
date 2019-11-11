@@ -8,7 +8,7 @@ import org.snakeskin.executor.ExceptionHandlingRunnable
  * @version 12/12/2018
  *
  */
-class ButtonTimedState(override val listener: ButtonHoldListener): ControlSurfaceState<Boolean> {
+class ButtonTimedState(val listener: ButtonHoldListener): IControlSurfaceState {
     private var risingEdgeTimestamp = 0.0
 
     private var eventFired = false

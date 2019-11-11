@@ -1,6 +1,9 @@
 package org.snakeskin.dsl
 
 import org.snakeskin.controls.Controller
+import org.snakeskin.controls.channel.AxisChannel
+import org.snakeskin.controls.channel.ButtonChannel
+import org.snakeskin.controls.channel.HatChannel
 import org.snakeskin.controls.listener.AxisThresholdListener
 import org.snakeskin.controls.listener.ButtonEdgeListener
 import org.snakeskin.controls.listener.ButtonHoldListener
@@ -43,7 +46,11 @@ object HumanControls {
         fun invertButton(button: Int) = controller.getButton(button).invert()
 
         fun deadbandAxis(axis: Int, deadband: Double) { controller.getAxis(axis).deadband = deadband }
-        fun scaleAxis(axis: Int, scaling: Scalar) { controller.getAxis(axis).scalar = scaling}
+        fun scaleAxis(axis: Int, scaling: Scalar) { controller.getAxis(axis).scalar = scaling }
+
+        fun bindAxis(axis: Int, channel: AxisChannel) { controller.bindAxisChannel(axis, channel) }
+        fun bindButton(button: Int, channel: ButtonChannel) { controller.bindButtonChannel(button, channel) }
+        fun bindHat(hat: Int, channel: HatChannel) { controller.bindHatChannel(hat, channel) }
     }
 
     class ButtonHandlerBuilder(private val controller: Controller, private val button: Int) {

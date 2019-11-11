@@ -8,7 +8,7 @@ import org.snakeskin.executor.ExceptionHandlingRunnable
  * @version 12/12/2018
  *
  */
-class AxisThresholdState(override val listener: AxisThresholdListener): ControlSurfaceState<Double> {
+class AxisThresholdState(val listener: AxisThresholdListener): IControlSurfaceState {
     private fun isPassedThreshold(value: Double): Boolean {
         //We have to take sign into account here
         return if (listener.threshold > 0.0) { //Positive threshold

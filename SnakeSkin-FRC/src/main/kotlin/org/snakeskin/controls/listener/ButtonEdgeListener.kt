@@ -7,7 +7,7 @@ import org.snakeskin.controls.Button
  * @version 12/12/2018
  *
  */
-class ButtonEdgeListener(override val surface: Button, val edgeType: EdgeType, override val action: (Boolean) -> Unit): ControlListener<Button, Boolean> {
+class ButtonEdgeListener(val surface: Button, val edgeType: EdgeType, val action: (Boolean) -> Unit): IControlSurfaceListener {
     enum class EdgeType {
         PRESSED,
         RELEASED

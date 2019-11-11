@@ -2,22 +2,17 @@ package org.snakeskin.controls
 
 import org.snakeskin.ability.AInvertable
 import org.snakeskin.ability.AReadable
+import org.snakeskin.hid.provider.IButtonValueProvider
 
 /**
  * @author Cameron Earle
- * @version 7/16/17
+ * @version 11/7/19
  */
-class Button(override var inverted: Boolean = false,
-             private val provider: ControllerProvider,
-             private val button: Int,
-             private val enabled: Controller.EnabledReference): AReadable<Boolean>, AInvertable {
-    override fun read(): Boolean {
-        if (!enabled.enabled) return default
-
+class Button(private val provider: IButtonValueProvider,
+             override var inverted: Boolean = false): AInvertable {
+    @Synchronized fun read(): Boolean {
         if (inverted)
-            return !provider.readButton(button)
-        return provider.readButton(button)
+            return !provider.read()
+        return provider.read()
     }
-
-    val default = inverted
 }

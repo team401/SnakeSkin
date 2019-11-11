@@ -7,4 +7,4 @@ import org.snakeskin.controls.Hat
  * @version 12/12/2018
  *
  */
-class HatChangeListener(override val surface: Hat, override val action: (Int) -> Unit): ControlListener<Hat, Int>
+class HatChangeListener(val surface: Hat, val action: (Int) -> Unit): IControlSurfaceListener

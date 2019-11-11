@@ -1,18 +1,14 @@
 package org.snakeskin.controls
 
 import org.snakeskin.ability.AReadable
+import org.snakeskin.hid.provider.IHatValueProvider
 
 /**
  * @author Cameron Earle
- * @version 7/16/17
+ * @version 11/7/19
  */
-class Hat(private val provider: ControllerProvider,
-          private val hat: Int,
-          private val enabled: Controller.EnabledReference): AReadable<Int> {
-    override fun read(): Int {
-        if (!enabled.enabled) return default
-        return provider.readHat(hat)
+class Hat(private val provider: IHatValueProvider) {
+    fun read(): Int {
+        return provider.read()
     }
-
-    val default = 0
 }

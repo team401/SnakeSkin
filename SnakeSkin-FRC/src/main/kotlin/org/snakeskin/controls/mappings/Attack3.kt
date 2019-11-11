@@ -6,7 +6,7 @@ import org.snakeskin.controls.Controller
  * @author Cameron Earle
  * @version 8/31/17
  */
-class Attack3(id: Int, enabled: Boolean = true): Controller(id, enabled) {
+class Attack3(id: Int): Controller(id) {
     inner class MappingDefinitions: IMappingDefinitions {
         inner class AxesDefinitions: IMappingDefinitions.AxesDefinitions {
             val ROLL = addAxis(0)
@@ -36,7 +36,4 @@ class Attack3(id: Int, enabled: Boolean = true): Controller(id, enabled) {
     }
 
     override val Mapping = MappingDefinitions()
-
-    inline fun readAxis(axis: MappingDefinitions.AxesDefinitions.() -> Int): Double = readAxis(axis(Mapping.Axes))
-    inline fun readButton(button: MappingDefinitions.ButtonsDefinitions.() -> Int): Boolean = readButton(button(Mapping.Buttons))
 }

@@ -2,28 +2,27 @@ package org.snakeskin.controls
 
 import org.snakeskin.ability.AInvertable
 import org.snakeskin.ability.AReadable
+import org.snakeskin.hid.provider.IAxisValueProvider
 import org.snakeskin.logic.scalars.NoScaling
 import org.snakeskin.logic.scalars.Scalar
+import kotlin.math.abs
 
 /**
  * @author Zachary Kozar and Cameron Earle
- * @version 5/25/2017
+ * @version 11/7/19
  */
-class Axis(override var inverted: Boolean = false,
-           var deadband: Double = -1.0,
-           private val provider: ControllerProvider,
-           private val axis: Int, private val factoryInvert: Boolean,
-           private val enabled: Controller.EnabledReference): AReadable<Double>, AInvertable {
+class Axis(private val provider: IAxisValueProvider,
+           private val factoryInvert: Boolean,
+           override var inverted: Boolean = false,
+           var deadband: Double = -1.0): AInvertable {
     var scalar: Scalar = NoScaling
     @Synchronized set
 
-    @Synchronized override fun read(): Double {
-        if (!enabled.enabled) return default
-
-        val value = if (factoryInvert) -provider.readAxis(axis) else provider.readAxis(axis)
+    @Synchronized fun read(): Double {
+        val value = if (factoryInvert) -provider.read() else provider.read()
         val delta = scalar.scale(value)
 
-        if (deadband == -1.0 || Math.abs(delta) > deadband)
+        if (deadband == -1.0 || abs(delta) > deadband)
             return if (inverted) -delta else delta
         return 0.0
     }

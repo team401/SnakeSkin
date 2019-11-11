@@ -4,7 +4,6 @@ import org.snakeskin.controls.listener.*
 import org.snakeskin.controls.state.*
 import org.snakeskin.runtime.SnakeskinRuntime
 import org.snakeskin.utility.value.AsyncBoolean
-import java.util.*
 
 /**
  * @author Cameron Earle
@@ -13,7 +12,7 @@ import java.util.*
 object ControlPoller {
     private val handlerExecutor = SnakeskinRuntime.primaryExecutor
 
-    private val states = Vector<ControlSurfaceState<*>>()
+    private val states = arrayListOf<IControlSurfaceState>()
 
     /**
      * Whether or not to poll the controls in the autonomous mode.
@@ -21,7 +20,7 @@ object ControlPoller {
      */
     var pollInAutonomous by AsyncBoolean(false)
 
-    private fun createStateForListener(listener: ControlListener<*, *>): ControlSurfaceState<*> {
+    private fun createStateForListener(listener: IControlSurfaceListener): IControlSurfaceState {
         return when (listener) {
             is ButtonEdgeListener -> ButtonEdgeState(listener)
             is ButtonHoldListener -> ButtonTimedState(listener)

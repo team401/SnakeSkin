@@ -8,6 +8,6 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  * @version 12/12/2018
  *
  */
-class ButtonHoldListener(override val surface: Button, holdDuration: TimeMeasureSeconds, override val action: (Boolean) -> Unit): ControlListener<Button, Boolean> {
+class ButtonHoldListener(val surface: Button, holdDuration: TimeMeasureSeconds, val action: (Boolean) -> Unit): IControlSurfaceListener {
     val holdDurationS = holdDuration.value
 }
