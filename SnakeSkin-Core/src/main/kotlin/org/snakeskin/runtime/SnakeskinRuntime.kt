@@ -5,6 +5,7 @@ import org.snakeskin.exception.InitException
 import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.executor.IExecutor
 import org.snakeskin.executor.IExecutorTaskHandle
+import org.snakeskin.hid.IHIDValueProviderFactory
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.RealTimeTask
@@ -96,6 +97,8 @@ object SnakeskinRuntime {
         }
     }
 
+    private fun checkIsRunning() = check(isRunning) { "SnakeSkin runtime is not started" }
+
     /**
      * Returns the currently running version of SnakeSkin
      */
@@ -126,13 +129,13 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun executeTask(task: ExceptionHandlingRunnable): IExecutorTaskHandle {
-        check(isRunning) { "SnakeSkin runtime is not started" }
+        checkIsRunning()
         return primaryExecutor.scheduleSingleTaskNow(task)
     }
 
     @Synchronized
     fun executeTaskAfter(task: ExceptionHandlingRunnable, delay: TimeMeasureSeconds): IExecutorTaskHandle {
-        check(isRunning) { "SnakeSkin runtime is not started" }
+        checkIsRunning()
         return primaryExecutor.scheduleSingleTask(task, delay)
     }
 
@@ -143,7 +146,7 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun startPeriodicTask(task: ExceptionHandlingRunnable, rate: TimeMeasureSeconds): IExecutorTaskHandle {
-        check(isRunning) { "SnakeSkin runtime is not started" }
+        checkIsRunning()
         return primaryExecutor.schedulePeriodicTask(task, rate)
     }
 
@@ -153,7 +156,7 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun createSingleUseExecutor(): IExecutor {
-        check (isRunning) { "SnakeSkin runtime is not started" }
+        checkIsRunning()
         return binding.allocateSingleUseExecutor()
     }
 
@@ -164,7 +167,7 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun createRealTimeExecutor(rate: TimeMeasureSeconds, name: String? = null) {
-        check(isRunning) { "SnakeSkin runtime is not started" }
+        checkIsRunning()
         if (name == null) {
             check(!::rtExecutor.isInitialized) { "Default RT executor is already created" }
             rtExecutor = binding.allocateRealTimeExecutor(rate.value)
@@ -181,7 +184,7 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun registerRealTimeTask(task: RealTimeTask, executorName: String? = null) {
-        check(isRunning) { "SnakeSkin runtime is not started" }
+        checkIsRunning()
         if (executorName == null) {
             check(::rtExecutor.isInitialized) { "Default RT executor has not been created" }
             rtExecutor.registerTask(task)
@@ -196,11 +199,22 @@ object SnakeskinRuntime {
      */
     @Synchronized
     fun startRealTimeExecutors() {
+        checkIsRunning()
         if (::rtExecutor.isInitialized) {
             rtExecutor.start()
         }
         rtExecutors.forEach { (_, executor) ->
             executor.start()
         }
+    }
+
+    /**
+     * Creates an HID factory for the given controller ID
+     * This is used by the HID Controller abstraction classes, and most likely is not useful directly by the user
+     */
+    @Synchronized
+    fun createHIDFactory(id: Int): IHIDValueProviderFactory {
+        checkIsRunning()
+        return binding.allocateHIDValueProviderFactory(id)
     }
 }

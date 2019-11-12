@@ -4,9 +4,9 @@ import edu.wpi.first.hal.FRCNetComm
 import edu.wpi.first.hal.HAL
 import edu.wpi.first.wpilibj.IterativeRobotBase
 import org.snakeskin.auto.AutoManager
-import org.snakeskin.controls.ControlPoller
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
+import org.snakeskin.hid.HIDUpdater
 import org.snakeskin.init.InitManager
 import org.snakeskin.registry.Subsystems
 import org.snakeskin.runtime.SnakeskinPlatform
@@ -79,12 +79,12 @@ class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than
      * Therefore, it makes sense to react to these controller state changes in this method rather than their own thread
      */
     override fun teleopPeriodic() {
-        ControlPoller.update() //Update the control poller
+        HIDUpdater.update() //Update the control poller
     }
 
     override fun autonomousPeriodic() {
-        if (ControlPoller.pollInAutonomous) { //If we've enabled autonomous control polling
-            ControlPoller.update() //Update the control poller
+        if (HIDUpdater.pollInAutonomous) { //If we've enabled autonomous control polling
+            HIDUpdater.update() //Update the control poller
         }
     }
 }

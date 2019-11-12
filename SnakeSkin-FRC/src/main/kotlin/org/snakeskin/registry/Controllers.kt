@@ -1,18 +1,16 @@
 package org.snakeskin.registry
 
-import org.snakeskin.controls.ControlPoller
-import org.snakeskin.controls.Controller
+import org.snakeskin.hid.HIDController
+import org.snakeskin.hid.HIDUpdater
 
 /**
  * @author Cameron Earle
  * @version 12/24/17
  */
-object Controllers: Registry<Controller>() {
+object Controllers: Registry<HIDController>() {
     @JvmStatic fun initAll() {
-        println("SnakeSkin-FRC: Controllers Registry Loaded") //TODO remove debug statement
-
         registry.forEach {
-            ControlPoller.addController(it) //Add the controller to the poller
+            HIDUpdater.addController(it) //Add the controller to the poller
         }
     }
 }

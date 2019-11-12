@@ -1,12 +1,14 @@
 package org.snakeskin.runtime.impl
 
+import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.Timer
 import org.snakeskin.executor.IExecutor
 import org.snakeskin.executor.impl.ScheduledExecutorServiceExecutor
+import org.snakeskin.hid.IHIDValueProviderFactory
+import org.snakeskin.hid.impl.ControlSurfaceProviderFactoryFrcRoborio
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.impl.RealTimeExecutorFrcRoborio
 import org.snakeskin.runtime.IRuntimePlatformBinding
-import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
@@ -35,5 +37,11 @@ class RuntimePlatformBindingFrcRoborio: IRuntimePlatformBinding {
 
     override fun allocateRealTimeExecutor(rateSeconds: Double): IRealTimeExecutor {
         return RealTimeExecutorFrcRoborio(rateSeconds)
+    }
+
+    override fun allocateHIDValueProviderFactory(id: Int): IHIDValueProviderFactory {
+        val joystick = Joystick(id)
+
+        return ControlSurfaceProviderFactoryFrcRoborio(joystick)
     }
 }

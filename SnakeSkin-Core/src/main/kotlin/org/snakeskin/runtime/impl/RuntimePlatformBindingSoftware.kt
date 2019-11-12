@@ -1,6 +1,7 @@
 package org.snakeskin.runtime.impl
 
 import org.snakeskin.executor.IExecutor
+import org.snakeskin.hid.IHIDValueProviderFactory
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.runtime.IRuntimePlatformBinding
 
@@ -25,4 +26,7 @@ class RuntimePlatformBindingSoftware: IRuntimePlatformBinding {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun allocateHIDValueProviderFactory(id: Int): IHIDValueProviderFactory {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

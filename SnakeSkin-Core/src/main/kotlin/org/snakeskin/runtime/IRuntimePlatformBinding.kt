@@ -1,6 +1,7 @@
 package org.snakeskin.runtime
 
 import org.snakeskin.executor.IExecutor
+import org.snakeskin.hid.IHIDValueProviderFactory
 import org.snakeskin.rt.IRealTimeExecutor
 
 /**
@@ -36,4 +37,8 @@ interface IRuntimePlatformBinding {
      */
     fun allocateRealTimeExecutor(rateSeconds: Double): IRealTimeExecutor
 
+    /**
+     * Implementations should allocate and return an HID value provider factory for the given controller ID
+     */
+    fun allocateHIDValueProviderFactory(id: Int): IHIDValueProviderFactory
 }
