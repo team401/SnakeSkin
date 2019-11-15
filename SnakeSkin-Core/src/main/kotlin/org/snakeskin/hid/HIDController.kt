@@ -50,6 +50,23 @@ abstract class HIDController(internal val id: Int) {
     }
 
     /**
+     * Called when the controller is registered.  Used to "enable" the control surfaces
+     */
+    internal fun onRegister() {
+        axes.forEach { (_, axis) ->
+            axis.registered = true
+        }
+
+        buttons.forEach { (_, button) ->
+            button.registered = true
+        }
+
+        hats.forEach { (_, hat) ->
+            hat.registered = true
+        }
+    }
+
+    /**
      * Gets the Axis object for the given axis index.  This object can be used to directly read the value of the axis.
      *
      * Note that the preferred pattern is to bind an AxisChannel to an axis and read the value that way

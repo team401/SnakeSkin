@@ -10,10 +10,13 @@ class HIDAxis(private val provider: IAxisValueProvider,
            private val factoryInvert: Boolean,
            override var inverted: Boolean = false,
            var deadband: Double = -1.0): AInvertable {
+    internal var registered = false
+
     var scalar: Scalar = NoScaling
         @Synchronized set
 
     @Synchronized fun read(): Double {
+        if (!registered) return 0.0
         val value = if (factoryInvert) -provider.read() else provider.read()
         val delta = scalar.scale(value)
 
