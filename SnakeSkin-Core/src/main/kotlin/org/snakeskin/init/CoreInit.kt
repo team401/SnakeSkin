@@ -1,6 +1,7 @@
 package org.snakeskin.init
 
-import org.snakeskin.registry.Subsystems
+import org.snakeskin.registry.HIDControllersRegistry
+import org.snakeskin.registry.SubsystemsRegistry
 import org.snakeskin.runtime.SnakeskinModules
 import org.snakeskin.runtime.SnakeskinRuntime
 
@@ -16,6 +17,7 @@ class CoreInit: Initializer {
 
     override fun postStartup() {
         SnakeskinRuntime.startRealTimeExecutors()
-        Subsystems.initAll()
+        HIDControllersRegistry.initAll()
+        SubsystemsRegistry.initAll()
     }
 }

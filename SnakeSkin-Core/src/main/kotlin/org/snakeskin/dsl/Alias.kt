@@ -8,8 +8,10 @@ package org.snakeskin.dsl
  * by importing 'org.snakeskin.dsl.*'
  */
 
+typealias Subsystems = org.snakeskin.registry.SubsystemsRegistry
+typealias Controllers = org.snakeskin.registry.HIDControllersRegistry
+
 typealias Subsystem = org.snakeskin.subsystem.Subsystem
 typealias StateMachine<T> = org.snakeskin.state.StateMachine<T>
 typealias Setup = org.snakeskin.annotation.Setup
-typealias Subsystems = org.snakeskin.registry.Subsystems
 typealias BooleanState = org.snakeskin.logic.BooleanState

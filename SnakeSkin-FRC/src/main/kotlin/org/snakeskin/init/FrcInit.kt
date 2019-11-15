@@ -1,6 +1,5 @@
 package org.snakeskin.init
 
-import org.snakeskin.registry.Controllers
 import org.snakeskin.registry.Sensors
 import org.snakeskin.runtime.SnakeskinModules
 import org.snakeskin.runtime.SnakeskinRuntime
@@ -16,7 +15,6 @@ class FrcInit: Initializer {
     }
 
     override fun postStartup() {
-        Controllers.initAll()
         Sensors.initAll()
     }
 }

@@ -8,7 +8,7 @@ import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
 import org.snakeskin.hid.HIDUpdater
 import org.snakeskin.init.InitManager
-import org.snakeskin.registry.Subsystems
+import org.snakeskin.registry.SubsystemsRegistry
 import org.snakeskin.runtime.SnakeskinPlatform
 
 /**
@@ -71,7 +71,7 @@ class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than
 
     override fun testInit() {
         //Run all subsystem tests
-        Subsystems.testAll()
+        SubsystemsRegistry.testAll()
     }
 
     /**
