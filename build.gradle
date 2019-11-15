@@ -2,7 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.3.50" apply false
     id "com.palantir.git-version" version "0.10.0"
     id "com.jfrog.bintray" version "1.8.4" apply false
-    id "org.jetbrains.dokka" version "0.9.17" apply false
+    //id "org.jetbrains.dokka" version "0.9.17" apply false
 }
 
 allprojects {
@@ -17,10 +17,9 @@ task regenDocs(type: Delete) {
 subprojects { subproj ->
     apply plugin: 'java-library'
     apply plugin: 'kotlin'
-    apply plugin: 'org.jetbrains.dokka'
+    //apply plugin: 'org.jetbrains.dokka'
 
     apply plugin: 'com.jfrog.bintray'
-    apply plugin: 'maven'
     apply plugin: 'maven-publish'
 
     group 'org.snakeskin'
@@ -45,7 +44,7 @@ subprojects { subproj ->
 
     //Jars built for github releases
     jar {
-        destinationDir = file("$rootDir/out/libs")
+        destinationDirectory = file("$rootDir/out/libs")
     }
 
     dependencies {
@@ -61,6 +60,7 @@ subprojects { subproj ->
         kotlinOptions.jvmTarget = "1.8"
     }
 
+    /*
     // output to docs directory:  Javadoc format
     dokka {
         def dirname = subproj.projectDir.absoluteFile.name
@@ -82,6 +82,7 @@ subprojects { subproj ->
 
     regenDocs.finalizedBy dokka
 
+    */
     task sourcesJar(type: Jar) {
         from sourceSets.main.allSource
         classifier = 'sources'
@@ -89,5 +90,5 @@ subprojects { subproj ->
 }
 
 wrapper {
-    gradleVersion = '5.6.1'
+    gradleVersion = '6.0'
 }
