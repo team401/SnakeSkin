@@ -13,8 +13,14 @@ enum class FeedforwardScalingMode {
     SCALE_12V,
 
     /**
-     * Scales the desired feedforward voltage by the measured input voltage.  This requires a call to getInputVoltage()
-     * which may increase CAN network utilization
+     * Scales the desired feedforward voltage by the measured bus voltage from the robot controller.
+     * This makes a call to SnakeskinRuntime.voltage, which is fast but may not be as accurate as the device voltage
      */
-    SCALE_VBUS
+    SCALE_VBUS_SYSTEM,
+
+    /**
+     * Scales the desired feedforward voltage by the measured input voltage from the device.
+     * This requires a call to getInputVoltage() which may increase CAN network utilization
+     */
+    SCALE_VBUS_DEVICE
 }

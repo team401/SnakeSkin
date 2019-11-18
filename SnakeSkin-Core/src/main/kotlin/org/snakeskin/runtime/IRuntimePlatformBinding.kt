@@ -23,6 +23,11 @@ interface IRuntimePlatformBinding {
     fun blockMilliseconds(ms: Long)
 
     /**
+     * Implementations should return the current system vbus voltage, in volts.
+     */
+    fun getSystemVbusVolts(): Double
+
+    /**
      * Implementations should allocate, start, and return the primary runtime executor.
      */
     fun allocatePrimaryExecutor(): IExecutor

@@ -68,6 +68,12 @@ object SnakeskinRuntime {
     }
 
     /**
+     * The current bus voltage of the system, in volts.
+     */
+    val voltage: Double
+    get() = binding.getSystemVbusVolts()
+
+    /**
      * Returns true if the given module is loaded, false otherwise
      */
     @Synchronized

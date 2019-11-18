@@ -10,6 +10,10 @@ class RuntimePlatformBindingSoftware: IRuntimePlatformBinding {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun getSystemVbusVolts(): Double {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun allocatePrimaryExecutor(): IExecutor {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

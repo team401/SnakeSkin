@@ -9,10 +9,10 @@ interface IAngularPositionProvider {
     /**
      * Returns the rotational position of the component in radians
      */
-    fun getRotationalPosition(): AngularDistanceMeasureRevolutions
+    fun getAngularPosition(): AngularDistanceMeasureRevolutions
 
     /**
      * Sets the rotational position of the component to the specified angle in radians
      */
-    fun setRotationalPosition(angle: AngularDistanceMeasureRevolutions)
+    fun setAngularPosition(angle: AngularDistanceMeasureRevolutions)
 }

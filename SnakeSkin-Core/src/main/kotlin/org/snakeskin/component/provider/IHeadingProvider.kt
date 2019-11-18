@@ -4,7 +4,9 @@ import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
 
 /**
  * Represents a component that can provide a heading value, in degrees.
- * Note that returned headings should be "180 wrapped", meaning they do not continue counting past +/- 180 degrees
+ * The range for the provided heading will depend on the the underlying implementation.
+ * No guarantees are made about the range of this value, or how it wraps.  Consumers of these classes
+ * should make sure to perform any necessary wrapping themselves.
  */
 interface IHeadingProvider {
     /**
@@ -13,7 +15,7 @@ interface IHeadingProvider {
     fun setHeading(value: AngularDistanceMeasureDegrees)
 
     /**
-     * Returns the current heading in degrees, wrapped at the 180 mark
+     * Returns the current heading in degrees
      */
     fun getHeading(): AngularDistanceMeasureDegrees
 }

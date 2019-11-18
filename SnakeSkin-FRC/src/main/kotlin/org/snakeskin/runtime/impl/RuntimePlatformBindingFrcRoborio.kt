@@ -1,6 +1,7 @@
 package org.snakeskin.runtime.impl
 
 import edu.wpi.first.wpilibj.Joystick
+import edu.wpi.first.wpilibj.RobotController
 import edu.wpi.first.wpilibj.Timer
 import org.snakeskin.executor.IExecutor
 import org.snakeskin.executor.impl.ScheduledExecutorServiceExecutor
@@ -19,6 +20,10 @@ class RuntimePlatformBindingFrcRoborio: IRuntimePlatformBinding {
 
     override fun blockMilliseconds(ms: Long) {
         Thread.sleep(ms)
+    }
+
+    override fun getSystemVbusVolts(): Double {
+        return RobotController.getBatteryVoltage()
     }
 
     override fun allocatePrimaryExecutor(): IExecutor {

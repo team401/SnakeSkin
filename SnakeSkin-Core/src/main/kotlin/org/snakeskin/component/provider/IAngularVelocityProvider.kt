@@ -9,5 +9,5 @@ interface IAngularVelocityProvider {
     /**
      * Returns the rotational velocity of the component in radians per second
      */
-    fun getRotationalVelocity(): AngularVelocityMeasureRevolutionsPerSecond
+    fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond
 }

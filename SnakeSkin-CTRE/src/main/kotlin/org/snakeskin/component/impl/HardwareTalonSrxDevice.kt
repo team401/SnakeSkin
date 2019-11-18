@@ -8,12 +8,17 @@ import org.snakeskin.component.ITalonSrxDevice
 import org.snakeskin.component.provider.IFollowableProvider
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
 import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
+import org.snakeskin.runtime.SnakeskinRuntime
 
-class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution: Double = 4096.0, val ffMode: FeedforwardScalingMode = FeedforwardScalingMode.SCALE_12V) : ITalonSrxDevice {
+class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution: Double = 4096.0, val ffMode: FeedforwardScalingMode = FeedforwardScalingMode.SCALE_VBUS_SYSTEM) : ITalonSrxDevice {
     private fun scaleFfVolts(voltage: Double): Double {
         return when (ffMode) {
             FeedforwardScalingMode.SCALE_12V -> voltage / 12.0
-            FeedforwardScalingMode.SCALE_VBUS -> {
+            FeedforwardScalingMode.SCALE_VBUS_SYSTEM -> {
+                val vbus = SnakeskinRuntime.voltage
+                return voltage / vbus
+            }
+            FeedforwardScalingMode.SCALE_VBUS_DEVICE -> {
                 val vbus = getInputVoltage()
                 voltage / vbus
             }
@@ -47,17 +52,17 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
         setPercentOutput(0.0)
     }
 
-    override fun getRotationalPosition(): AngularDistanceMeasureRevolutions {
+    override fun getAngularPosition(): AngularDistanceMeasureRevolutions {
         val ticks = device.selectedSensorPosition.toDouble()
         return AngularDistanceMeasureRevolutions(ticks / sensorTicksPerRevolution)
     }
 
-    override fun setRotationalPosition(angle: AngularDistanceMeasureRevolutions) {
+    override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
         val ticks = (angle.value * sensorTicksPerRevolution).toInt()
         device.selectedSensorPosition = ticks
     }
 
-    override fun getRotationalVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
+    override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
         val ticks = device.selectedSensorVelocity.toDouble()
         return AngularVelocityMeasureRevolutionsPerSecond((ticks / sensorTicksPerRevolution) * 10.0) //Multiply by 10 to convert deciseconds (100 ms) to seconds
     }

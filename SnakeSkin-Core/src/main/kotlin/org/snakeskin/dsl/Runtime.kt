@@ -11,6 +11,12 @@ val timestampNow: TimeMeasureSeconds
 get() = SnakeskinRuntime.timestamp
 
 /**
+ * The current system voltage, in volts
+ */
+val voltageNow: Double
+get() = SnakeskinRuntime.voltage
+
+/**
  * Runs a task in the background
  */
 fun runTask(task: () -> Unit) {

@@ -1,9 +1,11 @@
-package org.snakeskin.executor
+package org.snakeskin.executor.impl
+
+import org.snakeskin.executor.IExecutorTaskHandle
 
 /**
  * Empty executor task handle for when a task has not been scheduled
  */
-object EmptyExecutorTaskHandle: IExecutorTaskHandle {
+object NullExecutorTaskHandle: IExecutorTaskHandle {
     override fun stopTask(interrupt: Boolean) {}
     override fun waitFor() {}
 }
