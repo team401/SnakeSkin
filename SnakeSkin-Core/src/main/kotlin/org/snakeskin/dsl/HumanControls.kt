@@ -44,7 +44,8 @@ object HumanControls {
     }
 
     class AxisHandlerBuilder(private val controller: HIDController, private val axis: Int) {
-        fun exceeds(threshold: Double, action: (Double) -> Unit) = controller.registerListener(AxisThresholdListener(controller.getAxis(axis), threshold, action))
+        fun crosses(threshold: Double, action: (Double) -> Unit) = controller.registerListener(AxisThresholdListener(controller.getAxis(axis), threshold, AxisThresholdListener.CrossDirection.Outward, action))
+        fun returns(threshold: Double, action: (Double) -> Unit) = controller.registerListener(AxisThresholdListener(controller.getAxis(axis), threshold, AxisThresholdListener.CrossDirection.Inward, action))
     }
 
     //CUSTOM

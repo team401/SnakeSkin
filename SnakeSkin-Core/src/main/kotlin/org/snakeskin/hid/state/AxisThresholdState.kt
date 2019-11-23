@@ -2,6 +2,8 @@ package org.snakeskin.hid.state
 
 import org.snakeskin.hid.listener.AxisThresholdListener
 import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.hid.HIDAxis
+import org.snakeskin.hid.provider.IAxisValueProvider
 
 /**
  * @author Cameron Earle
@@ -18,19 +20,22 @@ class AxisThresholdState(val listener: AxisThresholdListener): IControlSurfaceSt
         }
     }
 
-    private var eventFired = false
+    private var crossEventFired = false
     private var currentValue = 0.0
 
     override fun update(timestamp: Double): Boolean {
         currentValue = listener.surface.read()
         if (isPassedThreshold(currentValue)) {
             //We only want to fire the event once per crossing of the threshold, so this ensures that
-            if (!eventFired) {
-                eventFired = true
-                return true
+            if (!crossEventFired) {
+                crossEventFired = true
+                return listener.direction == AxisThresholdListener.CrossDirection.Outward //Fire if we are looking for out
             }
         } else {
-            eventFired = false
+            if (crossEventFired) {
+                crossEventFired = false
+                return listener.direction == AxisThresholdListener.CrossDirection.Inward //Fire if we are looking for in
+            }
         }
         return false
     }
