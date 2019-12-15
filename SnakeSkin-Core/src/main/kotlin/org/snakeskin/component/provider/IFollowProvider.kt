@@ -8,4 +8,9 @@ interface IFollowProvider {
      * Follows a master component
      */
     fun follow(master: IFollowableProvider)
+
+    /**
+     * Unfollows whatever component is being followed
+     */
+    fun unfollow()
 }

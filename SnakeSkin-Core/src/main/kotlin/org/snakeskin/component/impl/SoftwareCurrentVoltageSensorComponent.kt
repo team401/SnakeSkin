@@ -7,10 +7,6 @@ class SoftwareCurrentVoltageSensorComponent : ICurrentVoltageSensorComponent {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getInputVoltage(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun getOutputVoltage(): Double {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

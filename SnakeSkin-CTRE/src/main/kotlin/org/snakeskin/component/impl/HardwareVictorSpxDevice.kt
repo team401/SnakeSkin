@@ -5,6 +5,9 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX
 import org.snakeskin.component.IVictorSpxDevice
 import org.snakeskin.component.provider.IFollowableProvider
 
+//TODO
+//TODO
+//TODO FINISH THIS CLASS.
 class HardwareVictorSpxDevice(val device: VictorSPX): IVictorSpxDevice {
     override fun follow(master: IFollowableProvider) {
         when (master) {
@@ -21,10 +24,6 @@ class HardwareVictorSpxDevice(val device: VictorSPX): IVictorSpxDevice {
         return device.motorOutputPercent
     }
 
-    override fun getInputVoltage(): Double {
-        return device.busVoltage
-    }
-
     override fun getOutputVoltage(): Double {
         return device.motorOutputVoltage
 
@@ -32,5 +31,9 @@ class HardwareVictorSpxDevice(val device: VictorSPX): IVictorSpxDevice {
 
     override fun stop() {
         setPercentOutput(0.0)
+    }
+
+    override fun unfollow() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

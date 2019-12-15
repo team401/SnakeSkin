@@ -10,6 +10,9 @@ import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
 import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
 import org.snakeskin.runtime.SnakeskinRuntime
 
+//TODO
+//TODO
+//TODO FINISH THIS CLASS.
 class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution: Double = 4096.0, val ffMode: FeedforwardScalingMode = FeedforwardScalingMode.SCALE_VBUS_SYSTEM) : ITalonSrxDevice {
     private fun scaleFfVolts(voltage: Double): Double {
         return when (ffMode) {
@@ -19,7 +22,7 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
                 return voltage / vbus
             }
             FeedforwardScalingMode.SCALE_VBUS_DEVICE -> {
-                val vbus = getInputVoltage()
+                val vbus = device.busVoltage
                 voltage / vbus
             }
         }
@@ -38,10 +41,6 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
 
     override fun getPercentOutput(): Double {
         return device.motorOutputPercent
-    }
-
-    override fun getInputVoltage(): Double {
-        return device.busVoltage
     }
 
     override fun getOutputVoltage(): Double {
@@ -81,5 +80,9 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
         val ticksPer100Ms = (setpoint.value * sensorTicksPerRevolution) / 10.0 //Divide by 10 to convert seconds to deciseconds (100 ms)
         val ffPercent = scaleFfVolts(ffVolts)
         device.set(ControlMode.Velocity, ticksPer100Ms, DemandType.ArbitraryFeedForward, ffPercent)
+    }
+
+    override fun unfollow() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

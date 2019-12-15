@@ -1,51 +1,46 @@
 package org.snakeskin.component
 
-import org.snakeskin.measure.distance.linear.LinearDistanceMeasureInches
-import org.snakeskin.template.TankDrivetrainGeometryTemplate
+import org.snakeskin.component.provider.IYawProvider
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
+import org.snakeskin.template.DifferentialDrivetrainGeometry
 
 /**
- * @author Cameron Earle
- * @version 1/9/2019
- *
+ * Represents a differential drivetrain.  A differential drivetrain has left and right gearboxes and a yaw source
  */
-@Deprecated("Replaced with new component system")
-interface IDifferentialDrivetrain<out G: IGearbox> {
-    val left: G
-    val right: G
+interface IDifferentialDrivetrain: IYawProvider {
+    val left: Gearbox
+    val right: Gearbox
 
-    fun both(action: G.() -> Unit) {
-        left.action()
-        right.action()
+    val yawSensor: IYawProvider
+
+    val geometry: DifferentialDrivetrainGeometry
+
+    override fun getYaw() = yawSensor.getYaw()
+    override fun setYaw(value: AngularDistanceMeasureDegrees) = yawSensor.setYaw(value)
+
+    /**
+     * Applies "tank" controls to the gearboxes, in percent output mode.
+     * In this mode, a left and right percentage out are passed directly to the left and right gearboxes.
+     */
+    fun tank(leftPercent: Double, rightPercent: Double) {
+        left.setPercentOutput(leftPercent)
+        right.setPercentOutput(rightPercent)
     }
 
     /**
-     * The geometric wheelbase of the drivetrain.  This should be a parameter measured either in CAD or on the hardware.
+     * Applies "arcade" controls to the gearboxes, in percent output mode.
+     * In this mode, a translation and rotation are mixed and passed to the left and right gearboxes.
      */
-    var wheelbase: LinearDistanceMeasureInches
+    fun arcade(translation: Double, rotation: Double) {
+        left.setPercentOutput(translation + rotation)
+        right.setPercentOutput(translation - rotation)
+    }
 
     /**
-     * The geometric wheel radius of the drivetrain's wheels.  This should be measured with a geometric test on the hardware.
+     * Stops the drivetrain.  This calls the "stop" method on both the left and right gearboxes
      */
-    var wheelRadius: LinearDistanceMeasureInches
-
-    /**
-     * Updates the geometry from the template provided
-     */
-    fun updateGeometry(template: TankDrivetrainGeometryTemplate)
-
-    /**
-     * Operates the drivetrain in "tank" mode, meaning the left setpoint sets the speed of the left gearbox, and the
-     * right setpoint is applied to the right
-     */
-    fun tank(leftSetpoint: Double, rightSetpoint: Double)
-
-    /**
-     * Operates the drivetrain in "arcade" mode, meaning the translation and rotation are used to control the robot
-     */
-    fun arcade(translation: Double, rotation: Double)
-
-    /**
-     * Stops the drivetrain
-     */
-    fun stop()
+    fun stop() {
+        left.stop()
+        right.stop()
+    }
 }

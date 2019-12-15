@@ -1,7 +1,6 @@
 package org.snakeskin.utility
 
 import org.snakeskin.component.IDifferentialDrivetrain
-import org.snakeskin.component.IGearbox
 import org.snakeskin.logic.scalars.NoScaling
 import org.snakeskin.logic.scalars.Scalar
 import org.snakeskin.template.CheesyDriveParametersTemplate
@@ -40,7 +39,7 @@ class CheesyDriveController(private val config: CheesyDriveParametersTemplate = 
         /**
          * Runs the command on a drivetrain
          */
-        fun applyTo(drivetrain: IDifferentialDrivetrain<IGearbox>) {
+        fun applyTo(drivetrain: IDifferentialDrivetrain) {
             drivetrain.tank(left, right)
         }
     }
