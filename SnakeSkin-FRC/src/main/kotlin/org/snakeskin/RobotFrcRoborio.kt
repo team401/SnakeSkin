@@ -35,6 +35,12 @@ class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than
         }
     }
 
+    /* TODO uncomment for WPILib 2020
+    override fun endCompetition() {
+        //no-op? Not really sure what we're supposed to do here
+    }
+     */
+
     override fun testPeriodic() {}
     override fun disabledPeriodic() {}
     override fun robotPeriodic() {}

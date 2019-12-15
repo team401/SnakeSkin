@@ -1,6 +1,6 @@
 dependencies {
-    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: '2019.4.1'
-    implementation group: 'edu.wpi.first.hal', name: 'hal-java', version: '2019.4.1'
+    implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: wpilibVersion
+    implementation group: 'edu.wpi.first.hal', name: 'hal-java', version: wpilibVersion
     implementation project(':SnakeSkin-Core')
 }
 

@@ -2,6 +2,7 @@ package org.snakeskin.component
 
 import org.snakeskin.component.provider.IFollowProvider
 import org.snakeskin.component.provider.IFollowableProvider
+import org.snakeskin.component.provider.IInputVoltageProvider
 import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
 
 /**
@@ -12,4 +13,5 @@ import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
 interface IMotorControllerEnhancedComponent :
         IFollowProvider,
         IFollowableProvider,
+        IInputVoltageProvider,
         IPercentOutputMotorControlProvider

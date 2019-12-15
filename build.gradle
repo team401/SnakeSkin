@@ -2,22 +2,17 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.3.50" apply false
     id "com.palantir.git-version" version "0.10.0"
     id "com.jfrog.bintray" version "1.8.4" apply false
-    //id "org.jetbrains.dokka" version "0.9.17" apply false
 }
 
 allprojects {
     apply plugin: 'idea'
 }
 
-task regenDocs(type: Delete) {
-    group = 'documentation'
-    delete "${rootDir}/docs"
-}
+ext.wpilibVersion = "2019.4.1"
 
 subprojects { subproj ->
     apply plugin: 'java-library'
     apply plugin: 'kotlin'
-    //apply plugin: 'org.jetbrains.dokka'
 
     apply plugin: 'com.jfrog.bintray'
     apply plugin: 'maven-publish'
@@ -28,13 +23,21 @@ subprojects { subproj ->
     repositories {
         mavenCentral()
 
-        //WPI Maven
+        //WPI Maven (new)
+        maven {
+            url "https://frcmaven.wpi.edu/artifactory/release"
+        }
+        //WPI Maven (old)
         maven {
             url "http://first.wpi.edu/FRC/roborio/maven/release/"
         }
         //CTRE Maven
         maven  {
             url "http://devsite.ctr-electronics.com/maven/release/"
+        }
+        //REV Maven
+        maven {
+            url "http://www.revrobotics.com/content/sw/max/sdk/maven/"
         }
         //SnakeSkin bintray
         maven {
@@ -60,29 +63,6 @@ subprojects { subproj ->
         kotlinOptions.jvmTarget = "1.8"
     }
 
-    /*
-    // output to docs directory:  Javadoc format
-    dokka {
-        def dirname = subproj.projectDir.absoluteFile.name
-        def moduleName = subproj.name
-        def dokkaOutputBase = "${rootDir}/docs"
-        def dokkaLinkDir = "${projectDir}/src/main/kotlin"
-        def dokkaLinkUrl = "https://github.com/team401/snakeskin/${dirname}/src/main/kotlin"
-        def dokkaLinkSuffix = "#L"
-
-        reportUndocumented = false
-        outputFormat = "javadoc"
-        outputDirectory = "${dokkaOutputBase}/${moduleName}"
-        linkMapping {
-            dir = dokkaLinkDir
-            url = dokkaLinkUrl
-            suffix = dokkaLinkSuffix
-        }
-    }
-
-    regenDocs.finalizedBy dokka
-
-    */
     task sourcesJar(type: Jar) {
         from sourceSets.main.allSource
         classifier = 'sources'
@@ -90,5 +70,5 @@ subprojects { subproj ->
 }
 
 wrapper {
-    gradleVersion = '6.0'
+    gradleVersion = '6.0.1'
 }
