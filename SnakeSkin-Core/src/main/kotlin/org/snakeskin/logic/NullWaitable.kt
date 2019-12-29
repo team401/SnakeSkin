@@ -6,6 +6,6 @@ import org.snakeskin.ability.AWaitable
  * @author Cameron Earle
  * @version 8/15/17
  */
-class NullWaitable: AWaitable {
+object NullWaitable: AWaitable {
     override fun waitFor() {}
 }

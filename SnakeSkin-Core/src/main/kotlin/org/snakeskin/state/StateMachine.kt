@@ -3,15 +3,12 @@ package org.snakeskin.state
 import org.snakeskin.ability.AWaitable
 import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.executor.IExecutorTaskHandle
-import org.snakeskin.logic.History
 import org.snakeskin.logic.NullWaitable
 import org.snakeskin.logic.TickedWaitable
 import org.snakeskin.logic.WaitableFuture
 import org.snakeskin.runtime.SnakeskinRuntime
 import org.snakeskin.subsystem.States
-import java.util.concurrent.Future
-import java.util.concurrent.ScheduledFuture
-import java.util.concurrent.TimeUnit
+import org.snakeskin.utility.value.HistoryValue
 import java.util.concurrent.locks.ReentrantLock
 
 /**
@@ -70,7 +67,7 @@ class StateMachine<T> {
     private var activeActionManager: IStateActionManager? = null //Represents whatever task the state machine is currently running
     private var activeTimeoutHandle: IExecutorTaskHandle? = null //Represents the timeout that the state machine is currently running
 
-    private val stateHistory = History<Any>() //State logic ignores T
+    private val stateHistory = HistoryValue<Any?>(null) //State logic ignores T
 
     private val switchLock = ReentrantLock()
 
@@ -119,10 +116,10 @@ class StateMachine<T> {
 
                 return toReturn //Return the waitable
             } else { //The switch was rejected
-                return NullWaitable() //Return a null waitable
+                return NullWaitable //Return a null waitable
             }
         } else { //There is no need to switch
-            return NullWaitable() //Return a null waitable
+            return NullWaitable //Return a null waitable
         }
     }
 
