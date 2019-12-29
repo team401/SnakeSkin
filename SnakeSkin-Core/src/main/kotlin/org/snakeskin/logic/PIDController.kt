@@ -1,6 +1,5 @@
 package org.snakeskin.logic
 
-import org.snakeskin.ability.AUpdatable
 import org.snakeskin.utility.value.AsyncDouble
 import kotlin.math.abs
 
@@ -18,7 +17,7 @@ class PIDController(p: Double = 0.0,
                     allowedError: Double = 0.0,
                     iMagnitude: Double = Double.MAX_VALUE,
                     iZone: Double = Double.MAX_VALUE,
-                    outMagnitude: Double = 1.0): AUpdatable<Double> {
+                    outMagnitude: Double = 1.0) {
 
     //Proportional, integral, derivative, and feedforward gains
     var p: Double by AsyncDouble(p)
@@ -77,7 +76,7 @@ class PIDController(p: Double = 0.0,
         out = 0.0
     }
 
-    override fun update(newValue: Double){
+    fun update(newValue: Double){
         pid(newValue)
     }
 }

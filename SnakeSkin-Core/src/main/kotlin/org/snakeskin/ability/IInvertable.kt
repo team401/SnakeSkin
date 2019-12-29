@@ -4,7 +4,7 @@ package org.snakeskin.ability
  * @author Cameron Earle
  * @version 7/30/17
  */
-interface AInvertable {
+interface IInvertable {
     var inverted: Boolean
 
     fun invert() {

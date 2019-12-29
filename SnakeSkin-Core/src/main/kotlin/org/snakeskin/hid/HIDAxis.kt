@@ -1,18 +1,18 @@
 package org.snakeskin.hid
 
-import org.snakeskin.ability.AInvertable
+import org.snakeskin.ability.IInvertable
 import org.snakeskin.hid.provider.IAxisValueProvider
 import org.snakeskin.logic.scalars.NoScaling
-import org.snakeskin.logic.scalars.Scalar
+import org.snakeskin.logic.scalars.IScalar
 import kotlin.math.abs
 
 class HIDAxis(private val provider: IAxisValueProvider,
            private val factoryInvert: Boolean,
            override var inverted: Boolean = false,
-           var deadband: Double = -1.0): AInvertable {
+           var deadband: Double = -1.0): IInvertable {
     internal var registered = false
 
-    var scalar: Scalar = NoScaling
+    var scalar: IScalar = NoScaling
         @Synchronized set
 
     @Synchronized fun read(): Double {

@@ -2,7 +2,7 @@ package org.snakeskin.utility
 
 import org.snakeskin.component.IDifferentialDrivetrain
 import org.snakeskin.logic.scalars.NoScaling
-import org.snakeskin.logic.scalars.Scalar
+import org.snakeskin.logic.scalars.IScalar
 import org.snakeskin.template.CheesyDriveParametersTemplate
 import kotlin.math.abs
 import kotlin.math.max
@@ -32,7 +32,7 @@ class CheesyDriveController(private val config: CheesyDriveParametersTemplate = 
         override val lowSinCount: Int = 3
         override val highSinCount: Int = 2
         override val outputScalar: Double = 1.0
-        override val quickTurnScalar: Scalar = NoScaling
+        override val quickTurnScalar: IScalar = NoScaling
     }
 
     data class Output(val left: Double, val right: Double) {

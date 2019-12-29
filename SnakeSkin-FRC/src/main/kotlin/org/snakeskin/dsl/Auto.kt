@@ -1,6 +1,5 @@
 package org.snakeskin.dsl
 
-import org.snakeskin.auto.RobotAuto
 import org.snakeskin.auto.steps.*
 import org.snakeskin.measure.time.TimeMeasureSeconds
 
@@ -9,7 +8,7 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  * @version 8/9/2018
  *
  */
-abstract class AutoStepBuilder<T: AutoStep>: Builder<T> {
+abstract class AutoStepBuilder<T: AutoStep>: IBuilder<T> {
     protected val steps = arrayListOf<AutoStep>()
 
     private fun addStep(autoStep: AutoStep) {

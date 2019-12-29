@@ -5,6 +5,6 @@ package org.snakeskin.logic.scalars
  * @version 9/1/17
  */
 
-object CubicScalar : Scalar {
+object CubicScalar : IScalar {
     override fun scale(input: Double) = input*input*input
 }

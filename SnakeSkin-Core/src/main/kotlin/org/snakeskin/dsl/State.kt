@@ -13,7 +13,7 @@ import org.snakeskin.subsystem.States
  * @version 8/16/17
  */
 
-class StateMachineBuilder<T>: Builder<StateMachine<T>> {
+class StateMachineBuilder<T>: IBuilder<StateMachine<T>> {
     private val builder = StateMachine<T>()
     override fun build() = builder
 
@@ -82,7 +82,7 @@ class StateMachineBuilder<T>: Builder<StateMachine<T>> {
 /**
  * Builds a State object
  */
-open class StateBuilder<T>(name: T): Builder<State<T>> {
+open class StateBuilder<T>(name: T): IBuilder<State<T>> {
     val builder = State(name)
     override fun build() = builder
 

@@ -1,6 +1,6 @@
 package org.snakeskin.template
 
-import org.snakeskin.logic.scalars.Scalar
+import org.snakeskin.logic.scalars.IScalar
 
 /**
  * @author Cameron Earle
@@ -23,5 +23,5 @@ interface CheesyDriveParametersTemplate {
     val lowSinCount: Int
     val highSinCount: Int
     val outputScalar: Double
-    val quickTurnScalar: Scalar
+    val quickTurnScalar: IScalar
 }

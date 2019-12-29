@@ -1,6 +1,6 @@
 package org.snakeskin.logic
 
-import org.snakeskin.ability.AWaitable
+import org.snakeskin.ability.IWaitable
 import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.runtime.SnakeskinRuntime
@@ -13,7 +13,7 @@ import org.snakeskin.runtime.SnakeskinRuntime
 class TimedWaitable(val time: TimeMeasureSeconds): TickedWaitable() {
     private val task = ExceptionHandlingRunnable(::tick)
 
-    fun start(): AWaitable {
+    fun start(): IWaitable {
         SnakeskinRuntime.executeTaskAfter(task, time)
         return this
     }

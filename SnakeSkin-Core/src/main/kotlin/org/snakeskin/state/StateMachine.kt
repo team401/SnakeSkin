@@ -1,6 +1,6 @@
 package org.snakeskin.state
 
-import org.snakeskin.ability.AWaitable
+import org.snakeskin.ability.IWaitable
 import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.executor.IExecutorTaskHandle
 import org.snakeskin.logic.NullWaitable
@@ -71,7 +71,7 @@ class StateMachine<T> {
 
     private val switchLock = ReentrantLock()
 
-    private fun setStateImpl(state: Any): AWaitable {
+    private fun setStateImpl(state: Any): IWaitable {
         val toReturn = TickedWaitable() //The waitable element.  It will tick once "entry" has completed
         if (state != activeState?.name) { //If the state requested is different from the current state
             val desiredState = if (states.any { it.name == state }) { //If the list contains the desired state
@@ -123,7 +123,7 @@ class StateMachine<T> {
         }
     }
 
-    internal fun setStateInternal(state: Any): AWaitable {
+    internal fun setStateInternal(state: Any): IWaitable {
         val waitable = WaitableFuture()
         scheduler.scheduleSingleTaskNow(ExceptionHandlingRunnable {
             try {
@@ -142,7 +142,7 @@ class StateMachine<T> {
      * @param state The state to switch to
      * @return A waitable object that unblocks when the state's "entry" finishes
      */
-    fun setState(state: T): AWaitable {
+    fun setState(state: T): IWaitable {
         return setStateInternal(state as Any) //Downcast to Any here, state logic ignores T
     }
 
@@ -188,7 +188,7 @@ class StateMachine<T> {
      * @param state2 State 2 to toggle
      * @return The waitable of whatever state was switched to
      */
-    fun toggle(state1: T, state2: T): AWaitable {
+    fun toggle(state1: T, state2: T): IWaitable {
         return if (getState() == state1) {
             setState(state2)
         } else {

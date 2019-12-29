@@ -9,7 +9,7 @@ import org.snakeskin.hid.listener.ButtonEdgeListener
 import org.snakeskin.hid.listener.ButtonHoldListener
 import org.snakeskin.hid.listener.HatChangeListener
 import org.snakeskin.hid.mappings.*
-import org.snakeskin.logic.scalars.Scalar
+import org.snakeskin.logic.scalars.IScalar
 import org.snakeskin.measure.time.TimeMeasureSeconds
 
 object HumanControls {
@@ -30,7 +30,7 @@ object HumanControls {
         fun invertButton(button: Int) = controller.getButton(button).invert()
 
         fun deadbandAxis(axis: Int, deadband: Double) { controller.getAxis(axis).deadband = deadband }
-        fun scaleAxis(axis: Int, scaling: Scalar) { controller.getAxis(axis).scalar = scaling }
+        fun scaleAxis(axis: Int, scaling: IScalar) { controller.getAxis(axis).scalar = scaling }
 
         fun bindAxis(axis: Int, channel: AxisChannel) { controller.bindAxisChannel(axis, channel) }
         fun bindButton(button: Int, channel: ButtonChannel) { controller.bindButtonChannel(button, channel) }
@@ -49,7 +49,7 @@ object HumanControls {
     }
 
     //CUSTOM
-    class CustomBuilder(private val custom: CustomController): Builder<CustomController>, ControlsBuilder(custom) {
+    class CustomBuilder(private val custom: CustomController): IBuilder<CustomController>, ControlsBuilder(custom) {
         override fun build() = custom
     }
     fun custom(id: Int, numAxes: Int, numButtons: Int, numHats: Int, setup: CustomBuilder.() -> Unit = {}): CustomController {
@@ -59,7 +59,7 @@ object HumanControls {
     }
 
     //EXTREME 3D
-    class Extreme3DBuilder(private val extreme3d: Extreme3D): Builder<Extreme3D>, ControlsBuilder(extreme3d) {
+    class Extreme3DBuilder(private val extreme3d: Extreme3D): IBuilder<Extreme3D>, ControlsBuilder(extreme3d) {
         override fun build() = extreme3d
 
         val Axes = Extreme3D.Axes
@@ -73,7 +73,7 @@ object HumanControls {
     }
 
     //ATTACK 3D
-    class Attack3Builder(private val attack3: Attack3): Builder<Attack3>, ControlsBuilder(attack3) {
+    class Attack3Builder(private val attack3: Attack3): IBuilder<Attack3>, ControlsBuilder(attack3) {
         override fun build() = attack3
 
         val Axes = Attack3.Axes
@@ -86,7 +86,7 @@ object HumanControls {
     }
 
     //F310
-    class F310Builder(private val f310: F310): Builder<F310>, ControlsBuilder(f310) {
+    class F310Builder(private val f310: F310): IBuilder<F310>, ControlsBuilder(f310) {
         override fun build() = f310
 
         val Axes = F310.Axes
@@ -100,7 +100,7 @@ object HumanControls {
     }
 
     //DUAL ACTION
-    class DualActionBuilder(private val dualAction: DualAction): Builder<DualAction>, ControlsBuilder(dualAction) {
+    class DualActionBuilder(private val dualAction: DualAction): IBuilder<DualAction>, ControlsBuilder(dualAction) {
         override fun build() = dualAction
 
         val Axes = DualAction.Axes
@@ -114,7 +114,7 @@ object HumanControls {
     }
 
     //T16000M
-    class T16000MBuilder(private val t16000m: T16000M): Builder<T16000M>, ControlsBuilder(t16000m) {
+    class T16000MBuilder(private val t16000m: T16000M): IBuilder<T16000M>, ControlsBuilder(t16000m) {
         override fun build() = t16000m
 
         val Axes = T16000M.Axes
@@ -128,7 +128,7 @@ object HumanControls {
     }
 
     //SAITEK HEAVY EQUIPMENT SIDE PANEL
-    class SaitekButtonBoxBuilder(private val saitekButtonBox: SaitekButtonBox): Builder<SaitekButtonBox>, ControlsBuilder(saitekButtonBox) {
+    class SaitekButtonBoxBuilder(private val saitekButtonBox: SaitekButtonBox): IBuilder<SaitekButtonBox>, ControlsBuilder(saitekButtonBox) {
         override fun build() = saitekButtonBox
 
         val Axes = SaitekButtonBox.Axes
