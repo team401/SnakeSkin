@@ -10,6 +10,7 @@ import org.snakeskin.hid.HIDUpdater
 import org.snakeskin.init.InitManager
 import org.snakeskin.registry.SubsystemsRegistry
 import org.snakeskin.runtime.SnakeskinPlatform
+import org.snakeskin.utility.value.AsyncBoolean
 
 /**
  * @author Cameron Earle
@@ -19,6 +20,8 @@ import org.snakeskin.runtime.SnakeskinPlatform
  * Implements the old "IterativeRobot" that waits for driver station data.  Also removes the annoying overrun messages
  */
 class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
+    private var exit by AsyncBoolean(false)
+
     init {
         HAL.report(FRCNetComm.tResourceType.kResourceType_Framework, FRCNetComm.tInstances.kFramework_Timed)
     }
@@ -31,15 +34,19 @@ class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than
         val thread = Thread.currentThread()
         while (!thread.isInterrupted) {
             m_ds.waitForData()
+
+            if (exit) {
+                break
+            }
+
             loopFunc()
         }
     }
 
-    /* TODO uncomment for WPILib 2020
     override fun endCompetition() {
-        //no-op? Not really sure what we're supposed to do here
+        exit = true
+        m_ds.wakeupWaitForData()
     }
-     */
 
     override fun testPeriodic() {}
     override fun disabledPeriodic() {}
