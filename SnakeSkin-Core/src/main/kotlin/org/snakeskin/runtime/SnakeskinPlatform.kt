@@ -14,7 +14,7 @@ enum class SnakeskinPlatform(val platformBindingClass: String) {
 
     /**
      * A platform that represents a completely software oriented system.  This is useful for simulation.
-     * In this platform, all timing and execution are mocked and steppapble
+     * In this platform, all timing and execution are mocked and steppable
      */
     SOFTWARE("org.snakeskin.runtime.impl.RuntimePlatformBindingSoftware"),
 
