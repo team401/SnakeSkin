@@ -1,19 +1,31 @@
 package org.snakeskin.component.impl
 
-import com.revrobotics.CANSparkMax
+import com.revrobotics.*
 import org.snakeskin.component.ISparkMaxDevice
-import org.snakeskin.component.OutputVoltageReadingMode
+import org.snakeskin.component.SparkMaxOutputVoltageReadingMode
 import org.snakeskin.component.provider.IFollowableProvider
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerMinute
 import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
 import org.snakeskin.runtime.SnakeskinRuntime
 
-//TOOD finish this class
-class HardwareSparkMaxDevice(val device: CANSparkMax, val voltageReadingMode: OutputVoltageReadingMode) : ISparkMaxDevice {
+class HardwareSparkMaxDevice(val device: CANSparkMax, val voltageReadingMode: SparkMaxOutputVoltageReadingMode, useExternalEncoderPinout: Boolean = false, encoderCpr: Int = 0) : ISparkMaxDevice {
+    private val encoder = if (useExternalEncoderPinout) {
+        device.getAlternateEncoder(AlternateEncoderType.kQuadrature, encoderCpr) //Use alternate pinout if selected
+    } else {
+        if (device.initialMotorType == CANSparkMaxLowLevel.MotorType.kBrushless) {
+            device.encoder //Use brushless encoder
+        } else {
+            device.getEncoder(EncoderType.kQuadrature, encoderCpr) //Use user specified encoder
+        }
+    }
+
+    private val pidController = device.pidController
+
     private fun getOutputVoltageMultiplier(): Double {
         return when (voltageReadingMode) {
-            OutputVoltageReadingMode.MultiplyVbusSystem -> SnakeskinRuntime.voltage
-            OutputVoltageReadingMode.MultiplyVbusDevice -> device.busVoltage
+            SparkMaxOutputVoltageReadingMode.MultiplyVbusSystem -> SnakeskinRuntime.voltage
+            SparkMaxOutputVoltageReadingMode.MultiplyVbusDevice -> device.busVoltage
         }
     }
 
@@ -49,15 +61,15 @@ class HardwareSparkMaxDevice(val device: CANSparkMax, val voltageReadingMode: Ou
     }
 
     override fun getAngularPosition(): AngularDistanceMeasureRevolutions {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return AngularDistanceMeasureRevolutions(encoder.position)
     }
 
     override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        encoder.position = angle.value
     }
 
     override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return AngularVelocityMeasureRevolutionsPerMinute(encoder.velocity).toRevolutionsPerSecond()
     }
 
     override fun getOutputCurrent(): Double {
@@ -65,10 +77,11 @@ class HardwareSparkMaxDevice(val device: CANSparkMax, val voltageReadingMode: Ou
     }
 
     override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        pidController.setReference(setpoint.value, ControlType.kPosition, 0, ffVolts, CANPIDController.ArbFFUnits.kVoltage)
     }
 
     override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRevolutionsPerSecond, ffVolts: Double) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val velocity = setpoint.toRevolutionsPerMinute().value
+        pidController.setReference(velocity, ControlType.kVelocity, 0, ffVolts, CANPIDController.ArbFFUnits.kVoltage)
     }
 }

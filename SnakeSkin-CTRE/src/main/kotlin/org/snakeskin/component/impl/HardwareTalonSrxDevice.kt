@@ -3,22 +3,22 @@ package org.snakeskin.component.impl
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import org.snakeskin.component.FeedforwardScalingMode
+import org.snakeskin.component.TalonSRXFeedforwardScalingMode
 import org.snakeskin.component.ITalonSrxDevice
 import org.snakeskin.component.provider.IFollowableProvider
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
 import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
 import org.snakeskin.runtime.SnakeskinRuntime
 
-class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution: Double = 4096.0, val ffMode: FeedforwardScalingMode = FeedforwardScalingMode.ScaleVbusSystem) : ITalonSrxDevice {
+class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution: Double = 4096.0, val ffMode: TalonSRXFeedforwardScalingMode = TalonSRXFeedforwardScalingMode.ScaleVbusSystem) : ITalonSrxDevice {
     private fun scaleFfVolts(voltage: Double): Double {
         return when (ffMode) {
-            FeedforwardScalingMode.Scale12V -> voltage / 12.0
-            FeedforwardScalingMode.ScaleVbusSystem -> {
+            TalonSRXFeedforwardScalingMode.Scale12V -> voltage / 12.0
+            TalonSRXFeedforwardScalingMode.ScaleVbusSystem -> {
                 val vbus = SnakeskinRuntime.voltage
                 return voltage / vbus
             }
-            FeedforwardScalingMode.ScaleVbusDevice -> {
+            TalonSRXFeedforwardScalingMode.ScaleVbusDevice -> {
                 val vbus = device.busVoltage
                 voltage / vbus
             }

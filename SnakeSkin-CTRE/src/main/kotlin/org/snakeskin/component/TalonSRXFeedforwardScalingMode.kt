@@ -5,7 +5,7 @@ package org.snakeskin.component
  * This enum provides the possible modes for scaling an input voltage on the primary controller side
  * before sending it to the device.
  */
-enum class FeedforwardScalingMode {
+enum class TalonSRXFeedforwardScalingMode {
     /**
      * Scales the desired feedforward voltage by a constant 12 volts.  This can be used in conjunction with
      * the device's voltage compensation mode to ensure the correct voltage is met

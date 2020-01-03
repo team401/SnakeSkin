@@ -2,6 +2,7 @@ package org.snakeskin.dsl
 
 import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.measure.time.TimeMeasureSeconds
+import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
 
 /**
@@ -22,3 +23,9 @@ get() = SnakeskinRuntime.voltage
 fun runTask(task: () -> Unit) {
     SnakeskinRuntime.executeTask(ExceptionHandlingRunnable(task))
 }
+
+/**
+ * Returns true if the running platform is hardware (currently FRC roboRIO), and false otherwise
+ */
+val isHardware: Boolean
+get() = SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO

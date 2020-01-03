@@ -5,7 +5,7 @@ package org.snakeskin.component
  * The SPARK MAX does not provide a direct way to read output voltage, so we need to multiply the output percent
  * with a bus voltage.  This enum lets the user select which voltage source to use
  */
-enum class OutputVoltageReadingMode {
+enum class SparkMaxOutputVoltageReadingMode {
     /**
      * Uses SnakeskinRuntime.voltage to get the system bus voltage.  This is fast but potentially inaccurate
      */
