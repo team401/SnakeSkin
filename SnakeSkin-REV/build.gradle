@@ -1,6 +1,6 @@
 dependencies {
     implementation group: 'edu.wpi.first.wpilibj', name: 'wpilibj-java', version: wpilibVersion
-    implementation group: "com.revrobotics.frc", name: "SparkMax-java", version: "1.5.0"
+    implementation group: "com.revrobotics.frc", name: "SparkMax-java", version: "1.5.1"
     implementation project(':SnakeSkin-Core')
 }
 
