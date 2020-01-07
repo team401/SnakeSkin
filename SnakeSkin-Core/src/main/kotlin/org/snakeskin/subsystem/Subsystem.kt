@@ -98,6 +98,7 @@ open class Subsystem(private val loopRate: TimeMeasureSeconds = TimeMeasureSecon
         }
         stateMachines.forEach {
             machine ->
+            machine.registerActionManagers()
             EventRouter.registerHandler(Events.DISABLED, ExceptionHandlingRunnable {
                 machine.setStateInternal(States.DISABLED)
             })

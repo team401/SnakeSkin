@@ -5,10 +5,15 @@ import edu.wpi.first.wpilibj.Timer
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.RealTimeTask
+import org.snakeskin.rt.TaskRegistrationOrder
 import org.snakeskin.utility.value.AsyncDouble
+import java.util.*
 
 class RealTimeExecutorFrcRoborio(rateSeconds: Double): IRealTimeExecutor {
-    private val tasks = arrayListOf<RealTimeTask>()
+    private val headTasks = arrayListOf<RealTimeTask>()
+    private val defaultTasks = arrayListOf<RealTimeTask>()
+    private val tailTasks = arrayListOf<RealTimeTask>()
+    private lateinit var tasks: Array<RealTimeTask>
     private var lastDt by AsyncDouble(0.0)
     private var lastTime = Timer.getFPGATimestamp()
     private var isRunning = false
@@ -38,14 +43,20 @@ class RealTimeExecutorFrcRoborio(rateSeconds: Double): IRealTimeExecutor {
     private val notifier = Notifier(Task())
 
     @Synchronized
-    override fun registerTask(task: RealTimeTask) {
+    override fun registerTask(task: RealTimeTask, order: TaskRegistrationOrder) {
         check(!isRunning) { "Cannot register task to already running RT executor" }
-        tasks.add(task)
+
+        when (order) {
+            TaskRegistrationOrder.HEAD -> headTasks.add(task)
+            TaskRegistrationOrder.DEFAULT -> defaultTasks.add(task)
+            TaskRegistrationOrder.TAIL -> tailTasks.add(task)
+        }
     }
 
     @Synchronized
     override fun start() {
         check(!isRunning) { "RT Executor is already running" }
+        tasks = arrayOf(*(headTasks.toTypedArray()), *(defaultTasks.toTypedArray()), *(tailTasks.toTypedArray()))
         notifier.startPeriodic(rate.value)
     }
 }

@@ -9,6 +9,7 @@ import org.snakeskin.hid.IHIDValueProviderFactory
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.RealTimeTask
+import org.snakeskin.rt.TaskRegistrationOrder
 import org.snakeskin.utility.value.AsyncBoolean
 
 /**
@@ -189,14 +190,14 @@ object SnakeskinRuntime {
      * @param executorName The executor to register the task on.  If not provided, schedule on the default executor
      */
     @Synchronized
-    fun registerRealTimeTask(task: RealTimeTask, executorName: String? = null) {
+    fun registerRealTimeTask(task: RealTimeTask, executorName: String? = null, order: TaskRegistrationOrder = TaskRegistrationOrder.DEFAULT) {
         checkIsRunning()
         if (executorName == null) {
             check(::rtExecutor.isInitialized) { "Default RT executor has not been created" }
-            rtExecutor.registerTask(task)
+            rtExecutor.registerTask(task, order)
         } else {
             check(rtExecutors.containsKey(executorName)) { "No RT executor found with name '$executorName'" }
-            rtExecutors[executorName]!!.registerTask(task)
+            rtExecutors[executorName]!!.registerTask(task, order)
         }
     }
 

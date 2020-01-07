@@ -6,6 +6,11 @@ package org.snakeskin.state
  */
 interface IStateActionManager {
     /**
+     * Perform any registration tasks required for the action manager
+     */
+    fun register() {}
+
+    /**
      * Starts the action loop of the state
      */
     fun startAction()

@@ -136,6 +136,12 @@ class StateMachine<T> {
         return waitable
     }
 
+    internal fun registerActionManagers() {
+        states.forEach {
+            it.actionManager.register()
+        }
+    }
+
     /**
      * Sets the state of this machine to the given state.
      * If the machine is already in the given state, no action is taken.

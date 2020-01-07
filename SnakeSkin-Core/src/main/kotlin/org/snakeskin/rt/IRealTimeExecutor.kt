@@ -19,7 +19,7 @@ interface IRealTimeExecutor {
     /**
      * Registers a task with the real time executor
      */
-    fun registerTask(task: RealTimeTask)
+    fun registerTask(task: RealTimeTask, order: TaskRegistrationOrder = TaskRegistrationOrder.DEFAULT)
 
     /**
      * Starts the real time executor
