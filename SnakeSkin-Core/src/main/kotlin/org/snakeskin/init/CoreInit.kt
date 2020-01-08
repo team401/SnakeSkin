@@ -16,8 +16,8 @@ class CoreInit: Initializer {
     }
 
     override fun postStartup() {
-        SnakeskinRuntime.startRealTimeExecutors()
         HIDControllersRegistry.initAll()
         SubsystemsRegistry.initAll()
+        SnakeskinRuntime.startRealTimeExecutors() //Must be last to allow subsystems to register RT tasks
     }
 }
