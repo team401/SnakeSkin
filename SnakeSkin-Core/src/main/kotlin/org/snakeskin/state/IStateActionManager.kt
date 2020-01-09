@@ -19,4 +19,9 @@ interface IStateActionManager {
      * Stops the action loop of the state
      */
     fun stopAction()
+
+    /**
+     * Blocks until the current iteration of the action loop is complete
+     */
+    fun awaitDone()
 }

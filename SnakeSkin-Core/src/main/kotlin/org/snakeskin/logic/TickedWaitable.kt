@@ -12,5 +12,9 @@ open class TickedWaitable: IWaitable {
 
     override fun waitFor() = ticker.await()
 
-    internal fun tick() = ticker.countDown()
+    /**
+     * To be called only by the source of the waitable.  Calling this function from the receiving code
+     * defeats the purpose of the waitable
+     */
+    fun tick() = ticker.countDown()
 }

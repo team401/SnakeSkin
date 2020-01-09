@@ -6,4 +6,5 @@ package org.snakeskin.state
 object EmptyStateActionManager: IStateActionManager {
     override fun startAction() {}
     override fun stopAction() {}
+    override fun awaitDone() {}
 }

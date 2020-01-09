@@ -1,5 +1,6 @@
 package org.snakeskin.rt
 
+import org.snakeskin.logic.TickedWaitable
 import org.snakeskin.measure.time.TimeMeasureSeconds
 
 /**
@@ -25,4 +26,10 @@ interface IRealTimeExecutor {
      * Starts the real time executor
      */
     fun start()
+
+    /**
+     * Adds a ticked waitable to a queue in the executor.  After each loop cycle is complete, the queue will be
+     * iterated and each waitable will be ticked.  This can be used to synchronize actions with the end of a loop.
+     */
+    fun enqueueSignal(waitable: TickedWaitable)
 }

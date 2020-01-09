@@ -1,5 +1,6 @@
 package org.snakeskin.rt.impl
 
+import org.snakeskin.logic.TickedWaitable
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.RealTimeTask
@@ -17,4 +18,7 @@ object NullRealTimeExecutor : IRealTimeExecutor {
         //no-op
     }
 
+    override fun enqueueSignal(waitable: TickedWaitable) {
+        //no-op
+    }
 }

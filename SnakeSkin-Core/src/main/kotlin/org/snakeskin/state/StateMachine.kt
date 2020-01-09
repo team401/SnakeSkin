@@ -21,7 +21,6 @@ import java.util.concurrent.locks.ReentrantLock
  */
 class StateMachine<T> {
     private val executor = SnakeskinRuntime.primaryExecutor
-    private val scheduler = SnakeskinRuntime.createSingleUseExecutor()
 
     private val states = arrayListOf<State<*>>() //List of states that this state machine has
     private val globalRejections = hashMapOf<List<*>, () -> Boolean>() //Map of global rejection conditions for specific states
@@ -35,7 +34,6 @@ class StateMachine<T> {
      *
      * Makes cleaner syntax for rejecting a bunch of states for one reason
      */
-    @SuppressWarnings("UNCHECKED_CAST")
     fun addGlobalRejection(states: List<T>, condition: () -> Boolean) {
         globalRejections[states] = condition
     }
@@ -69,10 +67,9 @@ class StateMachine<T> {
 
     private val stateHistory = HistoryValue<Any?>(null) //State logic ignores T
 
-    private val switchLock = ReentrantLock()
+    private val switchLock = Object()
 
-    private fun setStateImpl(state: Any): IWaitable {
-        val toReturn = TickedWaitable() //The waitable element.  It will tick once "entry" has completed
+    private fun setStateImpl(state: Any, waitable: TickedWaitable) {
         if (state != activeState?.name) { //If the state requested is different from the current state
             val desiredState = if (states.any { it.name == state }) { //If the list contains the desired state
                 states.last { it.name == state } //Make it the desired state
@@ -88,9 +85,10 @@ class StateMachine<T> {
                 //EXIT THE OLD STATE
                 if (activeState != null) {
                     activeActionManager?.stopAction() //Cancel the action loop
+                    activeActionManager?.awaitDone() //Wait for the action to be done
 
                     //Run the exit method and wait
-                    executor.scheduleSingleTaskNow(activeState?.exit ?: ExceptionHandlingRunnable.EMPTY).waitFor()
+                    activeState?.exit?.run()
                 }
 
                 //UPDATE THE STORED STATE
@@ -98,10 +96,8 @@ class StateMachine<T> {
                 stateHistory.update(state) //Update the state history to the new state
 
                 //ENTER THE NEW STATE
-                executor.scheduleSingleTaskNow(ExceptionHandlingRunnable {
-                    desiredState.entry.run() //Run the entry method of the desired state
-                    toReturn.tick() //Tick the waitable
-                }).waitFor() //And wait
+                desiredState.entry.run()
+                waitable.tick()
 
                 //RUN THE LOOP OF THE NEW STATE
                 activeActionManager = desiredState.actionManager
@@ -113,24 +109,19 @@ class StateMachine<T> {
                         setStateInternal(desiredState.timeoutTo)
                     }, desiredState.timeout)
                 }
-
-                return toReturn //Return the waitable
             } else { //The switch was rejected
-                return NullWaitable //Return a null waitable
+                waitable.tick()
             }
         } else { //There is no need to switch
-            return NullWaitable //Return a null waitable
+            waitable.tick()
         }
     }
 
     internal fun setStateInternal(state: Any): IWaitable {
-        val waitable = WaitableFuture()
-        scheduler.scheduleSingleTaskNow(ExceptionHandlingRunnable {
-            try {
-                switchLock.lock()
-                waitable.initWaitable(setStateImpl(state))
-            } finally {
-                switchLock.unlock()
+        val waitable = TickedWaitable()
+        executor.scheduleSingleTaskNow(ExceptionHandlingRunnable {
+            synchronized(switchLock) {
+                setStateImpl(state, waitable)
             }
         })
         return waitable

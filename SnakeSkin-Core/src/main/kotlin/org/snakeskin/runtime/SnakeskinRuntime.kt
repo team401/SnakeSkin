@@ -201,6 +201,18 @@ object SnakeskinRuntime {
         }
     }
 
+    @Synchronized
+    fun getRealTimeExecutor(executorName: String? = null): IRealTimeExecutor {
+        checkIsRunning()
+        return if (executorName == null) {
+            check(::rtExecutor.isInitialized) { "Default RT executor has not been created" }
+            rtExecutor
+        } else {
+            check(rtExecutors.containsKey(executorName)) { "No RT executor found with name '$executorName'" }
+            rtExecutors[executorName]!!
+        }
+    }
+
     /**
      * Starts all created real time executors
      */
