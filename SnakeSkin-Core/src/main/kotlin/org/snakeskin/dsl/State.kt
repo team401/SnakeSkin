@@ -100,7 +100,7 @@ open class StateBuilder<T>(name: T): IBuilder<State<T>> {
      * @param actionBlock The function to run on the state's loop
      */
     fun action(rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02), actionBlock: () -> Unit) {
-        builder.actionManager = DefaultStateActionManager(ExceptionHandlingRunnable(actionBlock), rate)
+        builder.actionManager = DefaultStateActionManager(actionBlock, rate)
     }
 
     /**

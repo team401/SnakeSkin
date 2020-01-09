@@ -6,14 +6,14 @@ import org.snakeskin.executor.IExecutorTaskHandle
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.runtime.SnakeskinRuntime
 
-class DefaultStateActionManager(private val actionRunnable: Runnable, private val rate: TimeMeasureSeconds): IStateActionManager {
+class DefaultStateActionManager(private val actionRunnable: () -> Unit, private val rate: TimeMeasureSeconds): IStateActionManager {
     private var handle: IExecutorTaskHandle = NullExecutorTaskHandle
     private val executor = SnakeskinRuntime.primaryExecutor
 
     private val lock = Object()
     private val exRunnable = ExceptionHandlingRunnable {
         synchronized(lock) {
-            actionRunnable
+            actionRunnable()
         }
     }
 
