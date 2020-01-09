@@ -1,0 +1,3 @@
+package org.snakeskin.component
+
+interface ITalonFxDevice : IMotorControllerSmartComponent

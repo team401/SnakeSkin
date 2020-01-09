@@ -2,15 +2,18 @@ package org.snakeskin.component.impl
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode
+import com.ctre.phoenix.motorcontrol.can.TalonFX
 import org.snakeskin.component.CTREFeedforwardScalingMode
-import org.snakeskin.component.ITalonSrxDevice
+import org.snakeskin.component.ITalonFxDevice
 import org.snakeskin.component.provider.IFollowableProvider
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
 import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
 import org.snakeskin.runtime.SnakeskinRuntime
 
-class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution: Double = 4096.0, val ffMode: CTREFeedforwardScalingMode = CTREFeedforwardScalingMode.ScaleVbusSystem) : ITalonSrxDevice {
+class HardwareTalonFxDevice(val device: TalonFX, val ffMode: CTREFeedforwardScalingMode = CTREFeedforwardScalingMode.ScaleVbusSystem): ITalonFxDevice {
+    private val sensorTicksPerRevolution = 2048.0 //Constant for Falcon 500 integrated encoder
+
     private fun scaleFfVolts(voltage: Double): Double {
         return when (ffMode) {
             CTREFeedforwardScalingMode.Scale12V -> voltage / 12.0
@@ -27,34 +30,33 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
 
     override fun follow(master: IFollowableProvider) {
         when (master) {
-            is HardwareTalonSrxDevice -> device.follow(master.device)
-            is HardwareVictorSpxDevice -> device.follow(master.device)
+            is HardwareTalonFxDevice -> device.follow(master.device)
         }
     }
 
     override fun unfollow() {
         //CTRE devices unfollow when a 0.0 percent output command is sent
-        device.set(ControlMode.PercentOutput, 0.0)
+        device.set(TalonFXControlMode.PercentOutput, 0.0)
     }
 
     override fun setPercentOutput(percentOut: Double) {
-        device.set(ControlMode.PercentOutput, percentOut)
+        device.set(TalonFXControlMode.PercentOutput, percentOut)
     }
 
     override fun getPercentOutput(): Double {
         return device.motorOutputPercent
     }
 
-    override fun getOutputVoltage(): Double {
-        return device.motorOutputVoltage
+    override fun stop() {
+        setPercentOutput(0.0)
     }
 
     override fun getInputVoltage(): Double {
         return device.busVoltage
     }
 
-    override fun stop() {
-        setPercentOutput(0.0)
+    override fun getOutputVoltage(): Double {
+        return device.motorOutputVoltage
     }
 
     override fun getAngularPosition(): AngularDistanceMeasureRevolutions {
@@ -79,8 +81,7 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
     override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
         val ticks = setpoint.value * sensorTicksPerRevolution
         val ffPercent = scaleFfVolts(ffVolts)
-        device.set(ControlMode.Position, ticks, DemandType.ArbitraryFeedForward, ffPercent)
-    }
+        device.set(ControlMode.Position, ticks, DemandType.ArbitraryFeedForward, ffPercent)    }
 
     override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRevolutionsPerSecond, ffVolts: Double) {
         val ticksPer100Ms = (setpoint.value * sensorTicksPerRevolution) / 10.0 //Divide by 10 to convert seconds to deciseconds (100 ms)
