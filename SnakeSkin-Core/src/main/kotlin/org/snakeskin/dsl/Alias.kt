@@ -15,3 +15,4 @@ typealias Subsystem = org.snakeskin.subsystem.Subsystem
 typealias StateMachine<T> = org.snakeskin.state.StateMachine<T>
 typealias Setup = org.snakeskin.annotation.Setup
 typealias BooleanState = org.snakeskin.logic.BooleanState
+typealias Hardware = org.snakeskin.component.Hardware

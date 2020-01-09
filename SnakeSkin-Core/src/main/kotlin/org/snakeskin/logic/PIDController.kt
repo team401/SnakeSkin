@@ -10,6 +10,7 @@ import kotlin.math.abs
  * This is an adapted version of CTRE's PID controller.  The implementation is subject to change,
  * however the API will remain the same.  This class is fully thread safe
  */
+@Deprecated("Implementation is overly complex.  Consider using WPILib's options.")
 class PIDController(p: Double = 0.0,
                     i: Double = 0.0,
                     d: Double = 0.0,

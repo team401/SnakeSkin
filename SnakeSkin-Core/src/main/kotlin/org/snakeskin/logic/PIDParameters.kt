@@ -4,6 +4,7 @@ package org.snakeskin.logic
  * @author Cameron Earle
  * @version 12/26/17
  */
+@Deprecated("Implementation is overly complex.  Consider using WPILib's options.")
 class PIDParameters(val p: Double = 0.0,
                     val i: Double = 0.0,
                     val d: Double = 0.0,
