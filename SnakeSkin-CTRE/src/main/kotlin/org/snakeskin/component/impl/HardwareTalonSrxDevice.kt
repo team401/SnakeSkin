@@ -87,4 +87,10 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
         val ffPercent = scaleFfVolts(ffVolts)
         device.set(ControlMode.Velocity, ticksPer100Ms, DemandType.ArbitraryFeedForward, ffPercent)
     }
+
+    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
+        val ticks = setpoint.value * sensorTicksPerRevolution
+        val ffPercent = scaleFfVolts(ffVolts)
+        device.set(ControlMode.MotionMagic, ticks, DemandType.ArbitraryFeedForward, ffPercent)
+    }
 }

@@ -28,7 +28,7 @@ class HatChannel {
     /**
      * Binds a controller provider to this channel
      */
-    fun bind(hat: HIDHat) {
+    internal fun bind(hat: HIDHat) {
         this.hat = hat
     }
 }

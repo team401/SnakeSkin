@@ -84,4 +84,8 @@ class HardwareSparkMaxDevice(val device: CANSparkMax, val voltageReadingMode: Sp
         val velocity = setpoint.toRevolutionsPerMinute().value
         pidController.setReference(velocity, ControlType.kVelocity, 0, ffVolts, CANPIDController.ArbFFUnits.kVoltage)
     }
+
+    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
+        pidController.setReference(setpoint.value, ControlType.kSmartMotion, 0, ffVolts, CANPIDController.ArbFFUnits.kVoltage)
+    }
 }

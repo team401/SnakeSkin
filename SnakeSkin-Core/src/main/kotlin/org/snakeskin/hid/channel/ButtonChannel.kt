@@ -22,7 +22,7 @@ class ButtonChannel {
     /**
      * Binds a controller provider to this channel
      */
-    fun bind(button: HIDButton) {
+    internal fun bind(button: HIDButton) {
         this.button = button
     }
 }

@@ -1,6 +1,7 @@
 package org.snakeskin.component
 
 import org.snakeskin.component.provider.IAngularPositionMotorControlProvider
+import org.snakeskin.component.provider.IAngularProfileMotorControlProvider
 import org.snakeskin.component.provider.IAngularVelocityMotorControlProvider
 
 /**
@@ -13,4 +14,5 @@ interface IMotorControllerSmartComponent :
         IAngularPositionVelocitySensorComponent,
         ICurrentVoltageSensorComponent,
         IAngularPositionMotorControlProvider,
-        IAngularVelocityMotorControlProvider
+        IAngularVelocityMotorControlProvider,
+        IAngularProfileMotorControlProvider

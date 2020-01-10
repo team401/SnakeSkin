@@ -109,7 +109,7 @@ open class StateBuilder<T>(name: T): IBuilder<State<T>> {
      * @param rtActionBlock The function to run on the state's loop.  The first parameter is the timestamp, the second is the dt
      */
     fun rtAction(executorName: String? = null, rtActionBlock: (timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) -> Unit) {
-        builder.actionManager = RealTimeStateActionManager(rtActionBlock, executorName)
+        builder.actionManager = RealTimeStateActionManager(rtActionBlock, executorName, builder.name.toString())
     }
 
     /**

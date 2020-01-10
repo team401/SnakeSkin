@@ -98,9 +98,9 @@ open class Subsystem(private val loopRate: TimeMeasureSeconds = TimeMeasureSecon
         }
         stateMachines.forEach {
             machine ->
-            machine.registerActionManagers()
+            machine.register()
             EventRouter.registerHandler(Events.DISABLED, ExceptionHandlingRunnable {
-                machine.setStateInternal(States.DISABLED)
+                machine.disable()
             })
         }
         loopTaskHandle = executor.schedulePeriodicTask(ExceptionHandlingRunnable(::action), loopRate)

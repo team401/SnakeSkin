@@ -25,6 +25,8 @@ class StateMachine<T> {
     private val states = arrayListOf<State<*>>() //List of states that this state machine has
     private val globalRejections = hashMapOf<List<*>, () -> Boolean>() //Map of global rejection conditions for specific states
 
+    private var registered = false //Becomes true once the parent subsystem calls "register".  Prevents disabled subsystems from running.
+
     /**
      * Adds a global rejection to the state machine, which will
      * reject all of the given states if the condition is met
@@ -70,6 +72,10 @@ class StateMachine<T> {
     private val switchLock = Object()
 
     private fun setStateImpl(state: Any, waitable: TickedWaitable) {
+        if (!registered) {
+            waitable.tick()
+            return //Do now allow any state transitions if the state machine is not registered
+        }
         if (state != activeState?.name) { //If the state requested is different from the current state
             val desiredState = if (states.any { it.name == state }) { //If the list contains the desired state
                 states.last { it.name == state } //Make it the desired state
@@ -127,7 +133,8 @@ class StateMachine<T> {
         return waitable
     }
 
-    internal fun registerActionManagers() {
+    internal fun register() {
+        registered = true
         states.forEach {
             it.actionManager.register()
         }
@@ -147,6 +154,11 @@ class StateMachine<T> {
      * Returns the state machine to the state it was in previously
      */
     fun back() = setStateInternal(getLastState())
+
+    /**
+     * Sets the state machine to the built in "disabled" state
+     */
+    fun disable() = setStateInternal(States.DISABLED)
 
     /**
      * Gets the state that the machine is currently in
@@ -192,5 +204,4 @@ class StateMachine<T> {
             setState(state1)
         }
     }
-
 }

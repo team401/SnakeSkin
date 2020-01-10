@@ -81,11 +81,18 @@ class HardwareTalonFxDevice(val device: TalonFX, val ffMode: CTREFeedforwardScal
     override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
         val ticks = setpoint.value * sensorTicksPerRevolution
         val ffPercent = scaleFfVolts(ffVolts)
-        device.set(ControlMode.Position, ticks, DemandType.ArbitraryFeedForward, ffPercent)    }
+        device.set(TalonFXControlMode.Position, ticks, DemandType.ArbitraryFeedForward, ffPercent)
+    }
 
     override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRevolutionsPerSecond, ffVolts: Double) {
         val ticksPer100Ms = (setpoint.value * sensorTicksPerRevolution) / 10.0 //Divide by 10 to convert seconds to deciseconds (100 ms)
         val ffPercent = scaleFfVolts(ffVolts)
-        device.set(ControlMode.Velocity, ticksPer100Ms, DemandType.ArbitraryFeedForward, ffPercent)
+        device.set(TalonFXControlMode.Velocity, ticksPer100Ms, DemandType.ArbitraryFeedForward, ffPercent)
+    }
+
+    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
+        val ticks = setpoint.value * sensorTicksPerRevolution
+        val ffPercent = scaleFfVolts(ffVolts)
+        device.set(TalonFXControlMode.MotionMagic, ticks, DemandType.ArbitraryFeedForward, ffPercent)
     }
 }

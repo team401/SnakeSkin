@@ -1,12 +1,13 @@
 package org.snakeskin.state
 
+import org.snakeskin.logging.LoggerManager
 import org.snakeskin.logic.TickedWaitable
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.RealTimeTask
 import org.snakeskin.runtime.SnakeskinRuntime
 
-class RealTimeStateActionManager(private val rtRunnable: (TimeMeasureSeconds, TimeMeasureSeconds) -> Unit, val executorName: String? = null): IStateActionManager {
+class RealTimeStateActionManager(private val rtRunnable: (TimeMeasureSeconds, TimeMeasureSeconds) -> Unit, val executorName: String? = null, val stateName: String): IStateActionManager {
     private lateinit var executor: IRealTimeExecutor
 
     private val rtTask = object : RealTimeTask(false) {
@@ -16,8 +17,17 @@ class RealTimeStateActionManager(private val rtRunnable: (TimeMeasureSeconds, Ti
     }
 
     override fun register() {
-        executor = SnakeskinRuntime.getRealTimeExecutor(executorName)
-        executor.registerTask(rtTask)
+        try {
+            executor = SnakeskinRuntime.getRealTimeExecutor(executorName)
+            executor.registerTask(rtTask)
+        } catch (e: IllegalStateException) {
+            //Throws when the RT executor does not exist
+            if (executorName == null) {
+                throw IllegalStateException("Attempted to register rtAction for state '$stateName' on uncreated default RT executor", e)
+            } else {
+                throw IllegalStateException("Attempted to register rtAction for state '$stateName' on uncreated RT executor '$executorName'", e)
+            }
+        }
     }
 
     override fun startAction() {

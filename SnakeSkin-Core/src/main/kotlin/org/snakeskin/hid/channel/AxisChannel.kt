@@ -32,7 +32,7 @@ class AxisChannel {
     /**
      * Binds a controller provider to this channel
      */
-    fun bind(axis: HIDAxis) {
+    internal fun bind(axis: HIDAxis) {
         this.axis = axis
     }
 }
