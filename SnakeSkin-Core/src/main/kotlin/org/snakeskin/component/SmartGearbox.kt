@@ -1,6 +1,7 @@
 package org.snakeskin.component
 
 import org.snakeskin.component.provider.IAngularPositionMotorControlProvider
+import org.snakeskin.component.provider.IAngularProfileMotorControlProvider
 import org.snakeskin.component.provider.IAngularVelocityMotorControlProvider
 import org.snakeskin.component.provider.IFollowProvider
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
@@ -20,7 +21,9 @@ class SmartGearbox(private val master: IMotorControllerSmartComponent,
                    ratioToSensor: Double = 1.0) :
         Gearbox(master, *slaves, ratioToSensor = ratioToSensor),
         IAngularPositionMotorControlProvider,
-        IAngularVelocityMotorControlProvider {
+        IAngularVelocityMotorControlProvider,
+        IAngularProfileMotorControlProvider
+{
     //Closed loop
     override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
         master.setAngularPositionSetpoint(setpoint * ratioToSensor, ffVolts)
@@ -28,5 +31,9 @@ class SmartGearbox(private val master: IMotorControllerSmartComponent,
 
     override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRevolutionsPerSecond, ffVolts: Double) {
         master.setAngularVelocitySetpoint(setpoint * ratioToSensor, ffVolts)
+    }
+
+    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
+        master.setProfiledSetpoint(setpoint * ratioToSensor, ffVolts)
     }
 }

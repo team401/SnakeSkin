@@ -80,6 +80,7 @@ open class Subsystem(private val loopRate: TimeMeasureSeconds = TimeMeasureSecon
                     println("S[$name]\tC[$check]\tFAILED\t-\t$reason")
                 }
         )
+        check(ctx)
         println("Checks done for subsystem $name")
     }
 

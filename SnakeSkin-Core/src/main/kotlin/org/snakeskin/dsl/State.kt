@@ -77,6 +77,12 @@ class StateMachineBuilder<T>: IBuilder<StateMachine<T>> {
      * @return A waitable object that unblocks when the state's "entry" method finishes
      */
     fun setState(state: T) = builder.setState(state)
+
+    /**
+     * Sets the machine to the disabled state
+     * @return A waitable object that unblocks when the state's "entry" method finishes
+     */
+    fun disable() = builder.disable()
 }
 
 /**

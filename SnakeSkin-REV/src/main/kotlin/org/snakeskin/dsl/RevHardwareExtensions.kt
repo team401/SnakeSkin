@@ -1,4 +1,4 @@
-package org.snakeskin.component.dsl
+package org.snakeskin.dsl
 
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
@@ -6,9 +6,6 @@ import org.snakeskin.component.Hardware
 import org.snakeskin.component.ISparkMaxDevice
 import org.snakeskin.component.SparkMaxOutputVoltageReadingMode
 import org.snakeskin.component.impl.HardwareSparkMaxDevice
-import org.snakeskin.component.provider.IFollowableProvider
-import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
-import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
 import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
 
