@@ -1,22 +1,22 @@
 package org.snakeskin.component
 
-import org.snakeskin.component.provider.IHeadingProvider
+import org.snakeskin.component.provider.IYawProvider
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
 import org.snakeskin.template.DifferentialDrivetrainGeometry
 
 /**
  * Represents a differential drivetrain.  A differential drivetrain has left and right gearboxes and a yaw source
  */
-interface IDifferentialDrivetrain: IHeadingProvider {
+interface IDifferentialDrivetrain: IYawProvider {
     val left: Gearbox
     val right: Gearbox
 
-    val headingSensor: IHeadingProvider
+    val yawSensor: IYawProvider
 
     val geometry: DifferentialDrivetrainGeometry
 
-    override fun getYaw() = headingSensor.getYaw()
-    override fun setYaw(value: AngularDistanceMeasureDegrees) = headingSensor.setYaw(value)
+    override fun getYaw() = yawSensor.getYaw()
+    override fun setYaw(value: AngularDistanceMeasureDegrees) = yawSensor.setYaw(value)
 
     /**
      * Applies "tank" controls to the gearboxes, in percent output mode.

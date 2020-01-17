@@ -1,6 +1,6 @@
 dependencies {
     implementation group: 'com.squareup', name: 'javapoet', version: '1.11.1'
-    api group: 'org.snakeskin', name: 'SnakeSkin-Units', version: '1.6.1'
+    api group: 'org.snakeskin', name: 'SnakeSkin-Units', version: '1.7'
 }
 
 publishing {

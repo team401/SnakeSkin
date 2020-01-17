@@ -8,7 +8,7 @@ import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
  * No guarantees are made about the range of this value, or how it wraps.  Consumers of these classes
  * should make sure to perform any necessary wrapping themselves.
  */
-interface IHeadingProvider {
+interface IYawProvider {
     /**
      * Sets the current heading to the value specified
      */
