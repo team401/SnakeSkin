@@ -5,11 +5,14 @@ import org.snakeskin.exception.InitException
 import org.snakeskin.executor.ExceptionHandlingRunnable
 import org.snakeskin.executor.IExecutor
 import org.snakeskin.executor.IExecutorTaskHandle
+import org.snakeskin.executor.impl.NullExecutor
 import org.snakeskin.hid.IHIDValueProviderFactory
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.rt.IRealTimeExecutor
 import org.snakeskin.rt.RealTimeTask
 import org.snakeskin.rt.TaskRegistrationOrder
+import org.snakeskin.rt.impl.NullRealTimeExecutor
+import org.snakeskin.runtime.impl.NullRuntimePlatformBinding
 import org.snakeskin.utility.value.AsyncBoolean
 
 /**
@@ -32,7 +35,7 @@ object SnakeskinRuntime {
     /**
      * The binding for the currently running platform.
      */
-    private lateinit var binding: IRuntimePlatformBinding
+    private var binding: IRuntimePlatformBinding = NullRuntimePlatformBinding
 
     /**
      * Modules that have registered with the runtime
@@ -42,13 +45,13 @@ object SnakeskinRuntime {
     /**
      * The primary executor
      */
-    lateinit var primaryExecutor: IExecutor
+    var primaryExecutor: IExecutor = NullExecutor
     private set
 
     /**
      * The default real time executor
      */
-    private lateinit var rtExecutor: IRealTimeExecutor
+    private var rtExecutor: IRealTimeExecutor = NullRealTimeExecutor
 
     /**
      * Other real time executors
@@ -176,7 +179,7 @@ object SnakeskinRuntime {
     fun createRealTimeExecutor(rate: TimeMeasureSeconds, name: String? = null) {
         checkIsRunning()
         if (name == null) {
-            check(!::rtExecutor.isInitialized) { "Default RT executor is already created" }
+            check(rtExecutor === NullRealTimeExecutor) { "Default RT executor is already created" }
             rtExecutor = binding.allocateRealTimeExecutor(rate.value)
         } else {
             check(!rtExecutors.containsKey(name)) { "An RT executor with name '$name' already exists" }
@@ -193,7 +196,7 @@ object SnakeskinRuntime {
     fun registerRealTimeTask(task: RealTimeTask, executorName: String? = null, order: TaskRegistrationOrder = TaskRegistrationOrder.DEFAULT) {
         checkIsRunning()
         if (executorName == null) {
-            check(::rtExecutor.isInitialized) { "Default RT executor has not been created" }
+            check(rtExecutor !== NullRealTimeExecutor) { "Default RT executor has not been created" }
             rtExecutor.registerTask(task, order)
         } else {
             check(rtExecutors.containsKey(executorName)) { "No RT executor found with name '$executorName'" }
@@ -205,7 +208,7 @@ object SnakeskinRuntime {
     fun getRealTimeExecutor(executorName: String? = null): IRealTimeExecutor {
         checkIsRunning()
         return if (executorName == null) {
-            check(::rtExecutor.isInitialized) { "Default RT executor has not been created" }
+            check(rtExecutor !== NullRealTimeExecutor) { "Default RT executor has not been created" }
             rtExecutor
         } else {
             check(rtExecutors.containsKey(executorName)) { "No RT executor found with name '$executorName'" }
@@ -219,9 +222,7 @@ object SnakeskinRuntime {
     @Synchronized
     fun startRealTimeExecutors() {
         checkIsRunning()
-        if (::rtExecutor.isInitialized) {
-            rtExecutor.start()
-        }
+        rtExecutor.start()
         rtExecutors.forEach { (_, executor) ->
             executor.start()
         }

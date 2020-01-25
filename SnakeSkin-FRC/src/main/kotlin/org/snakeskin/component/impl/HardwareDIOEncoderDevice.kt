@@ -7,16 +7,15 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
 
 class HardwareDIOEncoderDevice(val device: Encoder, val ticksPerRev: Double): IDIOEncoderDevice {
     private val scale = device.encodingScale //Grab this for converting velocities
+    private var offset = AngularDistanceMeasureRevolutions(0.0)
 
     override fun getAngularPosition(): AngularDistanceMeasureRevolutions {
-        return AngularDistanceMeasureRevolutions(device.raw / ticksPerRev)
+        return AngularDistanceMeasureRevolutions(device.raw / ticksPerRev) + offset
     }
-
-    /**
-     * Note: this implementation does not honor the angle, and instead sets it to zero
-     */
+    
     override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
         device.reset()
+        offset = angle
     }
 
     override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
