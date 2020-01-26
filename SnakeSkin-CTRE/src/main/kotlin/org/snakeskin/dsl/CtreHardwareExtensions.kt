@@ -3,12 +3,10 @@ package org.snakeskin.dsl
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.can.VictorSPX
+import com.ctre.phoenix.sensors.CANCoder
 import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.component.*
-import org.snakeskin.component.impl.HardwarePigeonImuDevice
-import org.snakeskin.component.impl.HardwareTalonFxDevice
-import org.snakeskin.component.impl.HardwareTalonSrxDevice
-import org.snakeskin.component.impl.HardwareVictorSpxDevice
+import org.snakeskin.component.impl.*
 import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
 
@@ -79,6 +77,23 @@ inline fun Hardware.createTalonPigeonIMU(
         mockProducer: () -> IPigeonImuDevice = { throw NotImplementedError("No mock Pigeon IMU implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
     SnakeskinPlatform.FRC_ROBORIO -> HardwarePigeonImuDevice(PigeonIMU((talonDevice as HardwareTalonSrxDevice).device))
+    else -> mockProducer()
+}
+
+/**
+ * Creates a new CANCoder device object.
+ * @param hardwareId The CAN ID of the CANCoder
+ * @param mockProducer Function which returns a mock object representing the device, used for emulating hardware
+ *
+ * Note that it is assumed that the underlying CANCoder object will be left in its default configuration of degrees
+ * for the angular distance unit, and seconds for the time unit.  Changes to this low-level configuration will result
+ * in invalid values being returned by the accessor functions of the device object.
+ */
+inline fun Hardware.createCANCoder(
+        hardwareId: Int,
+        mockProducer: () -> ICanCoderDevice = { throw NotImplementedError("No mock CANCoder implementation provided") }
+) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.FRC_ROBORIO -> HardwareCanCoderDevice(CANCoder(hardwareId))
     else -> mockProducer()
 }
 
@@ -162,5 +177,16 @@ inline fun useHardware(vararg talonFxDevices: ITalonFxDevice, action: TalonFX.()
 inline fun useHardware(pigeonImuDevice: IPigeonImuDevice, action: PigeonIMU.() -> Unit) {
     if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
         action((pigeonImuDevice as HardwarePigeonImuDevice).device)
+    }
+}
+
+/**
+ * Allows access to hardware device functions of a CANCoder device
+ * @param canCoderDevice The CANCoder device object
+ * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
+ */
+inline fun useHardware(canCoderDevice: ICanCoderDevice, action: CANCoder.() -> Unit) {
+    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
+        action((canCoderDevice as HardwareCanCoderDevice).device)
     }
 }
