@@ -23,6 +23,7 @@ inline fun Hardware.createTalonSRX(
         ffMode: CTREFeedforwardScalingMode = CTREFeedforwardScalingMode.ScaleVbusSystem,
         mockProducer: () -> ITalonSrxDevice = { throw NotImplementedError("No mock TalonSRX implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullTalonSrxDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareTalonSrxDevice(TalonSRX(hardwareId), sensorTicksPerRevolution, ffMode)
     else -> mockProducer()
 }
@@ -36,6 +37,7 @@ inline fun Hardware.createVictorSPX(
         hardwareId: Int,
         mockProducer: () -> IVictorSpxDevice = { throw NotImplementedError("No mock VictorSPX implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullVictorSpxDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareVictorSpxDevice(VictorSPX(hardwareId))
     else -> mockProducer()
 }
@@ -50,6 +52,7 @@ inline fun Hardware.createTalonFX(
         ffMode: CTREFeedforwardScalingMode = CTREFeedforwardScalingMode.ScaleVbusSystem,
         mockProducer: () -> ITalonFxDevice = { throw NotImplementedError("No mock TalonFX implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullTalonFxDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareTalonFxDevice(TalonFX(hardwareId), ffMode)
     else -> mockProducer()
 }
@@ -63,6 +66,7 @@ inline fun Hardware.createCANPigeonIMU(
         hardwareId: Int,
         mockProducer: () -> IPigeonImuDevice = { throw NotImplementedError("No mock Pigeon IMU implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullPigeonImuDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwarePigeonImuDevice(PigeonIMU(hardwareId))
     else -> mockProducer()
 }
@@ -76,6 +80,7 @@ inline fun Hardware.createTalonPigeonIMU(
         talonDevice: ITalonSrxDevice,
         mockProducer: () -> IPigeonImuDevice = { throw NotImplementedError("No mock Pigeon IMU implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullPigeonImuDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwarePigeonImuDevice(PigeonIMU((talonDevice as HardwareTalonSrxDevice).device))
     else -> mockProducer()
 }
@@ -93,6 +98,7 @@ inline fun Hardware.createCANCoder(
         hardwareId: Int,
         mockProducer: () -> ICanCoderDevice = { throw NotImplementedError("No mock CANCoder implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullCanCoderDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareCanCoderDevice(CANCoder(hardwareId))
     else -> mockProducer()
 }

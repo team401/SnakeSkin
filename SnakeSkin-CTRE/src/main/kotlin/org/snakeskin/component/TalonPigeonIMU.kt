@@ -11,6 +11,7 @@ import com.ctre.phoenix.sensors.PigeonImuJNI
  * Pigeon IMU factory for pigeons connected to a Talon SRX.  Allows you to create a "ribbon pigeon" without
  * having a TalonSRX object available
  */
+@Deprecated("Use component system equivalents")
 object TalonPigeonIMU {
     /**
      * Creates a PigeonIMU object given the ID of the Talon SRX

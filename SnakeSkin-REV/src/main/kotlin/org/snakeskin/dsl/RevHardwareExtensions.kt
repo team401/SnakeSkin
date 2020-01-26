@@ -6,6 +6,7 @@ import org.snakeskin.component.Hardware
 import org.snakeskin.component.ISparkMaxDevice
 import org.snakeskin.component.SparkMaxOutputVoltageReadingMode
 import org.snakeskin.component.impl.HardwareSparkMaxDevice
+import org.snakeskin.component.impl.NullSparkMaxDevice
 import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
 
@@ -24,6 +25,7 @@ inline fun Hardware.createBrushedSparkMax(
         useAlternateEncoderPinout: Boolean = false,
         mockProducer: () -> ISparkMaxDevice = { throw NotImplementedError("No mock SPARK MAX implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullSparkMaxDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareSparkMaxDevice(CANSparkMax(
             hardwareId,
             CANSparkMaxLowLevel.MotorType.kBrushed
@@ -42,6 +44,7 @@ inline fun Hardware.createBrushlessSparkMax(
         voltageReadingMode: SparkMaxOutputVoltageReadingMode = SparkMaxOutputVoltageReadingMode.MultiplyVbusSystem,
         mockProducer: () -> ISparkMaxDevice = { throw NotImplementedError("No mock SPARK MAX implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullSparkMaxDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareSparkMaxDevice(CANSparkMax(
             hardwareId,
             CANSparkMaxLowLevel.MotorType.kBrushless
@@ -62,6 +65,7 @@ inline fun Hardware.createBrushlessSparkMaxWithEncoder(
         voltageReadingMode: SparkMaxOutputVoltageReadingMode = SparkMaxOutputVoltageReadingMode.MultiplyVbusSystem,
         mockProducer: () -> ISparkMaxDevice = { throw NotImplementedError("No mock SPARK MAX implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullSparkMaxDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareSparkMaxDevice(CANSparkMax(
             hardwareId,
             CANSparkMaxLowLevel.MotorType.kBrushless

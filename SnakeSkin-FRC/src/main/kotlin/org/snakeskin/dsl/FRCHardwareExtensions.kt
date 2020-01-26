@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.CounterBase
 import edu.wpi.first.wpilibj.Encoder
 import org.snakeskin.component.IDIOEncoderDevice
 import org.snakeskin.component.impl.HardwareDIOEncoderDevice
+import org.snakeskin.component.impl.NullDIOEncoderDevice
 import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
 
@@ -22,6 +23,7 @@ inline fun Hardware.createDIOEncoder(
         invert: Boolean = false,
         mockProducer: () -> IDIOEncoderDevice = { throw NotImplementedError("No mock DIO Encoder implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullDIOEncoderDevice.INSTANCE
     SnakeskinPlatform.FRC_ROBORIO -> HardwareDIOEncoderDevice(Encoder(aChannel, bChannel, invert, CounterBase.EncodingType.k4X), sensorTicksPerRevolution)
     else -> mockProducer()
 }
