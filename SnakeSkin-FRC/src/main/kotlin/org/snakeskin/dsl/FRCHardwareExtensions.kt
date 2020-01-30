@@ -1,10 +1,14 @@
 package org.snakeskin.dsl
 
 import edu.wpi.first.wpilibj.CounterBase
+import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.Encoder
 import org.snakeskin.component.IDIOEncoderDevice
+import org.snakeskin.component.IDigitalInputChannel
 import org.snakeskin.component.impl.HardwareDIOEncoderDevice
+import org.snakeskin.component.impl.HardwareDigitalInputChannel
 import org.snakeskin.component.impl.NullDIOEncoderDevice
+import org.snakeskin.component.impl.NullDigitalInputChannel
 import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
 
@@ -28,6 +32,20 @@ inline fun Hardware.createDIOEncoder(
     else -> mockProducer()
 }
 
+/**
+ * Creates a new digital input channel object.
+ * @param channel The ID of the channel
+ * @param mockProducer Function which returns a mock object representing the device, used for emulating hardware
+ */
+inline fun Hardware.createDigitalInputChannel(
+        channel: Int,
+        mockProducer: () -> IDigitalInputChannel = { throw NotImplementedError("No mock digital input implementation provided") }
+) = when (SnakeskinRuntime.platform) {
+    SnakeskinPlatform.UNDEFINED -> NullDigitalInputChannel.INSTANCE
+    SnakeskinPlatform.FRC_ROBORIO -> HardwareDigitalInputChannel(DigitalInput(channel))
+    else -> mockProducer()
+}
+
 
 /**
  * Allows access to hardware device functions of a DIO Encoder device
@@ -37,5 +55,16 @@ inline fun Hardware.createDIOEncoder(
 inline fun useHardware(dioEncoderDevice: IDIOEncoderDevice, action: Encoder.() -> Unit) {
     if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
         action((dioEncoderDevice as HardwareDIOEncoderDevice).device)
+    }
+}
+
+/**
+ * Allows access to hardware device functions of a digital input channel
+ * @param digitalInputChannel The digital input channel object
+ * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
+ */
+inline fun useHardware(digitalInputChannel: IDigitalInputChannel, action: DigitalInput.() -> Unit) {
+    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
+        action((digitalInputChannel as HardwareDigitalInputChannel).channel)
     }
 }
