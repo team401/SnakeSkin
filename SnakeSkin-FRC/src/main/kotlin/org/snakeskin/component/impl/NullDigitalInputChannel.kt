@@ -5,7 +5,7 @@ import org.snakeskin.component.IDigitalInputChannel
 /**
  * No-op implementation of a digital input
  */
-class NullDigitalInputChannel private constructor(): IDigitalInputChannel {
+open class NullDigitalInputChannel private constructor(): IDigitalInputChannel {
     companion object {
         val INSTANCE = NullDigitalInputChannel()
     }
