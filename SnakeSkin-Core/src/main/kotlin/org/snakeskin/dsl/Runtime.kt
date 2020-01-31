@@ -1,6 +1,7 @@
 package org.snakeskin.dsl
 
 import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.executor.IExecutorTaskHandle
 import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.runtime.SnakeskinPlatform
 import org.snakeskin.runtime.SnakeskinRuntime
@@ -18,8 +19,29 @@ fun readVoltage() = SnakeskinRuntime.voltage
 /**
  * Runs a task in the background
  */
-fun runTask(task: () -> Unit) {
-    SnakeskinRuntime.executeTask(ExceptionHandlingRunnable(task))
+fun runTask(task: () -> Unit): IExecutorTaskHandle {
+    return SnakeskinRuntime.executeTask(ExceptionHandlingRunnable(task))
+}
+
+/**
+ * Runs a periodic task in the background
+ */
+fun runPeriodic(period: TimeMeasureSeconds, task: () -> Unit): IExecutorTaskHandle {
+    return SnakeskinRuntime.startPeriodicTask(ExceptionHandlingRunnable(task), period)
+}
+
+/**
+ * Runs a task in the background after a given delay
+ */
+fun runTaskAfter(delay: TimeMeasureSeconds, task: () -> Unit): IExecutorTaskHandle {
+    return SnakeskinRuntime.executeTaskAfter(ExceptionHandlingRunnable(task), delay)
+}
+
+/**
+ * Delays for a given time
+ */
+fun delay(delay: TimeMeasureSeconds) {
+    SnakeskinRuntime.delay(delay)
 }
 
 /**
