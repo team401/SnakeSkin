@@ -13,7 +13,7 @@ import org.snakeskin.runtime.IRuntimePlatformBinding
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-class RuntimePlatformBindingFrcRoborio: IRuntimePlatformBinding {
+class RuntimePlatformBindingFrcWpiSim: IRuntimePlatformBinding {
     override fun getTimestampSeconds(): Double {
         return Timer.getFPGATimestamp()
     }

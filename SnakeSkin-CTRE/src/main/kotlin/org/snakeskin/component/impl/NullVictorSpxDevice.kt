@@ -9,6 +9,7 @@ import org.snakeskin.component.provider.IFollowableProvider
 open class NullVictorSpxDevice private constructor(): IVictorSpxDevice {
     companion object {
         val INSTANCE = NullVictorSpxDevice()
+        val producer = { NullCanCoderDevice.INSTANCE }
     }
 
     override fun follow(master: IFollowableProvider) {

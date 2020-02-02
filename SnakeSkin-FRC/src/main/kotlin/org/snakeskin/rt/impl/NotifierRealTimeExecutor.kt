@@ -11,7 +11,7 @@ import org.snakeskin.utility.value.AsyncDouble
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class RealTimeExecutorFrcRoborio(rateSeconds: Double): IRealTimeExecutor {
+class NotifierRealTimeExecutor(rateSeconds: Double): IRealTimeExecutor {
     private val headTasks = arrayListOf<RealTimeTask>()
     private val defaultTasks = arrayListOf<RealTimeTask>()
     private val tailTasks = arrayListOf<RealTimeTask>()

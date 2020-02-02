@@ -3,6 +3,7 @@ package org.snakeskin
 import edu.wpi.first.hal.FRCNetComm
 import edu.wpi.first.hal.HAL
 import edu.wpi.first.wpilibj.IterativeRobotBase
+import edu.wpi.first.wpilibj.RobotBase
 import org.snakeskin.auto.AutoManager
 import org.snakeskin.event.EventRouter
 import org.snakeskin.event.Events
@@ -19,7 +20,7 @@ import org.snakeskin.utility.value.AsyncBoolean
  * Main class for loading
  * Implements the old "IterativeRobot" that waits for driver station data.  Also removes the annoying overrun messages
  */
-class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
+class SnakeskinRobot: IterativeRobotBase(1.0) { //Use a number much bigger than 20 ms to avoid spamming overrun messages
     private var exit by AsyncBoolean(false)
 
     init {
@@ -54,7 +55,11 @@ class RobotFrcRoborio: IterativeRobotBase(1.0) { //Use a number much bigger than
 
     override fun robotInit() {
         //Run the Init Manager to initialize the user code
-        InitManager.init(SnakeskinPlatform.FRC_ROBORIO)
+        if (RobotBase.isReal()) {
+            InitManager.init(SnakeskinPlatform.FRC_ROBORIO)
+        } else {
+            InitManager.init(SnakeskinPlatform.FRC_WPISIM)
+        }
     }
 
     override fun disabledInit() {

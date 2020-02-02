@@ -10,6 +10,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
 open class NullCanCoderDevice private constructor() : ICanCoderDevice {
     companion object {
         val INSTANCE = NullCanCoderDevice()
+        val producer = { INSTANCE }
     }
 
     override fun getAngularPosition(): AngularDistanceMeasureRevolutions {

@@ -9,6 +9,7 @@ import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
 open class NullPigeonImuDevice private constructor(): IPigeonImuDevice {
     companion object {
         val INSTANCE = NullPigeonImuDevice()
+        val producer = { NullCanCoderDevice.INSTANCE }
     }
 
     override fun setYaw(value: AngularDistanceMeasureDegrees) {

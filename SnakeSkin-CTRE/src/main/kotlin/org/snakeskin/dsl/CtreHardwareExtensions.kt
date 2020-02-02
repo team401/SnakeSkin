@@ -109,21 +109,8 @@ inline fun Hardware.createCANCoder(
  * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
  */
 inline fun useHardware(talonSrxDevice: ITalonSrxDevice, action: TalonSRX.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        action((talonSrxDevice as HardwareTalonSrxDevice).device)
-    }
-}
-
-/**
- * Allows access to hardware device functions of multiple Talon SRX devices
- * @param talonSrxDevices The Talon SRX device objects
- * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
- */
-inline fun useHardware(vararg talonSrxDevices: ITalonSrxDevice, action: TalonSRX.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        talonSrxDevices.forEach {
-            action((it as HardwareTalonSrxDevice).device)
-        }
+    if (talonSrxDevice is HardwareTalonSrxDevice) {
+        action(talonSrxDevice.device)
     }
 }
 
@@ -133,21 +120,8 @@ inline fun useHardware(vararg talonSrxDevices: ITalonSrxDevice, action: TalonSRX
  * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
  */
 inline fun useHardware(victorSpxDevice: IVictorSpxDevice, action: VictorSPX.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        action((victorSpxDevice as HardwareVictorSpxDevice).device)
-    }
-}
-
-/**
- * Allows access to hardware device functions of multiple Victor SPX devices
- * @param victorSpxDevices The Victor SPX device objects
- * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
- */
-inline fun useHardware(vararg victorSpxDevices: IVictorSpxDevice, action: VictorSPX.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        victorSpxDevices.forEach {
-            action((it as HardwareVictorSpxDevice).device)
-        }
+    if (victorSpxDevice is HardwareVictorSpxDevice) {
+        action(victorSpxDevice.device)
     }
 }
 
@@ -157,21 +131,8 @@ inline fun useHardware(vararg victorSpxDevices: IVictorSpxDevice, action: Victor
  * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
  */
 inline fun useHardware(talonFxDevice: ITalonFxDevice, action: TalonFX.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        action((talonFxDevice as HardwareTalonFxDevice).device)
-    }
-}
-
-/**
- * Allows access to hardware device functions of multipile Talon FX devices
- * @param talonFxDevices The Talon FX device objects
- * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
- */
-inline fun useHardware(vararg talonFxDevices: ITalonFxDevice, action: TalonFX.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        talonFxDevices.forEach {
-            action((it as HardwareTalonFxDevice).device)
-        }
+    if (talonFxDevice is HardwareTalonFxDevice) {
+        action(talonFxDevice.device)
     }
 }
 
@@ -181,8 +142,8 @@ inline fun useHardware(vararg talonFxDevices: ITalonFxDevice, action: TalonFX.()
  * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
  */
 inline fun useHardware(pigeonImuDevice: IPigeonImuDevice, action: PigeonIMU.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        action((pigeonImuDevice as HardwarePigeonImuDevice).device)
+    if (pigeonImuDevice is HardwarePigeonImuDevice) {
+        action(pigeonImuDevice.device)
     }
 }
 
@@ -192,7 +153,7 @@ inline fun useHardware(pigeonImuDevice: IPigeonImuDevice, action: PigeonIMU.() -
  * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
  */
 inline fun useHardware(canCoderDevice: ICanCoderDevice, action: CANCoder.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        action((canCoderDevice as HardwareCanCoderDevice).device)
+    if (canCoderDevice is HardwareCanCoderDevice) {
+        action(canCoderDevice.device)
     }
 }

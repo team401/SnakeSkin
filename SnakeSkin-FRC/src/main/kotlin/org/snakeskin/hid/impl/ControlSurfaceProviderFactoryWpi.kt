@@ -6,7 +6,7 @@ import org.snakeskin.hid.provider.IAxisValueProvider
 import org.snakeskin.hid.provider.IButtonValueProvider
 import org.snakeskin.hid.provider.IHatValueProvider
 
-class ControlSurfaceProviderFactoryFrcRoborio(private val joystick: Joystick): IHIDValueProviderFactory {
+class ControlSurfaceProviderFactoryWpi(private val joystick: Joystick): IHIDValueProviderFactory {
     override fun createAxisValueProvider(id: Int): IAxisValueProvider {
         return WPIJoystickAxisValueProvider(joystick, id)
     }

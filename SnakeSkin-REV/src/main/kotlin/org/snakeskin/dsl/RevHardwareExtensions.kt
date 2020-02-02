@@ -79,20 +79,7 @@ inline fun Hardware.createBrushlessSparkMaxWithEncoder(
  * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
  */
 inline fun useHardware(sparkMaxDevice: ISparkMaxDevice, action: CANSparkMax.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        action((sparkMaxDevice as HardwareSparkMaxDevice).device)
-    }
-}
-
-/**
- * Allows access to hardware device functions of multiple SPARK MAX devices
- * @param sparkMaxDevices The SPARK MAX device objects
- * @param action The action to run on the hardware.  If the runtime is not hardware, the action will not be run
- */
-inline fun useHardware(vararg sparkMaxDevices: ISparkMaxDevice, action: CANSparkMax.() -> Unit) {
-    if (SnakeskinRuntime.platform == SnakeskinPlatform.FRC_ROBORIO) {
-        sparkMaxDevices.forEach {
-            action((it as HardwareSparkMaxDevice).device)
-        }
+    if (sparkMaxDevice is HardwareSparkMaxDevice) {
+        action(sparkMaxDevice.device)
     }
 }

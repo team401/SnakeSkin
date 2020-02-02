@@ -8,6 +8,7 @@ import org.snakeskin.component.IDigitalInputChannel
 open class NullDigitalInputChannel private constructor(): IDigitalInputChannel {
     companion object {
         val INSTANCE = NullDigitalInputChannel()
+        val producer = { INSTANCE }
     }
 
     override fun getState(): Boolean {

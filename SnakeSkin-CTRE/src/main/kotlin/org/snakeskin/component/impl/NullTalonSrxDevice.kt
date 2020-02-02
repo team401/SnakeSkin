@@ -11,6 +11,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
 open class NullTalonSrxDevice private constructor(): ITalonSrxDevice {
     companion object {
         val INSTANCE = NullTalonSrxDevice()
+        val producer = { NullCanCoderDevice.INSTANCE }
     }
 
     override fun follow(master: IFollowableProvider) {

@@ -10,6 +10,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
 open class NullDIOEncoderDevice private constructor(): IDIOEncoderDevice {
     companion object {
         val INSTANCE = NullDIOEncoderDevice()
+        val producer = { INSTANCE }
     }
 
     override fun getAngularPosition(): AngularDistanceMeasureRevolutions {

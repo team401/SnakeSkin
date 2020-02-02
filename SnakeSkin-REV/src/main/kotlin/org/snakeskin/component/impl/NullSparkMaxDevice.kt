@@ -11,6 +11,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
 open class NullSparkMaxDevice private constructor(): ISparkMaxDevice {
     companion object {
         val INSTANCE = NullSparkMaxDevice()
+        val producer = { INSTANCE }
     }
 
     override fun follow(master: IFollowableProvider) {

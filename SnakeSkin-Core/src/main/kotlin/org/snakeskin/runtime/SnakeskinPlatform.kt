@@ -19,12 +19,13 @@ enum class SnakeskinPlatform(val platformBindingClass: String) {
     SOFTWARE("org.snakeskin.runtime.impl.RuntimePlatformBindingSoftware"),
 
     /**
-     * A platform that represents a general PC, running the application at real time (or as close as possible to it).
-     */
-    PC("org.snakeskin.runtime.impl.RuntimePlatformBindingPc"),
-
-    /**
      * An NI roboRIO, running in the context of FRC (with FRC libraries)
      */
-    FRC_ROBORIO("org.snakeskin.runtime.impl.RuntimePlatformBindingFrcRoborio")
+    FRC_ROBORIO("org.snakeskin.runtime.impl.RuntimePlatformBindingFrcRoborio"),
+
+    /**
+     * An FRC robot running in WPI HAL simulation mode.  All hardware objects that are not WPILib components
+     * using mock producers.
+     */
+    FRC_WPISIM("org.snakeskin.runtime.impl.RuntimePlatformBindingFrcWpiSim")
 }
