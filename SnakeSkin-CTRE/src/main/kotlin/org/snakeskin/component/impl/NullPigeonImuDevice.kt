@@ -19,4 +19,12 @@ open class NullPigeonImuDevice private constructor(): IPigeonImuDevice {
     override fun getYaw(): AngularDistanceMeasureDegrees {
         return AngularDistanceMeasureDegrees(0.0)
     }
+
+    override fun getPitch(): AngularDistanceMeasureDegrees {
+        return AngularDistanceMeasureDegrees(0.0)
+    }
+
+    override fun getRoll(): AngularDistanceMeasureDegrees {
+        return AngularDistanceMeasureDegrees(0.0)
+    }
 }

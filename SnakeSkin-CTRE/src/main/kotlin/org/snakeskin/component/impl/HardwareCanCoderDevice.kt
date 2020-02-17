@@ -22,4 +22,8 @@ class HardwareCanCoderDevice(val device: CANCoder): ICanCoderDevice {
     override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
         return AngularVelocityMeasureRevolutionsPerSecond(device.velocity / 360.0)
     }
+
+    override fun invertInput(invert: Boolean) {
+        device.configSensorDirection(invert)
+    }
 }

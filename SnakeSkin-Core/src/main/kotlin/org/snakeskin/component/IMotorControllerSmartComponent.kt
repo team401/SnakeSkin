@@ -3,6 +3,7 @@ package org.snakeskin.component
 import org.snakeskin.component.provider.IAngularPositionMotorControlProvider
 import org.snakeskin.component.provider.IAngularProfileMotorControlProvider
 import org.snakeskin.component.provider.IAngularVelocityMotorControlProvider
+import org.snakeskin.component.provider.IInvertableInputProvider
 
 /**
  * Marker interface for a component that provides "smart" motor control functions.
@@ -15,4 +16,5 @@ interface IMotorControllerSmartComponent :
         ICurrentVoltageSensorComponent,
         IAngularPositionMotorControlProvider,
         IAngularVelocityMotorControlProvider,
-        IAngularProfileMotorControlProvider
+        IAngularProfileMotorControlProvider,
+        IInvertableInputProvider

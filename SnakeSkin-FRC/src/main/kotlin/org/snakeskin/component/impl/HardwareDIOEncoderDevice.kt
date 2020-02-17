@@ -21,4 +21,8 @@ class HardwareDIOEncoderDevice(val device: Encoder, val ticksPerRev: Double): ID
     override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
         return AngularVelocityMeasureRevolutionsPerSecond((device.rate * scale) / ticksPerRev)
     }
+
+    override fun invertInput(invert: Boolean) {
+        device.setReverseDirection(invert)
+    }
 }

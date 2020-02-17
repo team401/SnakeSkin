@@ -1,5 +1,6 @@
 package org.snakeskin.component
 
+import org.snakeskin.component.provider.IInvertableOutputProvider
 import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
 
 /**
@@ -8,4 +9,4 @@ import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
  *
  * In the context of FRC, this is a PWM motor controller.
  */
-interface IMotorControllerDirectComponent : IPercentOutputMotorControlProvider
+interface IMotorControllerDirectComponent : IPercentOutputMotorControlProvider, IInvertableOutputProvider

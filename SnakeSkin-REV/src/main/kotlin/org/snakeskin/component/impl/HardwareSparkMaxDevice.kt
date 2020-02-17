@@ -88,4 +88,12 @@ class HardwareSparkMaxDevice(val device: CANSparkMax, val voltageReadingMode: Sp
     override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
         pidController.setReference(setpoint.value, ControlType.kSmartMotion, 0, ffVolts, CANPIDController.ArbFFUnits.kVoltage)
     }
+
+    override fun invertOutput(invert: Boolean) {
+        device.inverted = invert
+    }
+
+    override fun invertInput(invert: Boolean) {
+        encoder.inverted = invert
+    }
 }

@@ -37,4 +37,8 @@ class HardwareVictorSpxDevice(val device: VictorSPX): IVictorSpxDevice {
     override fun stop() {
         setPercentOutput(0.0)
     }
+
+    override fun invertOutput(invert: Boolean) {
+        device.inverted = invert
+    }
 }

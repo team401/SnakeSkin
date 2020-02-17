@@ -24,4 +24,8 @@ open class NullCanCoderDevice private constructor() : ICanCoderDevice {
     override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
         return AngularVelocityMeasureRevolutionsPerSecond(0.0)
     }
+
+    override fun invertInput(invert: Boolean) {
+        //no-op
+    }
 }

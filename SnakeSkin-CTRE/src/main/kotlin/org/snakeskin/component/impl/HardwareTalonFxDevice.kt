@@ -2,6 +2,7 @@ package org.snakeskin.component.impl
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
+import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import org.snakeskin.component.CTREFeedforwardScalingMode
@@ -94,5 +95,13 @@ class HardwareTalonFxDevice(val device: TalonFX, val ffMode: CTREFeedforwardScal
         val ticks = setpoint.value * sensorTicksPerRevolution
         val ffPercent = scaleFfVolts(ffVolts)
         device.set(TalonFXControlMode.MotionMagic, ticks, DemandType.ArbitraryFeedForward, ffPercent)
+    }
+
+    override fun invertOutput(invert: Boolean) {
+        device.inverted = invert
+    }
+
+    override fun invertInput(invert: Boolean) {
+        device.setSensorPhase(invert)
     }
 }

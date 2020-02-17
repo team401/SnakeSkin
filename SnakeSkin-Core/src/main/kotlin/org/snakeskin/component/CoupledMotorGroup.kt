@@ -1,14 +1,17 @@
 package org.snakeskin.component
 
 import org.snakeskin.component.provider.IFollowProvider
+import org.snakeskin.component.provider.IInvertableOutputProvider
 import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
 
 /**
  * A group of motors that are mechanically coupled in some way.  This class only serves to group motor controllers
  * together, and thus only provides basic functionality
  */
-class CoupledMotorGroup: IPercentOutputMotorControlProvider {
-    private class DirectControlProvider(val controllers: Array<out IMotorControllerDirectComponent>): IPercentOutputMotorControlProvider {
+class CoupledMotorGroup: IPercentOutputMotorControlProvider, IInvertableOutputProvider {
+    private interface ControlProvider: IPercentOutputMotorControlProvider, IInvertableOutputProvider
+
+    private class DirectControlProvider(val controllers: Array<out IMotorControllerDirectComponent>): ControlProvider {
         override fun getOutputVoltage(): Double {
             return controllers[0].getOutputVoltage()
         }
@@ -28,9 +31,15 @@ class CoupledMotorGroup: IPercentOutputMotorControlProvider {
                 it.stop()
             }
         }
+
+        override fun invertOutput(invert: Boolean) {
+            controllers.forEach {
+                it.invertOutput(invert)
+            }
+        }
     }
 
-    private class MasterSlaveControlProvider(val master: IMotorControllerEnhancedComponent, val slaves: Array<out IFollowProvider>): IPercentOutputMotorControlProvider {
+    private class MasterSlaveControlProvider(val master: IMotorControllerEnhancedComponent, val slaves: Array<out IMotorControllerEnhancedComponent>): ControlProvider {
         fun couple() {
             slaves.forEach {
                 it.follow(master)
@@ -58,9 +67,16 @@ class CoupledMotorGroup: IPercentOutputMotorControlProvider {
         override fun stop() {
             master.stop()
         }
+
+        override fun invertOutput(invert: Boolean) {
+            master.invertOutput(invert)
+            slaves.forEach {
+                it.invertOutput(invert)
+            }
+        }
     }
 
-    private val controlProvider: IPercentOutputMotorControlProvider
+    private val controlProvider: ControlProvider
 
     /**
      * Creates an angular gearbox from a series of direct motor controllers
@@ -73,7 +89,7 @@ class CoupledMotorGroup: IPercentOutputMotorControlProvider {
      * Creates an angular gearbox from a master motor controller and a series of slave motor controllers
      * Additionally, couples the gearbox at the time of creation
      */
-    constructor(master: IMotorControllerEnhancedComponent, vararg slaves: IFollowProvider) {
+    constructor(master: IMotorControllerEnhancedComponent, vararg slaves: IMotorControllerEnhancedComponent) {
         controlProvider = MasterSlaveControlProvider(master, slaves)
         controlProvider.couple()
     }
@@ -82,6 +98,7 @@ class CoupledMotorGroup: IPercentOutputMotorControlProvider {
     override fun getPercentOutput() = controlProvider.getPercentOutput()
     override fun setPercentOutput(percentOut: Double) = controlProvider.setPercentOutput(percentOut)
     override fun stop() = controlProvider.stop()
+    override fun invertOutput(invert: Boolean) = controlProvider.invertOutput(invert)
 
     /**
      * If this gearbox is a master-slave gearbox, this method links the slaves to the master

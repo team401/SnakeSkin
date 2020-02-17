@@ -8,7 +8,7 @@ import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
 class HardwarePigeonImuDevice(val device: PigeonIMU, val yawMode: PigeonIMUYawMode = PigeonIMUYawMode.FUSED): IPigeonImuDevice {
     private val ypr by lazy { DoubleArray(3) } //Only initialize this array if we need it
 
-    override fun getYaw(): AngularDistanceMeasureDegrees {
+    @Synchronized override fun getYaw(): AngularDistanceMeasureDegrees {
         return when (yawMode) {
             PigeonIMUYawMode.FUSED -> AngularDistanceMeasureDegrees(device.fusedHeading)
             PigeonIMUYawMode.GYRO -> {
@@ -23,5 +23,15 @@ class HardwarePigeonImuDevice(val device: PigeonIMU, val yawMode: PigeonIMUYawMo
             PigeonIMUYawMode.FUSED -> device.fusedHeading = value.value
             PigeonIMUYawMode.GYRO -> device.setYaw(value.value)
         }
+    }
+
+    @Synchronized override fun getRoll(): AngularDistanceMeasureDegrees {
+        device.getYawPitchRoll(ypr)
+        return AngularDistanceMeasureDegrees(ypr[2])
+    }
+
+    @Synchronized override fun getPitch(): AngularDistanceMeasureDegrees {
+        device.getYawPitchRoll(ypr)
+        return AngularDistanceMeasureDegrees(ypr[1])
     }
 }

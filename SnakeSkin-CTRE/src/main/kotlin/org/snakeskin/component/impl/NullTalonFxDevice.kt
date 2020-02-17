@@ -69,4 +69,12 @@ open class NullTalonFxDevice private constructor(): ITalonFxDevice {
     override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
         //no-op
     }
+
+    override fun invertInput(invert: Boolean) {
+        //no-op
+    }
+
+    override fun invertOutput(invert: Boolean) {
+        //no-op
+    }
 }

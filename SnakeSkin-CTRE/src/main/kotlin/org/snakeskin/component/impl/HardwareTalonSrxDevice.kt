@@ -93,4 +93,12 @@ class HardwareTalonSrxDevice(val device: TalonSRX, val sensorTicksPerRevolution:
         val ffPercent = scaleFfVolts(ffVolts)
         device.set(ControlMode.MotionMagic, ticks, DemandType.ArbitraryFeedForward, ffPercent)
     }
+
+    override fun invertOutput(invert: Boolean) {
+        device.inverted = invert
+    }
+
+    override fun invertInput(invert: Boolean) {
+        device.setSensorPhase(invert)
+    }
 }

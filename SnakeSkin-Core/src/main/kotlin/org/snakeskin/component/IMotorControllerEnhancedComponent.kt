@@ -1,9 +1,6 @@
 package org.snakeskin.component
 
-import org.snakeskin.component.provider.IFollowProvider
-import org.snakeskin.component.provider.IFollowableProvider
-import org.snakeskin.component.provider.IInputVoltageProvider
-import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
+import org.snakeskin.component.provider.*
 
 /**
  * Marker interface for a networked motor controller who has some smart features, but not others
@@ -14,4 +11,5 @@ interface IMotorControllerEnhancedComponent :
         IFollowProvider,
         IFollowableProvider,
         IInputVoltageProvider,
-        IPercentOutputMotorControlProvider
+        IPercentOutputMotorControlProvider,
+        IInvertableOutputProvider

@@ -1,6 +1,8 @@
 package org.snakeskin.component
 
 import org.snakeskin.component.provider.IFollowProvider
+import org.snakeskin.component.provider.IInvertableInputProvider
+import org.snakeskin.component.provider.IInvertableOutputProvider
 import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
 import org.snakeskin.measure.MeasureUnitless
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
@@ -9,7 +11,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
 /**
  * Represents a gearbox.  A gearbox combines a coupled motor group with a feedback sensor.
  */
-open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocitySensorComponent {
+open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocitySensorComponent, IInvertableOutputProvider, IInvertableInputProvider {
     private val motorGroup: CoupledMotorGroup
     private val sensor: IAngularPositionVelocitySensorComponent
 
@@ -39,7 +41,7 @@ open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocity
      * @param master The master motor controller
      * @param slaves The series of slave motor controllers
      */
-    constructor(sensor: IAngularPositionVelocitySensorComponent, master: IMotorControllerEnhancedComponent, vararg slaves: IFollowProvider, ratioToSensor: Double = 1.0) {
+    constructor(sensor: IAngularPositionVelocitySensorComponent, master: IMotorControllerEnhancedComponent, vararg slaves: IMotorControllerEnhancedComponent, ratioToSensor: Double = 1.0) {
         motorGroup = CoupledMotorGroup(master, *slaves)
         this.sensor = sensor
         this.ratioToSensor = MeasureUnitless(ratioToSensor)
@@ -53,7 +55,7 @@ open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocity
      * @param master The master motor controller, which also doubles as the sensor
      * @param slaves The series of slave motor controllers
      */
-    constructor(master: IMotorControllerSmartComponent, vararg slaves: IFollowProvider, ratioToSensor: Double = 1.0) {
+    constructor(master: IMotorControllerSmartComponent, vararg slaves: IMotorControllerEnhancedComponent, ratioToSensor: Double = 1.0) {
         motorGroup = CoupledMotorGroup(master, *slaves)
         this.sensor = master
         this.ratioToSensor = MeasureUnitless(ratioToSensor)
@@ -76,6 +78,14 @@ open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocity
 
     override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
         sensor.setAngularPosition(angle * ratioToSensor)
+    }
+
+    override fun invertOutput(invert: Boolean) {
+        motorGroup.invertOutput(invert)
+    }
+
+    override fun invertInput(invert: Boolean) {
+        sensor.invertInput(invert)
     }
 
     /**

@@ -6,6 +6,7 @@ import org.snakeskin.executor.IExecutorTaskHandle
 import org.snakeskin.logic.NullWaitable
 import org.snakeskin.logic.TickedWaitable
 import org.snakeskin.logic.WaitableFuture
+import org.snakeskin.measure.Seconds
 import org.snakeskin.runtime.SnakeskinRuntime
 import org.snakeskin.subsystem.States
 import org.snakeskin.utility.value.HistoryValue
@@ -22,7 +23,7 @@ import java.util.concurrent.locks.ReentrantLock
 class StateMachine<T> {
     private val executor = SnakeskinRuntime.primaryExecutor
 
-    private val states = arrayListOf<State<*>>() //List of states that this state machine has
+    private val states = hashMapOf<Any, State<*>>() //List of states that this state machine has
     private val globalRejections = hashMapOf<List<*>, () -> Boolean>() //Map of global rejection conditions for specific states
 
     private var registered = false //Becomes true once the parent subsystem calls "register".  Prevents disabled subsystems from running.
@@ -52,93 +53,84 @@ class StateMachine<T> {
         return false //State is not rejected
     }
 
+    private fun checkSwitchConditions(stateName: Any): Boolean {
+        if (!registered) return false //Do not allow transitions on non-registered machines
+        if (stateName == activeState?.name) return false //Do not allow transitions to the same state
+        val state = states[stateName] ?: return false //Do not allow transitions to a state which isn't defined
+
+        //Evaluate rejection conditions for the incoming state
+        if (isGloballyRejected(stateName)) return false
+        if (state.rejectionConditions()) return false
+
+        return true //Switching is permitted
+    }
+
     /**
      * Adds a state to this state machine
      * @param state The state to add
      */
-    fun addState(state: State<*>) = states.add(state)
-
-    /**
-     * The state to go to when a state change is requested for a state that doesn't exist
-     */
-    var elseCondition = State(States.ELSE)
+    fun addState(state: State<*>) {
+        states[state.name as Any] = state
+    }
 
     private var activeState: State<*>? = null
-    private var activeActionManager: IStateActionManager? = null //Represents whatever task the state machine is currently running
     private var activeTimeoutHandle: IExecutorTaskHandle? = null //Represents the timeout that the state machine is currently running
 
     private val stateHistory = HistoryValue<Any?>(null) //State logic ignores T
 
-    private val switchLock = Object()
-
-    private fun setStateImpl(state: Any, waitable: TickedWaitable) {
-        if (!registered) {
-            waitable.tick()
-            return //Do now allow any state transitions if the state machine is not registered
+    @Synchronized private fun transition(state: Any, waitable: TickedWaitable?) {
+        if (!checkSwitchConditions(state)) {
+            waitable?.tick()
+            return //Do not transition if conditions are not met
         }
-        if (state != activeState?.name) { //If the state requested is different from the current state
-            val desiredState = if (states.any { it.name == state }) { //If the list contains the desired state
-                states.last { it.name == state } //Make it the desired state
-            }
-            else {
-                elseCondition //Otherwise we use the "else" condition
-            }
 
-            if (!desiredState.rejectionConditions() && !isGloballyRejected(desiredState)) { //If the switch is not rejected
-                //STOP THE OLD STATE TIMEOUT
-                activeTimeoutHandle?.stopTask(true)
+        activeTimeoutHandle?.stopTask(true) //Stop any potential timeouts
+        activeState?.actionManager?.stopAction() //Stop the currently running action loop.
+        activeState?.actionManager?.awaitDone() //Wait for the current action loop to finish (this is re-entrant safe)
 
-                //EXIT THE OLD STATE
-                if (activeState != null) {
-                    activeActionManager?.stopAction() //Cancel the action loop
-                    activeActionManager?.awaitDone() //Wait for the action to be done
+        activeState?.exit?.run() //Run the exit and wait
 
-                    //Run the exit method and wait
-                    activeState?.exit?.run()
-                }
+        activeState = states[state] //Update the active state to the new state
+        stateHistory.update(activeState) //Update the state history to the new state
 
-                //UPDATE THE STORED STATE
-                activeState = desiredState //Update the active state to the new state
-                stateHistory.update(state) //Update the state history to the new state
+        activeState?.entry?.run()
+        waitable?.tick()
 
-                //ENTER THE NEW STATE
-                desiredState.entry.run()
-                waitable.tick()
-
-                //RUN THE LOOP OF THE NEW STATE
-                activeActionManager = desiredState.actionManager
-                activeActionManager?.startAction()
-
-                //SET UP THE TIMEOUT OF THE NEW STATE
-                if (desiredState.timeout.value != -1.0) {
-                    activeTimeoutHandle = executor.scheduleSingleTask(ExceptionHandlingRunnable {
-                        setStateInternal(desiredState.timeoutTo)
-                    }, desiredState.timeout)
-                }
-            } else { //The switch was rejected
-                waitable.tick()
-            }
-        } else { //There is no need to switch
-            waitable.tick()
+        if (activeState?.timeout?.value != -1.0) {
+            activeTimeoutHandle = executor.scheduleSingleTask(ExceptionHandlingRunnable {
+                activeState?.timeoutTo?.let { transition(it, null) }
+            }, activeState?.timeout ?: 0.0.Seconds)
         }
-    }
 
-    internal fun setStateInternal(state: Any): IWaitable {
-        val waitable = TickedWaitable()
-        executor.scheduleSingleTaskNow(ExceptionHandlingRunnable {
-            synchronized(switchLock) {
-                setStateImpl(state, waitable)
-            }
-        })
-        return waitable
+        activeState?.actionManager?.startAction()
     }
 
     internal fun register() {
         registered = true
-        states.forEach {
-            it.actionManager.register()
+        states.forEach { (_, state) ->
+            state.actionManager.register()
         }
     }
+
+
+    private fun setStateAny(state: Any): IWaitable {
+        val waitable = TickedWaitable()
+        executor.scheduleSingleTaskNow(ExceptionHandlingRunnable { transition(state, waitable) })
+        return waitable
+    }
+
+    internal fun setStateNow(state: T) {
+        transition(state as Any, null)
+    }
+
+    internal fun disableNow() {
+        transition(States.DISABLED, null)
+    }
+
+    internal fun backNow() {
+        transition(getLastState(), null)
+    }
+
 
     /**
      * Sets the state of this machine to the given state.
@@ -146,47 +138,45 @@ class StateMachine<T> {
      * @param state The state to switch to
      * @return A waitable object that unblocks when the state's "entry" finishes
      */
-    fun setState(state: T): IWaitable {
-        return setStateInternal(state as Any) //Downcast to Any here, state logic ignores T
-    }
+    fun setState(state: T) = setStateAny(state as Any)
 
     /**
      * Returns the state machine to the state it was in previously
      */
-    fun back() = setStateInternal(getLastState())
+    fun back() = setStateAny(getLastState())
 
     /**
      * Sets the state machine to the built in "disabled" state
      */
-    fun disable() = setStateInternal(States.DISABLED)
+    fun disable() = setStateAny(States.DISABLED)
 
     /**
      * Gets the state that the machine is currently in
      * Note that this value is not updated during a state change until the "exit" method of the previous state finishes
      * @return The state that the machine is currently in
      */
-    fun getState() = stateHistory.current ?: States.ELSE
+    @Synchronized fun getState() = stateHistory.current ?: States.ELSE
 
     /**
      * Gets the state that the machine was in last
      * Note that this value is not updated during a state change until the "exit" method of the previous state finishes
      * @return The state that the machine was last in
      */
-    fun getLastState() = stateHistory.last ?: States.ELSE
+    @Synchronized fun getLastState() = stateHistory.last ?: States.ELSE
 
     /**
      * Checks if a machine is in the given state
      * @param state The state to check
      * @return true if the machine is in this state, false otherwise
      */
-    fun isInState(state: T) = stateHistory.current == state
+    @Synchronized fun isInState(state: T) = stateHistory.current == state
 
     /**
      * Checks if a machine was in the given state
      * @param state The state to check
      * @return true if the machine is in this state, false otherwise
      */
-    fun wasInState(state: T) = stateHistory.last == state
+    @Synchronized fun wasInState(state: T) = stateHistory.last == state
 
     /**
      * Toggles between two states.
@@ -197,7 +187,7 @@ class StateMachine<T> {
      * @param state2 State 2 to toggle
      * @return The waitable of whatever state was switched to
      */
-    fun toggle(state1: T, state2: T): IWaitable {
+    @Synchronized fun toggle(state1: T, state2: T): IWaitable {
         return if (getState() == state1) {
             setState(state2)
         } else {

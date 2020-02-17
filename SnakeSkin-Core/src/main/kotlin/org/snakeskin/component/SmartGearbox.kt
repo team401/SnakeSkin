@@ -17,7 +17,7 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
  * @param ratioToSensor The gearing ratio between the sensor and the output.  Commanded values will be multiplied by this value, and readings will be divided.
  */
 class SmartGearbox(private val master: IMotorControllerSmartComponent,
-                   vararg slaves: IFollowProvider,
+                   vararg slaves: IMotorControllerEnhancedComponent,
                    ratioToSensor: Double = 1.0) :
         Gearbox(master, *slaves, ratioToSensor = ratioToSensor),
         IAngularPositionMotorControlProvider,

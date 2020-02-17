@@ -39,4 +39,8 @@ open class NullVictorSpxDevice private constructor(): IVictorSpxDevice {
     override fun getOutputVoltage(): Double {
         return 0.0
     }
+
+    override fun invertOutput(invert: Boolean) {
+        //no-op
+    }
 }

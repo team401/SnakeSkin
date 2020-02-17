@@ -24,4 +24,8 @@ open class NullDIOEncoderDevice private constructor(): IDIOEncoderDevice {
     override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
         //no-op
     }
+
+    override fun invertInput(invert: Boolean) {
+        //no-op
+    }
 }

@@ -48,16 +48,6 @@ class StateMachineBuilder<T>: IBuilder<StateMachine<T>> {
     }
 
     /**
-     * Adds the "default" state to the machine
-     * @see state
-     */
-    fun default(setup: StateBuilder<String>.() -> Unit) {
-        val stateBuilder = StateBuilder(States.ELSE)
-        stateBuilder.setup()
-        builder.elseCondition = stateBuilder.build()
-    }
-
-    /**
      * Checks if the machine is in the state given
      * @param state The state to check
      * @return true if the machine is in the state, false otherwise
@@ -74,15 +64,18 @@ class StateMachineBuilder<T>: IBuilder<StateMachine<T>> {
     /**
      * Sets the state of this machine
      * @param state The state to set
-     * @return A waitable object that unblocks when the state's "entry" method finishes
      */
-    fun setState(state: T) = builder.setState(state)
+    fun setState(state: T) = builder.setStateNow(state)
 
     /**
      * Sets the machine to the disabled state
-     * @return A waitable object that unblocks when the state's "entry" method finishes
      */
-    fun disable() = builder.disable()
+    fun disable() = builder.disableNow()
+
+    /**
+     * Sets the machine to the state it was last in
+     */
+    fun back() = builder.backNow()
 }
 
 /**
