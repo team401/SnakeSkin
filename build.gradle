@@ -23,6 +23,11 @@ subprojects { subproj ->
     repositories {
         mavenCentral()
 
+        //401 maven
+        maven {
+            url "http://maven.team401.org/artifactory/frc"
+        }
+
         //SnakeSkin bintray
         maven {
             url "http://dl.bintray.com/team401/SnakeSkin"
@@ -41,7 +46,7 @@ subprojects { subproj ->
         }
         //REV Maven
         maven {
-            url "https://www.revrobotics.com/content/sw/max/sdk/maven/"
+            url "http://www.revrobotics.com/content/sw/max/sdk/maven/"
         }
     }
 
