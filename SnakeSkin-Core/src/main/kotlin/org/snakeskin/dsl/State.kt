@@ -118,6 +118,12 @@ open class StateBuilder<T>(name: T): IBuilder<State<T>> {
     fun exit(exitBlock: () -> Unit) {
         builder.exit = ExceptionHandlingRunnable(exitBlock)
     }
+
+    /**
+     * Accessor for the rate at which the action loop of this state runs
+     */
+    val actionRate: TimeMeasureSeconds
+    get() = builder.actionManager.rate
 }
 
 /**

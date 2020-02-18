@@ -7,7 +7,7 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
 import org.snakeskin.runtime.SnakeskinRuntime
 import java.util.concurrent.locks.ReentrantLock
 
-class DefaultStateActionManager(private val actionRunnable: () -> Unit, private val rate: TimeMeasureSeconds): IStateActionManager {
+class DefaultStateActionManager(private val actionRunnable: () -> Unit, override val rate: TimeMeasureSeconds): IStateActionManager {
     private var handle: IExecutorTaskHandle = NullExecutorTaskHandle
     private val executor = SnakeskinRuntime.primaryExecutor
 

@@ -9,6 +9,8 @@ import org.snakeskin.runtime.SnakeskinRuntime
 
 class RealTimeStateActionManager(private val rtRunnable: (TimeMeasureSeconds, TimeMeasureSeconds) -> Unit, val executorName: String? = null, val stateName: String): IStateActionManager {
     private lateinit var executor: IRealTimeExecutor
+    override val rate: TimeMeasureSeconds
+    get() = executor.rate
 
     private val rtTask = object : RealTimeTask(false) {
         override fun action(timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) {
