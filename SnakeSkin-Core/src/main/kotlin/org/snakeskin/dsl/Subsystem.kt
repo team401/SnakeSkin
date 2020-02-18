@@ -19,7 +19,7 @@ import org.snakeskin.state.StateMachine
 fun <S> Subsystem.stateMachine(setup: StateMachineBuilder<S>.() -> Unit): StateMachine<S> {
     val builder = StateMachineBuilder<S>()
     builder.setup()
-    val machine = builder.build()
+    val machine = builder.machine
     addStateMachine(machine)
     return machine
 }

@@ -13,6 +13,11 @@ interface IStateActionManager {
     val rate: TimeMeasureSeconds
 
     /**
+     * Whether or not to handle a transition in the background
+     */
+    val asyncTransition: Boolean
+
+    /**
      * Perform any registration tasks required for the action manager
      */
     fun register() {}

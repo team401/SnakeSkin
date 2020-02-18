@@ -11,6 +11,8 @@ class DefaultStateActionManager(private val actionRunnable: () -> Unit, override
     private var handle: IExecutorTaskHandle = NullExecutorTaskHandle
     private val executor = SnakeskinRuntime.primaryExecutor
 
+    override val asyncTransition = false
+
     private val lock = Object()
 
     private val exRunnable = ExceptionHandlingRunnable {

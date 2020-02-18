@@ -12,6 +12,8 @@ class RealTimeStateActionManager(private val rtRunnable: (TimeMeasureSeconds, Ti
     override val rate: TimeMeasureSeconds
     get() = executor.rate
 
+    override val asyncTransition = true
+
     private val rtTask = object : RealTimeTask(false) {
         override fun action(timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) {
             rtRunnable(timestamp, dt)

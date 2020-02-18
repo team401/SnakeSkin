@@ -7,6 +7,7 @@ import org.snakeskin.measure.time.TimeMeasureSeconds
  */
 object EmptyStateActionManager: IStateActionManager {
     override val rate = TimeMeasureSeconds(0.0)
+    override val asyncTransition = false
     override fun startAction() {}
     override fun stopAction() {}
     override fun awaitDone() {}

@@ -13,17 +13,52 @@ import org.snakeskin.subsystem.States
  * @version 8/16/17
  */
 
-class StateMachineBuilder<T>: IBuilder<StateMachine<T>> {
-    private val builder = StateMachine<T>()
-    override fun build() = builder
+@DslMarker
+annotation class DslMarkerState
 
+open class StateMachineBuilderContext<T> {
+    internal val machine = StateMachine<T>()
+
+    /**
+     * Checks if the machine is in the state given
+     * @param state The state to check
+     * @return true if the machine is in the state, false otherwise
+     */
+    fun isInState(state: T) = machine.isInState(state)
+
+    /**
+     * Checks if the machine was in the state given
+     * @param state The state to check
+     * @return true if the machine was in the state, false otherwise
+     */
+    fun wasInState(state: T) = machine.wasInState(state)
+
+    /**
+     * Sets the state of this machine
+     * @param state The state to set
+     */
+    fun setState(state: T) = machine.setStateInternal(state)
+
+    /**
+     * Sets the machine to the disabled state
+     */
+    fun disable() = machine.disableInternal()
+
+    /**
+     * Sets the machine to the state it was last in
+     */
+    fun back() = machine.backInternal()
+}
+
+@DslMarkerState
+class StateMachineBuilder<T>: StateMachineBuilderContext<T>() {
     /**
      * Rejects all of the given states if the condition is met
      * @param states The states to reject
      * @param condition The condition to reject on
      */
     fun rejectAllIf(vararg states: T, condition: () -> Boolean) {
-        builder.addGlobalRejection(states.toList(), condition)
+        machine.addGlobalRejection(states.toList(), condition)
     }
 
     /**
@@ -34,7 +69,7 @@ class StateMachineBuilder<T>: IBuilder<StateMachine<T>> {
     fun state(state: T, setup: MutableStateBuilder<T>.() -> Unit) {
         val stateBuilder = MutableStateBuilder(state)
         stateBuilder.setup()
-        builder.addState(stateBuilder.build())
+        machine.addState(stateBuilder.state)
     }
 
     /**
@@ -44,53 +79,23 @@ class StateMachineBuilder<T>: IBuilder<StateMachine<T>> {
     fun disabled(setup: StateBuilder<String>.() -> Unit) {
         val stateBuilder = StateBuilder(States.DISABLED)
         stateBuilder.setup()
-        builder.addState(stateBuilder.build())
+        machine.addState(stateBuilder.state)
     }
-
-    /**
-     * Checks if the machine is in the state given
-     * @param state The state to check
-     * @return true if the machine is in the state, false otherwise
-     */
-    fun isInState(state: T) = builder.isInState(state)
-
-    /**
-     * Checks if the machine was in the state given
-     * @param state The state to check
-     * @return true if the machine was in the state, false otherwise
-     */
-    fun wasInState(state: T) = builder.wasInState(state)
-
-    /**
-     * Sets the state of this machine
-     * @param state The state to set
-     */
-    fun setState(state: T) = builder.setStateNow(state)
-
-    /**
-     * Sets the machine to the disabled state
-     */
-    fun disable() = builder.disableNow()
-
-    /**
-     * Sets the machine to the state it was last in
-     */
-    fun back() = builder.backNow()
 }
 
 /**
  * Builds a State object
  */
-open class StateBuilder<T>(name: T): IBuilder<State<T>> {
-    val builder = State(name)
-    override fun build() = builder
+@DslMarkerState
+open class StateBuilder<T>(name: T) {
+    internal val state = State(name)
 
     /**
      * Adds the entry method to the state
      * @param entryBlock The function to run on the state's entry
      */
     fun entry(entryBlock: () -> Unit) {
-        builder.entry = ExceptionHandlingRunnable(entryBlock)
+        state.entry = ExceptionHandlingRunnable(entryBlock)
     }
 
     /**
@@ -99,7 +104,7 @@ open class StateBuilder<T>(name: T): IBuilder<State<T>> {
      * @param actionBlock The function to run on the state's loop
      */
     fun action(rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02), actionBlock: () -> Unit) {
-        builder.actionManager = DefaultStateActionManager(actionBlock, rate)
+        state.actionManager = DefaultStateActionManager(actionBlock, rate)
     }
 
     /**
@@ -108,7 +113,7 @@ open class StateBuilder<T>(name: T): IBuilder<State<T>> {
      * @param rtActionBlock The function to run on the state's loop.  The first parameter is the timestamp, the second is the dt
      */
     fun rtAction(executorName: String? = null, rtActionBlock: (timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) -> Unit) {
-        builder.actionManager = RealTimeStateActionManager(rtActionBlock, executorName, builder.name.toString())
+        state.actionManager = RealTimeStateActionManager(rtActionBlock, executorName, state.name.toString())
     }
 
     /**
@@ -116,36 +121,46 @@ open class StateBuilder<T>(name: T): IBuilder<State<T>> {
      * @param exitBlock The function to run on the state's exit
      */
     fun exit(exitBlock: () -> Unit) {
-        builder.exit = ExceptionHandlingRunnable(exitBlock)
+        state.exit = ExceptionHandlingRunnable(exitBlock)
     }
 
     /**
      * Accessor for the rate at which the action loop of this state runs
      */
     val actionRate: TimeMeasureSeconds
-    get() = builder.actionManager.rate
+    get() = state.actionManager.rate
 }
 
 /**
  * Adds functionality to the StateBuilder, with certain special functions that can't be used in default or disabled states
  */
+@DslMarkerState
 class MutableStateBuilder<T>(name: T): StateBuilder<T>(name) {
     /**
      * Adds rejection conditions for this state.
      * @param condition The function to run to check the conditions.  Should return true if the state change should be rejected
      */
     fun rejectIf(condition: () -> Boolean) {
-        builder.rejectionConditions = condition
+        state.rejectionConditions = condition
     }
 
     /**
      * Sets up the timeout for this state
-     * @param timeout The time, in ms, to wait for the timeout
+     * @param timeout The time to wait for the timeout
      * @param timeoutTo The name of the state to timeout to
      */
     fun timeout(timeout: TimeMeasureSeconds, timeoutTo: T) {
-        builder.timeout = timeout
-        builder.timeoutTo = timeoutTo as Any
+        state.timeout = timeout
+        state.timeoutTo = timeoutTo as Any
+    }
+
+    /**
+     * Sets out the timeout for this state to transition to disabled
+     * @param timeout The time to wait for the timeout
+     */
+    fun timeoutToDisabled(timeout: TimeMeasureSeconds) {
+        state.timeout = timeout
+        state.timeoutTo = States.DISABLED
     }
 }
 

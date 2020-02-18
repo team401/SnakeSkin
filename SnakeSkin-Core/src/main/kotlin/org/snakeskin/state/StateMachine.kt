@@ -78,7 +78,7 @@ class StateMachine<T> {
 
     private val stateHistory = HistoryValue<Any?>(null) //State logic ignores T
 
-    @Synchronized private fun transition(state: Any, waitable: TickedWaitable?) {
+    @Synchronized private fun transition(state: Any, waitable: TickedWaitable?, async: Boolean) {
         if (!checkSwitchConditions(state)) {
             waitable?.tick()
             return //Do not transition if conditions are not met
@@ -86,23 +86,46 @@ class StateMachine<T> {
 
         activeTimeoutHandle?.stopTask(true) //Stop any potential timeouts
         activeState?.actionManager?.stopAction() //Stop the currently running action loop.
-        activeState?.actionManager?.awaitDone() //Wait for the current action loop to finish (this is re-entrant safe)
 
-        activeState?.exit?.run() //Run the exit and wait
+        if (async) {
+            executor.scheduleSingleTaskNow(ExceptionHandlingRunnable {
+                activeState?.actionManager?.awaitDone() //Wait for the current action loop to finish (this is re-entrant safe)
 
-        activeState = states[state] //Update the active state to the new state
-        stateHistory.update(activeState) //Update the state history to the new state
+                activeState?.exit?.run() //Run the exit and wait
 
-        activeState?.entry?.run()
-        waitable?.tick()
+                activeState = states[state] //Update the active state to the new state
+                stateHistory.update(activeState) //Update the state history to the new state
 
-        if (activeState?.timeout?.value != -1.0) {
-            activeTimeoutHandle = executor.scheduleSingleTask(ExceptionHandlingRunnable {
-                activeState?.timeoutTo?.let { transition(it, null) }
-            }, activeState?.timeout ?: 0.0.Seconds)
+                activeState?.entry?.run()
+                waitable?.tick()
+
+                if (activeState?.timeout?.value != -1.0) {
+                    activeTimeoutHandle = executor.scheduleSingleTask(ExceptionHandlingRunnable {
+                        activeState?.timeoutTo?.let { transition(it, null, false) }
+                    }, activeState?.timeout ?: 0.0.Seconds)
+                }
+
+                activeState?.actionManager?.startAction()
+            })
+        } else {
+            activeState?.actionManager?.awaitDone() //Wait for the current action loop to finish (this is re-entrant safe)
+
+            activeState?.exit?.run() //Run the exit and wait
+
+            activeState = states[state] //Update the active state to the new state
+            stateHistory.update(activeState) //Update the state history to the new state
+
+            activeState?.entry?.run()
+            waitable?.tick()
+
+            if (activeState?.timeout?.value != -1.0) {
+                activeTimeoutHandle = executor.scheduleSingleTask(ExceptionHandlingRunnable {
+                    activeState?.timeoutTo?.let { transition(it, null, false) }
+                }, activeState?.timeout ?: 0.0.Seconds)
+            }
+
+            activeState?.actionManager?.startAction()
         }
-
-        activeState?.actionManager?.startAction()
     }
 
     internal fun register() {
@@ -115,20 +138,20 @@ class StateMachine<T> {
 
     private fun setStateAny(state: Any): IWaitable {
         val waitable = TickedWaitable()
-        executor.scheduleSingleTaskNow(ExceptionHandlingRunnable { transition(state, waitable) })
+        transition(state, waitable, true)
         return waitable
     }
 
-    internal fun setStateNow(state: T) {
-        transition(state as Any, null)
+    internal fun setStateInternal(state: T) {
+        transition(state as Any, null, activeState?.actionManager?.asyncTransition ?: false)
     }
 
-    internal fun disableNow() {
-        transition(States.DISABLED, null)
+    internal fun disableInternal() {
+        transition(States.DISABLED, null, activeState?.actionManager?.asyncTransition ?: false)
     }
 
-    internal fun backNow() {
-        transition(getLastState(), null)
+    internal fun backInternal() {
+        transition(getLastState(), null, activeState?.actionManager?.asyncTransition ?: false)
     }
 
 
