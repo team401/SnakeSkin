@@ -7,6 +7,7 @@ import org.snakeskin.state.RealTimeStateActionManager
 import org.snakeskin.state.State
 import org.snakeskin.state.StateMachine
 import org.snakeskin.subsystem.States
+import kotlin.concurrent.timerTask
 
 /**
  * @author Cameron Earle
@@ -32,22 +33,6 @@ open class StateMachineBuilderContext<T> {
      * @return true if the machine was in the state, false otherwise
      */
     fun wasInState(state: T) = machine.wasInState(state)
-
-    /**
-     * Sets the state of this machine
-     * @param state The state to set
-     */
-    fun setState(state: T) = machine.setStateInternal(state)
-
-    /**
-     * Sets the machine to the disabled state
-     */
-    fun disable() = machine.disableInternal()
-
-    /**
-     * Sets the machine to the state it was last in
-     */
-    fun back() = machine.backInternal()
 }
 
 @DslMarkerState
@@ -67,7 +52,7 @@ class StateMachineBuilder<T>: StateMachineBuilderContext<T>() {
      * @param setup The function responsible for building the state.  @see MutableStateBuilder
      */
     fun state(state: T, setup: MutableStateBuilder<T>.() -> Unit) {
-        val stateBuilder = MutableStateBuilder(state)
+        val stateBuilder = MutableStateBuilder(state, machine)
         stateBuilder.setup()
         machine.addState(stateBuilder.state)
     }
@@ -77,7 +62,7 @@ class StateMachineBuilder<T>: StateMachineBuilderContext<T>() {
      * @see state
      */
     fun disabled(setup: StateBuilder<String>.() -> Unit) {
-        val stateBuilder = StateBuilder(States.DISABLED)
+        val stateBuilder = StateBuilder(States.DISABLED, machine)
         stateBuilder.setup()
         machine.addState(stateBuilder.state)
     }
@@ -87,15 +72,35 @@ class StateMachineBuilder<T>: StateMachineBuilderContext<T>() {
  * Builds a State object
  */
 @DslMarkerState
-open class StateBuilder<T>(name: T) {
+open class StateBuilder<T>(name: T, protected val machine: StateMachine<*>) {
+    @DslMarkerState
+    inner class Context(val async: Boolean) {
+        /**
+         * Sets the state of this machine
+         * @param state The state to set
+         */
+        fun setState(state: T) = this@StateBuilder.machine.setStateInternal(state as Any, async)
+
+        /**
+         * Sets the machine to the disabled state
+         */
+        fun disable() = this@StateBuilder.machine.disableInternal(async)
+
+        /**
+         * Sets the machine to the state it was last in
+         */
+        fun back() = this@StateBuilder.machine.backInternal(async)
+    }
+
     internal val state = State(name)
 
     /**
      * Adds the entry method to the state
      * @param entryBlock The function to run on the state's entry
      */
-    fun entry(entryBlock: () -> Unit) {
-        state.entry = ExceptionHandlingRunnable(entryBlock)
+    fun entry(entryBlock: Context.() -> Unit) {
+        val context = Context(false)
+        state.entry = ExceptionHandlingRunnable { context.entryBlock() }
     }
 
     /**
@@ -103,8 +108,9 @@ open class StateBuilder<T>(name: T) {
      * @param rate The rate, in ms, to run the action loop at
      * @param actionBlock The function to run on the state's loop
      */
-    fun action(rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02), actionBlock: () -> Unit) {
-        state.actionManager = DefaultStateActionManager(actionBlock, rate)
+    fun action(rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02), actionBlock: Context.() -> Unit) {
+        val context = Context(false)
+        state.actionManager = DefaultStateActionManager({ context.actionBlock() }, rate)
     }
 
     /**
@@ -112,16 +118,18 @@ open class StateBuilder<T>(name: T) {
      * @param executorName The name of the real-time executor to use.  If not provided, the default RT executor is used
      * @param rtActionBlock The function to run on the state's loop.  The first parameter is the timestamp, the second is the dt
      */
-    fun rtAction(executorName: String? = null, rtActionBlock: (timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) -> Unit) {
-        state.actionManager = RealTimeStateActionManager(rtActionBlock, executorName, state.name.toString())
+    fun rtAction(executorName: String? = null, rtActionBlock: Context.(timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) -> Unit) {
+        val context = Context(true)
+        state.actionManager = RealTimeStateActionManager({ t, d -> context.rtActionBlock(t, d) }, executorName, state.name.toString())
     }
 
     /**
      * Adds the exit method to the state
      * @param exitBlock The function to run on the state's exit
      */
-    fun exit(exitBlock: () -> Unit) {
-        state.exit = ExceptionHandlingRunnable(exitBlock)
+    fun exit(exitBlock: Context.() -> Unit) {
+        val context = Context(false)
+        state.exit = ExceptionHandlingRunnable { context.exitBlock() }
     }
 
     /**
@@ -135,7 +143,7 @@ open class StateBuilder<T>(name: T) {
  * Adds functionality to the StateBuilder, with certain special functions that can't be used in default or disabled states
  */
 @DslMarkerState
-class MutableStateBuilder<T>(name: T): StateBuilder<T>(name) {
+class MutableStateBuilder<T>(name: T, machine: StateMachine<*>): StateBuilder<T>(name, machine) {
     /**
      * Adds rejection conditions for this state.
      * @param condition The function to run to check the conditions.  Should return true if the state change should be rejected
