@@ -58,7 +58,7 @@ inline fun Hardware.createDigitalInputChannel(
  */
 inline fun Hardware.createPneumaticChannel(
         channel: Int,
-        pcmId: Int,
+        pcmId: Int = 0,
         halMock: Boolean = false,
         mockProducer: () -> IPneumaticChannel = { throw NotImplementedError("No mock pneumatic channel implementation provided") }
 ) = when (SnakeskinRuntime.platform) {
