@@ -1,10 +1,9 @@
 package org.snakeskin.dsl
 
 import org.snakeskin.executor.ExceptionHandlingRunnable
+import org.snakeskin.measure.Seconds
 import org.snakeskin.measure.time.TimeMeasureSeconds
-import org.snakeskin.state.DefaultStateActionManager
-import org.snakeskin.state.RealTimeStateActionManager
-import org.snakeskin.state.State
+import org.snakeskin.state.*
 import org.snakeskin.state.StateMachine
 import org.snakeskin.subsystem.States
 import kotlin.concurrent.timerTask
@@ -121,6 +120,19 @@ open class StateBuilder<T>(name: T, protected val machine: StateMachine<*>) {
     fun rtAction(executorName: String? = null, rtActionBlock: Context.(timestamp: TimeMeasureSeconds, dt: TimeMeasureSeconds) -> Unit) {
         val context = Context(true)
         state.actionManager = RealTimeStateActionManager({ t, d -> context.rtActionBlock(t, d) }, executorName, state.name.toString())
+    }
+
+    /**
+     * Adds a ticked action method to the state.  This action will check the given condition,
+     * and if it evaluates to true for the given time threshold, then the action block will be executed
+     * @param timeThreshold The amount of time the condition must evaluate to true for before the action runs
+     * @param condition The condition to check.  Must return a boolean.
+     * @param actionBlock The function to run once the condition has evaluated to true.  This function will run continuously after this.
+     * @param rate The rate at which to check the condition and execute the loop at.  Defaults to 20 milliseconds.
+     */
+    fun tickedAction(timeThreshold: TimeMeasureSeconds, condition: () -> Boolean, actionBlock: Context.() -> Unit, rate: TimeMeasureSeconds = TimeMeasureSeconds(0.02)) {
+        val context = Context(false)
+        state.actionManager = TickedActionManager(condition, { context.actionBlock() }, timeThreshold, rate)
     }
 
     /**
