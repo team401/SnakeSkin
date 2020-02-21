@@ -28,6 +28,11 @@ class StateMachine<T> {
 
     private var registered = false //Becomes true once the parent subsystem calls "register".  Prevents disabled subsystems from running.
 
+    init {
+        //Register default state implementations
+        states[States.DISABLED] = State(States.DISABLED)
+    }
+
     /**
      * Adds a global rejection to the state machine, which will
      * reject all of the given states if the condition is met
