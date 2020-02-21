@@ -99,7 +99,7 @@ class StateMachine<T> {
         activeState?.exit?.run() //Run the exit and wait
 
         activeState = states[state] //Update the active state to the new state
-        stateHistory.update(activeState) //Update the state history to the new state
+        stateHistory.update(activeState!!.name) //Update the state history to the new state
 
         activeState?.entry?.run()
         waitable?.tick()
