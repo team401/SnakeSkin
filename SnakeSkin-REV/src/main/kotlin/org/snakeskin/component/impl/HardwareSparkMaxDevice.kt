@@ -31,7 +31,7 @@ class HardwareSparkMaxDevice(val device: CANSparkMax, val voltageReadingMode: Sp
 
     override fun follow(master: IFollowableProvider) {
         when (master) {
-            is CANSparkMax -> device.follow(master)
+            is HardwareSparkMaxDevice -> device.follow(master.device)
         }
     }
 
