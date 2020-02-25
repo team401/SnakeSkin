@@ -1,6 +1,6 @@
 package org.snakeskin.component.provider
 
-import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * Represents a component that can provide control of angular velocity
@@ -11,5 +11,5 @@ interface IAngularVelocityMotorControlProvider {
      * @param setpoint The setpoint to configure
      * @param ffVolts Optional feedforward voltage to apply as a sum to the control output
      */
-    fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRevolutionsPerSecond, ffVolts: Double = 0.0)
+    fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRadiansPerSecond, ffVolts: Double = 0.0)
 }

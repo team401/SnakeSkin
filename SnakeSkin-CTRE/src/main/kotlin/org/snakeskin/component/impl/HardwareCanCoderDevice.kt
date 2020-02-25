@@ -2,7 +2,11 @@ package org.snakeskin.component.impl
 
 import com.ctre.phoenix.sensors.CANCoder
 import org.snakeskin.component.ICanCoderDevice
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureDegrees
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureDegreesPerSecond
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
 
 /**
@@ -11,16 +15,16 @@ import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsP
  * returned by the functions of this class.
  */
 class HardwareCanCoderDevice(val device: CANCoder): ICanCoderDevice {
-    override fun getAngularPosition(): AngularDistanceMeasureRevolutions {
-        return AngularDistanceMeasureRevolutions(device.position / 360.0)
+    override fun getAngularPosition(): AngularDistanceMeasureRadians {
+        return AngularDistanceMeasureDegrees(device.position).toRadians()
     }
 
-    override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
+    override fun setAngularPosition(angle: AngularDistanceMeasureRadians) {
         device.position = angle.toDegrees().value
     }
 
-    override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
-        return AngularVelocityMeasureRevolutionsPerSecond(device.velocity / 360.0)
+    override fun getAngularVelocity(): AngularVelocityMeasureRadiansPerSecond {
+        return AngularVelocityMeasureDegreesPerSecond(device.velocity).toRadiansPerSecond()
     }
 
     override fun invertInput(invert: Boolean) {

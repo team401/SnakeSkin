@@ -14,7 +14,7 @@ class LinearTransmission(val gearbox: Gearbox, val linearRadius: LinearDistanceM
     }
 
     override fun setLinearPosition(position: LinearDistanceMeasureInches) {
-        gearbox.setAngularPosition(position.toAngularDistance(linearRadius).toRevolutions())
+        gearbox.setAngularPosition(position.toAngularDistance(linearRadius))
     }
 
     override fun getLinearVelocity(): LinearVelocityMeasureInchesPerSecond {

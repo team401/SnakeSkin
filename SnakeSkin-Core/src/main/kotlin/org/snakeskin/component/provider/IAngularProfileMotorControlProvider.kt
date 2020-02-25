@@ -1,6 +1,6 @@
 package org.snakeskin.component.provider
 
-import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
 
 /**
  * Represents a component that can provide profiled motion control, meaning it can execute a movement
@@ -12,5 +12,5 @@ interface IAngularProfileMotorControlProvider {
      * @param setpoint The setpoint to configure
      * @param ffVolts Optional feedforward voltage to apply as a sum to the control output
      */
-    fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double = 0.0)
+    fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRadians, ffVolts: Double = 0.0)
 }

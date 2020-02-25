@@ -12,4 +12,4 @@ interface IMotorControllerEnhancedComponent :
         IFollowableProvider,
         IInputVoltageProvider,
         IPercentOutputMotorControlProvider,
-        IInvertableOutputProvider
+        IInvertableProvider

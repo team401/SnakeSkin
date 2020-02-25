@@ -1,15 +1,14 @@
 package org.snakeskin.component
 
-import org.snakeskin.component.provider.IFollowProvider
-import org.snakeskin.component.provider.IInvertableOutputProvider
+import org.snakeskin.component.provider.IInvertableProvider
 import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
 
 /**
  * A group of motors that are mechanically coupled in some way.  This class only serves to group motor controllers
  * together, and thus only provides basic functionality
  */
-class CoupledMotorGroup: IPercentOutputMotorControlProvider, IInvertableOutputProvider {
-    private interface ControlProvider: IPercentOutputMotorControlProvider, IInvertableOutputProvider
+class CoupledMotorGroup: IPercentOutputMotorControlProvider, IInvertableProvider {
+    private interface ControlProvider: IPercentOutputMotorControlProvider, IInvertableProvider
 
     private class DirectControlProvider(val controllers: Array<out IMotorControllerDirectComponent>): ControlProvider {
         override fun getOutputVoltage(): Double {
@@ -32,9 +31,9 @@ class CoupledMotorGroup: IPercentOutputMotorControlProvider, IInvertableOutputPr
             }
         }
 
-        override fun invertOutput(invert: Boolean) {
+        override fun invert(invert: Boolean) {
             controllers.forEach {
-                it.invertOutput(invert)
+                it.invert(invert)
             }
         }
     }
@@ -68,10 +67,10 @@ class CoupledMotorGroup: IPercentOutputMotorControlProvider, IInvertableOutputPr
             master.stop()
         }
 
-        override fun invertOutput(invert: Boolean) {
-            master.invertOutput(invert)
+        override fun invert(invert: Boolean) {
+            master.invert(invert)
             slaves.forEach {
-                it.invertOutput(invert)
+                it.invert(invert)
             }
         }
     }
@@ -98,7 +97,7 @@ class CoupledMotorGroup: IPercentOutputMotorControlProvider, IInvertableOutputPr
     override fun getPercentOutput() = controlProvider.getPercentOutput()
     override fun setPercentOutput(percentOut: Double) = controlProvider.setPercentOutput(percentOut)
     override fun stop() = controlProvider.stop()
-    override fun invertOutput(invert: Boolean) = controlProvider.invertOutput(invert)
+    override fun invert(invert: Boolean) = controlProvider.invert(invert)
 
     /**
      * If this gearbox is a master-slave gearbox, this method links the slaves to the master

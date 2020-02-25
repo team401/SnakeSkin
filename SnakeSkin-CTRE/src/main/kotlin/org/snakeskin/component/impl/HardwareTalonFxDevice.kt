@@ -1,19 +1,17 @@
 package org.snakeskin.component.impl
 
-import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
-import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import org.snakeskin.component.CTREFeedforwardScalingMode
 import org.snakeskin.component.ITalonFxDevice
 import org.snakeskin.component.provider.IFollowableProvider
-import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
-import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 import org.snakeskin.runtime.SnakeskinRuntime
 
 class HardwareTalonFxDevice(val device: TalonFX, val ffMode: CTREFeedforwardScalingMode = CTREFeedforwardScalingMode.ScaleVbusSystem): ITalonFxDevice {
-    private val sensorTicksPerRevolution = 2048.0 //Constant for Falcon 500 integrated encoder
+    private val sensorTicksPerRadian = 2048.0 / (2.0 * Math.PI) //Constant for Falcon 500 integrated encoder
 
     private fun scaleFfVolts(voltage: Double): Double {
         return when (ffMode) {
@@ -60,44 +58,44 @@ class HardwareTalonFxDevice(val device: TalonFX, val ffMode: CTREFeedforwardScal
         return device.motorOutputVoltage
     }
 
-    override fun getAngularPosition(): AngularDistanceMeasureRevolutions {
+    override fun getAngularPosition(): AngularDistanceMeasureRadians {
         val ticks = device.selectedSensorPosition.toDouble()
-        return AngularDistanceMeasureRevolutions(ticks / sensorTicksPerRevolution)
+        return AngularDistanceMeasureRadians(ticks / sensorTicksPerRadian)
     }
 
-    override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
-        val ticks = (angle.value * sensorTicksPerRevolution).toInt()
+    override fun setAngularPosition(angle: AngularDistanceMeasureRadians) {
+        val ticks = (angle.value * sensorTicksPerRadian).toInt()
         device.selectedSensorPosition = ticks
     }
 
-    override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
-        val ticks = device.selectedSensorVelocity.toDouble()
-        return AngularVelocityMeasureRevolutionsPerSecond((ticks / sensorTicksPerRevolution) * 10.0) //Multiply by 10 to convert deciseconds (100 ms) to seconds
+    override fun getAngularVelocity(): AngularVelocityMeasureRadiansPerSecond {
+        val ticksPer100Ms = device.selectedSensorVelocity.toDouble()
+        return AngularVelocityMeasureRadiansPerSecond((ticksPer100Ms / sensorTicksPerRadian) * 10.0) //Multiply by 10 to convert deciseconds (100 ms) to seconds
     }
 
     override fun getOutputCurrent(): Double {
         return device.statorCurrent
     }
 
-    override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
-        val ticks = setpoint.value * sensorTicksPerRevolution
+    override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRadians, ffVolts: Double) {
+        val ticks = setpoint.value * sensorTicksPerRadian
         val ffPercent = scaleFfVolts(ffVolts)
         device.set(TalonFXControlMode.Position, ticks, DemandType.ArbitraryFeedForward, ffPercent)
     }
 
-    override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRevolutionsPerSecond, ffVolts: Double) {
-        val ticksPer100Ms = (setpoint.value * sensorTicksPerRevolution) / 10.0 //Divide by 10 to convert seconds to deciseconds (100 ms)
+    override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRadiansPerSecond, ffVolts: Double) {
+        val ticksPer100Ms = (setpoint.value * sensorTicksPerRadian) / 10.0 //Divide by 10 to convert seconds to deciseconds (100 ms)
         val ffPercent = scaleFfVolts(ffVolts)
         device.set(TalonFXControlMode.Velocity, ticksPer100Ms, DemandType.ArbitraryFeedForward, ffPercent)
     }
 
-    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
-        val ticks = setpoint.value * sensorTicksPerRevolution
+    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRadians, ffVolts: Double) {
+        val ticks = setpoint.value * sensorTicksPerRadian
         val ffPercent = scaleFfVolts(ffVolts)
         device.set(TalonFXControlMode.MotionMagic, ticks, DemandType.ArbitraryFeedForward, ffPercent)
     }
 
-    override fun invertOutput(invert: Boolean) {
+    override fun invert(invert: Boolean) {
         device.inverted = invert
     }
 

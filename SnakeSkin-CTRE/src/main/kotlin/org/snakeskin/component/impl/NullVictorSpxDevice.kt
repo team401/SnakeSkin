@@ -40,7 +40,7 @@ open class NullVictorSpxDevice private constructor(): IVictorSpxDevice {
         return 0.0
     }
 
-    override fun invertOutput(invert: Boolean) {
+    override fun invert(invert: Boolean) {
         //no-op
     }
 }

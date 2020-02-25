@@ -1,17 +1,16 @@
 package org.snakeskin.component
 
-import org.snakeskin.component.provider.IFollowProvider
 import org.snakeskin.component.provider.IInvertableInputProvider
-import org.snakeskin.component.provider.IInvertableOutputProvider
+import org.snakeskin.component.provider.IInvertableProvider
 import org.snakeskin.component.provider.IPercentOutputMotorControlProvider
 import org.snakeskin.measure.MeasureUnitless
-import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
-import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 
 /**
  * Represents a gearbox.  A gearbox combines a coupled motor group with a feedback sensor.
  */
-open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocitySensorComponent, IInvertableOutputProvider, IInvertableInputProvider {
+open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocitySensorComponent, IInvertableProvider, IInvertableInputProvider {
     private val motorGroup: CoupledMotorGroup
     private val sensor: IAngularPositionVelocitySensorComponent
 
@@ -68,20 +67,20 @@ open class Gearbox: IPercentOutputMotorControlProvider, IAngularPositionVelocity
     override fun stop() = motorGroup.stop()
 
     //Sensor
-    override fun getAngularPosition(): AngularDistanceMeasureRevolutions {
+    override fun getAngularPosition(): AngularDistanceMeasureRadians {
         return sensor.getAngularPosition() / ratioToSensor
     }
 
-    override fun getAngularVelocity(): AngularVelocityMeasureRevolutionsPerSecond {
+    override fun getAngularVelocity(): AngularVelocityMeasureRadiansPerSecond {
         return sensor.getAngularVelocity() / ratioToSensor
     }
 
-    override fun setAngularPosition(angle: AngularDistanceMeasureRevolutions) {
+    override fun setAngularPosition(angle: AngularDistanceMeasureRadians) {
         sensor.setAngularPosition(angle * ratioToSensor)
     }
 
-    override fun invertOutput(invert: Boolean) {
-        motorGroup.invertOutput(invert)
+    override fun invert(invert: Boolean) {
+        motorGroup.invert(invert)
     }
 
     override fun invertInput(invert: Boolean) {

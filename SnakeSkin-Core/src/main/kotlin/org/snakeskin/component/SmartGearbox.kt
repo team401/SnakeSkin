@@ -4,7 +4,9 @@ import org.snakeskin.component.provider.IAngularPositionMotorControlProvider
 import org.snakeskin.component.provider.IAngularProfileMotorControlProvider
 import org.snakeskin.component.provider.IAngularVelocityMotorControlProvider
 import org.snakeskin.component.provider.IFollowProvider
+import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRadians
 import org.snakeskin.measure.distance.angular.AngularDistanceMeasureRevolutions
+import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRadiansPerSecond
 import org.snakeskin.measure.velocity.angular.AngularVelocityMeasureRevolutionsPerSecond
 
 /**
@@ -25,15 +27,15 @@ class SmartGearbox(private val master: IMotorControllerSmartComponent,
         IAngularProfileMotorControlProvider
 {
     //Closed loop
-    override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
+    override fun setAngularPositionSetpoint(setpoint: AngularDistanceMeasureRadians, ffVolts: Double) {
         master.setAngularPositionSetpoint(setpoint * ratioToSensor, ffVolts)
     }
 
-    override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRevolutionsPerSecond, ffVolts: Double) {
+    override fun setAngularVelocitySetpoint(setpoint: AngularVelocityMeasureRadiansPerSecond, ffVolts: Double) {
         master.setAngularVelocitySetpoint(setpoint * ratioToSensor, ffVolts)
     }
 
-    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRevolutions, ffVolts: Double) {
+    override fun setProfiledSetpoint(setpoint: AngularDistanceMeasureRadians, ffVolts: Double) {
         master.setProfiledSetpoint(setpoint * ratioToSensor, ffVolts)
     }
 }
