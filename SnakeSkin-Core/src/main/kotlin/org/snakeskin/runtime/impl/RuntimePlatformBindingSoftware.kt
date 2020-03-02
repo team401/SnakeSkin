@@ -1,36 +1,47 @@
 package org.snakeskin.runtime.impl
 
 import org.snakeskin.executor.IExecutor
+import org.snakeskin.executor.impl.ScheduledExecutorServiceExecutor
 import org.snakeskin.hid.IHIDValueProviderFactory
+import org.snakeskin.hid.impl.NullHIDValueProviderFactory
 import org.snakeskin.rt.IRealTimeExecutor
+import org.snakeskin.rt.impl.NullRealTimeExecutor
 import org.snakeskin.runtime.IRuntimePlatformBinding
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 class RuntimePlatformBindingSoftware: IRuntimePlatformBinding {
     override fun blockMilliseconds(ms: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Thread.sleep(ms)
     }
 
     override fun getSystemVbusVolts(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return 0.0
     }
 
     override fun allocatePrimaryExecutor(): IExecutor {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val pool = ScheduledThreadPoolExecutor(8)
+        pool.setKeepAliveTime(10, TimeUnit.SECONDS)
+        pool.allowCoreThreadTimeOut(true)
+
+        return ScheduledExecutorServiceExecutor(pool)
     }
 
     override fun allocateSingleUseExecutor(): IExecutor {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val executor = ScheduledThreadPoolExecutor(1)
+
+        return ScheduledExecutorServiceExecutor(executor)
     }
 
     override fun allocateRealTimeExecutor(rateSeconds: Double): IRealTimeExecutor {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return NullRealTimeExecutor
     }
 
     override fun getTimestampSeconds(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return System.nanoTime() * 1e-9
     }
 
     override fun allocateHIDValueProviderFactory(id: Int): IHIDValueProviderFactory {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return NullHIDValueProviderFactory
     }
 }

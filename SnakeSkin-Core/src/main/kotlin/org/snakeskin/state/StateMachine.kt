@@ -106,7 +106,7 @@ class StateMachine<T> {
 
         if (activeState?.timeout?.value != -1.0) {
             activeTimeoutHandle = executor.scheduleSingleTask(ExceptionHandlingRunnable {
-                activeState?.timeoutTo?.let { setStateInternal(it, false) }
+                activeState?.timeoutTo?.let { setStateFromAction(it, false) }
             }, activeState?.timeout ?: 0.0.Seconds)
         }
 
@@ -129,7 +129,7 @@ class StateMachine<T> {
         return NullWaitable
     }
 
-    internal fun setStateInternal(state: Any, async: Boolean) {
+    internal fun setStateFromAction(state: Any, async: Boolean) {
         if (startTransition(state)) {
             if (async) {
                 executor.scheduleSingleTaskNow(ExceptionHandlingRunnable { finishTransition(state, null) })
@@ -139,7 +139,7 @@ class StateMachine<T> {
         }
     }
 
-    internal fun disableInternal(async: Boolean) {
+    internal fun disableFromAction(async: Boolean) {
         if (startTransition(States.DISABLED)) {
             if (async) {
                 executor.scheduleSingleTaskNow(ExceptionHandlingRunnable { finishTransition(States.DISABLED, null) })
@@ -149,7 +149,7 @@ class StateMachine<T> {
         }
     }
 
-    internal fun backInternal(async: Boolean) {
+    internal fun backFromAction(async: Boolean) {
         val lastState = getLastState()
         if (startTransition(lastState)) {
             if (async) {
